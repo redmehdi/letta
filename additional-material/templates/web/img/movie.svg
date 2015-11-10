@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- The icon can be used freely in both personal and commercial projects with no attribution required, but always appreciated. 
+You may NOT sub-license, resell, rent, redistribute or otherwise transfer the icon without express written permission from iconmonstr.com -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   x="0px"
+   y="0px"
+   width="512px"
+   height="512px"
+   viewBox="0 0 512 512"
+   enable-background="new 0 0 512 512"
+   xml:space="preserve"
+   id="svg38"
+   inkscape:version="0.91 r"
+   sodipodi:docname="iconmonstr-video-icon.svg"><metadata
+     id="metadata45"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
+     id="defs43" /><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1578"
+     inkscape:window-height="1003"
+     id="namedview41"
+     showgrid="false"
+     inkscape:zoom="0.4609375"
+     inkscape:cx="256"
+     inkscape:cy="256"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg38" /><path
+     id="video-icon"
+     d="M50,60.345v391.311h412V60.345H50z M137.408,410.862H92.354v-38.747h45.055V410.862z M137.408,343.278  H92.354v-38.747h45.055V343.278z M137.408,275.372H92.354v-38.747h45.055V275.372z M137.408,208.111H92.354v-38.748h45.055V208.111z   M137.408,140.526H92.354v-38.747h45.055V140.526z M337.646,410.862H177.961V275.694h159.685V410.862z M337.646,236.947H177.961  V101.779h159.685V236.947z M423.253,410.862h-45.054v-38.747h45.054V410.862z M423.253,343.278h-45.054v-38.747h45.054V343.278z   M423.253,275.372h-45.054v-38.747h45.054V275.372z M423.253,208.111h-45.054v-38.748h45.054V208.111z M423.253,140.526h-45.054  v-38.747h45.054V140.526z"
+     style="fill:#337cbb;fill-opacity:1" /></svg>
