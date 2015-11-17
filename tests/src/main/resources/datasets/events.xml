@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Event id="1" eventType="LITERATURE" title="Example1 literature"
+		description="This is a description literature 1" date="2000-01-01 01:01:01" />
+	<Event id="2" eventType="LITERATURE" title="Example2 literature"
+		description="This is a description literature 2" date="2000-01-01 01:01:01" />
+	<Event id="3" eventType="MUSIC" title="Example1 music"
+		description="This is a description  music 1" date="2000-01-01 01:01:01" />
+	<Event id="4" eventType="MUSIC" title="Example2 music"
+		description="This is a description music 2" date="2000-01-01 01:01:01" />
+	<Event id="5" eventType="CINEMA" title="Example1 cinema"
+		description="This is a description cinema 1" date="2000-01-01 01:01:01" />
+	<Event id="6" eventType="CINEMA" title="Example2 cinema"
+		description="This is a description cinema 2" date="2000-01-01 01:01:01" />
+	<Event id="7" eventType="TV" title="Example1 tv" description="This is a description tv 1"
+		date="2000-01-01 01:01:01" />
+	<Event id="8" eventType="TV" title="Example2 tv" description="This is a description tv 2"
+		date="2000-01-01 01:01:01" />
+	<Event id="9" eventType="SPORTS" title="Example1 sports"
+		description="This is a description sports 1" date="2000-01-01 01:01:01" />
+	<Event id="10" eventType="SPORTS" title="Example2 sports"
+		description="This is a description sports 2" date="2000-01-01 01:01:01" />
+	<Event id="11" eventType="INTERNET" title="Example1 internet"
+		description="This is a description internet 1" date="2000-01-01 01:01:01" />
+	<Event id="12" eventType="INTERNET" title="Example2 internet"
+		description="This is a description internet 2" date="2000-01-01 01:01:01" />
+	<Event id="13" eventType="TRAVELS" title="Example1 travels"
+		description="This is a description travels 1" date="2000-01-01 01:01:01" />
+	<Event id="14" eventType="TRAVELS" title="Example2 travels"
+		description="This is a description travels 2" date="2000-01-01 01:01:01" />
+	<Event id="15" eventType="THEATRE" title="Example1 theatre"
+		description="This is a description theatre 1" date="2000-01-01 01:01:01" />
+	<Event id="16" eventType="THEATRE" title="Example2 theatre"
+		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+</dataset>
