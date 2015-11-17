@@ -32,4 +32,31 @@
 		description="This is a description theatre 1" date="2000-01-01 01:01:01" />
 	<Event id="16" eventType="THEATRE" title="Example2 theatre"
 		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+	<Event id="17" eventType="SPORTS" title="Example3 sports"
+		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+	<Event id="18" eventType="INTERNET" title="Example3 internet"
+		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+	<Event id="19" eventType="TRAVELS" title="Example3 travels"
+		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+	<Event id="20" eventType="CINEMA" title="Example3 cinema"
+		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+	<Event id="21" eventType="TV" title="Example3 tv"
+		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+	<Event id="22" eventType="MUSIC" title="Example3 music"
+		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+	<Event id="23" eventType="LITERATURE" title="Example3 literature"
+		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+	<Event id="24" eventType="LITERATURE" title="Example4 literature"
+		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+	<Event id="25" eventType="LITERATURE" title="Example5 literature"
+		description="This is a description theatre 2" date="2000-01-01 01:01:01" />
+
+
+
+
+
+
+
+
+
 </dataset>

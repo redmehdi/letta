@@ -16,6 +16,7 @@ public class EventsDataset {
 	public static final String EXISTENT_TITLE_INTERNET = "Example1 internet";
 	public static final String EXISTENT_TITLE_TRAVELS = "Example1 travels";
 	public static final String EXISTENT_TITLE_THEATRE = "Example1 theatre";
+	public static final String EXISTENT_TITLE_LITERATURE = "Example1 literature";
 
 	public static final String EXISTENT_DESCRIPTION_TRAVELS = "This is a description travels 1";
 
@@ -48,8 +49,12 @@ public class EventsDataset {
 						new Date(946684861000L)),
 				new Event(EventType.MUSIC, EXISTENT_TITLE_MUSIC, "This is a description music 1",
 						new Date(946684861000L)),
-				new Event(EventType.THEATRE, EXISTENT_TITLE_INTERNET, "This is a description theatre 1",
-						new Date(946684861000L)) };
+				new Event(EventType.THEATRE, EXISTENT_TITLE_THEATRE, "This is a description theatre 1",
+						new Date(946684861000L)),
+				new Event(EventType.THEATRE, EXISTENT_TITLE_LITERATURE, "This is a description literature 1",
+						new Date(946684861000L)),
+		
+		};
 	}
 
 	public static String anyTitle() {
