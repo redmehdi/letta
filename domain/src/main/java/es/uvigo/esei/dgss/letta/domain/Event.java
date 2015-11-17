@@ -3,6 +3,8 @@ package es.uvigo.esei.dgss.letta.domain;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -11,6 +13,7 @@ public class Event {
 	@Id
 	@GeneratedValue
 	private int id;
+	@Enumerated(EnumType.STRING)
 	private EventType eventType;
 	private String title;
 	private String description;
@@ -19,8 +22,9 @@ public class Event {
 	Event() {
 	}
 
-	public Event(EventType eventType, String title, String description, Date date) {
-		this.eventType= eventType;
+	public Event(EventType eventType, String title, String description,
+			Date date) {
+		this.eventType = eventType;
 		this.title = title;
 		this.description = description;
 		this.date = date;
