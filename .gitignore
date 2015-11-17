@@ -8,3 +8,8 @@ target
 
 #General
 bak
+
+#FakeSMTP
+additional-material/fake-smtp
+!additional-material/fake-smtp/Instrucciones.md
+!additional-material/fake-smtp/fakesmtp.sh
