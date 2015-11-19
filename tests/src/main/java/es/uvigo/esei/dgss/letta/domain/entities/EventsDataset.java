@@ -30,30 +30,35 @@ public class EventsDataset {
 	public static final String NON_EXISTENT_DESCRIPTION_TRAVELS = "This is not a description travels 1";
 
 	public static Event eventWithTitle(String title) {
-		return stream(events()).filter(event -> event.getTitle().equals(title)).findFirst()
-				.orElseThrow(IllegalArgumentException::new);
+		return stream(events()).filter(event -> event.getTitle().equals(title))
+				.findFirst().orElseThrow(IllegalArgumentException::new);
 	}
 
 	public static Event eventWithType(EventType eventType) {
-		return stream(events()).filter(event -> event.getEventType().equals(eventType)).findFirst()
-				.orElseThrow(IllegalArgumentException::new);
+		return stream(events())
+				.filter(event -> event.getEventType().equals(eventType))
+				.findFirst().orElseThrow(IllegalArgumentException::new);
 	}
 
 	public static Event[] events() {
-		return new Event[] {
-				new Event(EventType.CINEMA, EXISTENT_TITLE_CINEMA, "This is a description cinema 1",
+		return new Event[] { new Event(EventType.CINEMA, EXISTENT_TITLE_CINEMA,
+				"This is a description cinema 1", new Date(946684861000L)),
+				new Event(EventType.INTERNET, EXISTENT_TITLE_INTERNET,
+						"This is a description internet 1",
 						new Date(946684861000L)),
-				new Event(EventType.INTERNET, EXISTENT_TITLE_INTERNET, "This is a description internet 1",
+				new Event(EventType.SPORTS, EXISTENT_TITLE_SPORTS,
+						"This is a description sports 1",
 						new Date(946684861000L)),
-				new Event(EventType.SPORTS, EXISTENT_TITLE_SPORTS, "This is a description sports 1",
+				new Event(EventType.MUSIC, EXISTENT_TITLE_MUSIC,
+						"This is a description music 1",
 						new Date(946684861000L)),
-				new Event(EventType.MUSIC, EXISTENT_TITLE_MUSIC, "This is a description music 1",
+				new Event(EventType.THEATRE, EXISTENT_TITLE_THEATRE,
+						"This is a description theatre 1",
 						new Date(946684861000L)),
-				new Event(EventType.THEATRE, EXISTENT_TITLE_THEATRE, "This is a description theatre 1",
+				new Event(EventType.THEATRE, EXISTENT_TITLE_LITERATURE,
+						"This is a description literature 1",
 						new Date(946684861000L)),
-				new Event(EventType.THEATRE, EXISTENT_TITLE_LITERATURE, "This is a description literature 1",
-						new Date(946684861000L)),
-		
+
 		};
 	}
 
@@ -82,7 +87,8 @@ public class EventsDataset {
 	}
 
 	public static Event nonExistentEvent() {
-		return new Event(EventType.TRAVELS, nonExistentTitle(), nonExistentDescription(), new Date(587684861000L));
+		return new Event(EventType.TRAVELS, nonExistentTitle(),
+				nonExistentDescription(), new Date(587684861000L));
 	}
 
 	public static int existentEventId() {
