@@ -26,8 +26,6 @@ public class RegisterEJB {
 	 *            indicates the user login
 	 * @param pass
 	 *            indicates the user password
-	 * @param name
-	 *            indicates the user name
 	 * @param email
 	 *            indicates the user email
 	 * @return the user who has been registered
@@ -36,13 +34,12 @@ public class RegisterEJB {
 	 * @throws EntityExistsException
 	 *             if the {@code login} already exists
 	 */
-	public User registerUser(String login, String pass, String name,
-			String email) {
+	public User registerUser(String login, String pass, String email) {
 		if (login == null) {
 			throw new NullPointerException();
 		} else {
 			if (em.find(User.class, login) == null) {
-				User user = new User(login, pass, name, email);
+				User user = new User(login, pass, email);
 				em.persist(user);
 				try {
 					mejb.sendEmail(login, user.getEmail());
@@ -64,7 +61,6 @@ public class RegisterEJB {
 	 */
 	public User userConfirmation(String login) {
 		User user = em.find(User.class, login);
-		user.setConfirmed(true);
 		em.persist(user);
 		return user;
 	}
