@@ -23,9 +23,8 @@ public class EventEJB {
 	 * @return the list of the top twenty events ordered by ascending date.
 	 */
 	public List<Event> getFrontPage() {
-		return em.createQuery(
-				"SELECT e from Event e ORDER BY e.date ASC",
-				Event.class).setMaxResults(20).getResultList();
+		return em.createQuery("SELECT e from Event e ORDER BY e.date ASC", Event.class).setMaxResults(20)
+				.getResultList();
 	}
 
 	/**
@@ -34,7 +33,6 @@ public class EventEJB {
 	 * @return a list of random five events
 	 */
 	public List<Event> getFrontPageHighlights() {
-		return em.createQuery("SELECT e from Event e ORDER BY RAND()",
-				Event.class).setMaxResults(5).getResultList();
+		return em.createQuery("SELECT e from Event e ORDER BY RAND()", Event.class).setMaxResults(5).getResultList();
 	}
 }
