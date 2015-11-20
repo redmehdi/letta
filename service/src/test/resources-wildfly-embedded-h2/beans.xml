@@ -6,7 +6,7 @@
        bean-discovery-mode="all">
        <alternatives>
 			<class>es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal</class>
-			<class>es.uvigo.esei.dgss.letta.service.MailerStubEJB</class>
+			<class>es.uvigo.esei.dgss.letta.service.TestingMailerEJB</class>
        </alternatives>
 </beans>
 

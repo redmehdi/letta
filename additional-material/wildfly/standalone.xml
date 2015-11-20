@@ -293,10 +293,19 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jsf:1.0"/>
         <subsystem xmlns="urn:jboss:domain:mail:2.0">
+		    <mail-session jndi-name="java:/Mail" from="no_reply@letta.com">  
+                <smtp-server ssl="true" outbound-socket-binding-ref="mail-smtp">  
+                    <login name="no_reply@letta.com" password="lettapassword"/>  
+                </smtp-server>  
+            </mail-session>
+		</subsystem>
+       <!--    DEFAULT CONFIGURATION mail-smtp
+       	<subsystem xmlns="urn:jboss:domain:mail:2.0">
             <mail-session name="default" jndi-name="java:jboss/mail/Default">
-                <smtp-server outbound-socket-binding-ref="mail-smtp"/>
+                  <smtp-server outbound-socket-binding-ref="mail-smtp"/> 
             </mail-session>
         </subsystem>
+        -->
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <remote-naming/>
         </subsystem>
