@@ -2,14 +2,14 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
 	 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	version="3.1">
-	<display-name>Pet Store JSF</display-name>
+	<display-name>LETTA</display-name>
 
 	<welcome-file-list>
 		<welcome-file>/faces/index.xhtml</welcome-file>
 	</welcome-file-list>
 
 	<!--Defining security constraint for type of roles available -->
-	<security-constraint>
+	<!-- security-constraint>
 		<web-resource-collection>
 			<web-resource-name>admin</web-resource-name>
 			<url-pattern>/faces/admin/*</url-pattern>
@@ -35,16 +35,16 @@
 		<auth-constraint>
 			<role-name>OWNER</role-name>
 		</auth-constraint>
-	</security-constraint>
+	</security-constraint-->
 	<!--Defining security constraint for type of roles available -->
 
 	<!--Denining security role -->
-	<security-role>
+	<!-- security-role>
 		<role-name>ADMIN</role-name>
 	</security-role>
 
 	<security-role>
 		<role-name>OWNER</role-name>
-	</security-role>
+	</security-role-->
 	<!--Denining security role -->
 </web-app>
