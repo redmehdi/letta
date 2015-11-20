@@ -111,6 +111,6 @@ public class Registration {
 	 * @return the registered user.
 	 */
 	public User getUser() {
-		return new User(this.login, this.email, this.password, this.role);
+		return new User(this.login, this.password, this.email, this.role);
 	}
 }
