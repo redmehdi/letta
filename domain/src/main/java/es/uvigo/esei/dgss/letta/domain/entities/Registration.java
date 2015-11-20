@@ -1,4 +1,4 @@
-package es.uvigo.esei.dgss.letta.domain;
+package es.uvigo.esei.dgss.letta.domain.entities;
 
 import java.util.UUID;
 
@@ -46,10 +46,23 @@ public class Registration {
 	 * a randomly generated unique identifier.
 	 *
 	 * @param user
-	 *            the data of the user registered.
+	 *            the data of the user to be registered.
 	 */
 	public Registration(User user) {
-		this.uuid = UUID.randomUUID().toString();
+		this(user, UUID.randomUUID().toString());
+	}
+
+	/**
+	 * Constructs a new instance of {@link Registration}. This constructor
+	 * should only be used for testing purposes.
+	 *
+	 * @param user
+	 *            the data of the user to be registered.
+	 * @param uuid
+	 *            the UUID of the registration.
+	 */
+	Registration(User user, String uuid) {
+		this.uuid = uuid;
 		this.login = user.getLogin();
 		this.password = user.getPassword();
 		this.email = user.getEmail();
@@ -104,7 +117,7 @@ public class Registration {
 	public Role getRole() {
 		return role;
 	}
-	
+
 	/**
 	 * Returns the registered user.
 	 * 

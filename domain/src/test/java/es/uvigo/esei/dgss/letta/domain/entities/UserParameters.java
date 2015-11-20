@@ -1,6 +1,8 @@
-package es.uvigo.esei.dgss.letta.domain;
+package es.uvigo.esei.dgss.letta.domain.entities;
 
 import static org.apache.commons.lang3.StringUtils.repeat;
+
+import es.uvigo.esei.dgss.letta.domain.entities.User;
 
 /**
  * Test utility class with a set of parameters to be used when testing user

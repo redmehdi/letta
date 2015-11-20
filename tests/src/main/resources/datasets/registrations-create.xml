@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Registration login="john" password="3bffe7a2bc163d273184e8902afe66b7"
+		email="john@email.com" role="USER" uuid="00000000-0000-0000-0000-000000000000" />
+	<Registration login="anne" password="1afee8bef2d82a3bef6f52b2614f16ab"
+		email="anne@email.com" role="USER" uuid="11111111-0000-0000-0000-000000000000" />
+	<Registration login="mary" password="a5446c2cfe2b8a015caa8a7e825bb8af"
+		email="mary@email.com" role="USER" uuid="22222222-0000-0000-0000-000000000000" />
+	<Registration login="joan" password="ce8a660555a5701617403c77f6654d65"
+		email="joan@email.com" role="USER" uuid="33333333-0000-0000-0000-000000000000" />
+	<Registration login="mike" password="b1b668f82813956ef1fe9688e6c05011"
+		email="mike@email.com" role="USER" uuid="44444444-0000-0000-0000-000000000000" />
+	<Registration login="mike" password="b1b668f82813956ef1fe9688e6c05011"
+		email="mike@email.com" role="USER" uuid="55555555-0000-0000-0000-000000000000" />
+</dataset>

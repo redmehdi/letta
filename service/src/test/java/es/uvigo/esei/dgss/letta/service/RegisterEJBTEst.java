@@ -11,7 +11,7 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.runner.RunWith;
 
-import es.uvigo.esei.dgss.letta.domain.User;
+import es.uvigo.esei.dgss.letta.domain.entities.User;
 
 @RunWith(Arquillian.class)
 @CleanupUsingScript({ "cleanup.sql" })

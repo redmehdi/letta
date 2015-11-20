@@ -6,8 +6,8 @@ import java.security.acl.Owner;
 import java.util.Arrays;
 import java.util.Date;
 
-import es.uvigo.esei.dgss.letta.domain.Event;
-import es.uvigo.esei.dgss.letta.domain.EventType;
+import es.uvigo.esei.dgss.letta.domain.entities.Event;
+import es.uvigo.esei.dgss.letta.domain.entities.EventType;
 
 public class EventsDataset {
 	public static final String EXISTENT_TITLE_MUSIC = "Example1 music";

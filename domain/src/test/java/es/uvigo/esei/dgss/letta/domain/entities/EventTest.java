@@ -1,9 +1,13 @@
-package es.uvigo.esei.dgss.letta.domain;
+package es.uvigo.esei.dgss.letta.domain.entities;
 
 import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import es.uvigo.esei.dgss.letta.domain.entities.Event;
+import es.uvigo.esei.dgss.letta.domain.entities.EventType;
+
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;

@@ -1,4 +1,4 @@
-package es.uvigo.esei.dgss.letta.domain;
+package es.uvigo.esei.dgss.letta.domain.entities;
 
 import java.util.Date;
 

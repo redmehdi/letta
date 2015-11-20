@@ -1,27 +1,30 @@
-package es.uvigo.esei.dgss.letta.domain;
+package es.uvigo.esei.dgss.letta.domain.entities;
 
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.aLogin;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.aPassword;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.aPasswordMD5;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.anEmail;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.anEmailWithBadFormat;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.emptyLogin;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.longLogin;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.longestLogin;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.newEmail;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.newLogin;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.newPassword;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.newPasswordMD5;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.shortPassword;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.shortestLogin;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.shortestPassword;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.shortestPasswordMD5;
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.validUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.aLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.aPassword;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.aPasswordMD5;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.anEmail;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.anEmailWithBadFormat;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.emptyLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.longLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.longestLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.newEmail;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.newLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.newPassword;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.newPasswordMD5;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.shortPassword;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.shortestLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.shortestPassword;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.shortestPasswordMD5;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.validUser;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
+
+import es.uvigo.esei.dgss.letta.domain.entities.Role;
+import es.uvigo.esei.dgss.letta.domain.entities.User;
 
 public class UserTest {
 	@Test

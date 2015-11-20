@@ -22,7 +22,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import es.uvigo.esei.dgss.letta.domain.Event;
+import es.uvigo.esei.dgss.letta.domain.entities.Event;
 
 @RunWith(Arquillian.class)
 @CleanupUsingScript({ "cleanup.sql" })

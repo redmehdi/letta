@@ -5,7 +5,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import es.uvigo.esei.dgss.letta.domain.User;
+import es.uvigo.esei.dgss.letta.domain.entities.User;
 
 /**
  * EJB for the user registration

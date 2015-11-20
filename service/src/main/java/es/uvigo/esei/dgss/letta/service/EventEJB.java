@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import es.uvigo.esei.dgss.letta.domain.Event;
+import es.uvigo.esei.dgss.letta.domain.entities.Event;
 
 /**
  * EJB for the events.

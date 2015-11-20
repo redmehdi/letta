@@ -1,12 +1,15 @@
-package es.uvigo.esei.dgss.letta.domain;
+package es.uvigo.esei.dgss.letta.domain.entities;
 
-import static es.uvigo.esei.dgss.letta.domain.UserParameters.validUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.validUser;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import org.junit.Test;
+
+import es.uvigo.esei.dgss.letta.domain.entities.Registration;
+import es.uvigo.esei.dgss.letta.domain.entities.User;
 
 public class RegistrationTest {
 	@Test
