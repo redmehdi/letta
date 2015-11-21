@@ -18,7 +18,7 @@ import javax.persistence.Id;
 @Entity
 public class Registration {
 	@Id
-	@Column(length = 32, nullable = false)
+	@Column(length = 36, nullable = false)
 	private String uuid;
 
 	@Column(length = 20)
