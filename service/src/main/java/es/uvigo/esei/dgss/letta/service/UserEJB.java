@@ -1,5 +1,9 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.persistence.EntityExistsException;
@@ -17,11 +21,14 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
  * @author jacasanova and arfarinha
  *
  */
+@Stateless
 public class UserEJB {
 	@PersistenceContext
 	EntityManager em;
+	// @Inject
+	// TestingMailerEJB tmejb;
 	@Inject
-	TestingMailerEJB tmejb;
+	DefaultMailerEJB dmejb;
 	@Context
 	HttpServletRequest request;
 
@@ -33,7 +40,7 @@ public class UserEJB {
 	 * @throws EntityExistsException
 	 *             if the {@code login} already exists
 	 */
-	public void registerUser(Registration user) {
+	public void registerUser(final Registration user) {
 		// check if the user login and email already exists
 		if (em.find(User.class, user.getLogin()) == null
 				&& findUserByEmail(user.getEmail()) == null) {
@@ -48,8 +55,9 @@ public class UserEJB {
 			final String resultPath = scheme + "://" + serverName + ":"
 					+ serverPort + contextPath + "/" + user.getUuid();
 			try {
-				tmejb.sendEmail(user.getEmail(),
+				dmejb.sendEmail(user.getEmail(),
 						generateRegistrationMessage(resultPath));
+				em.persist(user);
 			} catch (final MessagingException e) {
 			}
 		} else {
@@ -61,15 +69,24 @@ public class UserEJB {
 	 * 
 	 * Confirms a user registration
 	 * 
-	 * @param user
-	 *            indicates the user who confirms the registration
 	 */
-	public void userConfirmation(Registration user) {
-		if (request.toString().contains(user.getUuid())) {
-			User newUser = new User(user.getLogin(), user.getPassword(),
-					user.getEmail());
-			em.persist(newUser);
+	public void userConfirmation() {
+		// search the UUID pattern in the link
+		Pattern p = Pattern
+				.compile("[0-9A-Z]{8}-([0-9A-Z]{4}-){3}[0-9A-Z]{12}");
+		Matcher m = p.matcher(request.toString());
+		if (m.find()) {
+			// get the user with the UUID in the link
+			Registration user = em.find(Registration.class, m.group(1));
+			em.persist(user.getUser());
+			em.remove(user);
 		}
+		// if (request.toString().contains(user.getUuid())) {
+		// final User newUser = new User(user.getLogin(), user.getPassword(),
+		// user.getEmail());
+		// em.persist(newUser);
+		// em.remove(user);
+		// }
 
 		// if (tmejb.getMail().get(user.getEmail()).contains(user.getUuid())) {
 		// User newUser = new User(user.getLogin(), user.getPassword(),
@@ -86,7 +103,7 @@ public class UserEJB {
 	 *            indicates the path to confirm the user
 	 * @return the message with the link
 	 */
-	private String generateRegistrationMessage(String path) {
+	private String generateRegistrationMessage(final String path) {
 		final StringBuilder message = new StringBuilder();
 		message.append("<html>");
 		message.append("<head><title>Confirm registration</title></head>");
@@ -103,7 +120,7 @@ public class UserEJB {
 	 *            indicates the user email
 	 * @return the user whose email is the same than {@code email}
 	 */
-	public User findUserByEmail(String email) {
+	public User findUserByEmail(final String email) {
 		return (User) em
 				.createQuery("SELECT u FROM User WHERE u.email =: email")
 				.setParameter("email", email).getResultList();
