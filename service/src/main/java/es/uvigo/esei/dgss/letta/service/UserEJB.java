@@ -3,7 +3,6 @@ package es.uvigo.esei.dgss.letta.service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.persistence.EntityExistsException;
@@ -21,7 +20,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
  * @author jacasanova and arfarinha
  *
  */
-@Stateless
+// @Stateless
 public class UserEJB {
 	@PersistenceContext
 	EntityManager em;
