@@ -292,9 +292,9 @@
             <jpa default-datasource="" default-extended-persistence-inheritance="DEEP"/>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jsf:1.0"/>
-        <subsystem xmlns="urn:jboss:domain:mail:2.0">
-		    <mail-session jndi-name="java:/Mail" from="no_reply@letta.com">  
-                <smtp-server ssl="true" outbound-socket-binding-ref="mail-smtp">  
+        <subsystem xmlns="urn:jboss:domain:mail:1.0">
+		    <mail-session jndi-name="java:/Mail">  
+                <smtp-server ssl="false" outbound-socket-binding-ref="mail-smtp">  
                     <login name="no_reply@letta.com" password="lettapassword"/>  
                 </smtp-server>  
             </mail-session>

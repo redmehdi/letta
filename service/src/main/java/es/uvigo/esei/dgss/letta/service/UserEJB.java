@@ -1,12 +1,12 @@
 package es.uvigo.esei.dgss.letta.service;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import javax.annotation.security.PermitAll;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
@@ -20,14 +20,13 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
  * @author jacasanova and arfarinha
  *
  */
-// @Stateless
+@Stateless
 public class UserEJB {
 	@PersistenceContext
 	EntityManager em;
-	// @Inject
-	// TestingMailerEJB tmejb;
+
 	@Inject
-	DefaultMailerEJB dmejb;
+	Mailer dmejb;
 	@Context
 	HttpServletRequest request;
 
@@ -39,60 +38,66 @@ public class UserEJB {
 	 * @throws EntityExistsException
 	 *             if the {@code login} already exists
 	 */
-	public void registerUser(final Registration user) {
-		// check if the user login and email already exists
+	@PermitAll
+	public boolean registerUser(final User user) throws EntityExistsException {
 		if (em.find(User.class, user.getLogin()) == null
+				&& findUserInRegistration(user.getLogin(),
+						user.getEmail()) == null
 				&& findUserByEmail(user.getEmail()) == null) {
-			// Get the request path Ex:
-			// http://localhost:8080/context_path/resource?params
-			final String scheme = request.getScheme();
-			final String serverName = request.getServerName();
-			final int serverPort = request.getServerPort();
-			final String contextPath = request.getContextPath();
-			// Transform the request into Ex:
-			// http://localhost:8080/context_path/UUID
-			final String resultPath = scheme + "://" + serverName + ":"
-					+ serverPort + contextPath + "/" + user.getUuid();
+			final Registration registration = new Registration(user);
+
 			try {
 				dmejb.sendEmail(user.getEmail(),
-						generateRegistrationMessage(resultPath));
-				em.persist(user);
+						generateRegistrationMessage(registration.getUuid()));
+
+				em.persist(registration);
+				return true;
 			} catch (final MessagingException e) {
+				e.printStackTrace();
+				return true;
 			}
 		} else {
-			throw new EntityExistsException("User already exists");
+			return false;
 		}
 	}
 
+	@SuppressWarnings("unused")
+	private String getPath(final String uuid) {
+		String scheme = "http";
+		try {
+			scheme = request.getScheme();
+		} catch (final NullPointerException e) {
+			scheme = "http";
+		}
+
+		final int serverPort = request.getServerPort();
+		final String serverName = request.getServerName();
+		final String contextPath = request.getContextPath();
+
+		return scheme + "://" + serverName + ":" + serverPort + contextPath
+				+ "/" + uuid;
+	}
+
 	/**
-	 * 
 	 * Confirms a user registration
 	 * 
+	 * @param uuid
+	 *            indicates the user uuid
+	 * @return true if the {@code uuid} doesn't exist
+	 * @return false if the {@code uuid} already exists
 	 */
-	public void userConfirmation() {
-		// search the UUID pattern in the link
-		Pattern p = Pattern
-				.compile("[0-9A-Z]{8}-([0-9A-Z]{4}-){3}[0-9A-Z]{12}");
-		Matcher m = p.matcher(request.toString());
-		if (m.find()) {
-			// get the user with the UUID in the link
-			Registration user = em.find(Registration.class, m.group(1));
-			em.persist(user.getUser());
-			em.remove(user);
+	@PermitAll
+	public boolean userConfirmation(final String uuid) {
+		if (em.find(Registration.class, uuid) == null) {
+			return false;
+		} else {
+
+			final Registration registration = em.find(Registration.class, uuid);
+			final User user = registration.getUser();
+			em.persist(user);
+			em.remove(registration);
+			return true;
 		}
-		// if (request.toString().contains(user.getUuid())) {
-		// final User newUser = new User(user.getLogin(), user.getPassword(),
-		// user.getEmail());
-		// em.persist(newUser);
-		// em.remove(user);
-		// }
-
-		// if (tmejb.getMail().get(user.getEmail()).contains(user.getUuid())) {
-		// User newUser = new User(user.getLogin(), user.getPassword(),
-		// user.getEmail());
-		// em.persist(newUser);
-		// }
-
 	}
 
 	/**
@@ -102,12 +107,14 @@ public class UserEJB {
 	 *            indicates the path to confirm the user
 	 * @return the message with the link
 	 */
-	private String generateRegistrationMessage(final String path) {
+	private String generateRegistrationMessage(final String uuid) {
 		final StringBuilder message = new StringBuilder();
 		message.append("<html>");
 		message.append("<head><title>Confirm registration</title></head>");
-		message.append("<body></br></br>");
-		message.append("<a href='" + path + "'" + ">Click here to confirm</a>");
+		message.append("<body><br/><br/>");
+		message.append(
+				"<a href=\"http://localhost:9080/letta/jsf/faces/confirm.xhtml?uuid="
+						+ uuid + "\">Click here to confirm</a>");
 		message.append("</body>");
 		message.append("</html>");
 		return message.toString();
@@ -120,8 +127,39 @@ public class UserEJB {
 	 * @return the user whose email is the same than {@code email}
 	 */
 	public User findUserByEmail(final String email) {
-		return (User) em
-				.createQuery("SELECT u FROM User WHERE u.email =: email")
-				.setParameter("email", email).getResultList();
+		try {
+			return em
+					.createQuery("SELECT u FROM User u WHERE u.email=:email",
+							User.class)
+					.setParameter("email", email).getSingleResult();
+		} catch (final NoResultException e) {
+			return null;
+		}
+
+	}
+
+	/**
+	 * 
+	 * Check if a user exists with the user {@code login} and {@code email}
+	 * 
+	 * @param login
+	 *            indicates the user login
+	 * @param email
+	 *            indicates the user email
+	 * @return the user if exists
+	 * @return null if the user doesn't exist
+	 */
+	public Registration findUserInRegistration(final String login,
+			final String email) {
+		try {
+			return em
+					.createQuery(
+							"SELECT u FROM Registration u WHERE u.email=:email or u.login=:login",
+							Registration.class)
+					.setParameter("email", email).setParameter("login", login)
+					.getSingleResult();
+		} catch (final NoResultException e) {
+			return null;
+		}
 	}
 }

@@ -1,11 +1,13 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import javax.ejb.Local;
 import javax.mail.MessagingException;
 
 /**
  * @author jacasanova and arfarinha
  *
  */
+@Local
 public interface Mailer {
 	/**
 	 * 

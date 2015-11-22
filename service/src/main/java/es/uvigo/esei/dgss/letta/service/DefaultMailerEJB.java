@@ -3,6 +3,8 @@ package es.uvigo.esei.dgss.letta.service;
 import java.util.Date;
 
 import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
+import javax.ejb.Singleton;
 import javax.enterprise.inject.Default;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,6 +20,7 @@ import javax.mail.internet.MimeMessage;
  *
  */
 @Default
+@Singleton
 public class DefaultMailerEJB implements Mailer {
 
 	@Resource(name = "java:/Mail")
@@ -34,14 +37,14 @@ public class DefaultMailerEJB implements Mailer {
 	 * @throws MessagingException
 	 *             exception thrown by the messaging classes
 	 */
+	@PermitAll
 	@Override
 	public void sendEmail(String email, String message)
 			throws MessagingException {
-
 		// creates a new e-mail message
 		final Message msg = new MimeMessage(getEmailSession());
 
-		msg.setFrom(new InternetAddress());
+		msg.setFrom(new InternetAddress(from));
 		final InternetAddress[] toAddresses = { new InternetAddress(email) };
 		msg.setRecipients(Message.RecipientType.TO, toAddresses);
 		msg.setSubject(subject);
