@@ -2,6 +2,7 @@ package es.uvigo.esei.dgss.letta.service;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,6 +14,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.Event;
  * @author abmiguez and bcgonzalez3
  *
  */
+@Stateless
 public class EventEJB {
 	@PersistenceContext
 	EntityManager em;

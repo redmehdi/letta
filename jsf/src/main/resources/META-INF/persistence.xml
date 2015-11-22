@@ -9,6 +9,9 @@
 		
 		<!-- Entity Classes -->
 		<!-- class>class.name</class-->
+		<class>es.uvigo.esei.dgss.letta.domain.entities.Registration</class>
+	    <class>es.uvigo.esei.dgss.letta.domain.entities.User</class>
+	    <class>es.uvigo.esei.dgss.letta.domain.entities.Event</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		
         <properties>
