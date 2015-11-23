@@ -32,12 +32,16 @@ public class UserEJB {
 	HttpServletRequest request;
 
 	/**
-	 * Registers a user
+	 * 
+	 * Register an user
 	 * 
 	 * @param user
 	 *            indicates the user to register
-	 * @throws EntityExistsException
-	 *             if the {@code login} already exists
+	 * 
+	 * @throws LoginDuplicateException
+	 *             if the {@code user} login already exists
+	 * @throws EmailDuplicateException
+	 *             if the {@code user} email already exists
 	 */
 	@PermitAll
 	public void registerUser(final User user)
@@ -149,10 +153,8 @@ public class UserEJB {
 
 	/**
 	 * 
-	 * Check if a user exists with the user {@code login} and {@code email}
+	 * Check if a user exists with the user and {@code email}
 	 * 
-	 * @param login
-	 *            indicates the user login
 	 * @param email
 	 *            indicates the user email
 	 * @return the user if exists
@@ -241,7 +243,7 @@ public class UserEJB {
 	 * @param login
 	 *            indicates the user with {@code login}
 	 * @return the result list of registrations
-	 * @returns null if it does not exist
+	 * @return null if it does not exist
 	 */
 	public Registration registrationWithLogin(String login) {
 		return em.find(Registration.class, login);
