@@ -1,7 +1,11 @@
 //package es.uvigo.esei.dgss.letta.service;
 //
+//import static es.uvigo.esei.dgss.letta.domain.entities.RegistrationsDataset.newRegistration;
+//import static org.junit.Assert.assertThat;
+//
 //import javax.inject.Inject;
 //
+//import org.hamcrest.Matcher;
 //import org.jboss.arquillian.container.test.api.Deployment;
 //import org.jboss.arquillian.junit.Arquillian;
 //import org.jboss.arquillian.persistence.CleanupUsingScript;
@@ -14,6 +18,7 @@
 //import org.junit.Test;
 //import org.junit.runner.RunWith;
 //
+//import es.uvigo.esei.dgss.letta.domain.entities.IsEqualsToRegistration;
 //import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 //import es.uvigo.esei.dgss.letta.domain.entities.RegistrationsDataset;
 //import es.uvigo.esei.dgss.letta.domain.entities.User;
@@ -30,10 +35,11 @@
 //	@Deployment
 //	public static Archive<?> createDeploymentPackage() {
 //		return ShrinkWrap.create(JavaArchive.class, "test.jar")
-//				.addClasses(UserEJB.class, TestingMailerEJB.class,
+//				.addClasses(UserEJB.class, Mailer.class,
 //						RegistrationsDataset.class, UsersDataset.class)
 //				.addPackage(User.class.getPackage())
 //				.addPackage(Registration.class.getPackage())
+//				.addPackage(IsEqualsToRegistration.class.getPackage())
 //				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
 //				.addAsManifestResource("test-persistence.xml",
 //						"persistence.xml");
@@ -43,6 +49,11 @@
 //	@UsingDataSet("registrations-create.xml")
 //	@ShouldMatchDataSet("registrations-create.xml")
 //	public void testRegisterUser() {
-//		
+//		Registration user = newRegistration();
+//		if (facade.registerUser(user.getUser())) {
+//			assertThat(user, IsEqualsToRegistration.equalsToRegistration(facade.registrationWithLogin(user.getLogin())));
+//		}
 //	}
+//
+//
 //}

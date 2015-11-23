@@ -13,6 +13,8 @@ import javax.ws.rs.core.Context;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.service.exceptions.EmailDuplicateException;
+import es.uvigo.esei.dgss.letta.service.exceptions.LoginDuplicateException;
 
 /**
  * EJB for the user registration
@@ -24,9 +26,8 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
 public class UserEJB {
 	@PersistenceContext
 	EntityManager em;
-
 	@Inject
-	Mailer dmejb;
+	private Mailer dmejb;
 	@Context
 	HttpServletRequest request;
 
@@ -39,28 +40,35 @@ public class UserEJB {
 	 *             if the {@code login} already exists
 	 */
 	@PermitAll
-	public boolean registerUser(final User user) throws EntityExistsException {
-		if (em.find(User.class, user.getLogin()) == null
-				&& findUserInRegistration(user.getLogin(),
-						user.getEmail()) == null
-				&& findUserByEmail(user.getEmail()) == null) {
-			final Registration registration = new Registration(user);
-
-			try {
-				dmejb.sendEmail(user.getEmail(),
-						generateRegistrationMessage(registration.getUuid()));
-
-				em.persist(registration);
-				return true;
-			} catch (final MessagingException e) {
-				e.printStackTrace();
-				return true;
-			}
+	public void registerUser(final User user)
+			throws LoginDuplicateException, EmailDuplicateException {
+		if (checkLogin(user.getLogin())) {
+			throw new LoginDuplicateException("Login duplicated");
 		} else {
-			return false;
+			if (checkEmail(user.getEmail())) {
+				throw new EmailDuplicateException("Email duplicated");
+			} else {
+				final Registration registration = new Registration(user);
+
+				try {
+					dmejb.sendEmail(user.getEmail(),
+							generateRegistrationMessage(
+									registration.getUuid()));
+
+					em.persist(registration);
+				} catch (final MessagingException e) {
+				}
+			}
 		}
 	}
 
+	/**
+	 * Returns the absolute path to the resource
+	 * 
+	 * @param uuid
+	 *            uuid of the registration table
+	 * @return absolute path
+	 */
 	@SuppressWarnings("unused")
 	private String getPath(final String uuid) {
 		String scheme = "http";
@@ -121,12 +129,13 @@ public class UserEJB {
 	}
 
 	/**
+	 * Finds an user whose email is the same as the same passed as a parameter
 	 * 
 	 * @param email
 	 *            indicates the user email
 	 * @return the user whose email is the same than {@code email}
 	 */
-	public User findUserByEmail(final String email) {
+	private User findUserByEmail(final String email) {
 		try {
 			return em
 					.createQuery("SELECT u FROM User u WHERE u.email=:email",
@@ -149,17 +158,92 @@ public class UserEJB {
 	 * @return the user if exists
 	 * @return null if the user doesn't exist
 	 */
-	public Registration findUserInRegistration(final String login,
-			final String email) {
+	private Registration findEmailInRegistration(final String email) {
 		try {
 			return em
 					.createQuery(
-							"SELECT u FROM Registration u WHERE u.email=:email or u.login=:login",
+							"SELECT u FROM Registration u WHERE u.email=:email",
 							Registration.class)
-					.setParameter("email", email).setParameter("login", login)
-					.getSingleResult();
+					.setParameter("email", email).getSingleResult();
 		} catch (final NoResultException e) {
 			return null;
 		}
+	}
+
+	/**
+	 * Finds registrations in the Registration table
+	 * 
+	 * @param login
+	 *            identifier of the user
+	 * @return the result list of the query
+	 * @return null if it doesn't exist
+	 */
+	private Registration findLoginInRegistration(final String login) {
+		try {
+			return em
+					.createQuery(
+							"SELECT u FROM Registration u WHERE u.login=:login",
+							Registration.class)
+					.setParameter("login", login).getSingleResult();
+		} catch (final NoResultException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Checks if a login exists , both in the User table and in the Registration
+	 * table
+	 * 
+	 * @param login
+	 * @return true if it exists
+	 * @return false if it does not exist
+	 */
+	private boolean checkLogin(final String login) {
+		if (em.find(User.class, login) == null
+				&& findLoginInRegistration(login) == null) {
+			return false;
+		} else {
+			return true;
+		}
+
+	}
+
+	/**
+	 * Check if an email exists in both User and Registration tables
+	 * 
+	 * @param email
+	 * @return true if it exists
+	 * @return false if it does not exist
+	 */
+	private boolean checkEmail(final String email) {
+		if (findUserByEmail(email) == null
+				&& findEmailInRegistration(email) == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * Finds a user by login in the User table
+	 * 
+	 * @param login
+	 * @return the result list if it is found
+	 * @return null if it is not found
+	 */
+	public User userWithLogin(String login) {
+		return em.find(User.class, login);
+	}
+
+	/**
+	 * Finds a registration by login
+	 * 
+	 * @param login
+	 *            indicates the user with {@code login}
+	 * @return the result list of registrations
+	 * @returns null if it does not exist
+	 */
+	public Registration registrationWithLogin(String login) {
+		return em.find(Registration.class, login);
 	}
 }

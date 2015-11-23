@@ -10,6 +10,8 @@ import javax.validation.constraints.Size;
 
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
+import es.uvigo.esei.dgss.letta.service.exceptions.EmailDuplicateException;
+import es.uvigo.esei.dgss.letta.service.exceptions.LoginDuplicateException;
 
 /**
  * JSF controller to registration process.
@@ -40,13 +42,18 @@ public class RegisterUserController implements Serializable {
 	 *         other case.
 	 */
 	public String doRegister() {
-		registration = new User(login, password, email);
-		if (userEJB.registerUser(registration)) {
+		registration = new User(login, password, email);		
+		try{
+			userEJB.registerUser(registration);
 			this.error = false;
 			return redirectTo("index.xhtml");
-		} else {
+		}catch(final LoginDuplicateException e){
 			this.error = true;
-			this.errorMessage = "Login or email already exists";
+			this.errorMessage = "Login already exists";
+			return this.getViewId();
+		} catch (EmailDuplicateException e) {
+			this.error = true;
+			this.errorMessage = "Email already exists";
 			return this.getViewId();
 		}
 	}
