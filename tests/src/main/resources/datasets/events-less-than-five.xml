@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<Event id="1" eventType="LITERATURE" title="Example1 literature"
-		shortDescription="This is a description literature 1" date="2000-01-01 01:01:01" />
-	<Event id="2" eventType="LITERATURE" title="Example2 literature"
-		shortDescription="This is a description literature 2" date="2000-01-01 01:01:01" />
-	<Event id="3" eventType="MUSIC" title="Example1 music"
-		shortDescription="This is a description  music 1" date="2000-01-01 01:01:01" />
-	<Event id="4" eventType="MUSIC" title="Example2 music"
-	shortDescription="This is a description music 2" date="2000-01-01 01:01:01" />
+    <Event id="1" eventType="LITERATURE" title="Example1 literature" shortDescription="This is a description literature 1" date="2000-01-01 01:01:01" location="Location X" />
+    <Event id="2" eventType="LITERATURE" title="Example2 literature" shortDescription="This is a description literature 2" date="2000-01-01 01:01:01" location="Location X" />
+    <Event id="3" eventType="MUSIC"      title="Example1 music"      shortDescription="This is a description  music 1"     date="2000-01-01 01:01:01" location="Location X" />
+    <Event id="4" eventType="MUSIC"      title="Example2 music"      shortDescription="This is a description music 2"      date="2000-01-01 01:01:01" location="Location X" />
 </dataset>

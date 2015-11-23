@@ -13,9 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Class entity for the events.
- * 
+ *
  * @author aalopez, apsoto.
  *
  */
@@ -38,12 +40,15 @@ public class Event {
 	@ManyToMany(mappedBy = "usersJoinsEvents")
 	private List<User> eventsJoinedByUsers = new LinkedList<User>();
 
+    @Column(length = 100, nullable = false, updatable = true)
+    private String location;
+
 	Event() {
 	}
 
 	/**
 	 * Creates a new instance of {@code Event}.
-	 * 
+	 *
 	 * @param eventType
 	 *            the event type of the event. This paramenter must be a non
 	 *            {@code null} {@code EventType}.
@@ -56,18 +61,19 @@ public class Event {
 	 * @param date
 	 *            the date of the event. This paramenter must be a non
 	 *            {@code null}.
+	 * @param location the location of the event
 	 */
-	public Event(EventType eventType, String title, String shortDescription,
-			Date date) {
+	public Event(final EventType eventType, final String title, final String shortDescription, final Date date, final String location) {
 		this.setEventType(eventType);
 		this.setTitle(title);
 		this.setShortDescription(shortDescription);
 		this.setDate(date);
+		this.setLocation(location);
 	}
 
 	/**
 	 * The getter for the eventType parameter.
-	 * 
+	 *
 	 * @return the event type for the event.
 	 */
 	public EventType getEventType() {
@@ -193,6 +199,37 @@ public class Event {
 		}
 		this.date = date;
 	}
+
+	/**
+     * Extracts the value of the current Event's location.
+     *
+     * @return A String representing the Event's location.
+     */
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * Sets the location of the current event to the received String.
+     *
+     * @param location
+     *            A no-null, non-empty String, which length is not greater than
+     *            100 characters.
+     * @throws NullPointerException
+     *             If a null String is received.
+     * @throws IllegalArgumentException
+     *             If received String's length is not between 1 and 100.
+     */
+    public void setLocation(
+        final String location
+    ) throws NullPointerException, IllegalArgumentException {
+        requireNonNull(location, "Location can't be null");
+
+        if (location.isEmpty() || location.length() > 100)
+            throw new IllegalArgumentException("Location length must be between 1 and 100");
+
+        this.location = location;
+    }
 
 	/**
 	 * The getter for the id parameter.
