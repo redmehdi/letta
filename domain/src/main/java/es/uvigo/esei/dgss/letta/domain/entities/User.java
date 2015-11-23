@@ -7,12 +7,18 @@ import static org.apache.commons.lang3.Validate.matchesPattern;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 /**
@@ -42,6 +48,15 @@ public class User implements Serializable {
 	@Column(length = 10, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Role role;
+
+	@OneToMany
+	private List<Event> ownerEvents = new LinkedList<Event>();
+
+	@ManyToMany
+	@JoinTable(name = "UserJoinsEvent", joinColumns = {
+			@JoinColumn(name = "user_id", referencedColumnName = "login") }, inverseJoinColumns = {
+					@JoinColumn(name = "event_id", referencedColumnName = "id") })
+	private List<Event> usersJoinsEvents = new LinkedList<Event>();
 
 	/**
 	 * Constructs a new instance of {@link User}. This constructor is required
@@ -114,7 +129,8 @@ public class User implements Serializable {
 	 */
 	public void setLogin(String login) {
 		requireNonNull(login, "login can't be null");
-		inclusiveBetween(1, 100, login.length(), "login must have a length between 1 and 100");
+		inclusiveBetween(1, 100, login.length(),
+				"login must have a length between 1 and 100");
 
 		this.login = login;
 	}
@@ -144,7 +160,8 @@ public class User implements Serializable {
 	 */
 	public void setPassword(String password) {
 		requireNonNull(password, "password can't be null");
-		matchesPattern(password, MD5_REGEX, "password must be a valid MD5 string");
+		matchesPattern(password, MD5_REGEX,
+				"password must be a valid MD5 string");
 
 		this.password = password.toLowerCase();
 	}
@@ -165,13 +182,16 @@ public class User implements Serializable {
 	public void changePassword(String password) {
 		requireNonNull(password, "password can't be null");
 		if (password.length() < 6)
-			throw new IllegalArgumentException("password can't be shorter than 6");
+			throw new IllegalArgumentException(
+					"password can't be shorter than 6");
 
 		try {
 			final MessageDigest digester = MessageDigest.getInstance("MD5");
 			final HexBinaryAdapter adapter = new HexBinaryAdapter();
 
-			this.password = adapter.marshal(digester.digest(password.getBytes())).toLowerCase();
+			this.password = adapter
+					.marshal(digester.digest(password.getBytes()))
+					.toLowerCase();
 		} catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException("MD5 algorithm not found", e);
 		}
@@ -208,4 +228,23 @@ public class User implements Serializable {
 	public Role getRole() {
 		return role;
 	}
+
+	/**
+	 * Return the events of the owner
+	 * 
+	 * @return the events of the owner
+	 */
+	public List<Event> getOwnerEvents() {
+		return ownerEvents;
+	}
+
+	/**
+	 * Return all the users who have joined an event
+	 * 
+	 * @return all the users who have joined an event
+	 */
+	public List<Event> getUsersJoinsEvents() {
+		return usersJoinsEvents;
+	}
+
 }

@@ -1,6 +1,8 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -32,6 +35,8 @@ public class Event {
 	private String shortDescription;
 	@NotNull
 	private Date date;
+	@ManyToMany(mappedBy = "usersJoinsEvents")
+	private List<User> eventsJoinedByUsers = new LinkedList<User>();
 
 	Event() {
 	}
@@ -52,7 +57,8 @@ public class Event {
 	 *            the date of the event. This paramenter must be a non
 	 *            {@code null}.
 	 */
-	public Event(EventType eventType, String title, String shortDescription, Date date) {
+	public Event(EventType eventType, String title, String shortDescription,
+			Date date) {
 		this.setEventType(eventType);
 		this.setTitle(title);
 		this.setShortDescription(shortDescription);
@@ -115,10 +121,12 @@ public class Event {
 			throw new NullPointerException("title can't be null");
 		}
 		if (title.isEmpty()) {
-			throw new IllegalArgumentException("title can't be an empty string");
+			throw new IllegalArgumentException(
+					"title can't be an empty string");
 		}
 		if (title.length() > 20) {
-			throw new IllegalArgumentException("title can't be more than 20 characters");
+			throw new IllegalArgumentException(
+					"title can't be more than 20 characters");
 		}
 		this.title = title;
 	}
@@ -150,10 +158,12 @@ public class Event {
 			throw new NullPointerException("description can't be null");
 		}
 		if (shortDescription.isEmpty()) {
-			throw new IllegalArgumentException("description can't be an empty string");
+			throw new IllegalArgumentException(
+					"description can't be an empty string");
 		}
 		if (shortDescription.length() > 20) {
-			throw new IllegalArgumentException("description can't be more than 50 characters");
+			throw new IllegalArgumentException(
+					"description can't be more than 50 characters");
 		}
 		this.shortDescription = shortDescription;
 	}
@@ -193,6 +203,15 @@ public class Event {
 		return id;
 	}
 
+	/**
+	 * Return all the users who have joined an event
+	 * 
+	 * @return all the users who have joined an event
+	 */
+	public List<User> getEventsJoinedByUsers() {
+		return eventsJoinedByUsers;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -214,4 +233,5 @@ public class Event {
 			return false;
 		return true;
 	}
+
 }
