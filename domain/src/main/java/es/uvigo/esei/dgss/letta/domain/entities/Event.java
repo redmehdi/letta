@@ -1,5 +1,7 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,9 +13,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-
-import static java.util.Objects.requireNonNull;
 
 /**
  * Class entity for the events.
@@ -39,9 +40,11 @@ public class Event {
 	private Date date;
 	@ManyToMany(mappedBy = "usersJoinsEvents")
 	private List<User> eventsJoinedByUsers = new LinkedList<User>();
+	@ManyToOne
+	private User creator;
 
-    @Column(length = 100, nullable = false, updatable = true)
-    private String location;
+	@Column(length = 100, nullable = false, updatable = true)
+	private String location;
 
 	Event() {
 	}
@@ -61,9 +64,12 @@ public class Event {
 	 * @param date
 	 *            the date of the event. This paramenter must be a non
 	 *            {@code null}.
-	 * @param location the location of the event
+	 * @param location
+	 *            the location of the event
 	 */
-	public Event(final EventType eventType, final String title, final String shortDescription, final Date date, final String location) {
+	public Event(final EventType eventType, final String title,
+			final String shortDescription, final Date date,
+			final String location) {
 		this.setEventType(eventType);
 		this.setTitle(title);
 		this.setShortDescription(shortDescription);
@@ -201,35 +207,35 @@ public class Event {
 	}
 
 	/**
-     * Extracts the value of the current Event's location.
-     *
-     * @return A String representing the Event's location.
-     */
-    public String getLocation() {
-        return location;
-    }
+	 * Extracts the value of the current Event's location.
+	 *
+	 * @return A String representing the Event's location.
+	 */
+	public String getLocation() {
+		return location;
+	}
 
-    /**
-     * Sets the location of the current event to the received String.
-     *
-     * @param location
-     *            A no-null, non-empty String, which length is not greater than
-     *            100 characters.
-     * @throws NullPointerException
-     *             If a null String is received.
-     * @throws IllegalArgumentException
-     *             If received String's length is not between 1 and 100.
-     */
-    public void setLocation(
-        final String location
-    ) throws NullPointerException, IllegalArgumentException {
-        requireNonNull(location, "Location can't be null");
+	/**
+	 * Sets the location of the current event to the received String.
+	 *
+	 * @param location
+	 *            A no-null, non-empty String, which length is not greater than
+	 *            100 characters.
+	 * @throws NullPointerException
+	 *             If a null String is received.
+	 * @throws IllegalArgumentException
+	 *             If received String's length is not between 1 and 100.
+	 */
+	public void setLocation(final String location)
+			throws NullPointerException, IllegalArgumentException {
+		requireNonNull(location, "Location can't be null");
 
-        if (location.isEmpty() || location.length() > 100)
-            throw new IllegalArgumentException("Location length must be between 1 and 100");
+		if (location.isEmpty() || location.length() > 100)
+			throw new IllegalArgumentException(
+					"Location length must be between 1 and 100");
 
-        this.location = location;
-    }
+		this.location = location;
+	}
 
 	/**
 	 * The getter for the id parameter.
@@ -238,6 +244,25 @@ public class Event {
 	 */
 	public int getId() {
 		return id;
+	}
+
+	/**
+	 * The getter for the event creator
+	 * 
+	 * @return the event creator
+	 */
+	public User getCreator() {
+		return creator;
+	}
+
+	/**
+	 * The setter for the event creator
+	 * 
+	 * @param creator
+	 *            represents the event creator
+	 */
+	public void setCreator(User creator) {
+		this.creator = creator;
 	}
 
 	/**

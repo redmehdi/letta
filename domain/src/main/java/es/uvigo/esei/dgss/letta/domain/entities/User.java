@@ -18,7 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 /**
@@ -48,9 +47,6 @@ public class User implements Serializable {
 	@Column(length = 10, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Role role;
-
-	@OneToMany
-	private List<Event> ownerEvents = new LinkedList<Event>();
 
 	@ManyToMany
 	@JoinTable(name = "UserJoinsEvent", joinColumns = {
@@ -227,15 +223,6 @@ public class User implements Serializable {
 	 */
 	public Role getRole() {
 		return role;
-	}
-
-	/**
-	 * Return the events of the owner
-	 * 
-	 * @return the events of the owner
-	 */
-	public List<Event> getOwnerEvents() {
-		return ownerEvents;
 	}
 
 	/**
