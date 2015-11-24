@@ -51,6 +51,7 @@ public class LoginUserController implements JSFController {
 	 * Logout petition. Redirect to index closing the session.
 	 *
 	 * @return Redirect to index.
+	 * @throws ServletException if an error happens while logging out the user.
 	 */
 	public String doLogout() throws ServletException {
 		request.logout();

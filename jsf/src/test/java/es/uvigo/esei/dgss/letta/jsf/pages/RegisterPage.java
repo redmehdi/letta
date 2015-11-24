@@ -7,13 +7,13 @@ import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.page.Location;
 import org.openqa.selenium.WebDriver;
 
-@Location("faces/confirm.xhtml")
-public class ConfirmPage {
+@Location("faces/register.xhtml")
+public class RegisterPage {
 	@Drone
 	private WebDriver browser;
 
-	public void assertOnConfirmPage() {
+	public void assertOnRegisterPage() {
 		assertThat(browser.getCurrentUrl(),
-				containsString("/faces/confirm.xhtml"));
+				containsString("/faces/register.xhtml"));
 	}
 }

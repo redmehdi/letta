@@ -1,7 +1,10 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
+import java.io.IOException;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
@@ -16,19 +19,20 @@ import es.uvigo.esei.dgss.letta.service.UserEJB;
 @RequestScoped
 @ManagedBean(name = "confirmController")
 public class ConfirmUserController implements JSFController {
-
 	@Inject
 	private UserEJB userEJB;
 
 	/**
 	 * Confirm a user registration.
 	 *
-	 * @return Redirect to index.
+	 * @throws IOException if an error happens on the redirection. 
 	 */
-	public String doConfirm() {
-		userEJB.userConfirmation(FacesContext.getCurrentInstance()
-				.getExternalContext().getRequestParameterMap().get("uuid"));
-		return redirectTo("index.xhtml");
+	public void doConfirm() throws IOException {
+		final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		final String uuid = context.getRequestParameterMap().getOrDefault("uuid", null);
+		
+		final boolean confirmed = uuid != null && userEJB.userConfirmation(uuid);
+		
+		context.redirect("index.xhtml?confirmed=" + confirmed);
 	}
-
 }

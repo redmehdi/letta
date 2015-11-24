@@ -75,7 +75,6 @@ public class UserEJB {
 		if (em.find(Registration.class, uuid) == null) {
 			return false;
 		} else {
-
 			final Registration registration = em.find(Registration.class, uuid);
 			final User user = registration.getUser();
 			em.persist(user);

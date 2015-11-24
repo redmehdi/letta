@@ -7,20 +7,6 @@ GRANT ALL PRIVILEGES ON letta.* TO 'letta'@'localhost' IDENTIFIED BY 'lettapass'
 FLUSH PRIVILEGES;
 
 
--- Table creation
-CREATE TABLE `Event` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `date` datetime NOT NULL,
-  `eventType` varchar(255) NOT NULL,
-  `location` varchar(100) NOT NULL,
-  `shortDescription` varchar(50) NOT NULL,
-  `title` varchar(20) NOT NULL,
-  `creator` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `K_Event_Creator` (`creator`),
-  CONSTRAINT `FK_Event_Creator` FOREIGN KEY (`creator`) REFERENCES `User` (`login`)
-);
-
 CREATE TABLE `Registration` (
   `uuid` varchar(36) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -39,6 +25,20 @@ CREATE TABLE `User` (
   `role` varchar(10) NOT NULL,
   PRIMARY KEY (`login`),
   UNIQUE KEY `UK_User_email` (`email`)
+);
+
+-- Table creation
+CREATE TABLE `Event` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date` datetime NOT NULL,
+  `eventType` varchar(255) NOT NULL,
+  `location` varchar(100) NOT NULL,
+  `shortDescription` varchar(50) NOT NULL,
+  `title` varchar(20) NOT NULL,
+  `creator` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `K_Event_Creator` (`creator`),
+  CONSTRAINT `FK_Event_Creator` FOREIGN KEY (`creator`) REFERENCES `User` (`login`)
 );
 
 CREATE TABLE `UserJoinsEvent` (

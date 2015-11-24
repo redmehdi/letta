@@ -25,16 +25,10 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.omnifaces</groupId>
-			<artifactId>omnifaces</artifactId>
-			<version>2.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
-			<version>5.3</version>
 		</dependency>
-
+		
 		<!-- Testing -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
