@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.EventType;
+import es.uvigo.esei.dgss.letta.domain.entities.User;
 
 /**
  * {@linkplain CreateEventController} is a {@link JSFController} to create
@@ -38,6 +39,7 @@ public class CreateEventController implements JSFController {
 	private String shortDescription;
 	private String location;
 	private Date date;
+	private User creator;
 	private EventType type;
 	private Map<String, EventType> types = new HashMap<String, EventType>();
 	private Event createdEvent;
@@ -57,7 +59,7 @@ public class CreateEventController implements JSFController {
 
 	public String doCreate() {
 		setCreatedEvent(
-				new Event(type, title, shortDescription, date, location));
+				new Event(type, title, shortDescription, date, location, creator));
 		System.out.println("Tipo  " + type);
 		System.out.println("Title " + title);
 		System.out.println("Descripcion " + shortDescription);

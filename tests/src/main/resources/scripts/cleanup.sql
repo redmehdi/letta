@@ -1,3 +1,4 @@
+DELETE FROM UserJoinsEvent;
 DELETE FROM Event;
 DELETE FROM User;
 DELETE FROM Registration;

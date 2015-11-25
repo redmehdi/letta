@@ -1,8 +1,9 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
-import java.util.Date;
-
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.users;
 import static java.util.Arrays.stream;
+
+import java.util.Date;
 
 public class EventsDataset {
 	public static final String EXISTENT_TITLE_MUSIC = "Example1 music";
@@ -23,6 +24,8 @@ public class EventsDataset {
 	public static final String NON_EXISTENT_TITLE_THEATRE = "Example12 theatre";
 
 	public static final String NON_EXISTENT_DESCRIPTION_TRAVELS = "This is not a description travels 1";
+	
+	public static final User[] users = users(); 
 
 	public static Event eventWithTitle(final String title) {
 		return stream(events()).filter(event -> event.getTitle().equals(title))
@@ -37,12 +40,12 @@ public class EventsDataset {
 
 	public static Event[] events() {
 		return new Event[] {
-		    new Event(EventType.CINEMA, EXISTENT_TITLE_CINEMA, "This is a description cinema 1", new Date(946684861000L), "Location X"),
-		    new Event(EventType.INTERNET, EXISTENT_TITLE_INTERNET, "This is a description internet 1", new Date(946684861000L), "Location X"),
-		    new Event(EventType.SPORTS, EXISTENT_TITLE_SPORTS, "This is a description sports 1", new Date(946684861000L), "Location X"),
-		    new Event(EventType.MUSIC, EXISTENT_TITLE_MUSIC, "This is a description music 1", new Date(946684861000L), "Location X"),
-		    new Event(EventType.THEATRE, EXISTENT_TITLE_THEATRE, "This is a description theatre 1", new Date(946684861000L), "Location X"),
-		    new Event(EventType.THEATRE, EXISTENT_TITLE_LITERATURE, "This is a description literature 1", new Date(946684861000L), "Location X"),
+		    new Event(EventType.CINEMA, EXISTENT_TITLE_CINEMA, "This is a description cinema 1", new Date(946684861000L), "Location X", users[0]),
+		    new Event(EventType.INTERNET, EXISTENT_TITLE_INTERNET, "This is a description internet 1", new Date(946684861000L), "Location X", users[1]),
+		    new Event(EventType.SPORTS, EXISTENT_TITLE_SPORTS, "This is a description sports 1", new Date(946684861000L), "Location X", users[2]),
+		    new Event(EventType.MUSIC, EXISTENT_TITLE_MUSIC, "This is a description music 1", new Date(946684861000L), "Location X", users[3]),
+		    new Event(EventType.THEATRE, EXISTENT_TITLE_THEATRE, "This is a description theatre 1", new Date(946684861000L), "Location X", users[4]),
+		    new Event(EventType.THEATRE, EXISTENT_TITLE_LITERATURE, "This is a description literature 1", new Date(946684861000L), "Location X", users[4]),
 		};
 	}
 
@@ -71,7 +74,7 @@ public class EventsDataset {
 	}
 
 	public static Event nonExistentEvent() {
-		return new Event(EventType.TRAVELS, nonExistentTitle(), nonExistentDescription(), new Date(587684861000L), "the inexistent location");
+		return new Event(EventType.TRAVELS, nonExistentTitle(), nonExistentDescription(), new Date(587684861000L), "the inexistent location", new User());
 	}
 
 	public static int existentEventId() {

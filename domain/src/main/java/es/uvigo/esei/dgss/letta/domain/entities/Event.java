@@ -11,7 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -25,7 +27,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Event {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Enumerated(EnumType.STRING)
 	@NotNull
@@ -40,15 +42,16 @@ public class Event {
 	private Date date;
 	@ManyToMany(mappedBy = "usersJoinsEvents")
 	private List<User> eventsJoinedByUsers = new LinkedList<User>();
-	@ManyToOne
-	private User creator;
-
 	@Column(length = 100, nullable = false, updatable = true)
 	private String location;
+	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "creator", referencedColumnName = "login")
+	private User creator;
 
 	Event() {
 	}
-
+	
 	/**
 	 * Creates a new instance of {@code Event}.
 	 *
@@ -75,6 +78,39 @@ public class Event {
 		this.setShortDescription(shortDescription);
 		this.setDate(date);
 		this.setLocation(location);
+		this.setCreator(new User());
+	}
+
+
+	/**
+	 * Creates a new instance of {@code Event}.
+	 *
+	 * @param eventType
+	 *            the event type of the event. This paramenter must be a non
+	 *            {@code null} {@code EventType}.
+	 * @param title
+	 *            the title of the envent. This paramenter must be a non
+	 *            {@code null} string with with a maximum length of 20.
+	 * @param shortDescription
+	 *            the description of the event. This paramenter must be a non
+	 *            {@code null} string with with a maximum length of 50.
+	 * @param date
+	 *            the date of the event. This paramenter must be a non
+	 *            {@code null}.
+	 * @param location
+	 *            the location of the event
+	 * @param creator
+	 * 			  the creator of the event
+	 */
+	public Event(final EventType eventType, final String title,
+			final String shortDescription, final Date date,
+			final String location, final User creator) {
+		this.setEventType(eventType);
+		this.setTitle(title);
+		this.setShortDescription(shortDescription);
+		this.setDate(date);
+		this.setLocation(location);
+		this.setCreator(creator);
 	}
 
 	/**
@@ -133,8 +169,7 @@ public class Event {
 			throw new NullPointerException("title can't be null");
 		}
 		if (title.isEmpty()) {
-			throw new IllegalArgumentException(
-					"title can't be an empty string");
+			throw new IllegalArgumentException("title can't be an empty string");
 		}
 		if (title.length() > 20) {
 			throw new IllegalArgumentException(
@@ -226,8 +261,8 @@ public class Event {
 	 * @throws IllegalArgumentException
 	 *             If received String's length is not between 1 and 100.
 	 */
-	public void setLocation(final String location)
-			throws NullPointerException, IllegalArgumentException {
+	public void setLocation(final String location) throws NullPointerException,
+			IllegalArgumentException {
 		requireNonNull(location, "Location can't be null");
 
 		if (location.isEmpty() || location.length() > 100)
@@ -261,8 +296,11 @@ public class Event {
 	 * @param creator
 	 *            represents the event creator
 	 */
-	public void setCreator(User creator) {
-		this.creator = creator;
+	public void setCreator(final User creator) {
+		if (creator == null)
+			throw new NullPointerException("creator can't be null");
+		else
+			this.creator = creator;
 	}
 
 	/**
