@@ -307,7 +307,10 @@
         </subsystem>
         -->
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
-            <remote-naming/>
+            <!-- remote-naming/ -->
+            <bindings>
+            	<simple name="java:/letta/confirmation-url" value="http://localhost:9080/letta/jsf/faces/confirm.xhtml?uuid=" type="java.lang.String"/>
+            </bindings>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:pojo:1.0"/>
         <subsystem xmlns="urn:jboss:domain:remoting:2.0">
