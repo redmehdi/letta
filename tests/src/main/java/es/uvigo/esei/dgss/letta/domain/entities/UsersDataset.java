@@ -157,6 +157,6 @@ public final class UsersDataset {
 	 * @return an user that should not exist in the database.
 	 */
 	public static User newUser() {
-		return new User("bart", "bartpasss", "bart@email.com");
+		return new User("bart", "bartpass", "bart@email.com");
 	}
 }

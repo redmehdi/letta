@@ -10,6 +10,6 @@
 		email="joan@email.com" role="USER" uuid="33333333-0000-0000-0000-000000000000" />
 	<Registration login="mike" password="b1b668f82813956ef1fe9688e6c05011"
 		email="mike@email.com" role="USER" uuid="44444444-0000-0000-0000-000000000000" />
-	<Registration login="mike" password="b1b668f82813956ef1fe9688e6c05011"
-		email="mike@email.com" role="USER" uuid="55555555-0000-0000-0000-000000000000" />
+	<Registration login="bart" password="f67884174ac391b5a6c409715d16ba60"
+		email="bart@email.com" role="USER" uuid="55555555-0000-0000-0000-000000000000" />
 </dataset>
