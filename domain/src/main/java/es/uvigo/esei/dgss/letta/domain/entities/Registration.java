@@ -21,7 +21,7 @@ public class Registration {
 	@Column(length = 36, nullable = false)
 	private String uuid;
 
-	@Column(length = 20)
+	@Column(length = 20, nullable = false, unique = true)
 	private String login;
 
 	@Column(length = 32, nullable = false)
