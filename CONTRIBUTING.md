@@ -9,6 +9,7 @@
     * [5.1. Wildfly](#51-wildfly)
       * [5.1.1. Ejecución en un Wildfly local](#511-ejecución-en-un-wildfly-local)
       * [5.1.2. Cambios que afecten a la configuración de Wildfly](#512-cambios-que-afecten-a-la-configuración-de-wildfly)
+    * [5.2. Servidor SMTP local](#52-servidor-smtp-local)
   * [6. Control de versiones (Git)](#6-control-de-versiones-git)
     * [6.1. <em>Commits</em> con errores de construcción](#61-commits-con-errores-de-construcción)
     * [6.2. <em>Push</em> con <em>commits</em> nuevos en el servidor remoto](#62-push-con-commits-nuevos-en-el-servidor-remoto)
@@ -16,8 +17,10 @@
     * [6.4. <em>Pull</em> con cambios locales no <em>commiteados</em> ](#64-pull-con-cambios-locales-no-commiteados)
   * [7. Tests](#7-tests)
     * [7.1 Tests por módulo](#71-tests-por-módulo)
-    * [7.2 Ejecución de los tests en Maven](#72-ejecución-de-los-tests-en-maven)
-    * [7.3 Ejecución de los tests en Eclipse](#73-ejecución-de-los-tests-en-eclipse)
+    * [7.2 El módulo tests](#72-el-módulo-test)
+    * [7.3 Ejecución de los tests](#73-ejecución-de-los-tests)
+      * [7.3.1 Ejecución de los tests en Maven](#731-ejecución-de-los-tests-en-maven)
+      * [7.3.2 Ejecución de los tests en Eclipse](#732-ejecución-de-los-tests-en-eclipse)
     * [7.4 Análisis de los resultados de los tests](#74-análisis-de-los-resultados-de-los-tests)
   * [8. Guía de estilo](#8-guía-de-estilo)
     * [8.1. Código fuente](#81-código-fuente)
@@ -245,6 +248,16 @@ POM del proyecto padre para añadir el recurso del mismo modo que se añade el
 contacto con el responsable del servidor.
 * Puede afectar a este mismo documento.
 
+### 5.2. Servidor SMTP local
+Ciertas funcionalidades de la aplicación (como el registro) requiren del uso de
+un servidor SMTP para enviar emails a los usuarios. Para evitar depender de un
+servidor externo, en el módulo `additional-material` se han añadido los
+*scripts* necesarios para descargar y ejecutar un servidor SMTP falso, que
+permite ver los emails enviados sin necesidad de hacer un envío real. En
+concreto, el servidor utilizado es
+[FakeSMTP](https://nilhcem.github.io/FakeSMTP/), y en el directorio `fake-smtp`
+del módulo `additional-material` se pueden encontrar las instrucciones y el
+*script* para ejecutarlo.
 
 ## 6. Control de versiones (Git)
 El modelo de control de versiones que utilizaremos inicialmente será muy
@@ -311,10 +324,20 @@ git stash pop
 Lo primero que se debe tener en cuenta a la hora de realizar tests es la
 existencia del módulo `tests`. Este proyecto está pensado para recoger las
 clases de utilidad que puedan ser compartidas por los tests de los distintos
-módulos que forman el proyecto.
+módulos que forman el proyecto. Por lo tanto, siempre que exista una clase o
+fichero que sea compartido por varios proyectos, debería almacenarse en este
+módulo.
 
-Por lo tanto, siempre que exista una clase o fichero que sea compartido por
-varios proyectos, debería almacenarse en este módulo.
+En segundo lugar, es importante ser consciente de que, dependiendo del módulo en
+el que nos encontremos, deberemos hacer diferentes tipos de test.
+
+Por último, como norma general, los métodos de prueba deben ser **lo más
+sencillos posible**, de modo que sea sencillo comprender qué es lo que se está
+evaluando. En base a esta regla, no añadiremos documentación Javadoc a los
+métodos de prueba (esto no se aplica a las clases de utilidad del módulo
+`tests`, que sí que deben estar documentadas con Javadoc).
+
+A continuación se detalla el proceso de realización de tests.
 
 ### 7.1 Tests por módulo
 Los tests que se deben hacer varían según el módulo en el que nos encontremos.
@@ -331,7 +354,33 @@ las extensiones Persistence y REST Client.
 * `jsf`: Tests funcionales con Arquillian y las extensiones Persistence, Drone
 y Graphene 2.
 
-### 7.2 Ejecución de los tests en Maven
+### 7.2 El módulo tests
+En el módulo `tests` se añadirán varias utilidades para realizar los tests,
+entre las que encontraremos, principalmente, tres tipos distintos:
+* ***Test Doubles***: Clases que sustituyan a otras implementando una lógica que
+sea útil para los tests. Por ejemplo, la clase `TestPrincipal` permite sustituir
+el `Principal` de la aplicación para poder modificar el usuario que ejecuta los
+tests.
+* ** Clases *Datasets***: Estas clases representan un conjunto de datos de
+pruebas. Contienen métodos para obtener a entidades que resultan de utilidad en
+los tests. Estas clases deben ubicarse en el mismo paquete que las entidades que
+contienen. El contenido de estas clases debe ser equivalente al contenido de los
+*datasets* de DBUnit que se describe a continuación.
+* ***Datasets* DBUnit**: Los `datasets` DBUnit son representaciones en forma de
+XML de conjuntos de datos usados en los tests y pueden ser utilizados
+directamente por Arquillian con las anotaciones `@UsingDataSet` y
+`@ShouldMatchDataSet`. El contenido de estos ficheros debe ser el equivalente al
+de las clases *dataset*. Estos ficheros deben almacenarse en el directorio
+`src/main/resources/datasets`.
+* ***Matchers* Hamcrest para entidades**: Cada entidad debería tener un
+*matcher* de Hamcrest que permita compararla con otras entidades. Para facilitar
+el desarrollo de estos *matchers* se incluye la clase `IsEqualsToEntity`, que
+actúa como clase base para comparar dos entidades por sus propiedades. Las
+clases `IsEqualsToUser` e `IsEqualsToRegistration` sirven de ejemplo de como
+hacer esta implementación.
+
+### 7.3 Ejecución de los tests
+#### 7.3.1 Ejecución de los tests en Maven
 Todos los tests del proyecto están configurados para ser ejecutados como tests
 normales y no como tests de integración. Esto significa que se pueden lanzar
 todos simplemente ejecutando el comando:
@@ -339,7 +388,7 @@ todos simplemente ejecutando el comando:
 mvn test
 ```
 
-### 7.3 Ejecución de los tests en Eclipse
+#### 7.3.2 Ejecución de los tests en Eclipse
 La ejecución de los test con Arquillian desde Eclipse, necesita de una pequeña
 configuración adicional en las configuraciones de ejecución para que incluyan
 los siguientes parámetros como propiedades del sistema:
@@ -404,7 +453,7 @@ normas:
   automática.
   * Primera línea descriptiva de lo que hace el *commit*. Debe estar redactada
   en tercera persona del presente (p.ej. *Adds...*, *Improves...*,
-  *Modifies...*, etc.).
+  *Modifies...*, etc.). No debe llevar punto al final.
   * Cuerpo del *commit* descriptivo. Con una línea vacía de separación de la
   primera línea, debe escribirse un texto de explique claramente el trabajo
   hecho en el *commit*.
