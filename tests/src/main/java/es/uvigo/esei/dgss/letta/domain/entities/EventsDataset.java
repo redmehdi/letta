@@ -1,17 +1,11 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
-import static es.uvigo.esei.dgss.letta.domain.entities.EventType.CINEMA;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventType.INTERNET;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventType.LITERATURE;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventType.MUSIC;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventType.SPORTS;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventType.THEATRE;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventType.TRAVELS;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventType.TV;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.users;
+import java.util.Date;
+
 import static java.util.Arrays.stream;
 
-import java.util.Date;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventType.*;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.users;
 
 /**
  * 
@@ -464,5 +458,9 @@ public class EventsDataset {
 	public static int nonExistentEventId() {
 		return 10000000;
 	}
+
+    public static Event newEvent() {
+        return new Event(LITERATURE, "New literature event", "This is a description", new Date(946684861000L), "Location X");
+    }
 
 }

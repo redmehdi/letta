@@ -208,7 +208,7 @@ public class Event {
 			throw new IllegalArgumentException(
 					"description can't be an empty string");
 		}
-		if (shortDescription.length() > 20) {
+		if (shortDescription.length() > 50) {
 			throw new IllegalArgumentException(
 					"description can't be more than 50 characters");
 		}

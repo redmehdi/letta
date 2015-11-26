@@ -33,18 +33,24 @@ public interface RoleCaller {
 	 * 
 	 * @param supplier the function to be called.
 	 * @param <V> the type of the returned value.
+	 * @param <E> the type of the throwable exception.
 	 * @return the value returned by {@code supplier}.
-	 * @throws Throwable if the {@code supplier} throws an exception.
+	 * @throws E if the {@code supplier} throws an exception.
 	 */
-	public <V> V throwingCall(ThrowingSupplier<V> supplier) throws Throwable;
+	public <V, E extends Throwable> V throwingCall(
+	    ThrowingSupplier<V, E> supplier
+	) throws E;
 
 	/**
 	 * Calls an runnable that returns no value and may throw an exception.
-	 * 
+	 *
+	 * @param <E> the type of the throwable exception.
 	 * @param runnable the runnable to be called.
-	 * @throws Throwable if the {@code runnable} throws an exception.
+	 * @throws E if the {@code runnable} throws an exception.
 	 */
-	public void throwingRun(ThrowingRunnable runnable) throws Throwable;
+	public <E extends Throwable >void throwingRun(
+	    ThrowingRunnable<E> runnable
+	) throws E;
 
 	/**
 	 * A function that can throw an exception.
@@ -52,28 +58,31 @@ public interface RoleCaller {
 	 * @author Miguel Reboiro Jato
 	 * 
 	 * @param <V> the type of the returned value.
+	 * @param <E> the type of the throwable exception.
 	 */
-	public interface ThrowingSupplier<V> {
+	public interface ThrowingSupplier<V, E extends Throwable> {
 		/**
 		 * Executes a task that returns a value.
-		 * 
-		 * @return the value returned by the task. 
-		 * @throws Throwable wildcard exception to allow throwing any exception.
+		 *
+		 * @return the value returned by the task.
+		 * @throws E wildcard exception to allow throwing any exception.
 		 */
-		public V get() throws Throwable;
+		public V get() throws E;
 	}
 	
 	/**
 	 * A runnable that can throw an exception.
 	 * 
 	 * @author Miguel Reboiro Jato
+	 *
+	 * @param <E> the type of the throwable exception.
 	 */
-	public interface ThrowingRunnable {
+	public interface ThrowingRunnable<E extends Throwable> {
 		/**
 		 * Executes a task that does not return a value.
-		 * 
-		 * @throws Throwable wildcard exception to allow throwing any exception. 
+		 *
+		 * @throws E wildcard exception to allow throwing any exception.
 		 */
-		public void run() throws Throwable;
+		public void run() throws E;
 	}
 }
