@@ -3,7 +3,10 @@ package es.uvigo.esei.dgss.letta.service.mail;
 import javax.mail.MessagingException;
 
 /**
- * @author jacasanova and arfarinha
+ * Interface for TestingMailer and DefaultMailer
+ * 
+ * @author jacasanova
+ * @author arfarinha
  *
  */
 public interface Mailer {

@@ -18,7 +18,8 @@ import es.uvigo.esei.dgss.letta.service.mail.Mailer;
 /**
  * EJB for the user registration
  * 
- * @author jacasanova and arfarinha
+ * @author jacasanova
+ * @author arfarinha
  *
  */
 @Stateless

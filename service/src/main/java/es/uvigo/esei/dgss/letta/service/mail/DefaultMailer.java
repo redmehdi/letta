@@ -14,9 +14,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- * EJB for the registration mails
+ * Sends registration mails
  * 
- * @author jacasanova and arfarinha
+ * @author jacasanova
+ * @author arfarinha
  *
  */
 @Default
