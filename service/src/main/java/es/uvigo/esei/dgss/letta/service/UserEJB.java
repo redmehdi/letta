@@ -1,20 +1,19 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.Context;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.exceptions.LoginDuplicateException;
+import es.uvigo.esei.dgss.letta.service.mail.Mailer;
 
 /**
  * EJB for the user registration
@@ -25,69 +24,41 @@ import es.uvigo.esei.dgss.letta.service.exceptions.LoginDuplicateException;
 @Stateless
 public class UserEJB {
 	@PersistenceContext
-	EntityManager em;
+	private EntityManager em;
 	@Inject
-	private Mailer dmejb;
-	@Context
-	HttpServletRequest request;
+	private Mailer mailer;
+	@Resource(lookup = "java:/letta/confirmation-url")
+	private String confirmationUrl;
 
 	/**
-	 * 
 	 * Register an user
 	 * 
-	 * @param user
+	 * @param registration
 	 *            indicates the user to register
 	 * 
 	 * @throws LoginDuplicateException
 	 *             if the {@code user} login already exists
 	 * @throws EmailDuplicateException
 	 *             if the {@code user} email already exists
+	 * @throws MessagingException
+	 *             exception thrown by the Messaging classes
 	 */
 	@PermitAll
-	public void registerUser(final User user)
-			throws LoginDuplicateException, EmailDuplicateException {
-		if (checkLogin(user.getLogin())) {
+	public void registerUser(final Registration registration)
+			throws LoginDuplicateException, EmailDuplicateException,
+			MessagingException {
+		if (checkLogin(registration.getLogin())) {
 			throw new LoginDuplicateException("Login duplicated");
-		} else {
-			if (checkEmail(user.getEmail())) {
-				throw new EmailDuplicateException("Email duplicated");
-			} else {
-				final Registration registration = new Registration(user);
-
-				try {
-					dmejb.sendEmail(user.getEmail(),
-							generateRegistrationMessage(
-									registration.getUuid()));
-
-					em.persist(registration);
-				} catch (final MessagingException e) {
-				}
-			}
 		}
-	}
-
-	/**
-	 * Returns the absolute path to the resource
-	 * 
-	 * @param uuid
-	 *            uuid of the registration table
-	 * @return absolute path
-	 */
-	@SuppressWarnings("unused")
-	private String getPath(final String uuid) {
-		String scheme = "http";
-		try {
-			scheme = request.getScheme();
-		} catch (final NullPointerException e) {
-			scheme = "http";
+		if (checkEmail(registration.getEmail())) {
+			throw new EmailDuplicateException("Email duplicated");
 		}
 
-		final int serverPort = request.getServerPort();
-		final String serverName = request.getServerName();
-		final String contextPath = request.getContextPath();
+		em.persist(registration);
 
-		return scheme + "://" + serverName + ":" + serverPort + contextPath
-				+ "/" + uuid;
+		mailer.sendEmail("no_reply@letta.com", registration.getEmail(),
+				"Confirm your registration",
+				generateRegistrationMessage(registration.getUuid()));
 	}
 
 	/**
@@ -115,21 +86,15 @@ public class UserEJB {
 	/**
 	 * Generates a message to complete the user registration
 	 * 
-	 * @param path
-	 *            indicates the path to confirm the user
-	 * @return the message with the link
+	 * @param uuid
+	 *            indicates the user uuid
+	 * @return the registration message
 	 */
 	private String generateRegistrationMessage(final String uuid) {
-		final StringBuilder message = new StringBuilder();
-		message.append("<html>");
-		message.append("<head><title>Confirm registration</title></head>");
-		message.append("<body><br/><br/>");
-		message.append(
-				"<a href=\"http://localhost:9080/letta/jsf/faces/confirm.xhtml?uuid="
-						+ uuid + "\">Click here to confirm</a>");
-		message.append("</body>");
-		message.append("</html>");
-		return message.toString();
+		return new StringBuilder().append("<html>")
+				.append("<head><title>Confirm registration</title></head>")
+				.append("<body><br/><br/>").append(this.confirmationUrl)
+				.append(uuid).append("</body>").append("</html>").toString();
 	}
 
 	/**
@@ -230,6 +195,7 @@ public class UserEJB {
 	 * Finds a user by login in the User table
 	 * 
 	 * @param login
+	 *            indicates the user with {@code login}
 	 * @return the result list if it is found
 	 * @return null if it is not found
 	 */

@@ -3,8 +3,10 @@ package es.uvigo.esei.dgss.letta.jsf;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import javax.validation.constraints.Size;
 
+import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
 import es.uvigo.esei.dgss.letta.service.exceptions.EmailDuplicateException;
@@ -30,8 +32,6 @@ public class RegisterUserController implements JSFController {
 	private String email;
 	private String password;
 
-	private User registration;
-
 	/**
 	 * Register a user. If login or email are duplicated, shows a message.
 	 *
@@ -39,18 +39,25 @@ public class RegisterUserController implements JSFController {
 	 *         other case.
 	 */
 	public String doRegister() {
-		registration = new User(login, password, email);
+		final Registration registration =
+			new Registration(new User(login, password, email));
+		
 		try{
 			userEJB.registerUser(registration);
 			error = false;
 			return redirectTo("index.xhtml");
-		}catch(final LoginDuplicateException e){
+		} catch(final LoginDuplicateException e) {
 			error = true;
 			errorMessage = "Login already exists";
 			return getRootViewId();
 		} catch (EmailDuplicateException e) {
 			error = true;
 			errorMessage = "Email already exists";
+			return getRootViewId();
+		} catch (MessagingException e) {
+			error = true;
+			errorMessage = "An error happened while sending the confirmation email. "
+				+ "Please, try again in a few minutes or contact with the page administrators";
 			return getRootViewId();
 		}
 	}

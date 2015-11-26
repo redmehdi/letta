@@ -1,4 +1,4 @@
-package es.uvigo.esei.dgss.letta.service;
+package es.uvigo.esei.dgss.letta.service.mail;
 
 import java.util.Date;
 
@@ -21,26 +21,31 @@ import javax.mail.internet.MimeMessage;
  */
 @Default
 @Singleton
-public class DefaultMailerEJB implements Mailer {
+public class DefaultMailer implements Mailer {
 
 	@Resource(name = "java:/Mail")
 	private Session mailSession;
 
-	final static String subject = "Confirm your registration"; // indicates the
-																// email subject
-	final static String from = "no_reply@letta.com"; // indicates the email
-														// source
-
 	/**
+	 * 
+	 * Sends and email
+	 * 
+	 * @param from
+	 *            indicates the mail sender
 	 * @param email
 	 *            indicates the mail receiver
+	 * @param subject
+	 *            indicates the mail subject
+	 * @param message
+	 *            indicates the email message
+	 * 
 	 * @throws MessagingException
-	 *             exception thrown by the messaging classes
+	 *             exception thrown by the Messaging classes
 	 */
 	@PermitAll
 	@Override
-	public void sendEmail(String email, String message)
-			throws MessagingException {
+	public void sendEmail(String from, String email, String subject,
+			String message) throws MessagingException {
 		// creates a new e-mail message
 		final Message msg = new MimeMessage(getEmailSession());
 
