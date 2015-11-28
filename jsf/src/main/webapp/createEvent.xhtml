@@ -13,20 +13,6 @@
 
 	<ui:composition template="/template/templateLayout.xhtml">
 
-		<ui:define name="header">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse"
-						data-target="#navbar-ex-collapse">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand"><img height="20" alt="Brand"
-						src="img/logo.png" /></a>
-				</div>
-			</div>
-		</ui:define>
 
 		<ui:define name="content">
 			<div class="container ">
@@ -53,8 +39,9 @@
 							</h:inputText>
 							<br />
 
-							<h:message for="popup" />
-							<p:calendar id="popup" value="#{createEventController.date}"
+							<h:message for="date" />
+							<br/>
+							<p:calendar id="date" value="#{createEventController.date}"
 								required="true" requiredMessage="Date can't be empty"
 								a:placeholder="Date" pattern="dd/MM/yyyy HH:mm" />
 							<br />

@@ -20,6 +20,9 @@
 	        </div>
 	        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
 	          <ul class="nav navbar-nav navbar-right">
+	          <li>
+	          	<h:link value="Create Event" rendered="#{loginController.currentUser.name != 'anonymous'}" outcome="faces/createEvent.xhtml" />
+	          </li>
 	            <li>
 	              <form class="navbar-form" role="search">
 	                <div class="input-group">

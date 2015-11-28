@@ -14,19 +14,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.inject.Inject;
 import javax.validation.constraints.Size;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.EventType;
-import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.jsf.util.JSFPagePathUtils;
+import es.uvigo.esei.dgss.letta.service.EventEJB;
+import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 
 /**
  * {@linkplain CreateEventController} is a JSF controller to create LETTA's
  * events
  *
- * @author jacasanova
+ * @author Jesús Álvarez Casanova
  * @author redouane
  *
  */
@@ -34,12 +38,19 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
 @ManagedBean(name = "createEventController")
 public class CreateEventController {
 
-	private String error;
+	@Inject
+	EventEJB eventEJB;
+	@Inject
+	private JSFPagePathUtils path;
+	@EJB
+	private UserAuthorizationEJB auth;
+
+	private boolean error = false;
+	private String errorMessage;
 	private String title;
 	private String shortDescription;
 	private String location;
 	private Date date;
-	private User creator;
 	private EventType type;
 	private Map<String, EventType> types = new HashMap<String, EventType>();
 	private Event createdEvent;
@@ -58,28 +69,16 @@ public class CreateEventController {
 	}
 
 	public String doCreate() {
-		setCreatedEvent(
-				new Event(type, title, shortDescription, date, location, creator));
-		System.out.println("Tipo  " + type);
-		System.out.println("Title " + title);
-		System.out.println("Descripcion " + shortDescription);
-		System.out.println("Fecha " + date.toString());
-		System.out.println("Localizacion " + location);
-		// registration = new User(login, password, email);
-		// try{
-		// userEJB.registerUser(registration);
-		// error = false;
-		// return redirectTo("index.xhtml");
-		// }catch(final LoginDuplicateException e){
-		// error = true;
-		// errorMessage = "Login already exists";
-		// return getRootViewId();
-		// } catch (EmailDuplicateException e) {
-		// error = true;
-		// errorMessage = "Email already exists";
-		// return getRootViewId();
-		// }
-		return "";
+		try {
+			eventEJB.createEvent(
+					new Event(type, title, shortDescription, date, location));
+			error = false;
+			return path.redirectToPage("index.xhtml");
+		} catch (NullPointerException e) {
+			error = true;
+			setErrorMessage(e.getMessage());
+			return path.getCurrentPage();
+		}
 	}
 
 	/**
@@ -87,7 +86,7 @@ public class CreateEventController {
 	 * 
 	 * @return error global variable
 	 */
-	public String getError() {
+	public boolean isError() {
 		return error;
 	}
 
@@ -97,14 +96,14 @@ public class CreateEventController {
 	 * @param error
 	 *            global variable
 	 */
-	public void setError(String error) {
+	public void setError(boolean error) {
 		this.error = error;
 	}
 
 	/**
 	 * Getter method of title variable
 	 * 
-	 * @return method variable
+	 * @return title global variable
 	 */
 	@Size(min = 1, max = 20, message = "Title must be between 1 and 20 characters")
 	public String getTitle() {
@@ -235,6 +234,25 @@ public class CreateEventController {
 	 */
 	public void setCreatedEvent(Event createdEvent) {
 		this.createdEvent = createdEvent;
+	}
+
+	/**
+	 * Getter method of errorMessage variable
+	 * 
+	 * @return errorMEssage global variable
+	 */
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	/**
+	 * Setter method of errorMessage variable
+	 * 
+	 * @param errorMessage
+	 *            global variable
+	 */
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 
 }
