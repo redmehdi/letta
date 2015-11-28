@@ -19,12 +19,17 @@ import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.shortestPa
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.validUser;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-import org.junit.Test;
 
-import es.uvigo.esei.dgss.letta.domain.entities.Role;
-import es.uvigo.esei.dgss.letta.domain.entities.User;
+import java.util.List;
+
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 public class UserTest {
 	@Test
@@ -180,4 +185,10 @@ public class UserTest {
 		
 		assertThat(user.getEmail(), is(equalTo(newEmail)));
 	}
+	
+	@Test(expected = NullPointerException.class)
+	public void testSetUsersJoinsEventsNull() {
+		validUser().setUsersJoinsEvents(null);
+	}
+	
 }

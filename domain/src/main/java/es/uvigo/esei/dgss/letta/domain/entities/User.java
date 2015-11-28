@@ -233,6 +233,17 @@ public class User implements Serializable {
 	public List<Event> getUsersJoinsEvents() {
 		return usersJoinsEvents;
 	}
+	
+	/**
+	 * Setter method of userJoinsEvents variable
+	 * 
+	 * @param usersJoinsEvents global variable
+	 */
+
+	public void setUsersJoinsEvents(List<Event> usersJoinsEvents) {
+		requireNonNull(usersJoinsEvents, "usersJoinsEvents can't be null");
+		this.usersJoinsEvents = usersJoinsEvents;
+	}
 
 	@Override
 	public int hashCode() {
