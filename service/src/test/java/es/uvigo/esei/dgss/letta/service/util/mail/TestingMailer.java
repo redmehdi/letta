@@ -1,10 +1,10 @@
-package es.uvigo.esei.dgss.letta.service.mail;
+package es.uvigo.esei.dgss.letta.service.util.mail;
 
 import javax.enterprise.inject.Alternative;
 import javax.inject.Singleton;
 import javax.mail.MessagingException;
 
-import es.uvigo.esei.dgss.letta.service.mail.Mailer;
+import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 
 /**
  * Sends registration mails (testing)

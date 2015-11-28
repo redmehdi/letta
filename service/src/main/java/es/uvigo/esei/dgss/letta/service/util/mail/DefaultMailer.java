@@ -1,4 +1,4 @@
-package es.uvigo.esei.dgss.letta.service.mail;
+package es.uvigo.esei.dgss.letta.service.util.mail;
 
 import java.util.Date;
 

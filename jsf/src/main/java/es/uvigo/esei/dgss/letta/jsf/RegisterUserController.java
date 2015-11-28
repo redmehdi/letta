@@ -8,9 +8,10 @@ import javax.validation.constraints.Size;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.jsf.util.JSFPagePathUtils;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
-import es.uvigo.esei.dgss.letta.service.exceptions.EmailDuplicateException;
-import es.uvigo.esei.dgss.letta.service.exceptions.LoginDuplicateException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 
 /**
  * JSF controller to registration process.
@@ -20,10 +21,13 @@ import es.uvigo.esei.dgss.letta.service.exceptions.LoginDuplicateException;
  */
 @RequestScoped
 @ManagedBean(name = "registerController")
-public class RegisterUserController implements JSFController {
+public class RegisterUserController {
 
 	@Inject
 	private UserEJB userEJB;
+
+    @Inject
+    private JSFPagePathUtils path;
 
 	private boolean error = false;
 	private String errorMessage;
@@ -41,24 +45,24 @@ public class RegisterUserController implements JSFController {
 	public String doRegister() {
 		final Registration registration =
 			new Registration(new User(login, password, email));
-		
+
 		try{
 			userEJB.registerUser(registration);
 			error = false;
-			return redirectTo("index.xhtml");
+			return path.redirectToPage("index.xhtml");
 		} catch(final LoginDuplicateException e) {
 			error = true;
 			errorMessage = "Login already exists";
-			return getRootViewId();
+			return path.getCurrentPage();
 		} catch (EmailDuplicateException e) {
 			error = true;
 			errorMessage = "Email already exists";
-			return getRootViewId();
+			return path.getCurrentPage();
 		} catch (MessagingException e) {
 			error = true;
 			errorMessage = "An error happened while sending the confirmation email. "
 				+ "Please, try again in a few minutes or contact with the page administrators";
-			return getRootViewId();
+			return path.getCurrentPage();
 		}
 	}
 

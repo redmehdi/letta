@@ -27,10 +27,10 @@ import org.openqa.selenium.WebDriver;
 
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.jsf.pages.ConfirmPage;
-import es.uvigo.esei.dgss.letta.jsf.pages.MainPage;
+import es.uvigo.esei.dgss.letta.jsf.pages.IndexPage;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
-import es.uvigo.esei.dgss.letta.service.exceptions.LoginDuplicateException;
-import es.uvigo.esei.dgss.letta.service.mail.Mailer;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
+import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 
 @RunWith(Arquillian.class)
 public class ConfirmUserControllerTest {
@@ -40,8 +40,8 @@ public class ConfirmUserControllerTest {
 	private WebDriver browser;
 	
 	@Page
-	private MainPage mainPage;
-	
+	private IndexPage indexPage;
+
 	@Page
 	private ConfirmPage confirmPage;
 	
@@ -51,11 +51,11 @@ public class ConfirmUserControllerTest {
 	@Deployment
 	public static Archive<?> createDeployment() {
 		return ShrinkWrap.create(WebArchive.class, "test.war")
-			.addPackage(ConfirmUserController.class.getPackage())
+			.addPackages(true, ConfirmUserController.class.getPackage())
 			.addPackage(UserEJB.class.getPackage())
 			.addPackage(User.class.getPackage())
             .addPackage(LoginDuplicateException.class.getPackage())
-            .addPackage(MainPage.class.getPackage())
+            .addPackage(IndexPage.class.getPackage())
             .addPackage(WebDriver.class.getPackage())
             .addPackage(Mailer.class.getPackage())
 			.addAsWebResource(WEBAPP.resolve("index.xhtml").toFile(), "index.xhtml")
@@ -69,63 +69,63 @@ public class ConfirmUserControllerTest {
 			.addAsWebInfResource("web.xml")
 			.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
-	
+
 	@Before
 	public void setUp() {
 		if (this.browser != null)
 			this.browser.manage().deleteAllCookies();
 	}
-	
+
 	@Test @InSequence(1)
 	@UsingDataSet("registrations.xml")
 	@Cleanup(phase = TestExecutionPhase.NONE)
 	public void beforeDoConfirmEmptyUuid() {}
-	
+
 	@Test @InSequence(2)
 	@RunAsClient
 	public void testDoConfirmEmptyUuid() {
-		this.browser.get(baseURL + "/faces/confirm.xhtml?uuid=");		
-		this.mainPage.waitForMainPage();
-		this.mainPage.assertOnMainPage();
+		this.browser.get(baseURL + "/faces/confirm.xhtml?uuid=");
+		this.indexPage.waitForIt();
+		this.indexPage.assertOnIt();
 	}
-	
+
 	@Test @InSequence(3)
 	@ShouldMatchDataSet("registrations.xml")
 	@CleanupUsingScript({ "cleanup.sql" })
 	public void afterDoConfirmEmptyUuid() {}
-	
-	
+
+
 	@Test @InSequence(11)
 	@UsingDataSet("registrations.xml")
 	@Cleanup(phase = TestExecutionPhase.NONE)
 	public void beforeDoConfirmBadUuid() {}
-	
+
 	@Test @InSequence(12)
 	@RunAsClient
 	public void testDoConfirmBadUuid() {
-		this.browser.get(baseURL + "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000001");		
-		this.mainPage.waitForMainPage();
-		this.mainPage.assertOnMainPage();
+		this.browser.get(baseURL + "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000001");
+		this.indexPage.waitForIt();
+		this.indexPage.assertOnIt();
 	}
-	
+
 	@Test @InSequence(13)
 	@ShouldMatchDataSet("registrations.xml")
 	@CleanupUsingScript({ "cleanup.sql" })
 	public void afterDoConfirmBadUuid() {}
-	
+
 	@Test @InSequence(21)
 	@UsingDataSet("registrations.xml")
 	@Cleanup(phase = TestExecutionPhase.NONE)
 	public void beforeDoConfirmGoodUuid() {}
-	
+
 	@Test @InSequence(22)
 	@RunAsClient
 	public void testDoConfirmGoodUuid() {
-		this.browser.get(baseURL + "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000000");		
-		this.mainPage.waitForMainPage();
-		this.mainPage.assertOnMainPage();
+		this.browser.get(baseURL + "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000000");
+		this.indexPage.waitForIt();
+		this.indexPage.assertOnIt();
 	}
-	
+
 	@Test @InSequence(23)
 	@ShouldMatchDataSet("registrations-register-user.xml")
 	@CleanupUsingScript({ "cleanup.sql" })

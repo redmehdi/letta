@@ -1,4 +1,4 @@
-package es.uvigo.esei.dgss.letta.service.exceptions;
+package es.uvigo.esei.dgss.letta.service.util.exceptions;
 
 public class EmailDuplicateException extends Exception {
 

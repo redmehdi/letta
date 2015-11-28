@@ -8,6 +8,8 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import es.uvigo.esei.dgss.letta.jsf.util.JSFPagePathUtils;
+
 /**
  * JSF controller to login process.
  *
@@ -16,12 +18,16 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean(name = "loginController")
 @RequestScoped
-public class LoginUserController implements JSFController {
+public class LoginUserController {
+
 	@Inject
 	private Principal currentUserPrincipal;
 
 	@Inject
 	private HttpServletRequest request;
+
+	@Inject
+	private JSFPagePathUtils path;
 
 	private boolean error = false;
 	private String errorMessage;
@@ -39,11 +45,11 @@ public class LoginUserController implements JSFController {
 		try {
 			request.login(this.getLogin(), this.getPassword());
 			this.error = false;
-			return redirectTo("index.xhtml");
+			return path.redirectToPage("index.xhtml");
 		} catch (ServletException e) {
 			this.error = true;
 			this.errorMessage = "Login or password don't match";
-			return this.getRootViewId();
+			return path.getCurrentPage();
 		}
 	}
 
@@ -55,7 +61,7 @@ public class LoginUserController implements JSFController {
 	 */
 	public String doLogout() throws ServletException {
 		request.logout();
-		return redirectTo("index.xhtml");
+		return path.redirectToPage("index.xhtml");
 	}
 
 	/**

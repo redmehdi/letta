@@ -14,9 +14,9 @@ import javax.persistence.TypedQuery;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
-import es.uvigo.esei.dgss.letta.service.exceptions.EmailDuplicateException;
-import es.uvigo.esei.dgss.letta.service.exceptions.LoginDuplicateException;
-import es.uvigo.esei.dgss.letta.service.mail.Mailer;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
+import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;

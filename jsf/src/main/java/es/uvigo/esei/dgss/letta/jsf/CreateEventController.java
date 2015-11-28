@@ -23,16 +23,16 @@ import es.uvigo.esei.dgss.letta.domain.entities.EventType;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 
 /**
- * {@linkplain CreateEventController} is a {@link JSFController} to create
- * LETTA's events
- * 
+ * {@linkplain CreateEventController} is a JSF controller to create LETTA's
+ * events
+ *
  * @author jacasanova
  * @author redouane
  *
  */
 @RequestScoped
 @ManagedBean(name = "createEventController")
-public class CreateEventController implements JSFController {
+public class CreateEventController {
 
 	private String error;
 	private String title;

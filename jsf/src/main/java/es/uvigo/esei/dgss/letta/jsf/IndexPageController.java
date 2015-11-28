@@ -1,8 +1,6 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -10,13 +8,12 @@ import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.EventType;
+import es.uvigo.esei.dgss.letta.jsf.util.EventMappings;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 
-import static es.uvigo.esei.dgss.letta.domain.entities.EventType.*;
-
 /**
- * {@linkplain IndexPageController} is a {@link JSFController} for LETTA's front
- * page. Its solely purpose is to retrieve the required data from the
+ * {@linkplain IndexPageController} is a JSF controller for LETTA's front page.
+ * Its solely purpose is to retrieve the required data from the
  * {@link EventEJB}.
  *
  * @author Redouane Mehdi
@@ -24,18 +21,10 @@ import static es.uvigo.esei.dgss.letta.domain.entities.EventType.*;
  */
 @RequestScoped
 @ManagedBean(name = "indexController")
-public class IndexPageController implements JSFController {
+public class IndexPageController {
 
-    private static final Map<EventType, String> eventIcons;
-
-    static {
-        eventIcons = new HashMap<>();
-        eventIcons.put(LITERATURE , "img/book.svg");
-        eventIcons.put(MUSIC      , "img/music.svg");
-        eventIcons.put(CINEMA     , "img/movie.svg");
-        eventIcons.put(TV         , "img/tv.svg");
-        eventIcons.put(INTERNET   , "img/internet.svg");
-    }
+    @Inject
+    private EventMappings eventMapper;
 
     @Inject
     private EventEJB eventEJB;
@@ -72,9 +61,7 @@ public class IndexPageController implements JSFController {
      *         event type.
      */
     public String getIconFor(final EventType eventType) {
-        return eventIcons.getOrDefault(
-            eventType, "http://placehold.it/512x512"
-        );
+        return eventMapper.getIconFor(eventType);
     }
 
 }

@@ -1,13 +1,16 @@
-package es.uvigo.esei.dgss.letta.jsf;
+package es.uvigo.esei.dgss.letta.jsf.util;
 
 import javax.faces.context.FacesContext;
+import javax.inject.Singleton;
 
 /**
- * Common interface to all JSF controllers.
+ * Provides utility methods to work with the current JSF view's path (the URL).
  *
  * @author Alberto Gutiérrez Jácome
+ * @author Redouane Mehdi
  */
-public interface JSFController {
+@Singleton
+public class JSFPagePathUtils {
 
     /**
      * Returns a url with redirect faces param set to true.
@@ -16,16 +19,16 @@ public interface JSFController {
      *            indicates the url to redirect.
      * @return url with redirect faces param set to true.
      */
-    default public String redirectTo(final String url) {
+    public String redirectToPage(final String url) {
         return url + "?faces-redirect=true";
     }
 
     /**
-     * Returns the id of the root view.
+     * Returns the id of the current view.
      *
-     * @return id of the root view
+     * @return id of the current view
      */
-    default public String getRootViewId() {
+    public String getCurrentPage() {
         return FacesContext.getCurrentInstance().getViewRoot().getViewId();
     }
 

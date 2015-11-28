@@ -1,11 +1,5 @@
 package es.uvigo.esei.dgss.letta.service;
 
-import static es.uvigo.esei.dgss.letta.domain.entities.RegistrationsDataset.newRegistration;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertThat;
-
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 
@@ -22,10 +16,17 @@ import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
-import es.uvigo.esei.dgss.letta.service.exceptions.LoginDuplicateException;
-import es.uvigo.esei.dgss.letta.service.mail.Mailer;
-import es.uvigo.esei.dgss.letta.service.mail.TestingMailer;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
+import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
+import es.uvigo.esei.dgss.letta.service.util.mail.TestingMailer;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.Assert.assertThat;
+
+import static es.uvigo.esei.dgss.letta.domain.entities.RegistrationsDataset.newRegistration;
 
 @RunWith(Arquillian.class)
 @CleanupUsingScript({ "cleanup.sql" })

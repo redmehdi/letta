@@ -18,7 +18,7 @@ import es.uvigo.esei.dgss.letta.service.UserEJB;
  */
 @RequestScoped
 @ManagedBean(name = "confirmController")
-public class ConfirmUserController implements JSFController {
+public class ConfirmUserController {
 	@Inject
 	private UserEJB userEJB;
 
