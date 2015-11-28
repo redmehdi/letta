@@ -19,9 +19,11 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 /**
- * Class entity for the events.
- *
- * @author aalopez, apsoto.
+ * An entity that represents an event of the application.
+ * 
+ * @author aalopez
+ * @author apsoto
+ * @author abmiguez
  *
  */
 @Entity
@@ -51,7 +53,7 @@ public class Event {
 
 	Event() {
 	}
-	
+
 	/**
 	 * Creates a new instance of {@code Event}.
 	 *
@@ -81,7 +83,6 @@ public class Event {
 		this.setCreator(new User());
 	}
 
-
 	/**
 	 * Creates a new instance of {@code Event}.
 	 *
@@ -100,7 +101,7 @@ public class Event {
 	 * @param location
 	 *            the location of the event
 	 * @param creator
-	 * 			  the creator of the event
+	 *            the creator of the event
 	 */
 	public Event(final EventType eventType, final String title,
 			final String shortDescription, final Date date,

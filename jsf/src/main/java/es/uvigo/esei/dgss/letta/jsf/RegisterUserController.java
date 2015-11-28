@@ -14,9 +14,11 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 
 /**
- * JSF controller to registration process.
+ * {@linkplain RegisterUserController} is a JSF controller to perform the
+ * registration process.
  *
- * @author abmiguez and bcgonzalez3
+ * @author abmiguez
+ * @author bcgonzalez3
  *
  */
 @RequestScoped
@@ -26,8 +28,8 @@ public class RegisterUserController {
 	@Inject
 	private UserEJB userEJB;
 
-    @Inject
-    private JSFPagePathUtils path;
+	@Inject
+	private JSFPagePathUtils path;
 
 	private boolean error = false;
 	private String errorMessage;
@@ -43,14 +45,14 @@ public class RegisterUserController {
 	 *         other case.
 	 */
 	public String doRegister() {
-		final Registration registration =
-			new Registration(new User(login, password, email));
+		final Registration registration = new Registration(new User(login,
+				password, email));
 
-		try{
+		try {
 			userEJB.registerUser(registration);
 			error = false;
 			return path.redirectToPage("index.xhtml");
-		} catch(final LoginDuplicateException e) {
+		} catch (final LoginDuplicateException e) {
 			error = true;
 			errorMessage = "Login already exists";
 			return path.getCurrentPage();
@@ -61,7 +63,7 @@ public class RegisterUserController {
 		} catch (MessagingException e) {
 			error = true;
 			errorMessage = "An error happened while sending the confirmation email. "
-				+ "Please, try again in a few minutes or contact with the page administrators";
+					+ "Please, try again in a few minutes or contact with the page administrators";
 			return path.getCurrentPage();
 		}
 	}

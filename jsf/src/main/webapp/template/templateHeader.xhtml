@@ -3,6 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:h="http://java.sun.com/jsf/html"
       >
     <body>
 	    <ui:composition>
@@ -30,11 +31,14 @@
 	              </form>
 	            </li>
 	            <li>
-	              <a href="#">Login</a>
-	            </li>
-	            <li>
-	              <a href="faces/register.xhtml">Sign Up</a>
-	            </li>
+	            	<h:link value="Login" rendered="#{loginController.currentUser.name == 'anonymous'}" outcome="faces/login.xhtml" />
+		        </li>
+		        <li>
+		            <h:link value="Sign up" rendered="#{loginController.currentUser.name == 'anonymous'}" outcome="faces/register.xhtml" />
+		        </li>
+				<li>
+					<h:link value="Logout" rendered="#{loginController.currentUser.name != 'anonymous'}" outcome="faces/logout.xhtml" />
+		        </li>
 	          </ul>
 	        </div>
 	      </div>

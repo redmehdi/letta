@@ -32,42 +32,62 @@ import es.uvigo.esei.dgss.letta.service.UserEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 
+/**
+ * {@linkplain ConfirmUserControllerTest} is an arquillian test case to test the
+ * JSF ManagedBean {@link ConfirmUserController}.
+ *
+ * @author abmiguez
+ * @author bcgonzalez3
+ *
+ */
 @RunWith(Arquillian.class)
 public class ConfirmUserControllerTest {
 	private static final Path WEBAPP = Paths.get("src/main/webapp");
 
 	@Drone
 	private WebDriver browser;
-	
+
 	@Page
 	private IndexPage indexPage;
 
 	@Page
 	private ConfirmPage confirmPage;
-	
-    @ArquillianResource
-    private URL baseURL;
-	
+
+	@ArquillianResource
+	private URL baseURL;
+
 	@Deployment
 	public static Archive<?> createDeployment() {
-		return ShrinkWrap.create(WebArchive.class, "test.war")
-			.addPackages(true, ConfirmUserController.class.getPackage())
-			.addPackage(UserEJB.class.getPackage())
-			.addPackage(User.class.getPackage())
-            .addPackage(LoginDuplicateException.class.getPackage())
-            .addPackage(IndexPage.class.getPackage())
-            .addPackage(WebDriver.class.getPackage())
-            .addPackage(Mailer.class.getPackage())
-			.addAsWebResource(WEBAPP.resolve("index.xhtml").toFile(), "index.xhtml")
-            .addAsWebResource(WEBAPP.resolve("confirm.xhtml").toFile(), "confirm.xhtml")
-			.addAsWebResource(WEBAPP.resolve("template/templateLayout.xhtml").toFile(), "template/templateLayout.xhtml")
-			.addAsWebResource(WEBAPP.resolve("template/templateHeader.xhtml").toFile(), "template/templateHeader.xhtml")
-			.addAsWebResource(WEBAPP.resolve("template/templateFooter.xhtml").toFile(), "template/templateFooter.xhtml")
-			.addAsWebResource(WEBAPP.resolve("template/templateContent.xhtml").toFile(), "template/templateContent.xhtml")
-			.addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-			.addAsWebInfResource("jboss-web.xml")
-			.addAsWebInfResource("web.xml")
-			.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+		return ShrinkWrap
+				.create(WebArchive.class, "test.war")
+				.addPackages(true, ConfirmUserController.class.getPackage())
+				.addPackage(UserEJB.class.getPackage())
+				.addPackage(User.class.getPackage())
+				.addPackage(LoginDuplicateException.class.getPackage())
+				.addPackage(IndexPage.class.getPackage())
+				.addPackage(WebDriver.class.getPackage())
+				.addPackage(Mailer.class.getPackage())
+				.addAsWebResource(WEBAPP.resolve("index.xhtml").toFile(),
+						"index.xhtml")
+				.addAsWebResource(WEBAPP.resolve("confirm.xhtml").toFile(),
+						"confirm.xhtml")
+				.addAsWebResource(
+						WEBAPP.resolve("template/templateLayout.xhtml")
+								.toFile(), "template/templateLayout.xhtml")
+				.addAsWebResource(
+						WEBAPP.resolve("template/templateHeader.xhtml")
+								.toFile(), "template/templateHeader.xhtml")
+				.addAsWebResource(
+						WEBAPP.resolve("template/templateFooter.xhtml")
+								.toFile(), "template/templateFooter.xhtml")
+				.addAsWebResource(
+						WEBAPP.resolve("template/templateContent.xhtml")
+								.toFile(), "template/templateContent.xhtml")
+				.addAsResource("test-persistence.xml",
+						"META-INF/persistence.xml")
+				.addAsWebInfResource("jboss-web.xml")
+				.addAsWebInfResource("web.xml")
+				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
 
 	@Before
@@ -76,12 +96,15 @@ public class ConfirmUserControllerTest {
 			this.browser.manage().deleteAllCookies();
 	}
 
-	@Test @InSequence(1)
+	@Test
+	@InSequence(1)
 	@UsingDataSet("registrations.xml")
 	@Cleanup(phase = TestExecutionPhase.NONE)
-	public void beforeDoConfirmEmptyUuid() {}
+	public void beforeDoConfirmEmptyUuid() {
+	}
 
-	@Test @InSequence(2)
+	@Test
+	@InSequence(2)
 	@RunAsClient
 	public void testDoConfirmEmptyUuid() {
 		this.browser.get(baseURL + "/faces/confirm.xhtml?uuid=");
@@ -89,46 +112,61 @@ public class ConfirmUserControllerTest {
 		this.indexPage.assertOnIt();
 	}
 
-	@Test @InSequence(3)
+	@Test
+	@InSequence(3)
 	@ShouldMatchDataSet("registrations.xml")
 	@CleanupUsingScript({ "cleanup.sql" })
-	public void afterDoConfirmEmptyUuid() {}
+	public void afterDoConfirmEmptyUuid() {
+	}
 
-
-	@Test @InSequence(11)
+	@Test
+	@InSequence(11)
 	@UsingDataSet("registrations.xml")
 	@Cleanup(phase = TestExecutionPhase.NONE)
-	public void beforeDoConfirmBadUuid() {}
+	public void beforeDoConfirmBadUuid() {
+	}
 
-	@Test @InSequence(12)
+	@Test
+	@InSequence(12)
 	@RunAsClient
 	public void testDoConfirmBadUuid() {
-		this.browser.get(baseURL + "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000001");
+		this.browser
+				.get(baseURL
+						+ "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000001");
 		this.indexPage.waitForIt();
 		this.indexPage.assertOnIt();
 	}
 
-	@Test @InSequence(13)
+	@Test
+	@InSequence(13)
 	@ShouldMatchDataSet("registrations.xml")
 	@CleanupUsingScript({ "cleanup.sql" })
-	public void afterDoConfirmBadUuid() {}
+	public void afterDoConfirmBadUuid() {
+	}
 
-	@Test @InSequence(21)
+	@Test
+	@InSequence(21)
 	@UsingDataSet("registrations.xml")
 	@Cleanup(phase = TestExecutionPhase.NONE)
-	public void beforeDoConfirmGoodUuid() {}
+	public void beforeDoConfirmGoodUuid() {
+	}
 
-	@Test @InSequence(22)
+	@Test
+	@InSequence(22)
 	@RunAsClient
 	public void testDoConfirmGoodUuid() {
-		this.browser.get(baseURL + "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000000");
+		this.browser
+				.get(baseURL
+						+ "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000000");
 		this.indexPage.waitForIt();
 		this.indexPage.assertOnIt();
 	}
 
-	@Test @InSequence(23)
+	@Test
+	@InSequence(23)
 	@ShouldMatchDataSet("registrations-register-user.xml")
 	@CleanupUsingScript({ "cleanup.sql" })
-	public void afterDoConfirmGoodUuid() {}
+	public void afterDoConfirmGoodUuid() {
+	}
 
 }

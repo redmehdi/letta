@@ -11,9 +11,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 /**
- * Class for test the {@code Event} class.
+ * Class for test the {@link Event} class.
  * 
- * @author aalopez, apsoto
+ * @author aalopez
+ * @author apsoto
+ * @author abmiguez
  *
  */
 public class EventTest {
@@ -25,7 +27,7 @@ public class EventTest {
 	private Date date;
 	private Event event;
 	private User creator;
-	
+
 	/**
 	 * Method for set up the attributes.
 	 */
@@ -45,21 +47,24 @@ public class EventTest {
 	 */
 	@Test
 	public void testEvent() {
-		Event event = new Event(this.eventType, this.title, this.shortDescription, this.date, this.location, this.creator);
+		Event event = new Event(this.eventType, this.title,
+				this.shortDescription, this.date, this.location, this.creator);
 		assertThat(event.getEventType(), is(equalTo(this.eventType)));
 		assertThat(event.getTitle(), is(equalTo(this.title)));
-		assertThat(event.getShortDescription(), is(equalTo(this.shortDescription)));
+		assertThat(event.getShortDescription(),
+				is(equalTo(this.shortDescription)));
 		assertThat(event.getDate(), is(equalTo(this.date)));
 		assertThat(event.getLocation(), is(equalTo(this.location)));
 		assertThat(event.getCreator(), is(equalTo(this.creator)));
 	}
-	
+
 	/**
 	 * Method for test {@code Event} constructor with null creator.
 	 */
 	@Test(expected = NullPointerException.class)
 	public void testEventNullCreator() {
-		new Event(this.eventType, this.title, this.shortDescription, this.date, this.location, null);
+		new Event(this.eventType, this.title, this.shortDescription, this.date,
+				this.location, null);
 	}
 
 	/**
@@ -67,7 +72,8 @@ public class EventTest {
 	 */
 	@Test(expected = NullPointerException.class)
 	public void testEventNullEventType() {
-		new Event(null, this.title, this.shortDescription, this.date, this.location, this.creator);
+		new Event(null, this.title, this.shortDescription, this.date,
+				this.location, this.creator);
 	}
 
 	/**
@@ -75,7 +81,8 @@ public class EventTest {
 	 */
 	@Test(expected = NullPointerException.class)
 	public void testEventNullTitle() {
-		new Event(this.eventType, null, this.shortDescription, this.date, this.location, this.creator);
+		new Event(this.eventType, null, this.shortDescription, this.date,
+				this.location, this.creator);
 	}
 
 	/**
@@ -83,7 +90,8 @@ public class EventTest {
 	 */
 	@Test(expected = NullPointerException.class)
 	public void testEventNullDescription() {
-		new Event(this.eventType, this.title, null, this.date, this.location, this.creator);
+		new Event(this.eventType, this.title, null, this.date, this.location,
+				this.creator);
 	}
 
 	/**
@@ -91,7 +99,8 @@ public class EventTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testEventEmptyTitle() {
-		new Event(this.eventType, "", this.shortDescription, this.date, this.location, this.creator);
+		new Event(this.eventType, "", this.shortDescription, this.date,
+				this.location, this.creator);
 	}
 
 	/**
@@ -99,7 +108,8 @@ public class EventTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testEventEmptyDescription() {
-		new Event(this.eventType, this.title, "", this.date, this.location, this.creator);
+		new Event(this.eventType, this.title, "", this.date, this.location,
+				this.creator);
 	}
 
 	/**
@@ -107,7 +117,8 @@ public class EventTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testEventTooLongTitle() {
-		new Event(this.eventType, String.format("%1$" + 21 + "s", ""), this.shortDescription, this.date, this.location, this.creator);
+		new Event(this.eventType, String.format("%1$" + 21 + "s", ""),
+				this.shortDescription, this.date, this.location, this.creator);
 	}
 
 	/**
@@ -116,24 +127,28 @@ public class EventTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testEventTooLongDescription() {
-		new Event(this.eventType, this.title, String.format("%1$" + 51 + "s", ""), this.date, this.location, this.creator);
+		new Event(this.eventType, this.title, String.format("%1$" + 51 + "s",
+				""), this.date, this.location, this.creator);
 	}
 
 	@Test(expected = NullPointerException.class)
-    public void testEventNullLocation() {
-        new Event(this.eventType, this.title, this.shortDescription, this.date, null, this.creator);
-    }
+	public void testEventNullLocation() {
+		new Event(this.eventType, this.title, this.shortDescription, this.date,
+				null, this.creator);
+	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testEventEmptyLocation() {
-	    new Event(this.eventType, this.title, this.shortDescription, this.date, "", this.creator);
+		new Event(this.eventType, this.title, this.shortDescription, this.date,
+				"", this.creator);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testEventTooLongLocation() {
-	    new Event(this.eventType, this.title, this.shortDescription, this.date, String.format("%1$" + 101 + "s", ""), this.creator);
+		new Event(this.eventType, this.title, this.shortDescription, this.date,
+				String.format("%1$" + 101 + "s", ""), this.creator);
 	}
-	
+
 	/**
 	 * Method for test creator setter with null argument.
 	 */
@@ -207,24 +222,24 @@ public class EventTest {
 	}
 
 	@Test(expected = NullPointerException.class)
-    public void testSetLocationWithNullArgument() {
-        this.event.setDate(null);
-    }
+	public void testSetLocationWithNullArgument() {
+		this.event.setDate(null);
+	}
 
 	/**
-     * Method for test description setter with empty argument.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testSetLocationWithEmptyArgument() {
-        this.event.setShortDescription("");
-    }
+	 * Method for test description setter with empty argument.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetLocationWithEmptyArgument() {
+		this.event.setShortDescription("");
+	}
 
-    /**
-     * Method for test description setter with argument longer than 50.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    public void testSetLocationWithTooLongArgument() {
-        this.event.setShortDescription(String.format("%1$" + 101 + "s", ""));
-    }
+	/**
+	 * Method for test description setter with argument longer than 50.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testSetLocationWithTooLongArgument() {
+		this.event.setShortDescription(String.format("%1$" + 101 + "s", ""));
+	}
 
 }

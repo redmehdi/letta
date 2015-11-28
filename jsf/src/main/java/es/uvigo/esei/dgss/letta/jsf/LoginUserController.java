@@ -1,9 +1,12 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
+import java.io.IOException;
 import java.security.Principal;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import es.uvigo.esei.dgss.letta.jsf.util.JSFPagePathUtils;
 
 /**
- * JSF controller to login process.
+ * {@linkplain LoginUserController} is a JSF controller to perform login
+ * actions.
  *
- * @author abmiguez and bcgonzalez3
+ * @author abmiguez
+ * @author bcgonzalez3
  *
  */
 @ManagedBean(name = "loginController")
@@ -56,12 +61,16 @@ public class LoginUserController {
 	/**
 	 * Logout petition. Redirect to index closing the session.
 	 *
-	 * @return Redirect to index.
-	 * @throws ServletException if an error happens while logging out the user.
+	 * @throws ServletException
+	 *             if an error happens while logging out the user.
+	 * @throws IOException
+	 *             if an error happens on the redirection.
 	 */
-	public String doLogout() throws ServletException {
+	public void doLogout() throws ServletException, IOException {
+		final ExternalContext context = FacesContext.getCurrentInstance()
+				.getExternalContext();
 		request.logout();
-		return path.redirectToPage("index.xhtml");
+		context.redirect("index.xhtml?logout=true");
 	}
 
 	/**
