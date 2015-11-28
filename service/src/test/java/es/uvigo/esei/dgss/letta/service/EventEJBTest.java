@@ -1,7 +1,7 @@
 package es.uvigo.esei.dgss.letta.service;
 
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
+import javax.ejb.EJBAccessException;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 
@@ -35,11 +35,11 @@ import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
 
 @RunWith(Arquillian.class)
-@CleanupUsingScript(value = "cleanup.sql")
+@CleanupUsingScript("cleanup.sql")
 public class EventEJBTest {
 
     @Inject
-    private EventEJB facade;
+    private EventEJB events;
 
     @Inject
     private TestPrincipal principal;
@@ -64,34 +64,34 @@ public class EventEJBTest {
 
     @Test
     public void testListByDateReturnsEmptyListIfNoEventsInDatabase() {
-        assertThat(facade.listByDate(0,   1), is(empty()));
-        assertThat(facade.listByDate(0,  50), is(empty()));
-        assertThat(facade.listByDate(0, 100), is(empty()));
+        assertThat(events.listByDate(0,   1), is(empty()));
+        assertThat(events.listByDate(0,  50), is(empty()));
+        assertThat(events.listByDate(0, 100), is(empty()));
     }
 
     @Test
     @UsingDataSet("events-less-than-twenty.xml")
     @ShouldMatchDataSet("events-less-than-twenty.xml")
     public void testListByDateReturnsTheSpecifiedNumberOfEvents() {
-        assertThat(facade.listByDate(0,  1), hasSize( 1));
-        assertThat(facade.listByDate(0,  5), hasSize( 5));
-        assertThat(facade.listByDate(0, 10), hasSize(10));
+        assertThat(events.listByDate(0,  1), hasSize( 1));
+        assertThat(events.listByDate(0,  5), hasSize( 5));
+        assertThat(events.listByDate(0, 10), hasSize(10));
     }
 
     @Test
     @UsingDataSet("events-less-than-five.xml")
     @ShouldMatchDataSet("events-less-than-five.xml")
     public void testListByDateReturnsAllEventsIfCountIsGreaterThanDatabaseSize() {
-        assertThat(facade.listByDate(0,  6), hasSize(lessThan(5)));
-        assertThat(facade.listByDate(0, 10), hasSize(lessThan(5)));
-        assertThat(facade.listByDate(0, 50), hasSize(lessThan(5)));
+        assertThat(events.listByDate(0,  6), hasSize(lessThan(5)));
+        assertThat(events.listByDate(0, 10), hasSize(lessThan(5)));
+        assertThat(events.listByDate(0, 50), hasSize(lessThan(5)));
     }
 
     @Test
     @UsingDataSet("events-less-than-five.xml")
     @ShouldMatchDataSet("events-less-than-five.xml")
     public void testListByDateReturnsEmptyListIfCountIsZero() {
-        assertThat(facade.listByDate(0, 0), is(empty()));
+        assertThat(events.listByDate(0, 0), is(empty()));
     }
 
     @Test
@@ -99,25 +99,25 @@ public class EventEJBTest {
     @ShouldMatchDataSet("events.xml")
     public void testListByDateReturnsValidEvents() {
         assertThat(
-            facade.listByDate(0, 100),
+            events.listByDate(0, 100),
             containsEventsInAnyOrder(events())
         );
     }
 
     @Test
     public void testListHighlightedReturnsEmptyListIfNoEventsInDatabase() {
-        assertThat(facade.listHighlighted(0,  1), is(empty()));
-        assertThat(facade.listHighlighted(0,  5), is(empty()));
-        assertThat(facade.listHighlighted(0, 20), is(empty()));
+        assertThat(events.listHighlighted(0,  1), is(empty()));
+        assertThat(events.listHighlighted(0,  5), is(empty()));
+        assertThat(events.listHighlighted(0, 20), is(empty()));
     }
 
     @Test
     @UsingDataSet("events-less-than-twenty.xml")
     @ShouldMatchDataSet("events-less-than-twenty.xml")
     public void testListHighlightedReturnsNoMoreEventsThanExisting() {
-        assertThat(facade.listHighlighted(0,  1), hasSize(lessThan(20)));
-        assertThat(facade.listHighlighted(0,  5), hasSize(lessThan(20)));
-        assertThat(facade.listHighlighted(0, 10), hasSize(lessThan(20)));
+        assertThat(events.listHighlighted(0,  1), hasSize(lessThan(20)));
+        assertThat(events.listHighlighted(0,  5), hasSize(lessThan(20)));
+        assertThat(events.listHighlighted(0, 10), hasSize(lessThan(20)));
     }
 
     @Test
@@ -125,14 +125,14 @@ public class EventEJBTest {
     @ShouldMatchDataSet({ "users.xml", "users-create-event.xml" })
     public void testCreateEventCorrectlyInsertsValidEventInDatabase() {
         principal.setName(existentUser().getLogin());
-        asUser.run(() -> facade.createEvent(newEvent()));
+        asUser.run(() -> events.createEvent(newEvent()));
     }
 
     @Test
     public void testCreateEventCannotBeCalledByUnauthorizedUsers() {
-        thrown.expect(EJBException.class);
+        thrown.expect(EJBAccessException.class);
 
-        facade.createEvent(newEvent());
+        events.createEvent(newEvent());
     }
 
     @Test
@@ -141,7 +141,7 @@ public class EventEJBTest {
         thrown.expectCause(is(instanceOf(SecurityException.class)));
 
         principal.setName(nonExistentUser().getLogin());
-        asUser.throwingRun(() -> facade.createEvent(newEvent()));
+        asUser.throwingRun(() -> events.createEvent(newEvent()));
     }
 
     @Test
@@ -153,7 +153,7 @@ public class EventEJBTest {
         final Event expect = newEvent();
         expect.setCreator(existentUser());
 
-        final Event actual = asUser.call(() -> facade.createEvent(newEvent()));
+        final Event actual = asUser.call(() -> events.createEvent(newEvent()));
 
         assertThat(actual, is(equalToEventWithCreator(expect)));
     }
