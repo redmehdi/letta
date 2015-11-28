@@ -12,6 +12,7 @@ import javax.persistence.TypedQuery;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.AlreadyRegisteredException;
 
 import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
@@ -55,8 +56,7 @@ public class EventEJB {
 	 *             (!!!).
 	 */
 	@RolesAllowed("USER")
-	public Event createEvent(final Event event)
-			throws IllegalArgumentException, SecurityException {
+	public Event createEvent(final Event event) throws IllegalArgumentException, SecurityException {
 		isTrue(nonNull(event), "Event to create cannot be null");
 
 		event.setCreator(auth.getCurrentUser());
@@ -83,10 +83,8 @@ public class EventEJB {
 		if (count == 0)
 			return emptyList();
 
-		return em
-				.createQuery("SELECT e from Event e ORDER BY e.date ASC",
-						Event.class).setFirstResult(start).setMaxResults(count)
-				.getResultList();
+		return em.createQuery("SELECT e from Event e ORDER BY e.date ASC", Event.class).setFirstResult(start)
+				.setMaxResults(count).getResultList();
 	}
 
 	/**
@@ -107,16 +105,15 @@ public class EventEJB {
 		if (count == 0)
 			return emptyList();
 
-		return em
-				.createQuery("SELECT e from Event e ORDER BY RAND()",
-						Event.class).setFirstResult(0).setMaxResults(count)
-				.getResultList();
+		return em.createQuery("SELECT e from Event e ORDER BY RAND()", Event.class).setFirstResult(0)
+				.setMaxResults(count).getResultList();
 	}
 
 	/**
 	 * Searches for {@link Event Events} matching some given {@link String}
 	 * query, and returns the results as a paginated {@link List}. If the given
-	 * search pattern is null, a {@link NullPointerException} will be thrown. <br>
+	 * search pattern is null, a {@link NullPointerException} will be thrown.
+	 * <br>
 	 * The method will search inside the event's {@link Event#getTitle() title}
 	 * and {@link Event#getShortDescription() short description}. Results are
 	 * sorted by ascending date and descending number of attendees.
@@ -135,22 +132,45 @@ public class EventEJB {
 	 *             if the received {@link String} with the search terms is null.
 	 */
 	@PermitAll
-	public List<Event> search(final String search, final int start,
-			final int count) throws IllegalArgumentException {
+	public List<Event> search(final String search, final int start, final int count) throws IllegalArgumentException {
 		isTrue(nonNull(search), "Search query cannot be null");
 
 		if (count == 0)
 			return emptyList();
 
 		// TODO: Pending sort by number of attendees.
-		final TypedQuery<Event> query = em
-				.createQuery(
-						"SELECT e FROM Event e "
-								+ "WHERE e.title LIKE :search OR e.shortDescription LIKE :search "
-								+ "ORDER BY e.date ASC ", Event.class);
+		final TypedQuery<Event> query = em.createQuery("SELECT e FROM Event e "
+				+ "WHERE e.title LIKE :search OR e.shortDescription LIKE :search " + "ORDER BY e.date ASC ",
+				Event.class);
 
-		return query.setParameter("search", "%" + search + "%")
-				.setFirstResult(start).setMaxResults(count).getResultList();
+		return query.setParameter("search", "%" + search + "%").setFirstResult(start).setMaxResults(count)
+				.getResultList();
 	}
 
+	/**
+	 * Register the current identified {@link User} into a {@link Event}. It the
+	 * the current {@link User} is already registered for the event the method
+	 * will throw an {@link AlreadyRegisteredException}, else will register the
+	 * {@link User} to the event will throw an exception
+	 * 
+	 * @param event
+	 *            Indicates the {@link Event} that the {@link User} want to
+	 *            register.
+	 * @throws AlreadyRegisteredException
+	 *             if the current identified {@link User} is already registered
+	 *             for the {@link Event}.
+	 */
+	@RolesAllowed("USER")
+	public void registerToEvent(Event event) throws AlreadyRegisteredException {
+
+		User user = this.auth.getCurrentUser();
+		List<Event> eventsOfUser = user.getUsersJoinsEvents();
+		List<User> usersOfEvent = event.getEventsJoinedByUsers();
+		if (!eventsOfUser.contains(event) && !usersOfEvent.contains(user)) {
+			eventsOfUser.add(event);
+			usersOfEvent.add(user);
+		} else {
+			throw new AlreadyRegisteredException("The user is already registered for the event");
+		}
+	}
 }

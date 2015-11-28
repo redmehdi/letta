@@ -21,6 +21,7 @@ import org.junit.runner.RunWith;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.EventsDataset;
 import es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.AlreadyRegisteredException;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
 
@@ -38,124 +39,119 @@ import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentU
 @CleanupUsingScript("cleanup.sql")
 public class EventEJBTest {
 
-    @Inject
-    private EventEJB events;
+	@Inject
+	private EventEJB events;
 
-    @Inject
-    private TestPrincipal principal;
+	@Inject
+	private TestPrincipal principal;
 
-    @EJB(name = "user-caller")
-    private RoleCaller asUser;
+	@EJB(name = "user-caller")
+	private RoleCaller asUser;
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
-    @Deployment
-    public static Archive<?> createDeploymentPackage() {
-        return ShrinkWrap.create(WebArchive.class, "test.war")
-              .addClasses(EventEJB.class, UserAuthorizationEJB.class)
-              .addPackage(EventsDataset.class.getPackage())
-              .addPackage(IsEqualToEvent.class.getPackage())
-              .addPackage(TestPrincipal.class.getPackage())
-              .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-              .addAsWebInfResource("jboss-web.xml")
-              .addAsWebInfResource("beans-principal.xml", "beans.xml");
-    }
+	@Deployment
+	public static Archive<?> createDeploymentPackage() {
+		return ShrinkWrap.create(WebArchive.class, "test.war")
+				.addClasses(EventEJB.class, UserAuthorizationEJB.class, AlreadyRegisteredException.class)
+				.addPackage(EventsDataset.class.getPackage()).addPackage(IsEqualToEvent.class.getPackage())
+				.addPackage(TestPrincipal.class.getPackage())
+				.addAsResource("test-persistence.xml", "META-INF/persistence.xml").addAsWebInfResource("jboss-web.xml")
+				.addAsWebInfResource("beans-principal.xml", "beans.xml");
+	}
 
-    @Test
-    public void testListByDateReturnsEmptyListIfNoEventsInDatabase() {
-        assertThat(events.listByDate(0,   1), is(empty()));
-        assertThat(events.listByDate(0,  50), is(empty()));
-        assertThat(events.listByDate(0, 100), is(empty()));
-    }
+	@Test
+	public void testListByDateReturnsEmptyListIfNoEventsInDatabase() {
+		assertThat(events.listByDate(0, 1), is(empty()));
+		assertThat(events.listByDate(0, 50), is(empty()));
+		assertThat(events.listByDate(0, 100), is(empty()));
+	}
 
-    @Test
-    @UsingDataSet("events-less-than-twenty.xml")
-    @ShouldMatchDataSet("events-less-than-twenty.xml")
-    public void testListByDateReturnsTheSpecifiedNumberOfEvents() {
-        assertThat(events.listByDate(0,  1), hasSize( 1));
-        assertThat(events.listByDate(0,  5), hasSize( 5));
-        assertThat(events.listByDate(0, 10), hasSize(10));
-    }
+	@Test
+	@UsingDataSet("events-less-than-twenty.xml")
+	@ShouldMatchDataSet("events-less-than-twenty.xml")
+	public void testListByDateReturnsTheSpecifiedNumberOfEvents() {
+		assertThat(events.listByDate(0, 1), hasSize(1));
+		assertThat(events.listByDate(0, 5), hasSize(5));
+		assertThat(events.listByDate(0, 10), hasSize(10));
+	}
 
-    @Test
-    @UsingDataSet("events-less-than-five.xml")
-    @ShouldMatchDataSet("events-less-than-five.xml")
-    public void testListByDateReturnsAllEventsIfCountIsGreaterThanDatabaseSize() {
-        assertThat(events.listByDate(0,  6), hasSize(lessThan(5)));
-        assertThat(events.listByDate(0, 10), hasSize(lessThan(5)));
-        assertThat(events.listByDate(0, 50), hasSize(lessThan(5)));
-    }
+	@Test
+	@UsingDataSet("events-less-than-five.xml")
+	@ShouldMatchDataSet("events-less-than-five.xml")
+	public void testListByDateReturnsAllEventsIfCountIsGreaterThanDatabaseSize() {
+		assertThat(events.listByDate(0, 6), hasSize(lessThan(5)));
+		assertThat(events.listByDate(0, 10), hasSize(lessThan(5)));
+		assertThat(events.listByDate(0, 50), hasSize(lessThan(5)));
+	}
 
-    @Test
-    @UsingDataSet("events-less-than-five.xml")
-    @ShouldMatchDataSet("events-less-than-five.xml")
-    public void testListByDateReturnsEmptyListIfCountIsZero() {
-        assertThat(events.listByDate(0, 0), is(empty()));
-    }
+	@Test
+	@UsingDataSet("events-less-than-five.xml")
+	@ShouldMatchDataSet("events-less-than-five.xml")
+	public void testListByDateReturnsEmptyListIfCountIsZero() {
+		assertThat(events.listByDate(0, 0), is(empty()));
+	}
 
-    @Test
-    @UsingDataSet("events.xml")
-    @ShouldMatchDataSet("events.xml")
-    public void testListByDateReturnsValidEvents() {
-        assertThat(
-            events.listByDate(0, 100),
-            containsEventsInAnyOrder(events())
-        );
-    }
+	@Test
+	@UsingDataSet("events.xml")
+	@ShouldMatchDataSet("events.xml")
+	public void testListByDateReturnsValidEvents() {
+		assertThat(events.listByDate(0, 100), containsEventsInAnyOrder(events()));
+	}
 
-    @Test
-    public void testListHighlightedReturnsEmptyListIfNoEventsInDatabase() {
-        assertThat(events.listHighlighted(0,  1), is(empty()));
-        assertThat(events.listHighlighted(0,  5), is(empty()));
-        assertThat(events.listHighlighted(0, 20), is(empty()));
-    }
+	@Test
+	public void testListHighlightedReturnsEmptyListIfNoEventsInDatabase() {
+		assertThat(events.listHighlighted(0, 1), is(empty()));
+		assertThat(events.listHighlighted(0, 5), is(empty()));
+		assertThat(events.listHighlighted(0, 20), is(empty()));
+	}
 
-    @Test
-    @UsingDataSet("events-less-than-twenty.xml")
-    @ShouldMatchDataSet("events-less-than-twenty.xml")
-    public void testListHighlightedReturnsNoMoreEventsThanExisting() {
-        assertThat(events.listHighlighted(0,  1), hasSize(lessThan(20)));
-        assertThat(events.listHighlighted(0,  5), hasSize(lessThan(20)));
-        assertThat(events.listHighlighted(0, 10), hasSize(lessThan(20)));
-    }
+	@Test
+	@UsingDataSet("events-less-than-twenty.xml")
+	@ShouldMatchDataSet("events-less-than-twenty.xml")
+	public void testListHighlightedReturnsNoMoreEventsThanExisting() {
+		assertThat(events.listHighlighted(0, 1), hasSize(lessThan(20)));
+		assertThat(events.listHighlighted(0, 5), hasSize(lessThan(20)));
+		assertThat(events.listHighlighted(0, 10), hasSize(lessThan(20)));
+	}
 
-    @Test
-    @UsingDataSet("users.xml")
-    @ShouldMatchDataSet({ "users.xml", "users-create-event.xml" })
-    public void testCreateEventCorrectlyInsertsValidEventInDatabase() {
-        principal.setName(existentUser().getLogin());
-        asUser.run(() -> events.createEvent(newEvent()));
-    }
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet({ "users.xml", "users-create-event.xml" })
+	public void testCreateEventCorrectlyInsertsValidEventInDatabase() {
+		principal.setName(existentUser().getLogin());
+		asUser.run(() -> events.createEvent(newEvent()));
+	}
 
-    @Test
-    public void testCreateEventCannotBeCalledByUnauthorizedUsers() {
-        thrown.expect(EJBAccessException.class);
+	@Test
+	public void testCreateEventCannotBeCalledByUnauthorizedUsers() {
+		thrown.expect(EJBAccessException.class);
 
-        events.createEvent(newEvent());
-    }
+		events.createEvent(newEvent());
+	}
 
-    @Test
-    public void testCreateEventCannotBeCalledByANonExistentUser() {
-        thrown.expect(EJBTransactionRolledbackException.class);
-        thrown.expectCause(is(instanceOf(SecurityException.class)));
+	@Test
+	public void testCreateEventCannotBeCalledByANonExistentUser() {
+		thrown.expect(EJBTransactionRolledbackException.class);
+		thrown.expectCause(is(instanceOf(SecurityException.class)));
 
-        principal.setName(nonExistentUser().getLogin());
-        asUser.throwingRun(() -> events.createEvent(newEvent()));
-    }
+		principal.setName(nonExistentUser().getLogin());
+		asUser.throwingRun(() -> events.createEvent(newEvent()));
+	}
 
-    @Test
-    @UsingDataSet("users.xml")
-    @ShouldMatchDataSet({ "users.xml", "users-create-event.xml" })
-    public void testCreateReturnsTheInsertedEvent() {
-        principal.setName(existentUser().getLogin());
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet({ "users.xml", "users-create-event.xml" })
+	public void testCreateReturnsTheInsertedEvent() {
+		principal.setName(existentUser().getLogin());
 
-        final Event expect = newEvent();
-        expect.setCreator(existentUser());
+		final Event expect = newEvent();
+		expect.setCreator(existentUser());
 
-        final Event actual = asUser.call(() -> events.createEvent(newEvent()));
+		final Event actual = asUser.call(() -> events.createEvent(newEvent()));
 
-        assertThat(actual, is(equalToEventWithCreator(expect)));
-    }
+		assertThat(actual, is(equalToEventWithCreator(expect)));
+	}
 
 }
