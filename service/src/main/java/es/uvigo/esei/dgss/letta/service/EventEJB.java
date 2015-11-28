@@ -1,26 +1,31 @@
 package es.uvigo.esei.dgss.letta.service;
 
-import java.security.Principal;
 import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 
-import static java.util.Optional.ofNullable;
+import static java.util.Collections.emptyList;
+import static java.util.Objects.nonNull;
+
+import static org.apache.commons.lang3.Validate.isTrue;
 
 /**
- * EJB for the events.
+ * {@linkplain EventEJB} is a service bean providing all the required
+ * {@linkplain Event event-related} methods.
  *
  * @author Aitor Blanco Míguez
  * @author Borja Cordeiro González
+ * @author Alberto Pardellas Soto
+ * @author Adolfo Álvarez López
  * @author Adrián Rodríguez Fariña
  * @author Alberto Gutiérrez Jácome
  */
@@ -30,49 +35,112 @@ public class EventEJB {
     @PersistenceContext
     private EntityManager em;
 
-    @Inject
-    private Principal principal;
+    @EJB
+    private UserAuthorizationEJB auth;
 
     /**
-     * Returns the front page events.
+     * Creates a new {@link Event} in the database, setting its creator as the
+     * current identified {@link User}.
      *
-     * @return the list of the top twenty events ordered by ascending date.
-     */
-    @PermitAll
-    public List<Event> getFrontPage() {
-        return em.createQuery(
-            "SELECT e from Event e ORDER BY e.date ASC", Event.class
-        ).setMaxResults(20).getResultList();
-    }
-
-    /**
-     * Returns the highlighted front page events.
+     * @param event The {@link Event} to be inserted into the database.
      *
-     * @return a list of random five events
+     * @return The created {@link Event} object with all its auto-generated
+     *         fields (the event {@linkplain Event#getId()} id) already set.
+     *
+     * @throws IllegalArgumentException if the received {@link Event} is null
+     * @throws SecurityException if the currently identified user is not found
+     *         in the database (!!!).
      */
-    @PermitAll
-    public List<Event> getFrontPageHighlights() {
-        return em.createQuery(
-            "SELECT e from Event e ORDER BY RAND()", Event.class
-        ).setMaxResults(5).getResultList();
-    }
-
     @RolesAllowed("USER")
-    public Event createEvent(final Event event) {
-        return getLoggedInUser()
-              .map(user -> createEventFor(user, event))
-              .orElseThrow(SecurityException::new);
-    }
+    public Event createEvent(
+        final Event event
+    ) throws IllegalArgumentException, SecurityException {
+        isTrue(nonNull(event), "Event to create cannot be null");
 
-    private Event createEventFor(final User user, final Event event) {
-        event.setCreator(user);
+        event.setCreator(auth.getCurrentUser());
+
         em.persist(event);
         return event;
     }
 
-    private Optional<User> getLoggedInUser() {
-        return ofNullable(principal.getName())
-              .flatMap(login -> ofNullable(em.find(User.class, login)));
+    /**
+     * Returns a paginated {@link List} of {@link Event Events}, sorted by
+     * ascending date (which means that older events will be first on the list).
+     *
+     * @param start The first {@link Event} position to return, numbered from 0.
+     * @param count The number of {@link Event Events} to return.
+     *
+     * @return A sorted {@link List} with the specified number of {@link Event
+     *         Events}, sorted by ascending date and counting from the received
+     *         start point.
+     */
+    @PermitAll
+    public List<Event> listByDate(final int start, final int count) {
+        if (count == 0) return emptyList();
+
+        return em.createQuery(
+            "SELECT e from Event e ORDER BY e.date ASC", Event.class
+        ).setFirstResult(start).setMaxResults(count).getResultList();
+    }
+
+    /**
+     * Returns a paginated {@link List} of {@link Event Events} with all the
+     * currently highlighted events, sorted by a magician.
+     *
+     * @param start The first {@link Event} position to return, numbered from 0.
+     * @param count The number of {@link Event Events} to return.
+     *
+     * @return A sorted {@link List} with the specified number of {@link Event
+     *         Events}, magically sorted and counting from the received start
+     *         point.
+     */
+    @PermitAll
+    public List<Event> listHighlighted(final int start, final int count) {
+        if (count == 0) return emptyList();
+
+        return em.createQuery(
+            "SELECT e from Event e ORDER BY RAND()", Event.class
+        ).setFirstResult(0).setMaxResults(count).getResultList();
+    }
+
+    /**
+     * Searches for {@link Event Events} matching some given {@link String}
+     * query, and returns the results as a paginated {@link List}. If the given
+     * search pattern is null, a {@link NullPointerException} will be thrown.
+     * <br>
+     * The method will search inside the event's {@link Event#getTitle() title}
+     * and {@link Event#getShortDescription() short description}. Results are
+     * sorted by ascending date and descending number of attendees.
+     *
+     * @param search The search pattern as a simple {@link String}.
+     * @param start  The first {@link Event} position to return, from 0.
+     * @param count  The number of {@link Event Events} to return.
+     *
+     * @return A sorted {@link List} with the specified number of {@link Event
+     *         Events} that have matched the search query.
+     *
+     * @throws IllegalArgumentException if the received {@link String} with
+     *         the search terms is null.
+     */
+    @PermitAll
+    public List<Event> search(
+        final String search, final int start, final int count
+    ) throws IllegalArgumentException {
+        isTrue(nonNull(search), "Search query cannot be null");
+
+        if (count == 0) return emptyList();
+
+        // TODO: Pending sort by number of attendees.
+        final TypedQuery<Event> query = em.createQuery(
+            "SELECT e FROM Event e " +
+            "WHERE e.title LIKE :search OR e.shortDescription LIKE :search " +
+            "ORDER BY e.date ASC ",
+            Event.class
+        );
+
+        return query.setParameter("search", "%" + search + "%")
+              .setFirstResult(start).setMaxResults(count)
+              .getResultList();
     }
 
 }

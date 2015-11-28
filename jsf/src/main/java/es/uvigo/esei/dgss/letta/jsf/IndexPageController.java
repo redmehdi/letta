@@ -42,23 +42,23 @@ public class IndexPageController implements JSFController {
 
     /**
      * Retrieves a {@link List} of {@link Event}s from
-     * {@link EventEJB#getFrontPage()}, ordered by ascending date and descending
-     * number of attendees.
+     * {@link EventEJB#listByDate(int, int)}, sorted by ascending date and
+     * descending number of attendees.
      *
      * @return an ordered List of twenty events.
      */
     public List<Event> getEventList() {
-        return eventEJB.getFrontPage();
+        return eventEJB.listByDate(0, 20);
     }
 
     /**
      * Retrieves a {@link List} of highlighted {@link Event}s from
-     * {@link EventEJB#getFrontPageHighlights()}
+     * {@link EventEJB#listHighlighted(int, int)}
      *
      * @return a List of the five highlighted events.
      */
     public List<Event> getHighlights() {
-        return eventEJB.getFrontPageHighlights();
+        return eventEJB.listHighlighted(0, 5);
     }
 
     /**

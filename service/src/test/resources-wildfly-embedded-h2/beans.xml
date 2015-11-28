@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://xmlns.jcp.org/xml/ns/javaee"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
-       http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
+       xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/beans_1_1.xsd"
        bean-discovery-mode="all">
-       <alternatives>
-			<class>es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal</class>
-			<class>es.uvigo.esei.dgss.letta.service.mail.TestingMailer</class>
-       </alternatives>
+    <alternatives>
+        <class>es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal</class>
+        <class>es.uvigo.esei.dgss.letta.service.mail.TestingMailer</class>
+    </alternatives>
 </beans>
 
