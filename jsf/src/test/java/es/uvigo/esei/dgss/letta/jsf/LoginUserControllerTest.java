@@ -33,15 +33,15 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 
 /**
- * {@linkplain JoinEventControllerTest} is an arquillian test case to test the
- * JSF ManagedBean {@link JoinEventController}.
+ * {@linkplain LoginUserControllerTest} is an arquillian test case to test the
+ * JSF ManagedBean {@link LoginUserController}.
  *
  * @author abmiguez
- * @author apsoto
+ * @author bcgonzalez3
  *
  */
 @RunWith(Arquillian.class)
-public class JoinEventControllerTest {
+public class LoginUserControllerTest {
 	private static final Path WEBAPP = Paths.get("src/main/webapp");
 
 	@Drone
@@ -54,7 +54,7 @@ public class JoinEventControllerTest {
 	public static Archive<?> createDeployment() {
 		return ShrinkWrap
 				.create(WebArchive.class, "test.war")
-				.addPackages(true, JoinEventController.class.getPackage())
+				.addPackage(JoinEventController.class.getPackage())
 				.addPackage(UserEJB.class.getPackage())
 				.addPackage(User.class.getPackage())
 				.addPackage(LoginDuplicateException.class.getPackage())
@@ -95,13 +95,13 @@ public class JoinEventControllerTest {
 	@InSequence(1)
 	@UsingDataSet("users.xml")
 	@Cleanup(phase = TestExecutionPhase.NONE)
-	public void beforeDoJoinEventNeverJoin() {
+	public void beforeDoLoginSuccess() {
 	}
 
 	@Test
 	@InSequence(2)
 	@RunAsClient
-	public void testDoJoinEventNeverJoin(@InitialPage LoginPage loginPage) {
+	public void testDoLoginSuccess(@InitialPage LoginPage loginPage) {
 		loginPage.login("anne", "annepass");
 		indexPage.assertOnIt();
 		
@@ -111,29 +111,29 @@ public class JoinEventControllerTest {
 	@InSequence(3)
 	@ShouldMatchDataSet("users.xml")
 	@CleanupUsingScript({ "cleanup.sql" })
-	public void afterDoJoinEventNeverJoin() {
+	public void afterDoLoginSuccess() {
 	}
 	
 	@Test
 	@InSequence(11)
 	@UsingDataSet("users.xml")
 	@Cleanup(phase = TestExecutionPhase.NONE)
-	public void beforeDoJoinEventAlreadyJoin() {
+	public void beforeDoLoginFail() {
 	}
 
 	@Test
 	@InSequence(12)
 	@RunAsClient
-	public void testDoJoinEventAlreadyJoin(@InitialPage LoginPage loginPage) {
-		loginPage.login("anne", "annepass");
-		indexPage.assertOnIt();
+	public void testDoLoginFail(@InitialPage LoginPage loginPage) {
+		loginPage.login("anne", "wrong");
+		loginPage.assertOnIt();
 	}
 
 	@Test
 	@InSequence(13)
 	@ShouldMatchDataSet("users.xml")
 	@CleanupUsingScript({ "cleanup.sql" })
-	public void afterDoJoinEventAlreadyJoin() {
+	public void afterDoLoginFail() {
 	}
-
+	
 }

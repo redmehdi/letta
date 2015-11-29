@@ -50,7 +50,7 @@ public class LoginUserController {
 		try {
 			request.login(this.getLogin(), this.getPassword());
 			this.error = false;
-			return path.redirectToPage("index.xhtml");
+			return path.redirectToPage("index.xhtml")+"&login=true";
 		} catch (ServletException e) {
 			this.error = true;
 			this.errorMessage = "Login or password don't match";

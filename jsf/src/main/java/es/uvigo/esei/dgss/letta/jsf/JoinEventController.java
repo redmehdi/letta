@@ -10,10 +10,11 @@ import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
-import es.uvigo.esei.dgss.letta.service.UserEJB;
+import es.uvigo.esei.dgss.letta.service.EventEJB;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.AlreadyRegisteredException;
 
 /**
- * {@linkplain ConfirmUserController} is a JSF controller to join a
+ * {@linkplain JoinEventController} is a JSF controller to join a
  * {@link Event} by a {@link User}.
  *
  * @author abmiguez
@@ -25,7 +26,7 @@ import es.uvigo.esei.dgss.letta.service.UserEJB;
 public class JoinEventController {
 
 	@Inject
-	private UserEJB userEJB;
+	private EventEJB eventEJB;
 
 	/**
 	 * Joins into a selected event. Redirects to index if joined succesfully.
@@ -40,7 +41,11 @@ public class JoinEventController {
 	public void doJoin(final Event event) throws IOException {
 		final ExternalContext context = FacesContext.getCurrentInstance()
 				.getExternalContext();
-		// userEJB.joinEvent(event);
-		context.redirect("index.xhtml?joined=" + event.getId());
+		try {
+			eventEJB.registerToEvent(event);
+			context.redirect("index.xhtml?joined=true");
+		} catch (AlreadyRegisteredException e) {
+			context.redirect("index.xhtml?joined=false");
+		}
 	}
 }

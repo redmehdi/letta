@@ -51,7 +51,7 @@ public class RegisterUserController {
 		try {
 			userEJB.registerUser(registration);
 			error = false;
-			return path.redirectToPage("index.xhtml");
+			return path.redirectToPage("index.xhtml?register=true");
 		} catch (final LoginDuplicateException e) {
 			error = true;
 			errorMessage = "Login already exists";
