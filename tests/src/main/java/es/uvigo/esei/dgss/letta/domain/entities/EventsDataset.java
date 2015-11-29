@@ -1,11 +1,19 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
-import java.util.Date;
-
+import static es.uvigo.esei.dgss.letta.domain.entities.EventType.CINEMA;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventType.INTERNET;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventType.LITERATURE;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventType.MUSIC;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventType.SPORTS;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventType.THEATRE;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventType.TRAVELS;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventType.TV;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.users;
 import static java.util.Arrays.stream;
 
-import static es.uvigo.esei.dgss.letta.domain.entities.EventType.*;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.users;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 
@@ -462,5 +470,127 @@ public class EventsDataset {
     public static Event newEvent() {
         return new Event(LITERATURE, "New literature event", "This is a description", new Date(946684861000L), "Location X");
     }
+    
+
+	/**
+	 * Returns a {@link Event} with his creator {@link User} and his joined {@link User}s
+	 * 
+	 * @return a {@link Event} with his creator {@link User} and his joined {@link User}s
+	 */
+	public static Event[] eventsWithTwoJoinedUsers() {
+		List<User> groupOfUsers0 = new LinkedList<>();
+		groupOfUsers0.add(users[1]);
+		groupOfUsers0.add(users[2]);
+		List<User> groupOfUsers1 = new LinkedList<>();
+		groupOfUsers1.add(users[0]);
+		groupOfUsers1.add(users[3]);
+		List<User> groupOfUsers2 = new LinkedList<>();
+		groupOfUsers2.add(users[3]);
+		groupOfUsers2.add(users[4]);		
+		List<User> groupOfUsers3 = new LinkedList<>();
+		groupOfUsers1.add(users[0]);
+		groupOfUsers1.add(users[1]);		
+		List<User> groupOfUsers4 = new LinkedList<>();
+		groupOfUsers1.add(users[0]);
+		groupOfUsers1.add(users[2]);
+		return new Event[] {
+				new Event(LITERATURE, EXISTENT_TITLE_LITERATURE,
+						"This is a description literature 1", 
+						new Date(946684861000L), "Location X", users[0],
+						groupOfUsers0),
+				new Event(LITERATURE, "Example2 literature",
+						"This is a description literature 2",
+						new Date(946684861000L), "Location X", users[0],
+						groupOfUsers0),
+				new Event(MUSIC, EXISTENT_TITLE_MUSIC,
+						"This is a description music 1",
+						new Date(946684861000L), "Location X", users[0],
+						groupOfUsers0),
+				new Event(MUSIC, "Example2 music",
+						"This is a description music 2",
+						new Date(946684861000L), "Location X", users[0],
+						groupOfUsers0),
+				new Event(CINEMA, EXISTENT_TITLE_CINEMA,
+						"This is a description cinema 1",
+						new Date(946684861000L), "Location X", users[0],
+						groupOfUsers0),
+				new Event(CINEMA, "Example2 cinema",
+						"This is a description cinema 2",
+						new Date(946684861000L), "Location X", users[1],
+						groupOfUsers1),
+				new Event(TV, EXISTENT_TITLE_TV, "This is a description tv 1",
+						new Date(946684861000L), "Location X", users[1],
+						groupOfUsers1),
+				new Event(TV, "Example2 tv", "This is a description tv 1",
+						new Date(946684861000L), "Location X", users[1],
+						groupOfUsers1),
+				new Event(SPORTS, EXISTENT_TITLE_SPORTS,
+						"This is a description sports 1",
+						new Date(946684861000L), "Location X", users[1],
+						groupOfUsers1),
+				new Event(SPORTS, "Example2 sports",
+						"This is a description sports 2",
+						new Date(946684861000L), "Location X", users[1],
+						groupOfUsers1),
+				new Event(INTERNET, EXISTENT_TITLE_INTERNET,
+						"This is a description internet 1",
+						new Date(946684861000L), "Location X", users[2],
+						groupOfUsers2),
+				new Event(INTERNET, "Example2 internet",
+						"This is a description internet 2",
+						new Date(946684861000L), "Location X", users[2],
+						groupOfUsers2),
+				new Event(TRAVELS, EXISTENT_TITLE_TRAVELS,
+						EXISTENT_DESCRIPTION_TRAVELS, new Date(946684861000L),
+						"Location X", users[2],
+						groupOfUsers2),
+				new Event(TRAVELS, "Example2 travels",
+						"This is a description travels 2",
+						new Date(946684861000L), "Location X", users[2],
+						groupOfUsers2),
+				new Event(THEATRE, EXISTENT_TITLE_THEATRE,
+						"This is a description theatre 1",
+						new Date(946684861000L), "Location X", users[2],
+						groupOfUsers2),
+				new Event(THEATRE, "Example2 theatre",
+						"This is a description theatre 2",
+						new Date(946684861000L), "Location X", users[3],
+						groupOfUsers3),
+				new Event(SPORTS, "Example3 sports",
+						"This is a description sports 3",
+						new Date(946684861000L), "Location X", users[3],
+						groupOfUsers3),
+				new Event(INTERNET, "Example3 internet",
+						"This is a description internet 3",
+						new Date(946684861000L), "Location X", users[3],
+						groupOfUsers3),
+				new Event(TRAVELS, "Example3 travels",
+						"This is a description travels 3",
+						new Date(946684861000L), "Location X", users[3],
+						groupOfUsers3),
+				new Event(CINEMA, "Example3 cinema",
+						"This is a description cinema 3",
+						new Date(946684861000L), "Location X", users[3],
+						groupOfUsers3),
+				new Event(TV, "Example3 tv", "This is a description tv 3",
+						new Date(946684861000L), "Location X", users[4],
+						groupOfUsers4),
+				new Event(MUSIC, "Example3 music",
+						"This is a description music 3",
+						new Date(946684861000L), "Location X", users[4],
+						groupOfUsers4),
+				new Event(LITERATURE, "Example3 literature",
+						"This is a description literature 3",
+						new Date(946684861000L), "Location X", users[4],
+						groupOfUsers4),
+				new Event(LITERATURE, "Example4 literature",
+						"This is a description literature 4",
+						new Date(946684861000L), "Location X", users[4],
+						groupOfUsers4),
+				new Event(LITERATURE, "Example5 literature",
+						"This is a description literature 5",
+						new Date(946684861000L), "Location X", users[4],
+						groupOfUsers4) };
+	}
 
 }

@@ -113,6 +113,46 @@ public class Event {
 		this.setLocation(location);
 		this.setCreator(creator);
 	}
+	
+	/**
+	 * Creates a new instance of {@code Event}.
+	 *
+	 * @param eventType
+	 *            the event type of the event. This paramenter must be a non
+	 *            {@code null} {@code EventType}.
+	 * @param title
+	 *            the title of the envent. This paramenter must be a non
+	 *            {@code null} string with with a maximum length of 20.
+	 * @param shortDescription
+	 *            the description of the event. This paramenter must be a non
+	 *            {@code null} string with with a maximum length of 50.
+	 * @param date
+	 *            the date of the event. This paramenter must be a non
+	 *            {@code null}.
+	 * @param location
+	 *            the location of the event
+	 * @param creator
+	 *            the creator of the event
+	 * @param eventsJoinedByUsers
+	 *            Users who was joined to the event
+	 */
+	public Event(final EventType eventType, final String title,
+			final String shortDescription, final Date date,
+			final String location, final User creator,
+			final List<User> eventsJoinedByUsers) {
+		this.setEventType(eventType);
+		this.setTitle(title);
+		this.setShortDescription(shortDescription);
+		this.setDate(date);
+		this.setLocation(location);
+		this.setCreator(creator);
+		for(User userJoin : eventsJoinedByUsers) {
+			this.eventsJoinedByUsers.add(userJoin);
+			final List <Event> listEvent = new LinkedList<Event>();
+			listEvent.add(this);
+			userJoin.setUsersJoinsEvents(listEvent);
+		}
+	}
 
 	/**
 	 * The getter for the eventType parameter.
