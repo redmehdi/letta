@@ -60,36 +60,36 @@ public class ConfirmUserControllerTest {
 	@Deployment
 	public static Archive<?> createDeployment() {
 		return ShrinkWrap
-				.create(WebArchive.class, "test.war")
-				.addPackages(true, ConfirmUserController.class.getPackage())
-				.addPackage(UserEJB.class.getPackage())
-				.addPackage(User.class.getPackage())
-				.addPackage(LoginDuplicateException.class.getPackage())
-				.addPackage(IndexPage.class.getPackage())
-				.addPackage(WebDriver.class.getPackage())
-				.addPackage(Mailer.class.getPackage())
-				.addAsWebResource(WEBAPP.resolve("index.xhtml").toFile(),
-						"index.xhtml")
-				.addAsWebResource(WEBAPP.resolve("confirm.xhtml").toFile(),
-						"confirm.xhtml")
-				.addAsWebResource(
-						WEBAPP.resolve("template/templateLayout.xhtml")
-								.toFile(), "template/templateLayout.xhtml")
-				.addAsWebResource(
-						WEBAPP.resolve("template/templateHeader.xhtml")
-								.toFile(), "template/templateHeader.xhtml")
-				.addAsWebResource(
-						WEBAPP.resolve("template/templateFooter.xhtml")
-								.toFile(), "template/templateFooter.xhtml")
-				.addAsWebResource(
-						WEBAPP.resolve("template/templateContent.xhtml")
-								.toFile(), "template/templateContent.xhtml")
-				.addAsResource("test-persistence.xml",
-						"META-INF/persistence.xml")
-				.addAsWebInfResource("jboss-web.xml")
-				.addAsWebInfResource("web.xml")
-				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
-				.addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml").resolve("org.primefaces:primefaces").withoutTransitivity().asSingleFile());
+			.create(WebArchive.class, "test.war")
+			.addPackages(true, ConfirmUserController.class.getPackage())
+			.addPackage(UserEJB.class.getPackage())
+			.addPackage(User.class.getPackage())
+			.addPackage(LoginDuplicateException.class.getPackage())
+			.addPackage(IndexPage.class.getPackage())
+			.addPackage(WebDriver.class.getPackage())
+			.addPackage(Mailer.class.getPackage())
+			.addAsWebResource(WEBAPP.resolve("index.xhtml").toFile(),
+					"index.xhtml")
+			.addAsWebResource(WEBAPP.resolve("confirm.xhtml").toFile(),
+					"confirm.xhtml")
+			.addAsWebResource(
+					WEBAPP.resolve("template/templateLayout.xhtml")
+							.toFile(), "template/templateLayout.xhtml")
+			.addAsWebResource(
+					WEBAPP.resolve("template/templateHeader.xhtml")
+							.toFile(), "template/templateHeader.xhtml")
+			.addAsWebResource(
+					WEBAPP.resolve("template/templateFooter.xhtml")
+							.toFile(), "template/templateFooter.xhtml")
+			.addAsWebResource(
+					WEBAPP.resolve("template/templateContent.xhtml")
+							.toFile(), "template/templateContent.xhtml")
+			.addAsResource("test-persistence.xml",
+					"META-INF/persistence.xml")
+			.addAsWebInfResource("jboss-web.xml")
+			.addAsWebInfResource("web.xml")
+			.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+			.addAsLibraries(Maven.resolver().loadPomFromFile("pom.xml").resolve("org.primefaces:primefaces").withoutTransitivity().asSingleFile());
 	}
 
 	@Before
@@ -132,9 +132,8 @@ public class ConfirmUserControllerTest {
 	@InSequence(12)
 	@RunAsClient
 	public void testDoConfirmBadUuid() {
-		this.browser
-				.get(baseURL
-						+ "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000001");
+		this.browser.get(baseURL
+			+ "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000001");
 		this.indexPage.waitForIt();
 		this.indexPage.assertOnIt();
 	}
@@ -157,9 +156,8 @@ public class ConfirmUserControllerTest {
 	@InSequence(22)
 	@RunAsClient
 	public void testDoConfirmGoodUuid() {
-		this.browser
-				.get(baseURL
-						+ "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000000");
+		this.browser.get(baseURL
+			+ "/faces/confirm.xhtml?uuid=00000000-0000-0000-0000-000000000000");
 		this.indexPage.waitForIt();
 		this.indexPage.assertOnIt();
 	}

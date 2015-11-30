@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
@@ -24,7 +23,6 @@ import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.EventType;
 import es.uvigo.esei.dgss.letta.jsf.util.JSFPagePathUtils;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
-import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 
 /**
  * {@linkplain CreateEventController} is a JSF controller to create LETTA's
@@ -68,8 +66,7 @@ public class CreateEventController {
 
 	public String doCreate() {
 		try {
-			eventEJB.createEvent(
-					new Event(type, title, shortDescription, date, location));
+			eventEJB.createEvent(new Event(type, title, shortDescription, date, location));
 			error = false;
 			return path.redirectToPage("index.xhtml");
 		} catch (NullPointerException e) {

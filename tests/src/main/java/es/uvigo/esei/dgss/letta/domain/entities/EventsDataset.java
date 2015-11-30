@@ -71,84 +71,18 @@ public class EventsDataset {
 	}
 
 	/**
-	 * Returns all the {@link Event} with his creator {@link User}
+	 * Returns an {@link Event} with the provided id.
 	 * 
-	 * @return all the {@link Event} with his creator {@link User}
+	 * @param id
+	 *            identifier of the event to return.
+	 * @return an event of the dataset with the provided id.
+	 * @throws IllegalArgumentException
+	 *             if there is no event with the provided id.
 	 */
-	public static Event[] eventsWithUser() {
-		return new Event[] {
-				new Event(LITERATURE, EXISTENT_TITLE_LITERATURE,
-						"This is a description literature 1",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(LITERATURE, "Example2 literature",
-						"This is a description literature 2",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(MUSIC, EXISTENT_TITLE_MUSIC,
-						"This is a description music 1",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(MUSIC, "Example2 music",
-						"This is a description music 2",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(CINEMA, EXISTENT_TITLE_CINEMA,
-						"This is a description cinema 1",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(CINEMA, "Example2 cinema",
-						"This is a description cinema 2",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(TV, EXISTENT_TITLE_TV, "This is a description tv 1",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(TV, "Example2 tv", "This is a description tv 1",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(SPORTS, EXISTENT_TITLE_SPORTS,
-						"This is a description sports 1",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(SPORTS, "Example2 sports",
-						"This is a description sports 2",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(INTERNET, EXISTENT_TITLE_INTERNET,
-						"This is a description internet 1",
-						new Date(946684861000L), "Location X", users[2]),
-				new Event(INTERNET, "Example2 internet",
-						"This is a description internet 2",
-						new Date(946684861000L), "Location X", users[2]),
-				new Event(TRAVELS, EXISTENT_TITLE_TRAVELS,
-						EXISTENT_DESCRIPTION_TRAVELS, new Date(946684861000L),
-						"Location X", users[2]),
-				new Event(TRAVELS, "Example2 travels",
-						"This is a description travels 2",
-						new Date(946684861000L), "Location X", users[2]),
-				new Event(THEATRE, EXISTENT_TITLE_THEATRE,
-						"This is a description theatre 1",
-						new Date(946684861000L), "Location X", users[2]),
-				new Event(THEATRE, "Example2 theatre",
-						"This is a description theatre 2",
-						new Date(946684861000L), "Location X", users[3]),
-				new Event(SPORTS, "Example3 sports",
-						"This is a description sports 3",
-						new Date(946684861000L), "Location X", users[3]),
-				new Event(INTERNET, "Example3 internet",
-						"This is a description internet 3",
-						new Date(946684861000L), "Location X", users[3]),
-				new Event(TRAVELS, "Example3 travels",
-						"This is a description travels 3",
-						new Date(946684861000L), "Location X", users[3]),
-				new Event(CINEMA, "Example3 cinema",
-						"This is a description cinema 3",
-						new Date(946684861000L), "Location X", users[3]),
-				new Event(TV, "Example3 tv", "This is a description tv 3",
-						new Date(946684861000L), "Location X", users[4]),
-				new Event(MUSIC, "Example3 music",
-						"This is a description music 3",
-						new Date(946684861000L), "Location X", users[4]),
-				new Event(LITERATURE, "Example3 literature",
-						"This is a description literature 3",
-						new Date(946684861000L), "Location X", users[4]),
-				new Event(LITERATURE, "Example4 literature",
-						"This is a description literature 4",
-						new Date(946684861000L), "Location X", users[4]),
-				new Event(LITERATURE, "Example5 literature",
-						"This is a description literature 5",
-						new Date(946684861000L), "Location X", users[4]) };
+	public static Event eventWithId(int id) {
+		return stream(events())
+			.filter(event -> event.getId() == id)
+			.findFirst().orElseThrow(IllegalArgumentException::new);
 	}
 
 	/**
@@ -158,78 +92,82 @@ public class EventsDataset {
 	 */
 	public static Event[] events() {
 		return new Event[] {
-				new Event(LITERATURE, EXISTENT_TITLE_LITERATURE,
-						"This is a description literature 1",
-						new Date(946684861000L), "Location X"),
-				new Event(LITERATURE, "Example2 literature",
-						"This is a description literature 2",
-						new Date(946684861000L), "Location X"),
-				new Event(MUSIC, EXISTENT_TITLE_MUSIC,
-						"This is a description music 1",
-						new Date(946684861000L), "Location X"),
-				new Event(MUSIC, "Example2 music",
-						"This is a description music 2",
-						new Date(946684861000L), "Location X"),
-				new Event(CINEMA, EXISTENT_TITLE_CINEMA,
-						"This is a description cinema 1",
-						new Date(946684861000L), "Location X"),
-				new Event(CINEMA, "Example2 cinema",
-						"This is a description cinema 2",
-						new Date(946684861000L), "Location X"),
-				new Event(TV, EXISTENT_TITLE_TV, "This is a description tv 1",
-						new Date(946684861000L), "Location X"),
-				new Event(TV, "Example2 tv", "This is a description tv 1",
-						new Date(946684861000L), "Location X"),
-				new Event(SPORTS, EXISTENT_TITLE_SPORTS,
-						"This is a description sports 1",
-						new Date(946684861000L), "Location X"),
-				new Event(SPORTS, "Example2 sports",
-						"This is a description sports 2",
-						new Date(946684861000L), "Location X"),
-				new Event(INTERNET, EXISTENT_TITLE_INTERNET,
-						"This is a description internet 1",
-						new Date(946684861000L), "Location X"),
-				new Event(INTERNET, "Example2 internet",
-						"This is a description internet 2",
-						new Date(946684861000L), "Location X"),
-				new Event(TRAVELS, EXISTENT_TITLE_TRAVELS,
-						EXISTENT_DESCRIPTION_TRAVELS, new Date(946684861000L),
-						"Location X"),
-				new Event(TRAVELS, "Example2 travels",
-						"This is a description travels 2",
-						new Date(946684861000L), "Location X"),
-				new Event(THEATRE, EXISTENT_TITLE_THEATRE,
-						"This is a description theatre 1",
-						new Date(946684861000L), "Location X"),
-				new Event(THEATRE, "Example2 theatre",
-						"This is a description theatre 2",
-						new Date(946684861000L), "Location X"),
-				new Event(SPORTS, "Example3 sports",
-						"This is a description sports 3",
-						new Date(946684861000L), "Location X"),
-				new Event(INTERNET, "Example3 internet",
-						"This is a description internet 3",
-						new Date(946684861000L), "Location X"),
-				new Event(TRAVELS, "Example3 travels",
-						"This is a description travels 3",
-						new Date(946684861000L), "Location X"),
-				new Event(CINEMA, "Example3 cinema",
-						"This is a description cinema 3",
-						new Date(946684861000L), "Location X"),
-				new Event(TV, "Example3 tv", "This is a description tv 3",
-						new Date(946684861000L), "Location X"),
-				new Event(MUSIC, "Example3 music",
-						"This is a description music 3",
-						new Date(946684861000L), "Location X"),
-				new Event(LITERATURE, "Example3 literature",
-						"This is a description literature 3",
-						new Date(946684861000L), "Location X"),
-				new Event(LITERATURE, "Example4 literature",
-						"This is a description literature 4",
-						new Date(946684861000L), "Location X"),
-				new Event(LITERATURE, "Example5 literature",
-						"This is a description literature 5",
-						new Date(946684861000L), "Location X") };
+			new Event(1, LITERATURE, EXISTENT_TITLE_LITERATURE,
+				"This is a description literature 1",
+				new Date(946684861000L), "Location X", users[0]),
+			new Event(2, LITERATURE, "Example2 literature",
+				"This is a description literature 2",
+				new Date(946684861000L), "Location X", users[0]),
+			new Event(3, MUSIC, EXISTENT_TITLE_MUSIC,
+				"This is a description music 1",
+				new Date(946684861000L), "Location X", users[0]),
+			new Event(4, MUSIC, "Example2 music",
+				"This is a description music 2",
+				new Date(946684861000L), "Location X", users[0]),
+			new Event(5, CINEMA, EXISTENT_TITLE_CINEMA,
+				"This is a description cinema 1",
+				new Date(946684861000L), "Location X", users[0]),
+			new Event(6, CINEMA, "Example2 cinema",
+				"This is a description cinema 2",
+				new Date(946684861000L), "Location X", users[1]),
+			new Event(7, TV, EXISTENT_TITLE_TV,
+				"This is a description tv 1",
+				new Date(946684861000L), "Location X", users[1]),
+			new Event(8, TV, "Example2 tv",
+				"This is a description tv 1",
+				new Date(946684861000L), "Location X", users[1]),
+			new Event(9, SPORTS, EXISTENT_TITLE_SPORTS,
+				"This is a description sports 1",
+				new Date(946684861000L), "Location X", users[1]),
+			new Event(10, SPORTS, "Example2 sports",
+				"This is a description sports 2",
+				new Date(946684861000L), "Location X", users[1]),
+			new Event(11, INTERNET, EXISTENT_TITLE_INTERNET,
+				"This is a description internet 1",
+				new Date(946684861000L), "Location X", users[2]),
+			new Event(12, INTERNET, "Example2 internet",
+				"This is a description internet 2",
+				new Date(946684861000L), "Location X", users[2]),
+			new Event(13, TRAVELS, EXISTENT_TITLE_TRAVELS,
+				EXISTENT_DESCRIPTION_TRAVELS, new Date(946684861000L),
+				"Location X", users[2]),
+			new Event(14, TRAVELS, "Example2 travels",
+				"This is a description travels 2",
+				new Date(946684861000L), "Location X", users[2]),
+			new Event(15, THEATRE, EXISTENT_TITLE_THEATRE,
+				"This is a description theatre 1",
+				new Date(946684861000L), "Location X", users[2]),
+			new Event(16, THEATRE, "Example2 theatre",
+				"This is a description theatre 2",
+				new Date(946684861000L), "Location X", users[3]),
+			new Event(17, SPORTS, "Example3 sports",
+				"This is a description sports 3",
+				new Date(946684861000L), "Location X", users[3]),
+			new Event(18, INTERNET, "Example3 internet",
+				"This is a description internet 3",
+				new Date(946684861000L), "Location X", users[3]),
+			new Event(19, TRAVELS, "Example3 travels",
+				"This is a description travels 3",
+				new Date(946684861000L), "Location X", users[3]),
+			new Event(20, CINEMA, "Example3 cinema",
+				"This is a description cinema 3",
+				new Date(946684861000L), "Location X", users[3]),
+			new Event(21, TV, "Example3 tv",
+				"This is a description tv 3",
+				new Date(946684861000L), "Location X", users[4]),
+			new Event(22, MUSIC, "Example3 music",
+				"This is a description music 3",
+				new Date(946684861000L), "Location X", users[4]),
+			new Event(23, LITERATURE, "Example3 literature",
+				"This is a description literature 3",
+				new Date(946684861000L), "Location X", users[4]),
+			new Event(24, LITERATURE, "Example4 literature",
+				"This is a description literature 4",
+				new Date(946684861000L), "Location X", users[4]),
+			new Event(25, LITERATURE, "Example5 literature",
+				"This is a description literature 5",
+				new Date(946684861000L), "Location X", users[4])
+		};
 	}
 
 	/**
@@ -238,95 +176,10 @@ public class EventsDataset {
 	 * @return less than five {@link Event}
 	 */
 	public static Event[] lessThanFiveEvents() {
-		return new Event[] {
-				new Event(LITERATURE, EXISTENT_TITLE_LITERATURE,
-						"This is a description literature 1",
-						new Date(946684861000L), "Location X"),
-				new Event(LITERATURE, "Example2 literature",
-						"This is a description literature 2",
-						new Date(946684861000L), "Location X"),
-				new Event(MUSIC, EXISTENT_TITLE_MUSIC,
-						"This is a description music 1",
-						new Date(946684861000L), "Location X"),
-				new Event(MUSIC, "Example2 music",
-						"This is a description music 2",
-						new Date(946684861000L), "Location X") };
-	}
-
-	/**
-	 * Returns less than five {@link Event} with his creator {@link User}
-	 * 
-	 * @return less than five {@link Event} with his creator {@link User}
-	 */
-	public static Event[] lessThanFiveEventsWithUser() {
-		return new Event[] {
-				new Event(LITERATURE, EXISTENT_TITLE_LITERATURE,
-						"This is a description literature 1",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(LITERATURE, "Example2 literature",
-						"This is a description literature 2",
-						new Date(946684861000L), "Location X", users[2]),
-				new Event(MUSIC, EXISTENT_TITLE_MUSIC,
-						"This is a description music 1",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(MUSIC, "Example2 music",
-						"This is a description music 2",
-						new Date(946684861000L), "Location X", users[0]) };
-	}
-
-	/**
-	 * Returns less than twenty {@link Event} with his creator {@link User}
-	 * 
-	 * @return less than twenty {@link Event} with his creator {@link User}
-	 */
-	public static Event[] lessThanTwentyEventsWithUser() {
-		return new Event[] {
-				new Event(LITERATURE, EXISTENT_TITLE_LITERATURE,
-						"This is a description literature 1",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(LITERATURE, "Example2 literature",
-						"This is a description literature 2",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(MUSIC, EXISTENT_TITLE_MUSIC,
-						"This is a description music 1",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(MUSIC, "Example2 music",
-						"This is a description music 2",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(CINEMA, EXISTENT_TITLE_CINEMA,
-						"This is a description cinema 1",
-						new Date(946684861000L), "Location X", users[0]),
-				new Event(CINEMA, "Example2 cinema",
-						"This is a description cinema 2",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(TV, EXISTENT_TITLE_TV, "This is a description tv 1",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(TV, "Example2 tv", "This is a description tv 1",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(SPORTS, EXISTENT_TITLE_SPORTS,
-						"This is a description sports 1",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(SPORTS, "Example2 sports",
-						"This is a description sports 2",
-						new Date(946684861000L), "Location X", users[1]),
-				new Event(INTERNET, EXISTENT_TITLE_INTERNET,
-						"This is a description internet 1",
-						new Date(946684861000L), "Location X", users[2]),
-				new Event(INTERNET, "Example2 internet",
-						"This is a description internet 2",
-						new Date(946684861000L), "Location X", users[2]),
-				new Event(TRAVELS, EXISTENT_TITLE_TRAVELS,
-						EXISTENT_DESCRIPTION_TRAVELS, new Date(946684861000L),
-						"Location X", users[2]),
-				new Event(TRAVELS, "Example2 travels",
-						"This is a description travels 2",
-						new Date(946684861000L), "Location X", users[2]),
-				new Event(THEATRE, EXISTENT_TITLE_THEATRE,
-						"This is a description theatre 1",
-						new Date(946684861000L), "Location X", users[4]),
-				new Event(THEATRE, "Example2 theatre",
-						"This is a description theatre 2",
-						new Date(946684861000L), "Location X", users[3]) };
+		final Event[] events = new Event[4];
+		System.arraycopy(events(), 0, events, 0, events.length);
+		
+		return events;
 	}
 
 	/**
@@ -335,89 +188,10 @@ public class EventsDataset {
 	 * @return less than twenty {@link Event}
 	 */
 	public static Event[] lessThanTwentyEvents() {
-		return new Event[] {
-				new Event(LITERATURE, EXISTENT_TITLE_LITERATURE,
-						"This is a description literature 1",
-						new Date(946684861000L), "Location X"),
-				new Event(LITERATURE, "Example2 literature",
-						"This is a description literature 2",
-						new Date(946684861000L), "Location X"),
-				new Event(MUSIC, EXISTENT_TITLE_MUSIC,
-						"This is a description music 1",
-						new Date(946684861000L), "Location X"),
-				new Event(MUSIC, "Example2 music",
-						"This is a description music 2",
-						new Date(946684861000L), "Location X"),
-				new Event(CINEMA, EXISTENT_TITLE_CINEMA,
-						"This is a description cinema 1",
-						new Date(946684861000L), "Location X"),
-				new Event(CINEMA, "Example2 cinema",
-						"This is a description cinema 2",
-						new Date(946684861000L), "Location X"),
-				new Event(TV, EXISTENT_TITLE_TV, "This is a description tv 1",
-						new Date(946684861000L), "Location X"),
-				new Event(TV, "Example2 tv", "This is a description tv 1",
-						new Date(946684861000L), "Location X"),
-				new Event(SPORTS, EXISTENT_TITLE_SPORTS,
-						"This is a description sports 1",
-						new Date(946684861000L), "Location X"),
-				new Event(SPORTS, "Example2 sports",
-						"This is a description sports 2",
-						new Date(946684861000L), "Location X"),
-				new Event(INTERNET, EXISTENT_TITLE_INTERNET,
-						"This is a description internet 1",
-						new Date(946684861000L), "Location X"),
-				new Event(INTERNET, "Example2 internet",
-						"This is a description internet 2",
-						new Date(946684861000L), "Location X"),
-				new Event(TRAVELS, EXISTENT_TITLE_TRAVELS,
-						EXISTENT_DESCRIPTION_TRAVELS, new Date(946684861000L),
-						"Location X"),
-				new Event(TRAVELS, "Example2 travels",
-						"This is a description travels 2",
-						new Date(946684861000L), "Location X"),
-				new Event(THEATRE, EXISTENT_TITLE_THEATRE,
-						"This is a description theatre 1",
-						new Date(946684861000L), "Location X"),
-				new Event(THEATRE, "Example2 theatre",
-						"This is a description theatre 2",
-						new Date(946684861000L), "Location X") };
-	}
-
-	/**
-	 * Return an existent title
-	 * 
-	 * @return an existent title
-	 */
-	public static String anyTitle() {
-		return EXISTENT_TITLE_TRAVELS;
-	}
-
-	/**
-	 * Return and existent {@link EventType}
-	 * 
-	 * @return and existent {@link EventType}
-	 */
-	public static EventType anyType() {
-		return EventType.TRAVELS;
-	}
-
-	/**
-	 * Return an event with a title
-	 * 
-	 * @return an event with a title
-	 */
-	public static Event anyEventWithTitle() {
-		return eventWithTitle(anyTitle());
-	}
-
-	/**
-	 * Return an event with a {@link EventType}
-	 * 
-	 * @return an event with a {@link EventType}
-	 */
-	public static Event anyEventWithType() {
-		return eventWithType(anyType());
+		final Event[] events = new Event[19];
+		System.arraycopy(events(), 0, events, 0, events.length);
+		
+		return events;
 	}
 
 	/**
@@ -445,8 +219,8 @@ public class EventsDataset {
 	 */
 	public static Event nonExistentEvent() {
 		return new Event(EventType.TRAVELS, nonExistentTitle(),
-				nonExistentDescription(), new Date(587684861000L),
-				"the inexistent location", new User());
+			nonExistentDescription(), new Date(587684861000L),
+			"the inexistent location", new User());
 	}
 
 	/**
@@ -494,103 +268,104 @@ public class EventsDataset {
 		groupOfUsers1.add(users[0]);
 		groupOfUsers1.add(users[2]);
 		return new Event[] {
-				new Event(LITERATURE, EXISTENT_TITLE_LITERATURE,
-						"This is a description literature 1", 
-						new Date(946684861000L), "Location X", users[0],
-						groupOfUsers0),
-				new Event(LITERATURE, "Example2 literature",
-						"This is a description literature 2",
-						new Date(946684861000L), "Location X", users[0],
-						groupOfUsers0),
-				new Event(MUSIC, EXISTENT_TITLE_MUSIC,
-						"This is a description music 1",
-						new Date(946684861000L), "Location X", users[0],
-						groupOfUsers0),
-				new Event(MUSIC, "Example2 music",
-						"This is a description music 2",
-						new Date(946684861000L), "Location X", users[0],
-						groupOfUsers0),
-				new Event(CINEMA, EXISTENT_TITLE_CINEMA,
-						"This is a description cinema 1",
-						new Date(946684861000L), "Location X", users[0],
-						groupOfUsers0),
-				new Event(CINEMA, "Example2 cinema",
-						"This is a description cinema 2",
-						new Date(946684861000L), "Location X", users[1],
-						groupOfUsers1),
-				new Event(TV, EXISTENT_TITLE_TV, "This is a description tv 1",
-						new Date(946684861000L), "Location X", users[1],
-						groupOfUsers1),
-				new Event(TV, "Example2 tv", "This is a description tv 1",
-						new Date(946684861000L), "Location X", users[1],
-						groupOfUsers1),
-				new Event(SPORTS, EXISTENT_TITLE_SPORTS,
-						"This is a description sports 1",
-						new Date(946684861000L), "Location X", users[1],
-						groupOfUsers1),
-				new Event(SPORTS, "Example2 sports",
-						"This is a description sports 2",
-						new Date(946684861000L), "Location X", users[1],
-						groupOfUsers1),
-				new Event(INTERNET, EXISTENT_TITLE_INTERNET,
-						"This is a description internet 1",
-						new Date(946684861000L), "Location X", users[2],
-						groupOfUsers2),
-				new Event(INTERNET, "Example2 internet",
-						"This is a description internet 2",
-						new Date(946684861000L), "Location X", users[2],
-						groupOfUsers2),
-				new Event(TRAVELS, EXISTENT_TITLE_TRAVELS,
-						EXISTENT_DESCRIPTION_TRAVELS, new Date(946684861000L),
-						"Location X", users[2],
-						groupOfUsers2),
-				new Event(TRAVELS, "Example2 travels",
-						"This is a description travels 2",
-						new Date(946684861000L), "Location X", users[2],
-						groupOfUsers2),
-				new Event(THEATRE, EXISTENT_TITLE_THEATRE,
-						"This is a description theatre 1",
-						new Date(946684861000L), "Location X", users[2],
-						groupOfUsers2),
-				new Event(THEATRE, "Example2 theatre",
-						"This is a description theatre 2",
-						new Date(946684861000L), "Location X", users[3],
-						groupOfUsers3),
-				new Event(SPORTS, "Example3 sports",
-						"This is a description sports 3",
-						new Date(946684861000L), "Location X", users[3],
-						groupOfUsers3),
-				new Event(INTERNET, "Example3 internet",
-						"This is a description internet 3",
-						new Date(946684861000L), "Location X", users[3],
-						groupOfUsers3),
-				new Event(TRAVELS, "Example3 travels",
-						"This is a description travels 3",
-						new Date(946684861000L), "Location X", users[3],
-						groupOfUsers3),
-				new Event(CINEMA, "Example3 cinema",
-						"This is a description cinema 3",
-						new Date(946684861000L), "Location X", users[3],
-						groupOfUsers3),
-				new Event(TV, "Example3 tv", "This is a description tv 3",
-						new Date(946684861000L), "Location X", users[4],
-						groupOfUsers4),
-				new Event(MUSIC, "Example3 music",
-						"This is a description music 3",
-						new Date(946684861000L), "Location X", users[4],
-						groupOfUsers4),
-				new Event(LITERATURE, "Example3 literature",
-						"This is a description literature 3",
-						new Date(946684861000L), "Location X", users[4],
-						groupOfUsers4),
-				new Event(LITERATURE, "Example4 literature",
-						"This is a description literature 4",
-						new Date(946684861000L), "Location X", users[4],
-						groupOfUsers4),
-				new Event(LITERATURE, "Example5 literature",
-						"This is a description literature 5",
-						new Date(946684861000L), "Location X", users[4],
-						groupOfUsers4) };
+			new Event(LITERATURE, EXISTENT_TITLE_LITERATURE,
+					"This is a description literature 1", 
+					new Date(946684861000L), "Location X", users[0],
+					groupOfUsers0),
+			new Event(LITERATURE, "Example2 literature",
+					"This is a description literature 2",
+					new Date(946684861000L), "Location X", users[0],
+					groupOfUsers0),
+			new Event(MUSIC, EXISTENT_TITLE_MUSIC,
+					"This is a description music 1",
+					new Date(946684861000L), "Location X", users[0],
+					groupOfUsers0),
+			new Event(MUSIC, "Example2 music",
+					"This is a description music 2",
+					new Date(946684861000L), "Location X", users[0],
+					groupOfUsers0),
+			new Event(CINEMA, EXISTENT_TITLE_CINEMA,
+					"This is a description cinema 1",
+					new Date(946684861000L), "Location X", users[0],
+					groupOfUsers0),
+			new Event(CINEMA, "Example2 cinema",
+					"This is a description cinema 2",
+					new Date(946684861000L), "Location X", users[1],
+					groupOfUsers1),
+			new Event(TV, EXISTENT_TITLE_TV, "This is a description tv 1",
+					new Date(946684861000L), "Location X", users[1],
+					groupOfUsers1),
+			new Event(TV, "Example2 tv", "This is a description tv 1",
+					new Date(946684861000L), "Location X", users[1],
+					groupOfUsers1),
+			new Event(SPORTS, EXISTENT_TITLE_SPORTS,
+					"This is a description sports 1",
+					new Date(946684861000L), "Location X", users[1],
+					groupOfUsers1),
+			new Event(SPORTS, "Example2 sports",
+					"This is a description sports 2",
+					new Date(946684861000L), "Location X", users[1],
+					groupOfUsers1),
+			new Event(INTERNET, EXISTENT_TITLE_INTERNET,
+					"This is a description internet 1",
+					new Date(946684861000L), "Location X", users[2],
+					groupOfUsers2),
+			new Event(INTERNET, "Example2 internet",
+					"This is a description internet 2",
+					new Date(946684861000L), "Location X", users[2],
+					groupOfUsers2),
+			new Event(TRAVELS, EXISTENT_TITLE_TRAVELS,
+					EXISTENT_DESCRIPTION_TRAVELS, new Date(946684861000L),
+					"Location X", users[2],
+					groupOfUsers2),
+			new Event(TRAVELS, "Example2 travels",
+					"This is a description travels 2",
+					new Date(946684861000L), "Location X", users[2],
+					groupOfUsers2),
+			new Event(THEATRE, EXISTENT_TITLE_THEATRE,
+					"This is a description theatre 1",
+					new Date(946684861000L), "Location X", users[2],
+					groupOfUsers2),
+			new Event(THEATRE, "Example2 theatre",
+					"This is a description theatre 2",
+					new Date(946684861000L), "Location X", users[3],
+					groupOfUsers3),
+			new Event(SPORTS, "Example3 sports",
+					"This is a description sports 3",
+					new Date(946684861000L), "Location X", users[3],
+					groupOfUsers3),
+			new Event(INTERNET, "Example3 internet",
+					"This is a description internet 3",
+					new Date(946684861000L), "Location X", users[3],
+					groupOfUsers3),
+			new Event(TRAVELS, "Example3 travels",
+					"This is a description travels 3",
+					new Date(946684861000L), "Location X", users[3],
+					groupOfUsers3),
+			new Event(CINEMA, "Example3 cinema",
+					"This is a description cinema 3",
+					new Date(946684861000L), "Location X", users[3],
+					groupOfUsers3),
+			new Event(TV, "Example3 tv", "This is a description tv 3",
+					new Date(946684861000L), "Location X", users[4],
+					groupOfUsers4),
+			new Event(MUSIC, "Example3 music",
+					"This is a description music 3",
+					new Date(946684861000L), "Location X", users[4],
+					groupOfUsers4),
+			new Event(LITERATURE, "Example3 literature",
+					"This is a description literature 3",
+					new Date(946684861000L), "Location X", users[4],
+					groupOfUsers4),
+			new Event(LITERATURE, "Example4 literature",
+					"This is a description literature 4",
+					new Date(946684861000L), "Location X", users[4],
+					groupOfUsers4),
+			new Event(LITERATURE, "Example5 literature",
+					"This is a description literature 5",
+					new Date(946684861000L), "Location X", users[4],
+					groupOfUsers4)
+		};
 	}
 
 }

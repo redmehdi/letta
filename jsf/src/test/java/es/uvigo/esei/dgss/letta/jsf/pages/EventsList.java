@@ -4,14 +4,13 @@ import static org.jboss.arquillian.graphene.Graphene.guardHttp;
 
 import java.util.List;
 
-import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 
-public class IndexUiRepeat {
-	@FindByJQuery("div.col-md-3")
+public class EventsList {
+	@FindBy(css = "div.overlay")
 	private List<EventRow> rowEvent;
 	
 	public EventRow getEventRow(final Event event) {
@@ -27,15 +26,17 @@ public class IndexUiRepeat {
 	}
 	
 	public static class EventRow {
-		
 		@FindBy(className = "buttonJoin")
 		private WebElement buttonJoin;
-		
+
 		@FindBy(className = "eventId")
 		private WebElement eventId;
 		
 		public boolean hasEvent(final Event event) {
-			return this.getEventId().equals(event.getId());
+			final String id = Integer.toString(event.getId());
+			final String eventIdValue = this.getEventId().getAttribute("value");
+			
+			return id.equals(eventIdValue);
 		}
 		
 		public WebElement getButtonJoin() {

@@ -2,6 +2,7 @@ package es.uvigo.esei.dgss.letta.domain.entities;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -51,7 +52,54 @@ public class Event {
 	@JoinColumn(name = "creator", referencedColumnName = "login")
 	private User creator;
 
+	/**
+	 * Constructs a new instance of {@link Event}. This constructor is required
+	 * by the JPA framework.
+	 */
 	Event() {
+	}
+	
+	/**
+	 * Constructs a new instance of {@link Event}. This constructor is expected
+	 * to be used for testing purposes only.
+	 *
+	 * @param id
+	 *            identifier of the event.
+	 * @param eventType
+	 *            the event type of the event. This paramenter must be a non
+	 *            {@code null} {@code EventType}.
+	 * @param title
+	 *            the title of the envent. This paramenter must be a non
+	 *            {@code null} string with with a maximum length of 20.
+	 * @param shortDescription
+	 *            the description of the event. This paramenter must be a non
+	 *            {@code null} string with with a maximum length of 50.
+	 * @param date
+	 *            the date of the event. This paramenter must be a non
+	 *            {@code null}.
+	 * @param location
+	 *            the location of the event
+	 * @param creator
+	 *            the creator of the event
+	 */
+	Event(
+		int id,
+		EventType eventType,
+		String title,
+		String shortDescription,
+		Date date,
+		String location,
+		User creator
+	) {
+		super();
+		this.id = id;
+		this.eventType = eventType;
+		this.title = title;
+		this.shortDescription = shortDescription;
+		this.date = date;
+		this.eventsJoinedByUsers = new ArrayList<>();
+		this.location = location;
+		this.creator = creator;
 	}
 
 	/**
@@ -80,7 +128,6 @@ public class Event {
 		this.setShortDescription(shortDescription);
 		this.setDate(date);
 		this.setLocation(location);
-		this.setCreator(new User());
 	}
 
 	/**
