@@ -40,5 +40,9 @@ public class EventMappings {
         return icons.getOrDefault(type, "http://placehold.it/512x512");
     }
 
+    public String getIconFor(final Event event) {
+        return getIconFor(event.getEventType());
+    }
+
 
 }

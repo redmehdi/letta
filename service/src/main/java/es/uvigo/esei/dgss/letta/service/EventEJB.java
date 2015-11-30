@@ -47,7 +47,7 @@ public class EventEJB {
     @PermitAll
     public int count() {
         return em.createQuery(
-            "SELECT COUNT(c) FROM Event c", Integer.class
+            "SELECT COUNT(c.id) FROM Event c", Long.class
         ).getSingleResult().intValue();
     }
 
