@@ -23,15 +23,15 @@
 						<br /> <br />
 						<h1>Create Event</h1>
 						<br />
-						<h:form>
-							<h:message for="title" />
-							<h:inputText id="title" required="true" maxlength="20"
+						<h:form id="createEvent-form">
+							<h:message for="title-field" />
+							<h:inputText id="title-field" required="true" maxlength="20"
 								class="form-control" value="#{createEventController.title}"
 								a:placeholder="Title" requiredMessage="Title can't be empty" />
 							<br />
 
-							<h:message for="shortDescription" />
-							<h:inputText id="shortDescription" required="true" maxlength="50"
+							<h:message for="shortDescription-field" />
+							<h:inputText id="shortDescription-field" required="true" maxlength="50"
 								class="form-control"
 								value="#{createEventController.shortDescription}"
 								a:placeholder="Description"
@@ -39,31 +39,31 @@
 							</h:inputText>
 							<br />
 
-							<h:message for="date" />
+							<h:message for="date-field" />
 							<br/>
-							<p:calendar id="date" value="#{createEventController.date}"
+							<p:calendar id="date-field" value="#{createEventController.date}"
 								required="true" requiredMessage="Date can't be empty"
 								a:placeholder="Date" pattern="dd/MM/yyyy HH:mm" />
 							<br />
 							<br />
 
-							<h:message for="location" />
-							<h:inputText id="location" required="true" maxlength="100"
+							<h:message for="location-field" />
+							<h:inputText id="location-field" required="true" maxlength="100"
 								class="form-control" value="#{createEventController.location}"
 								a:placeholder="Location"
 								requiredMessage="Location can't be empty">
 							</h:inputText>
 							<br />
 
-							<h:message for="type" />
-							<h:selectOneMenu value="#{createEventController.type}"
+							<h:message for="type-field" />
+							<h:selectOneMenu id="type-field" value="#{createEventController.type}"
 								class="form-control">
 								<f:selectItem itemLabel="Select one type" itemValue="" />
 								<f:selectItems value="#{createEventController.types}" />
 							</h:selectOneMenu>
 							<br />
 
-							<h:commandButton class="
+							<h:commandButton id="submit-button" class="
 								btn btn-default" value="Create"
 								action="#{createEventController.doCreate()}" />
 						</h:form>

@@ -42,8 +42,6 @@ public class CreateEventController {
 	EventEJB eventEJB;
 	@Inject
 	private JSFPagePathUtils path;
-	@EJB
-	private UserAuthorizationEJB auth;
 
 	private boolean error = false;
 	private String errorMessage;
