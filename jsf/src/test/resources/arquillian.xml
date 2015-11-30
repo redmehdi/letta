@@ -13,16 +13,13 @@
 		<property name="browser">firefox</property>
 	</extension>
 	
-	<!-- extension qualifier="graphene">
-	   <property name="waitAjaxInterval">9</property>
-	   <property name="waitModelInterval">9</property>
-	   <property name="waitGuiInterval">9</property>	   
-	   <property name="waitGuardInterval">9</property>
-	</extension -->
-	
-	<!-- extension qualifier="drone">
-    	<property name="instantiationTimeoutInSeconds">0</property>
-	</extension -->
+	<extension qualifier="graphene">
+		<property name="waitGuiInterval">10</property>
+		<property name="waitAjaxInterval">10</property>
+		<property name="waitModelInterval">10</property>
+		<property name="waitGuardInterval">10</property>
+		<property name="javascriptInstallationLimit">10</property>
+	</extension>
 	
 	<container qualifier="wildfly-embedded-h2" default="true">
 		<configuration>
