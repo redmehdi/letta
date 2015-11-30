@@ -42,12 +42,12 @@ public class IndexPageController {
 
     /**
      * Retrieves a {@link List} of highlighted {@link Event}s from
-     * {@link EventEJB#listHighlighted(int, int)}
+     * {@link EventEJB#listHighlighted()}
      *
-     * @return a List of the five highlighted events.
+     * @return a List of the highlighted events.
      */
     public List<Event> getHighlights() {
-        return eventEJB.listHighlighted(0, 5);
+        return eventEJB.listHighlighted();
     }
 
     /**

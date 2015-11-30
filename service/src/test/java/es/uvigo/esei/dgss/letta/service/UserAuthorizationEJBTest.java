@@ -11,16 +11,12 @@ import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.UsingDataSet;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
-import es.uvigo.esei.dgss.letta.domain.entities.IsEqualsToUser;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
-import es.uvigo.esei.dgss.letta.domain.entities.UsersDataset;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
 
@@ -31,6 +27,7 @@ import static org.junit.Assert.assertThat;
 import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualsToUser.equalsToUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.users;
+import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
 
 @RunWith(Arquillian.class)
 @CleanupUsingScript("cleanup.sql")
@@ -49,15 +46,10 @@ public class UserAuthorizationEJBTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Deployment
-    public static Archive<?> createDeploymentPackage() {
-        return ShrinkWrap.create(WebArchive.class, "test.war")
-              .addClasses(UserAuthorizationEJB.class)
-              .addPackage(UsersDataset.class.getPackage())
-              .addPackage(IsEqualsToUser.class.getPackage())
-              .addPackage(TestPrincipal.class.getPackage())
-              .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
-              .addAsWebInfResource("jboss-web.xml")
-              .addAsWebInfResource("beans-principal.xml", "beans.xml");
+    public static Archive<?> deploy() {
+        return deployment().withTestPrincipal().withClasses(
+            UserAuthorizationEJB.class
+        ).build();
     }
 
     @Test

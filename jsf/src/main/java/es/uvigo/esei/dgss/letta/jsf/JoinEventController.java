@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
-import es.uvigo.esei.dgss.letta.service.util.exceptions.AlreadyRegisteredException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 
 /**
  * {@linkplain JoinEventController} is a JSF controller to join a
@@ -44,7 +44,7 @@ public class JoinEventController {
 		try {
 			eventEJB.registerToEvent(event);
 			context.redirect("index.xhtml?joined=true");
-		} catch (AlreadyRegisteredException e) {
+		} catch (EventAlredyJoinedException e) {
 			context.redirect("index.xhtml?joined=false");
 		}
 	}
