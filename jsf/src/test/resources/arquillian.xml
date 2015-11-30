@@ -13,6 +13,17 @@
 		<property name="browser">firefox</property>
 	</extension>
 	
+	<!-- extension qualifier="graphene">
+	   <property name="waitAjaxInterval">9</property>
+	   <property name="waitModelInterval">9</property>
+	   <property name="waitGuiInterval">9</property>	   
+	   <property name="waitGuardInterval">9</property>
+	</extension -->
+	
+	<!-- extension qualifier="drone">
+    	<property name="instantiationTimeoutInSeconds">0</property>
+	</extension -->
+	
 	<container qualifier="wildfly-embedded-h2" default="true">
 		<configuration>
 			<property name="jbossHome">target/wildfly-${wildfly.version}</property>

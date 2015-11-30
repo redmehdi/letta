@@ -47,7 +47,7 @@
             <div class="section">
                 <div class="container">
                     <div class="row">
-                        <ui:repeat var="event" value="#{indexController.eventList}" varStatus="status">
+                        <ui:repeat id="indexRepeat" var="event" value="#{indexController.eventList}" varStatus="status">
                             <div class="col-xs-12 col-sm-6 col-md-3">
                                 <div class="cover-event">
                                     <div class="hovereffect">
@@ -55,7 +55,8 @@
                                         <div class="overlay">
                                             <h2>#{event.title}</h2>
                                             <h:form rendered="#{loginController.currentUser.name != 'anonymous'}">
-                                            	<h:commandLink class="info" action="#{joinController.doJoin(event)}" value="Join" />
+                                            	<h:inputText class="eventId" value="#{event.id}" style="display: none"/>
+                                            	<h:commandLink class="info buttonJoin" action="#{joinController.doJoin(event)}" value="Join" />
                            	            	</h:form>
                            	            	<h:link class="info" value="Sign Up" rendered="#{loginController.currentUser.name == 'anonymous'}" outcome="faces/register.xhtml" />
                                         </div>
