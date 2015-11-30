@@ -1,5 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
+	<User login="john" password="3bffe7a2bc163d273184e8902afe66b7" email="john@email.com" role="USER"/>
+	<User login="anne" password="1afee8bef2d82a3bef6f52b2614f16ab" email="anne@email.com" role="USER"/>
+	<User login="mary" password="a5446c2cfe2b8a015caa8a7e825bb8af" email="mary@email.com" role="USER"/>
+	<User login="joan" password="ce8a660555a5701617403c77f6654d65" email="joan@email.com" role="USER"/>
+	<User login="mike" password="b1b668f82813956ef1fe9688e6c05011" email="mike@email.com" role="USER"/>
+	
+	<Event id="1"   eventType="LITERATURE" title="Example1 literature" shortDescription="This is a description literature 1" date="2000-01-01 01:01:01" location="Location X" creator="john"/>
+    <Event id="2"   eventType="LITERATURE" title="Example2 literature" shortDescription="This is a description literature 2" date="2000-01-01 01:01:01" location="Location X" creator="john"/>
+    <Event id="3"   eventType="MUSIC"      title="Example1 music"      shortDescription="This is a description music 1"      date="2000-01-01 01:01:01" location="Location X" creator="john"/>
+    <Event id="4"   eventType="MUSIC"      title="Example2 music"      shortDescription="This is a description music 2"      date="2000-01-01 01:01:01" location="Location X" creator="john"/>
+    <Event id="5"   eventType="CINEMA"     title="Example1 cinema"     shortDescription="This is a description cinema 1"     date="2000-01-01 01:01:01" location="Location X" creator="john"/>
+    <Event id="6"   eventType="CINEMA"     title="Example2 cinema"     shortDescription="This is a description cinema 2"     date="2000-01-01 01:01:01" location="Location X" creator="anne"/>
+    <Event id="7"   eventType="TV"         title="Example1 tv"         shortDescription="This is a description tv 1"         date="2000-01-01 01:01:01" location="Location X" creator="anne"/>
+    <Event id="8"   eventType="TV"         title="Example2 tv"         shortDescription="This is a description tv 2"         date="2000-01-01 01:01:01" location="Location X" creator="anne"/>
+    <Event id="9"   eventType="SPORTS"     title="Example1 sports"     shortDescription="This is a description sports 1"     date="2000-01-01 01:01:01" location="Location X" creator="anne"/>
+    <Event id="10"  eventType="SPORTS"     title="Example2 sports"     shortDescription="This is a description sports 2"     date="2000-01-01 01:01:01" location="Location X" creator="anne"/>
+    <Event id="11"  eventType="INTERNET"   title="Example1 internet"   shortDescription="This is a description internet 1"   date="2000-01-01 01:01:01" location="Location X" creator="mary"/>
+    <Event id="12"  eventType="INTERNET"   title="Example2 internet"   shortDescription="This is a description internet 2"   date="2000-01-01 01:01:01" location="Location X" creator="mary"/>
+    <Event id="13"  eventType="TRAVELS"    title="Example1 travels"    shortDescription="This is a description travels 1"    date="2000-01-01 01:01:01" location="Location X" creator="mary"/>
+    <Event id="14"  eventType="TRAVELS"    title="Example2 travels"    shortDescription="This is a description travels 2"    date="2000-01-01 01:01:01" location="Location X" creator="mary"/>
+    <Event id="15"  eventType="THEATRE"    title="Example1 theatre"    shortDescription="This is a description theatre 1"    date="2000-01-01 01:01:01" location="Location X" creator="mary"/>
+    <Event id="16"  eventType="THEATRE"    title="Example2 theatre"    shortDescription="This is a description theatre 2"    date="2000-01-01 01:01:01" location="Location X" creator="joan"/>
+    <Event id="17"  eventType="SPORTS"     title="Example3 sports"     shortDescription="This is a description sports 3"     date="2000-01-01 01:01:01" location="Location X" creator="joan"/>
+    <Event id="18"  eventType="INTERNET"   title="Example3 internet"   shortDescription="This is a description internet 3"   date="2000-01-01 01:01:01" location="Location X" creator="joan"/>
+    <Event id="19"  eventType="TRAVELS"    title="Example3 travels"    shortDescription="This is a description travels 3"    date="2000-01-01 01:01:01" location="Location X" creator="joan"/>
+    <Event id="20"  eventType="CINEMA"     title="Example3 cinema"     shortDescription="This is a description cinema 3"     date="2000-01-01 01:01:01" location="Location X" creator="joan"/>
+    <Event id="21"  eventType="TV"         title="Example3 tv"         shortDescription="This is a description tv 3"         date="2000-01-01 01:01:01" location="Location X" creator="mike"/>
+    <Event id="22"  eventType="MUSIC"      title="Example3 music"      shortDescription="This is a description music 3"      date="2000-01-01 01:01:01" location="Location X" creator="mike"/>
+    <Event id="23"  eventType="LITERATURE" title="Example3 literature" shortDescription="This is a description literature 3" date="2000-01-01 01:01:01" location="Location X" creator="mike"/>
+    <Event id="24"  eventType="LITERATURE" title="Example4 literature" shortDescription="This is a description literature 4" date="2000-01-01 01:01:01" location="Location X" creator="mike"/>
+    <Event id="25"  eventType="LITERATURE" title="Example5 literature" shortDescription="This is a description literature 5" date="2000-01-01 01:01:01" location="Location X" creator="mike"/>
+
 	<UserJoinsmamil event_id="1"  user_id="anne"/>
 	<UserJoinsmamil event_id="1"  user_id="mary"/>
 	<UserJoinsEvent event_id="2"  user_id="anne"/>
