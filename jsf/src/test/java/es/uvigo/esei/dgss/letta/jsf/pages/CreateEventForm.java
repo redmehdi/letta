@@ -5,14 +5,13 @@ import static org.jboss.arquillian.graphene.Graphene.waitGui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import es.uvigo.esei.dgss.letta.domain.entities.EventType;
+import es.uvigo.esei.dgss.letta.domain.entities.Event;
 
 public class CreateEventForm {
 	@Drone
@@ -39,23 +38,22 @@ public class CreateEventForm {
 	@FindBy(id = "ui-datepicker-div")
 	private WebElement datePicker;
 
-	public void createEvent(String title, String shortDescription, Date date,
-			String location, EventType type) {
+	public void createEvent(Event event) {
 		inputTitle.clear();
 		inputShortDescription.clear();
 		inputLocation.clear();
 
-		inputTitle.sendKeys(title);
-		inputShortDescription.sendKeys(shortDescription);
+		inputTitle.sendKeys(event.getTitle());
+		inputShortDescription.sendKeys(event.getShortDescription());
 		
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-		inputDateSelector.sendKeys(dateFormat.format(date));
+		inputDateSelector.sendKeys(dateFormat.format(event.getDate()));
 		
 		hideDatePickerAndWait();
 		
-		inputLocation.sendKeys(location);
+		inputLocation.sendKeys(event.getLocation());
 		
-		inputType.sendKeys("TV");
+		inputType.sendKeys(event.getEventType().toString());
 
 		guardHttp(buttonSubmit).click();
 	}
