@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<dataset>
-	<User login="john" password="3bffe7a2bc163d273184e8902afe66b7" email="john@email.com" role="USER"/>
-	<User login="anne" password="1afee8bef2d82a3bef6f52b2614f16ab" email="anne@email.com" role="USER"/>
-	<User login="mary" password="a5446c2cfe2b8a015caa8a7e825bb8af" email="mary@email.com" role="USER"/>
-	<User login="joan" password="ce8a660555a5701617403c77f6654d65" email="joan@email.com" role="USER"/>
-	<User login="mike" password="b1b668f82813956ef1fe9688e6c05011" email="mike@email.com" role="USER"/>
-	<User login="bart" password="f67884174ac391b5a6c409715d16ba60" email="bart@email.com" role="USER"/>
-</dataset>

@@ -280,9 +280,13 @@ public final class EventsDataset {
 	public static Event[] eventsWithTwoJoinedUsers() {
 		final User[] users = users();
 
-		final User[][] groups = new User[][] { new User[] { users[1], users[2] }, new User[] { users[0], users[3] },
-				new User[] { users[3], users[4] }, new User[] { users[0], users[1] },
-				new User[] { users[0], users[2] } };
+        final User[][] groups = new User[][] {
+            new User[] { users[1], users[2] },
+            new User[] { users[0], users[3] },
+            new User[] { users[2], users[4] },
+            new User[] { users[0], users[2] },
+            new User[] { users[0], users[1] }
+        };
 
 		return stream(events()).map(event -> {
 			final int group = (event.getId() - 1) / 5;
@@ -303,5 +307,20 @@ public final class EventsDataset {
 	public static Event[] eventsWithTitleOrDescriptionContaining(final String pattern) {
 		return filterEvents(e -> e.getTitle().contains(pattern) || e.getShortDescription().contains(pattern));
 	}
+
+	/**
+	 * Returns the {@link #eventsWithTwoJoinedUsers()} that satisfy a given
+	 * {@link Predicate}.
+	 *
+	 * @param f
+	 *            The predicate that every resulting {@link Event} must satisfy.
+	 *
+	 * @return An array with the Events that satisfy the given predicate.
+	 */
+    public static Event[] filterEventsWithTwoJoinedUsers(
+    	final Predicate<Event> f
+    ) {
+        return stream(eventsWithTwoJoinedUsers()).filter(f).toArray(Event[]::new);
+    }
 
 }

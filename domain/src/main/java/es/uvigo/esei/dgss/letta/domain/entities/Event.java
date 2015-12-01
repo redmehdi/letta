@@ -422,4 +422,8 @@ public class Event {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return Integer.toString(this.id);
+	}
 }

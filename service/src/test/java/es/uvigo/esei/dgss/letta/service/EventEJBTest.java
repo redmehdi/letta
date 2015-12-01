@@ -1,5 +1,25 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.eventWithId;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
+import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent.containsEventsInAnyOrder;
+import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent.equalToEventWithCreator;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.newUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogin;
+import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.lessThan;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
 import javax.ejb.EJBTransactionRolledbackException;
@@ -19,27 +39,11 @@ import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.EventsDataset;
-import es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.domain.entities.UsersDataset;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertThat;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.eventsWithTitleOrDescriptionContaining;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
-import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent.containsEventsInAnyOrder;
-import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent.equalToEventWithCreator;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
-import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
 
 @RunWith(Arquillian.class)
 @CleanupUsingScript("cleanup.sql")
@@ -72,8 +76,8 @@ public class EventEJBTest {
     }
 
     @Test
-    @UsingDataSet("events-less-than-twenty.xml")
-    @ShouldMatchDataSet("events-less-than-twenty.xml")
+    @UsingDataSet({ "users.xml", "events-less-than-twenty.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-less-than-twenty.xml" })
     public void testListByDateReturnsTheSpecifiedNumberOfEvents() {
         assertThat(events.listByDate(0, 1), hasSize(1));
         assertThat(events.listByDate(0, 5), hasSize(5));
@@ -81,8 +85,8 @@ public class EventEJBTest {
     }
 
     @Test
-    @UsingDataSet("events-less-than-five.xml")
-    @ShouldMatchDataSet("events-less-than-five.xml")
+    @UsingDataSet({ "users.xml", "events-less-than-five.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-less-than-five.xml" })
     public void testListByDateReturnsAllEventsIfCountIsGreaterThanDatabaseSize() {
         assertThat(events.listByDate(0, 6), hasSize(lessThan(5)));
         assertThat(events.listByDate(0, 10), hasSize(lessThan(5)));
@@ -90,15 +94,15 @@ public class EventEJBTest {
     }
 
     @Test
-    @UsingDataSet("events-less-than-five.xml")
-    @ShouldMatchDataSet("events-less-than-five.xml")
+    @UsingDataSet({ "users.xml", "events-less-than-five.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-less-than-five.xml" })
     public void testListByDateReturnsEmptyListIfCountIsZero() {
         assertThat(events.listByDate(0, 0), is(empty()));
     }
 
     @Test
-    @UsingDataSet("events.xml")
-    @ShouldMatchDataSet("events.xml")
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testListByDateReturnsValidEvents() {
         assertThat(
             events.listByDate(0, 100),
@@ -112,8 +116,8 @@ public class EventEJBTest {
     }
 
     @Test
-    @UsingDataSet("events-less-than-twenty.xml")
-    @ShouldMatchDataSet("events-less-than-twenty.xml")
+    @UsingDataSet({ "users.xml", "events-less-than-twenty.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-less-than-twenty.xml" })
     public void testListHighlightedReturnsNoMoreEventsThanExisting() {
         assertThat(events.listHighlighted(), hasSize(lessThan(20)));
     }
@@ -158,71 +162,97 @@ public class EventEJBTest {
         assertThat(actual, is(equalToEventWithCreator(expect)));
     }
 
-	@Test
-	@UsingDataSet("events.xml")
-	@ShouldMatchDataSet("events.xml")
-	public void testSearchTitleSingleResult() {
-		assertThat(events.search(EventsDataset.existentEvent().getTitle(), 0, 25), containsEventsInAnyOrder(
-				eventsWithTitleOrDescriptionContaining(EventsDataset.existentEvent().getTitle())));
-	}
-
-	@Test
-	@UsingDataSet("events.xml")
-	@ShouldMatchDataSet("events.xml")
-	public void testSearchTitleMultipleResult() {
-		assertThat(events.search("Example", 0, 25),
-				containsEventsInAnyOrder(eventsWithTitleOrDescriptionContaining("Example")));
-	}
 
     @Test
-	@UsingDataSet("events.xml")
-	@ShouldMatchDataSet("events.xml")
-	public void testSearchDescriptionSingleResult() {
-		assertThat(events.search("This is a description literature 1", 0, 25),
-				containsEventsInAnyOrder(eventsWithTitleOrDescriptionContaining("This is a description literature 1")));
-	}
-
-	@Test
-	@UsingDataSet("events.xml")
-	@ShouldMatchDataSet("events.xml")
-	public void testSearchDescriptionMultipleResult() {
-		assertThat(events.search("This is a description", 0, 25),
-				containsEventsInAnyOrder(eventsWithTitleOrDescriptionContaining("This is a description")));
-	}
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void testSearchTitleSingleResult() {
+        assertThat(events.search("Example1 literature", 0, 25), hasSize(1));
+    }
 
     @Test
-    @UsingDataSet("events.xml")
-    @ShouldMatchDataSet("events.xml")
-	public void testSearchOnTitleAndDescription() {
-		assertThat(events.search("literature", 0, 25),
-				containsEventsInAnyOrder(eventsWithTitleOrDescriptionContaining("literature")));
-	}
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void testSearchTitleMultipleResult() {
+        assertThat(events.search("Example", 0, 25), hasSize(25));
+    }
 
     @Test
-    @UsingDataSet("events.xml")
-    @ShouldMatchDataSet("events.xml")
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void testSearchDescriptionSingleResult() {
+        assertThat(events.search("This is a description literature 1", 0, 25), hasSize(1));
+    }
+
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void testSearchDescriptionMultipleResult() {
+        assertThat(events.search("This is a description", 0, 25), hasSize(25));
+    }
+
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void testSearchOnTitleAndDescription() {
+        assertThat(events.search("literature", 0, 25), hasSize(5));
+    }
+
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testSearchNoResultException() {
         assertThat(events.search(EventsDataset.nonExistentTitle(), 0, 25), is(empty()));
         assertThat(events.search(EventsDataset.nonExistentDescription(), 0, 25), is(empty()));
     }
 
     @Test
-    @UsingDataSet("events.xml")
-    @ShouldMatchDataSet("anne-joins-event-10.xml")
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-joins-event-15.xml" })
     public void testRegisterUserToEvent() throws EventAlredyJoinedException {
         User user = UsersDataset.userWithLogin("anne");
-        Event event = EventsDataset.eventWithId(10);
+        Event event = eventWithId(15);
         principal.setName(user.getLogin());
         asUser.throwingRun(() -> events.registerToEvent(event));
     }
 
     @Test(expected = EventAlredyJoinedException.class)
-    @UsingDataSet({ "events.xml", "anne-joins-event-10.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "anne-joins-event-15.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-joins-event-15.xml" })
     public void testRegisterUserAlreadyRegistered() throws EventAlredyJoinedException {
-        User user = UsersDataset.userWithLogin("anne");
-        Event event = EventsDataset.eventWithId(10);
+        User user = userWithLogin("anne");
+        Event event = eventWithId(15);
         principal.setName(user.getLogin());
         asUser.throwingRun(() -> events.registerToEvent(event));
+    }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "new-user.xml", "events.xml", "user-joins-event.xml" })
+    public void testGetEventsJoinedByUserEmpty(){
+    	final User user = newUser();
+    	principal.setName(user.getLogin());
+    	
+    	final List<Event> joinedEvents = asUser.call(
+    	    () -> events.getEventsJoinedByUser()
+        );
+    	
+    	assertThat(joinedEvents, is(empty()));
+    }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
+    public void testGetEventsJoinedByUserNotEmpty(){
+    	final User user = userWithLogin("anne");
+    	final Event[] expectedEvents = filterEventsWithTwoJoinedUsers(
+    		event -> event.getEventsJoinedByUsers().contains(user));
+    	
+    	principal.setName(user.getLogin());
+    	
+    	final List<Event> joinedEvents = asUser.call(
+    	    () -> events.getEventsJoinedByUser()
+        );
+    	
+    	assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));
     }
 
 }

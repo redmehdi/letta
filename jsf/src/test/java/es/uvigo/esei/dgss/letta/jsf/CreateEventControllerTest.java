@@ -119,7 +119,7 @@ public class CreateEventControllerTest {
 	@Test
 	@InSequence(3)
 	@RunAsClient
-	@UsingDataSet("users-create.xml")
+	@UsingDataSet("new-user.xml" )
 	@ShouldMatchDataSet("users-create-event.xml")
 	public void testDoCreateEvent(
 			@InitialPage CreateEventPage createEventPage) {

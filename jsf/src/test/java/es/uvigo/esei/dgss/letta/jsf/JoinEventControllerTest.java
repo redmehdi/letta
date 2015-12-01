@@ -104,7 +104,7 @@ public class JoinEventControllerTest {
 	
 	@Test
 	@InSequence(1)
-	@UsingDataSet("user-joins-event.xml")
+	@UsingDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
 	@Cleanup(phase = TestExecutionPhase.NONE)
 	public void beforeDoJoinEventNeverJoin() {
 	}
@@ -115,21 +115,22 @@ public class JoinEventControllerTest {
 	public void testDoJoinEventNeverJoin(@InitialPage LoginPage loginPage) {
 		loginPage.login("anne", "annepass");
 		
-		final Event event = eventWithId(10);
+		final Event event = eventWithId(15);
+		indexPage.waitForIt();
 		indexPage.joinEvent(event);
 		indexPage.assertOnJoinedTrue();		
 	}
 
 	@Test
 	@InSequence(3)
-	@ShouldMatchDataSet({ "user-joins-event.xml", "anne-joins-event-10.xml" })
+	@ShouldMatchDataSet({ "users.xml", "events.xml", "user-joins-event.xml", "anne-joins-event-15.xml" })
 	@CleanupUsingScript({ "cleanup.sql" })
 	public void afterDoJoinEventNeverJoin() {
 	}
 	
 	@Test
 	@InSequence(11)
-	@UsingDataSet("user-joins-event.xml")
+	@UsingDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
 	@Cleanup(phase = TestExecutionPhase.NONE)
 	public void beforeDoJoinEventAlreadyJoin() {
 	}
@@ -141,14 +142,15 @@ public class JoinEventControllerTest {
 		loginPage.login("anne", "annepass");
 		
 		final Event event = eventWithId(1);
-		
+
+		indexPage.waitForIt();
 		indexPage.joinEvent(event);
 		indexPage.assertOnJoinedFalse();
 	}
 
 	@Test
 	@InSequence(13)
-	@ShouldMatchDataSet("user-joins-event.xml")
+	@ShouldMatchDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
 	@CleanupUsingScript({ "cleanup.sql" })
 	public void afterDoJoinEventAlreadyJoin() {
 	}

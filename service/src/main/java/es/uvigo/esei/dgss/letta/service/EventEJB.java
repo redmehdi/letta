@@ -30,6 +30,14 @@ import static org.apache.commons.lang3.Validate.isTrue;
  * @author Adrián Rodríguez Fariña
  * @author Alberto Gutiérrez Jácome
  */
+/**
+ * @author rvcameselle
+ *
+ */
+/**
+ * @author rvcameselle
+ *
+ */
 @Stateless
 public class EventEJB {
 
@@ -181,23 +189,24 @@ public class EventEJB {
 		if (eventsJoinedByUser.contains(event))
 			throw new EventAlredyJoinedException(user, event);
 
-		// FIXME: Does not update the database-stored values.
 		eventsJoinedByUser.add(event);
 		user.setUsersJoinsEvents(eventsJoinedByUser);
 		em.merge(user);
 	}
 
+	/**
+	 * Return a {@link List} of {@link Event Events} that authenticated {@link User} 
+	 * is joined.
+	 * 
+	 * @return A {@link List} of {@link Event Events} that authenticated {@link User} 
+	 * 		   is joined.
+	 */
 	@SuppressWarnings("unchecked")
-	private List<Event> getEventsJoinedByUser() {
+	@RolesAllowed("USER")
+	public List<Event> getEventsJoinedByUser() {
 		return (List<Event>) em.createQuery("SELECT u.usersJoinsEvents "
 				+ "from User u WHERE u.login=:login")
 				.setParameter("login", auth.getCurrentUser().getLogin())
 				.getResultList();
-
 	}
-	
-	public Event getById(final int id){
-		return em.find(Event.class, id);
-	}
-
 }
