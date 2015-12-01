@@ -19,6 +19,7 @@ import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.EventsDataset;
+import es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.domain.entities.UsersDataset;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
@@ -31,7 +32,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
-
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.eventsWithTitleOrDescriptionContaining;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
 import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent.containsEventsInAnyOrder;
@@ -157,46 +158,52 @@ public class EventEJBTest {
         assertThat(actual, is(equalToEventWithCreator(expect)));
     }
 
+	@Test
+	@UsingDataSet("events.xml")
+	@ShouldMatchDataSet("events.xml")
+	public void testSearchTitleSingleResult() {
+		assertThat(events.search(EventsDataset.existentEvent().getTitle(), 0, 25), containsEventsInAnyOrder(
+				eventsWithTitleOrDescriptionContaining(EventsDataset.existentEvent().getTitle())));
+	}
+
+	@Test
+	@UsingDataSet("events.xml")
+	@ShouldMatchDataSet("events.xml")
+	public void testSearchTitleMultipleResult() {
+		assertThat(events.search("Example", 0, 25),
+				containsEventsInAnyOrder(eventsWithTitleOrDescriptionContaining("Example")));
+	}
+
     @Test
-    @UsingDataSet("events.xml")
-    @ShouldMatchDataSet("events.xml")
-    public void testSearchTitleSingleResult() {
-        assertThat(events.search("Example1 literature", 0, 25), hasSize(1));
-    }
+	@UsingDataSet("events.xml")
+	@ShouldMatchDataSet("events.xml")
+	public void testSearchDescriptionSingleResult() {
+		assertThat(events.search("This is a description literature 1", 0, 25),
+				containsEventsInAnyOrder(eventsWithTitleOrDescriptionContaining("This is a description literature 1")));
+	}
+
+	@Test
+	@UsingDataSet("events.xml")
+	@ShouldMatchDataSet("events.xml")
+	public void testSearchDescriptionMultipleResult() {
+		assertThat(events.search("This is a description", 0, 25),
+				containsEventsInAnyOrder(eventsWithTitleOrDescriptionContaining("This is a description")));
+	}
 
     @Test
     @UsingDataSet("events.xml")
     @ShouldMatchDataSet("events.xml")
-    public void testSearchTitleMultipleResult() {
-        assertThat(events.search("Example", 0, 25), hasSize(25));
-    }
-
-    @Test
-    @UsingDataSet("events.xml")
-    @ShouldMatchDataSet("events.xml")
-    public void testSearchDescriptionSingleResult() {
-        assertThat(events.search("This is a description literature 1", 0, 25), hasSize(1));
-    }
-
-    @Test
-    @UsingDataSet("events.xml")
-    @ShouldMatchDataSet("events.xml")
-    public void testSearchDescriptionMultipleResult() {
-        assertThat(events.search("This is a description", 0, 25), hasSize(25));
-    }
-
-    @Test
-    @UsingDataSet("events.xml")
-    @ShouldMatchDataSet("events.xml")
-    public void testSearchOnTitleAndDescription() {
-        assertThat(events.search("literature", 0, 25), hasSize(5));
-    }
+	public void testSearchOnTitleAndDescription() {
+		assertThat(events.search("literature", 0, 25),
+				containsEventsInAnyOrder(eventsWithTitleOrDescriptionContaining("literature")));
+	}
 
     @Test
     @UsingDataSet("events.xml")
     @ShouldMatchDataSet("events.xml")
     public void testSearchNoResultException() {
-        assertThat(events.search("aasdfasdfas", 0, 25), is(empty()));
+        assertThat(events.search(EventsDataset.nonExistentTitle(), 0, 25), is(empty()));
+        assertThat(events.search(EventsDataset.nonExistentDescription(), 0, 25), is(empty()));
     }
 
     @Test
