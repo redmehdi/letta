@@ -118,10 +118,8 @@ public class IsEqualToEvent extends IsEqualsToEntity<Event> {
             && checkAttribute("eventType", Event::getEventType, event)
             && checkAttribute("title"    , Event::getTitle    , event)
             && checkAttribute("date"     , Event::getDate     , event)
-            && checkAttribute("location" , Event::getLocation , event);
-         // FIXME: commented out because there are errors in EventsDataset,
-         // cannot find them ATM, will fix later.
-         // && checkAttribute("shortDescription", Event::getShortDescription, event);
+            && checkAttribute("location" , Event::getLocation , event)
+            && checkAttribute("shortDescription", Event::getShortDescription, event);
     }
 
 
