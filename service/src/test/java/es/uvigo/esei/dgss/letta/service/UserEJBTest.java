@@ -1,5 +1,12 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import static es.uvigo.esei.dgss.letta.domain.entities.RegistrationsDataset.newRegistration;
+import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.Assert.assertThat;
+
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 
@@ -13,16 +20,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
+import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.mail.TestingMailer;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertThat;
-
-import static es.uvigo.esei.dgss.letta.domain.entities.RegistrationsDataset.newRegistration;
-import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
 
 @RunWith(Arquillian.class)
 @CleanupUsingScript({ "cleanup.sql" })
@@ -60,6 +61,17 @@ public class UserEJBTest {
 
 		facade.registerUser(registration);
 		facade.registerUser(registration);
+	}
+	
+	@Test(expected = EmailDuplicateException.class)
+	@UsingDataSet("registrations.xml")
+	@ShouldMatchDataSet("registrations-create.xml")
+	public void testRegisterUserEmailDuplicated() throws Exception {
+		Registration registration = new Registration(new User("login","password","email@email.com"));
+		facade.registerUser(registration);
+
+		Registration registration2 = new Registration(new User("login2","password","email@email.com"));
+		facade.registerUser(registration2);
 	}
 
 	@Test(expected = MessagingException.class)
