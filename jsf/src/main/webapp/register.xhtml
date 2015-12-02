@@ -40,7 +40,7 @@
 			          	<br/><br/>
 			          	<h1>Sign up</h1>
 			          	<h3>It's free and always will be.</h3><br/>
-		    			<h:form>
+		    			<h:form id="register-form">
 		    				<h:message for="login"/>
 					    	<h:inputText id="login" required="true" maxlength="100" class="form-control" value="#{registerController.login}" a:placeholder="Login" requiredMessage="Login can't be empty"/><br/>
 					    	<h:message for="email"/>
@@ -49,7 +49,7 @@
 							</h:inputText><br/>  
 					    	<h:message for="password"/>
 					    	<h:inputSecret id="password" required="true" class="form-control" value="#{registerController.password}" a:placeholder="Password" requiredMessage="Password can't be empty"/><br/>  
-					    	<h:commandButton class="btn btn-default" value="Register" action="#{registerController.doRegister()}"/>
+					    	<h:commandButton id="submit-button" class="btn btn-default" value="Register" action="#{registerController.doRegister()}"/>
 					    </h:form>
 					    <br/>
 					    <div class="row">

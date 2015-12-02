@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import es.uvigo.esei.dgss.letta.domain.entities.User;
-
 /**
  * Utility test class that contains a set of {@link User} entities. This
  * dataset is replicated in the {@code user*.xml} dataset files.
@@ -120,6 +118,26 @@ public final class UsersDataset {
 		md5s.put("nonepass", "16348ade4c752d71b257924b04b06a94");
 		
 		return md5s.get(password);
+	}
+	
+	/**
+	 * Returns the plain password for a given user.
+	 * 
+	 * @param user the user whose password will be returned. 
+	 * @return the plain password of the user.
+	 */
+	public static String passwordFor(User user) {
+		return passwordFor(user.getLogin());
+	}
+	
+	/**
+	 * Returns the plain password for a given user's login.
+	 * 
+	 * @param login the login of the user whose password will be returned. 
+	 * @return the plain password of the user.
+	 */
+	public static String passwordFor(String login) {
+		return login + "pass";
 	}
 	
 	/**
