@@ -266,7 +266,7 @@ public final class EventsDataset {
 	 *         {@link Event#setCreator(User) creator} not set.
 	 */
 	public static Event newEventWithoutCreator() {
-		return new Event(LITERATURE, "New literature event", "This is a description", new Date(946684861000L),
+		return new Event(LITERATURE, "New literature event", "This is a description", new Date(946684860000L),
 				"Location X");
 	}
 

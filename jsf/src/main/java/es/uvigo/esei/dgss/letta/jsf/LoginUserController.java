@@ -137,4 +137,42 @@ public class LoginUserController {
 	public String getErrorMessage() {
 		return errorMessage;
 	}
+	
+	/**
+	 * Checks if the current user is the "anonymous" user.
+	 * @return {@code true} if the current user is the "anonymous" user.
+	 * {@code false} otherwise.
+	 */
+	public boolean isAnonymous() {
+		return "anonymous".equals(this.getCurrentUser().getName());
+	}
+	
+	/**
+	 * Forces a page redirect to the index if the current user is the anonymous
+	 * user.
+	 * 
+	 * @throws IOException if an error happens while redirecting.
+	 */
+	public void redirectIfAnonymous() throws IOException {
+		if (this.isAnonymous()) {
+			redirectToIndex();
+		}
+	}
+	
+	/**
+	 * Forces a page redirect to the index if the current user is not an
+	 * anonymous user.
+	 * 
+	 * @throws IOException if an error happens while redirecting.
+	 */
+	public void redirectIfNotAnonymous() throws IOException {
+		if (!this.isAnonymous()) {
+			redirectToIndex();
+		}
+	}
+
+	private void redirectToIndex() throws IOException {
+		FacesContext.getCurrentInstance()
+			.getExternalContext().redirect("index.xhtml");
+	}
 }

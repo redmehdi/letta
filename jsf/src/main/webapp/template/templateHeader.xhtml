@@ -2,12 +2,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-	  xmlns:h="http://java.sun.com/jsf/html"
-      >
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html">
     <body>
 	    <ui:composition>
-	    		
 	      <div class="container">
 	        <div class="navbar-header">
 	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
@@ -21,7 +19,7 @@
 	        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
 	          <ul class="nav navbar-nav navbar-right">
 	          <li>
-	          	<h:link value="Create Event" rendered="#{loginController.currentUser.name != 'anonymous'}" outcome="faces/createEvent.xhtml" />
+	          	<h:link value="Create Event" rendered="#{!loginController.anonymous}" outcome="faces/createEvent.xhtml" />
 	          </li>
 	            <li>
 	              <form class="navbar-form" role="search">
@@ -34,18 +32,17 @@
 	              </form>
 	            </li>
 	            <li>
-	            	<h:link value="Login" rendered="#{loginController.currentUser.name == 'anonymous'}" outcome="faces/login.xhtml" />
+	            	<h:link value="Login" rendered="#{loginController.anonymous}" outcome="faces/login.xhtml" />
 		        </li>
 		        <li>
-		            <h:link value="Sign up" rendered="#{loginController.currentUser.name == 'anonymous'}" outcome="faces/register.xhtml" />
+		            <h:link value="Sign up" rendered="#{loginController.anonymous}" outcome="faces/register.xhtml" />
 		        </li>
 				<li>
-					<h:link value="Logout" rendered="#{loginController.currentUser.name != 'anonymous'}" outcome="faces/logout.xhtml" />
+					<h:link value="Logout" rendered="#{!loginController.anonymous}" outcome="faces/logout.xhtml" />
 		        </li>
 	          </ul>
 	        </div>
 	      </div>
-				
 	    </ui:composition>
     </body>
 </html>

@@ -1,8 +1,8 @@
 package es.uvigo.esei.dgss.letta.jsf.pages;
 
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
-import org.hamcrest.core.StringContains;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.page.Location;
 import org.openqa.selenium.WebDriver;
@@ -19,8 +19,7 @@ public class CreateEventPage {
 	private CreateEventForm createEventForm;
 
 	public void assertOnIt() {
-		assertThat(browser.getCurrentUrl(),
-				StringContains.containsString("/faces/createEvent.xhtml"));
+		assertThat(browser.getCurrentUrl(),	containsString("/faces/createEvent.xhtml"));
 	}
 
 	public void createEvent(Event newEventWithoutCreator) {

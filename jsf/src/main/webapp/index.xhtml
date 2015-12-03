@@ -5,11 +5,9 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-
 <h:head>
     <title>Let's Talk About</title>
 </h:head>
-
 <h:body>
     <ui:composition template="/template/templateLayout.xhtml">
         <ui:define name="content">
@@ -54,8 +52,8 @@
                                         <img src="#{indexController.getIconFor(event.eventType)}" class="center-block img-responsive" alt="" />
                                         <div class="overlay">
                                             <h2>#{event.title}</h2>
-                           	            	<h:link class="info join-link" value="Join" rendered="#{loginController.currentUser.name != 'anonymous'}" outcome="joinEvent.xhtml?id=#{event.id}" />
-                           	            	<h:link class="info" value="Sign Up" rendered="#{loginController.currentUser.name == 'anonymous'}" outcome="register.xhtml" />
+                           	            	<h:link class="info join-link" value="Join" rendered="#{!loginController.anonymous}" outcome="joinEvent.xhtml?id=#{event.id}" />
+                           	            	<h:link class="info" value="Sign Up" rendered="#{loginController.anonymous}" outcome="register.xhtml" />
                                         </div>
                                     </div>
                                     <div class="event-info">

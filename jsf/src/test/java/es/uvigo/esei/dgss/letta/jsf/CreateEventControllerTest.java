@@ -2,6 +2,7 @@ package es.uvigo.esei.dgss.letta.jsf;
 
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -17,6 +18,7 @@ import org.jboss.arquillian.persistence.CleanupUsingScript;
 import org.jboss.arquillian.persistence.ShouldMatchDataSet;
 import org.jboss.arquillian.persistence.TestExecutionPhase;
 import org.jboss.arquillian.persistence.UsingDataSet;
+import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -51,8 +53,14 @@ public class CreateEventControllerTest {
 	@Drone
 	private WebDriver browser;
 
+	@ArquillianResource
+	private URL baseUrl;
+	
 	@Page
 	private IndexPage indexPage;
+	
+	@Page
+	private CreateEventPage createEventPage;
 
 	@Deployment
 	public static Archive<?> createDeployment() {
@@ -111,26 +119,19 @@ public class CreateEventControllerTest {
 	@InSequence(2)
 	@RunAsClient
 	public void testDoLoginCreateEvent(@InitialPage LoginPage loginPage) {
-		loginPage.login("anne", "annepass");
+		loginPage.login("john", "johnpass");
 		indexPage.assertOnIt();
-
+		
+		browser.navigate().to(baseUrl + "faces/createEvent.xhtml");
+		
+		createEventPage.assertOnIt();
+		createEventPage.createEvent(newEventWithoutCreator());
 	}
 
 	@Test
 	@InSequence(3)
-	@RunAsClient
-	@UsingDataSet("new-user.xml" )
-	@ShouldMatchDataSet("users-create-event.xml")
-	public void testDoCreateEvent(
-			@InitialPage CreateEventPage createEventPage) {
-		createEventPage.createEvent(newEventWithoutCreator());
-		createEventPage.assertOnIt();
-	}
-
-	@Test
-	@InSequence(4)
-	@ShouldMatchDataSet("users.xml")
 	@CleanupUsingScript({ "cleanup.sql" })
+	@ShouldMatchDataSet({ "users.xml", "users-create-event.xml" })
 	public void afterCreateEvent() {
 	}
 }

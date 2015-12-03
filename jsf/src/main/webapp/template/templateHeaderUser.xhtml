@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
+<body>
+	<ui:composition>
+
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#navbar-ex-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a href="faces/index.xhtml" class="navbar-brand"><img
+					height="20" alt="Brand" src="img/logo.png" /></a>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-ex-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<form class="navbar-form" role="search">
+							<div class="input-group">
+								<div class="input-group-btn">
+									<button class="btn btn-default" type="submit">
+										<i class="fa fa-fw fa-search"></i>
+									</button>
+								</div>
+								<input type="text" class="form-control" placeholder="Search"
+									name="srch-term" id="srch-term" />
+							</div>
+						</form>
+					</li>
+					<li class="dropdown">
+						<h:link ref="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> 
+							#{loginController.currentUser.name}&nbsp;
+							<i class="fa fa-caret-down" />
+						</h:link>
+						<ul class="dropdown-menu" role="menu">
+							<li>
+								<h:link value="Create Event" outcome="faces/createEvent.xhtml" />
+							</li>
+						</ul>
+					</li>
+					<li>
+						<h:link class="active" value="Logout" rendered="#{!loginController.anonymous}" outcome="faces/logout.xhtml" />
+					</li>
+				</ul>
+			</div>
+		</div>
+
+	</ui:composition>
+</body>
+</html>
