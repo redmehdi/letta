@@ -9,42 +9,32 @@
 		<url-pattern>/api/*</url-pattern>
 	</servlet-mapping>
 
+<security-role>
+		<role-name>USER</role-name>
+	</security-role>
 	<!--Defining security constraint for type of roles available -->
-	<!-- security-constraint>
+	<security-constraint>
 		<web-resource-collection>
-			<web-resource-name>admin</web-resource-name>
-			<url-pattern>/api/owner/*</url-pattern>
-			<http-method-omission>OPTIONS</http-method-omission>
+			<web-resource-name>public</web-resource-name>
+			<url-pattern>/public/*</url-pattern>
+			<http-method-omission>GET</http-method-omission>
 		</web-resource-collection>
-		<auth-constraint>
-			<role-name>ADMIN</role-name>
-		</auth-constraint>
 	</security-constraint>
 
 	<security-constraint>
 		<web-resource-collection>
-			<web-resource-name>owner</web-resource-name>
-			<url-pattern>/api/pet/*</url-pattern>
-			<http-method-omission>OPTIONS</http-method-omission>
+			<web-resource-name>private</web-resource-name>
+			<url-pattern>/private/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+			<http-method>PUT</http-method>
 		</web-resource-collection>
 		<auth-constraint>
-			<role-name>OWNER</role-name>
+			<role-name>USER</role-name>
 		</auth-constraint>
-	</security-constraint-->
-	<!--Defining security constraint for type of roles available -->
-
-	<!--Denining security role -->
-	<!-- security-role>
-		<role-name>ADMIN</role-name>
-	</security-role>
-
-	<security-role>
-		<role-name>OWNER</role-name>
-	</security-role-->
-	<!--Denining security role -->
-	
-	<!-- login-config>
-		<auth-method>BASIC</auth-method>
-		<realm-name>default</realm-name>
-	</login-config-->
+	</security-constraint>
+   <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>default</realm-name>
+    </login-config>
 </web-app>
