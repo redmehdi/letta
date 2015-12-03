@@ -169,8 +169,8 @@ public class EventEJB {
 	 * will throw an {@link EventAlredyJoinedException}, otherwise it will
 	 * register the {@link User} to the event.
 	 *
-	 * @param event
-	 *            Indicates the {@link Event} that the {@link User} want to
+	 * @param eventId
+	 *            Identifier of the {@link Event} that the {@link User} wants to
 	 *            register.
 	 *
 	 * @throws EventAlredyJoinedException
@@ -181,17 +181,18 @@ public class EventEJB {
 	 *             (!!!).
 	 */
 	@RolesAllowed("USER")
-	public void registerToEvent(final Event event) throws EventAlredyJoinedException, SecurityException {
+	public void registerToEvent(final int eventId)
+	throws EventAlredyJoinedException, SecurityException {
 		final User user = auth.getCurrentUser();
-
-		final List<Event> eventsJoinedByUser = this.getEventsJoinedByUser();
+		final Event event = em.find(Event.class, eventId);
+		
+		final List<Event> eventsJoinedByUser = user.getUsersJoinsEvents();
 
 		if (eventsJoinedByUser.contains(event))
 			throw new EventAlredyJoinedException(user, event);
 
-		eventsJoinedByUser.add(event);
-		user.setUsersJoinsEvents(eventsJoinedByUser);
-		em.merge(user);
+		user.getUsersJoinsEvents().add(event);
+		event.getEventsJoinedByUsers().add(user);
 	}
 
 	/**
@@ -201,12 +202,15 @@ public class EventEJB {
 	 * @return A {@link List} of {@link Event Events} that authenticated {@link User} 
 	 * 		   is joined.
 	 */
-	@SuppressWarnings("unchecked")
 	@RolesAllowed("USER")
 	public List<Event> getEventsJoinedByUser() {
-		return (List<Event>) em.createQuery("SELECT u.usersJoinsEvents "
-				+ "from User u WHERE u.login=:login")
-				.setParameter("login", auth.getCurrentUser().getLogin())
-				.getResultList();
+		return em.createQuery(
+				"SELECT e "
+					+ "FROM User u JOIN u.usersJoinsEvents e "
+					+ "WHERE u.login=:login",
+				Event.class
+			)
+			.setParameter("login", auth.getCurrentUser().getLogin())
+		.getResultList();
 	}
 }

@@ -1,6 +1,5 @@
 package es.uvigo.esei.dgss.letta.service;
 
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.eventWithId;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
@@ -211,9 +210,9 @@ public class EventEJBTest {
     @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-joins-event-15.xml" })
     public void testRegisterUserToEvent() throws EventAlredyJoinedException {
         User user = UsersDataset.userWithLogin("anne");
-        Event event = eventWithId(15);
+        
         principal.setName(user.getLogin());
-        asUser.throwingRun(() -> events.registerToEvent(event));
+        asUser.throwingRun(() -> events.registerToEvent(15));
     }
 
     @Test(expected = EventAlredyJoinedException.class)
@@ -221,9 +220,9 @@ public class EventEJBTest {
     @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-joins-event-15.xml" })
     public void testRegisterUserAlreadyRegistered() throws EventAlredyJoinedException {
         User user = userWithLogin("anne");
-        Event event = eventWithId(15);
+        
         principal.setName(user.getLogin());
-        asUser.throwingRun(() -> events.registerToEvent(event));
+        asUser.throwingRun(() -> events.registerToEvent(15));
     }
     
     @Test

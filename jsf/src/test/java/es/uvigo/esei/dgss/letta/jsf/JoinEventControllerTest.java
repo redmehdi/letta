@@ -76,6 +76,8 @@ public class JoinEventControllerTest {
 					"index.xhtml")
 			.addAsWebResource(WEBAPP.resolve("login.xhtml").toFile(),
 					"login.xhtml")
+			.addAsWebResource(WEBAPP.resolve("joinEvent.xhtml").toFile(),
+					"joinEvent.xhtml")
 			.addAsWebResource(
 					WEBAPP.resolve("template/templateLayout.xhtml")
 							.toFile(), "template/templateLayout.xhtml")
@@ -114,11 +116,11 @@ public class JoinEventControllerTest {
 	@RunAsClient
 	public void testDoJoinEventNeverJoin(@InitialPage LoginPage loginPage) {
 		loginPage.login("anne", "annepass");
+		indexPage.waitForIt();
 		
 		final Event event = eventWithId(15);
-		indexPage.waitForIt();
 		indexPage.joinEvent(event);
-		indexPage.assertOnJoinedTrue();		
+		indexPage.assertOnJoinedTrue();
 	}
 
 	@Test

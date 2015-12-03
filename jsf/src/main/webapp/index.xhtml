@@ -54,11 +54,8 @@
                                         <img src="#{indexController.getIconFor(event.eventType)}" class="center-block img-responsive" alt="" />
                                         <div class="overlay">
                                             <h2>#{event.title}</h2>
-                                            <h:form rendered="#{loginController.currentUser.name != 'anonymous'}">
-                                            	<h:inputText class="eventId" value="#{event.id}" style="display: none"/>
-                                            	<h:commandLink class="info buttonJoin" action="#{joinController.doJoin(event)}" value="Join" />
-                           	            	</h:form>
-                           	            	<h:link class="info" value="Sign Up" rendered="#{loginController.currentUser.name == 'anonymous'}" outcome="faces/register.xhtml" />
+                           	            	<h:link class="info join-link" value="Join" rendered="#{loginController.currentUser.name != 'anonymous'}" outcome="joinEvent.xhtml?id=#{event.id}" />
+                           	            	<h:link class="info" value="Sign Up" rendered="#{loginController.currentUser.name == 'anonymous'}" outcome="register.xhtml" />
                                         </div>
                                     </div>
                                     <div class="event-info">

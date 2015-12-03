@@ -21,30 +21,22 @@ public class EventsList {
 		throw new IllegalArgumentException("No row for event: " + event.getId());
 	}
 	
-	public void join(final Event event){
-		guardHttp(this.getEventRow(event).getButtonJoin()).click();
+	public void join(final Event event) {
+		guardHttp(this.getEventRow(event).getJoinLink()).click();
 	}
 	
 	public static class EventRow {
-		@FindBy(className = "buttonJoin")
-		private WebElement buttonJoin;
-
-		@FindBy(className = "eventId")
-		private WebElement eventId;
+		@FindBy(className = "join-link")
+		private WebElement joinLink;
 		
 		public boolean hasEvent(final Event event) {
-			final String id = Integer.toString(event.getId());
-			final String eventIdValue = this.getEventId().getAttribute("value");
+			final String link = this.joinLink.getAttribute("href");
 			
-			return id.equals(eventIdValue);
+			return link.endsWith("?id=" + event.getId());
 		}
 		
-		public WebElement getButtonJoin() {
-			return this.buttonJoin;
-		}
-		
-		public WebElement getEventId(){
-			return this.eventId;
+		public WebElement getJoinLink() {
+			return joinLink;
 		}
 	}
 }

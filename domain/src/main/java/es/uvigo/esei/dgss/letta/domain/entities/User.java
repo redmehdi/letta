@@ -49,10 +49,11 @@ public class User implements Serializable {
 	private Role role;
 
 	@ManyToMany
-	@JoinTable(name = "UserJoinsEvent", joinColumns = {
-			@JoinColumn(name = "user_id", referencedColumnName = "login") }, inverseJoinColumns = {
-					@JoinColumn(name = "event_id", referencedColumnName = "id") })
-	private List<Event> usersJoinsEvents = new LinkedList<Event>();
+	@JoinTable(name = "UserJoinsEvent",
+		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "login"),
+		inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id")
+	)
+	private List<Event> usersJoinsEvents;
 
 	/**
 	 * Constructs a new instance of {@link User}. This constructor is required
@@ -78,6 +79,7 @@ public class User implements Serializable {
 		this.setEmail(email);
 
 		this.role = Role.USER;
+		this.usersJoinsEvents = new LinkedList<>();
 	}
 
 	/**
@@ -100,6 +102,7 @@ public class User implements Serializable {
 		this.password = password;
 		this.email = email;
 		this.role = role;
+		this.usersJoinsEvents = new LinkedList<>();
 	}
 
 	/**

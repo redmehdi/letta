@@ -11,11 +11,10 @@ import javax.inject.Inject;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
-import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 
 /**
- * {@linkplain JoinEventController} is a JSF controller to join a
- * {@link Event} by a {@link User}.
+ * {@linkplain JoinEventController} is a JSF controller to join an {@link Event}
+ * by a {@link User}.
  *
  * @author abmiguez
  * @author bcgonzalez3
@@ -29,22 +28,26 @@ public class JoinEventController {
 	private EventEJB eventEJB;
 
 	/**
-	 * Joins into a selected event. Redirects to index if joined succesfully.
-	 * 
-	 * @param event
-	 *            the event user want join. This paramenter must be a non
-	 *            {@code null} {@code Event}.
+	 * Joins into a selected event. The event identifier should be received as
+	 * a request parameters. This action redirects, immediately, to the index
+	 * page, including the request parameter "joined" with {@code true} value if
+	 * the user was effectively joined, or {@code false} otherwise.
 	 *
 	 * @throws IOException
 	 *             if an error happens on the redirection.
 	 */
-	public void doJoin(final Event event) throws IOException {
+	public void doJoin() throws IOException {
 		final ExternalContext context = FacesContext.getCurrentInstance()
-				.getExternalContext();
+			.getExternalContext();
+		
+		final String id = context.getRequestParameterMap()
+			.getOrDefault("id", null);
+
 		try {
-			eventEJB.registerToEvent(event);
+			eventEJB.registerToEvent(Integer.parseInt(id));
 			context.redirect("index.xhtml?joined=true");
-		} catch (EventAlredyJoinedException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 			context.redirect("index.xhtml?joined=false");
 		}
 	}
