@@ -449,11 +449,16 @@ revisar los informes de tests y de cobertura antes de hacer un *commit*.
 * **Formato**: El formato de los *commits* deberá respetar las siguientes
 normas:
   * Escritos en inglés.
-  * Limitar el 80 columnas. Si se utiliza Eclipse, esto se hace de forma
-  automática.
-  * Primera línea descriptiva de lo que hace el *commit*. Debe estar redactada
-  en tercera persona del presente (p.ej. *Adds...*, *Improves...*,
-  *Modifies...*, etc.). No debe llevar punto al final.
+  * Limitar el tamaño de línea a 80 columnas. Si se utiliza Eclipse, esto se
+  hace de forma automática.
+  * Primera línea descriptiva de lo que hace el *commit*:
+    * Si está relacionado con alguna tarea concreta de las descritas en Kunagi,
+    debe comenzar con el identificador de la tarea (p.ej. "tsk1 Adds...").
+    * Si está relacionado con varias tareas, su número se separará con un guión
+    (p.ej. "tsk1-2-13 Fixes...").
+    * Debe estar redactada en tercera persona del presente (p.ej. *Adds...*,
+      *Improves...*, *Modifies...*, etc.).
+    * No debe llevar punto al final.
   * Cuerpo del *commit* descriptivo. Con una línea vacía de separación de la
   primera línea, debe escribirse un texto de explique claramente el trabajo
   hecho en el *commit*.
