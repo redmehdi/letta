@@ -1,9 +1,5 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
-import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
-
 import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -12,10 +8,16 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
+
+import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
+import static org.hamcrest.collection.IsIterableContainingInOrder.contains;
+
 /**
  * An abstract {@link Matcher} that can be used to create new matchers that
  * compare entities by their attributes.
- * 
+ *
  * @author Miguel Reboiro Jato
  *
  * @param <T> the type of the entities to be matched.
@@ -121,4 +123,24 @@ public abstract class IsEqualsToEntity<T> extends TypeSafeMatcher<T> {
 		
 		return containsInAnyOrder(ownerMatchers);
 	}
+
+    /**
+     * Utility method that generates a {@link Matcher} that compares several
+     * entities in the same received order.
+     *
+     * @param converter A function to create a matcher for an entity.
+     * @param entities The entities to be used as the expected values, in the
+     *        order to be compared.
+     * @param <T> The type of the entity.
+     *
+     * @return A new {@link Matcher} that compares several entities in the same
+     *         received order.
+     */
+    @SafeVarargs
+    protected static <T> Matcher<Iterable<? extends T>> containsEntityInOrder(
+        final Function<T, Matcher<? super T>> converter, final T ... entities
+    ) {
+        return contains(stream(entities).map(converter).collect(toList()));
+    }
+
 }

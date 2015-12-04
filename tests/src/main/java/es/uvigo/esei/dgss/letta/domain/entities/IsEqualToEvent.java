@@ -5,6 +5,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import static java.util.Objects.isNull;
+import static java.util.stream.StreamSupport.stream;
 
 /**
  * {@linkplain IsEqualToEvent} implements a {@link TypeSafeMatcher} to check
@@ -83,6 +84,95 @@ public class IsEqualToEvent extends IsEqualsToEntity<Event> {
      * Static constructor to create a {@link Matcher} instance with a set of
      * {@link Event Events} as the expected values, relying upon a set of
      * {@link IsEqualToEvent}, one per received {@link Event}.
+     * <br>
+     * This matcher will not compare the event's {@link Event#getCreator()
+     * creator} field. If you do need to also compare it by equality, consider
+     * using {@link IsEqualToEvent#equalToEventWithCreator(Event)} instead.
+     *
+     * @param events An {@link Iterable} of {@link Event Events} to be used as
+     *        expected values.
+     *
+     * @return A new {@link Matcher} including a set of {@link IsEqualToEvent}
+     *         instances, created with each one of the received {@link Event
+     *         Events} as their expected values.
+     *
+     * @see IsEqualsToEntity#containsEntityInAnyOrder(java.util.function.Function, Object...)
+     */
+    @Factory
+    public static Matcher<Iterable<? extends Event>> containsEventsListInAnyOrder(
+        final Iterable<Event> events
+    ) {
+        return containsEntityInAnyOrder(
+            IsEqualToEvent::equalToEvent,
+            stream(events.spliterator(), false).toArray(Event[]::new)
+        );
+    }
+
+    /**
+     * Static constructor to create a {@link Matcher} instance with a set of
+     * {@link Event Events} as the expected values, relying upon a set of
+     * {@link IsEqualToEvent}, one per received {@link Event}.
+     * <br>
+     * This matcher checks that the events compared are in the same order as the
+     * received ones. If you do not need to check for ordering, consider using
+     * {@link #containsEventsInAnyOrder(Event...)} instead.
+     * <br>
+     * This matcher will not compare the event's {@link Event#getCreator()
+     * creator} field. If you do need to also compare it by equality, consider
+     * using {@link IsEqualToEvent#equalToEventWithCreator(Event)} instead.
+     *
+     * @param events The {@link Event Events} to be used as expected values, to
+     *        be compared in the same order as given.
+     *
+     * @return A new {@link Matcher} including a set of {@link IsEqualToEvent}
+     *         instances, created with each one of the received {@link Event
+     *         Events} as their expected values.
+     *
+     * @see IsEqualsToEntity#containsEntityInOrder(java.util.function.Function, Object...)
+     */
+    @Factory
+    public static Matcher<Iterable<? extends Event>> containsEventsInOrder(
+        final Event ... events
+    ) {
+        return containsEntityInOrder(IsEqualToEvent::equalToEvent, events);
+    }
+
+    /**
+     * Static constructor to create a {@link Matcher} instance with a set of
+     * {@link Event Events} as the expected values, relying upon a set of
+     * {@link IsEqualToEvent}, one per received {@link Event}.
+     * <br>
+     * This matcher checks that the events compared are in the same order as the
+     * received ones. If you do not need to check for ordering, consider using
+     * {@link #containsEventsInAnyOrder(Event...)} instead.
+     * <br>
+     * This matcher will not compare the event's {@link Event#getCreator()
+     * creator} field. If you do need to also compare it by equality, consider
+     * using {@link IsEqualToEvent#equalToEventWithCreator(Event)} instead.
+     *
+     * @param events An {@link Iterable} of {@link Event Events} to be used as
+     *        expected values, to be compared in the same order as given.
+     *
+     * @return A new {@link Matcher} including a set of {@link IsEqualToEvent}
+     *         instances, created with each one of the received {@link Event
+     *         Events} as their expected values.
+     *
+     * @see IsEqualsToEntity#containsEntityInOrder(java.util.function.Function, Object...)
+     */
+    @Factory
+    public static Matcher<Iterable<? extends Event>> containsEventsListInOrder(
+        final Iterable<Event> events
+    ) {
+        return containsEntityInOrder(
+            IsEqualToEvent::equalToEvent,
+            stream(events.spliterator(), false).toArray(Event[]::new)
+        );
+    }
+
+    /**
+     * Static constructor to create a {@link Matcher} instance with a set of
+     * {@link Event Events} as the expected values, relying upon a set of
+     * {@link IsEqualToEvent}, one per received {@link Event}.
      *
      * @param events The {@link Event Events} to be used as expected values.
      *
@@ -93,7 +183,7 @@ public class IsEqualToEvent extends IsEqualsToEntity<Event> {
      * @see IsEqualsToEntity#containsEntityInAnyOrder(java.util.function.Function, Object...)
      */
     @Factory
-    public static Matcher<Iterable<? extends Event>> containsEventsWithCreatorinAnyOrder(
+    public static Matcher<Iterable<? extends Event>> containsEventsWithCreatorInAnyOrder(
         final Event ... events
     ) {
         return containsEntityInAnyOrder(

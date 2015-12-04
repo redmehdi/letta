@@ -18,6 +18,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * An entity that represents an event of the application.
@@ -28,6 +31,7 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Event {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +47,7 @@ public class Event {
 	private String shortDescription;
 	@NotNull
 	private Date date;
+	@XmlTransient
 	@ManyToMany(mappedBy = "usersJoinsEvents")
 	private List<User> eventsJoinedByUsers = new LinkedList<User>();
 	@Column(length = 100, nullable = false, updatable = true)

@@ -56,7 +56,9 @@ public class UserEJB {
      * @throws IllegalArgumentException if the received login is null.
      */
     @PermitAll
-    public Optional<User> get(final String login) throws NullPointerException {
+    public Optional<User> get(
+        final String login
+    ) throws IllegalArgumentException {
         isTrue(nonNull(login), "Login string cannot be null");
         return ofNullable(em.find(User.class, login));
     }
@@ -76,7 +78,7 @@ public class UserEJB {
     @PermitAll
     public Optional<User> getByEmail(
         final String email
-    ) throws NullPointerException {
+    ) throws IllegalArgumentException {
         isTrue(nonNull(email), "Email string cannot be null");
 
         final TypedQuery<User> query = em.createQuery(
@@ -104,9 +106,9 @@ public class UserEJB {
      *             exception thrown by the Messaging classes
      */
     @PermitAll
-    public void registerUser(final Registration registration)
-            throws LoginDuplicateException, EmailDuplicateException,
-            MessagingException {
+    public void registerUser(
+        final Registration registration
+    ) throws LoginDuplicateException, EmailDuplicateException, MessagingException {
         if (checkLogin(registration.getLogin()))
             throw new LoginDuplicateException("Login duplicated");
         if (checkEmail(registration.getEmail()))

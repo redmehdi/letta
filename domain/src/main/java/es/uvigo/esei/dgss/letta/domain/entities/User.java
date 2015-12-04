@@ -18,6 +18,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 /**
@@ -28,6 +31,7 @@ import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
  *
  */
 @Entity
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -48,6 +52,7 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	@XmlTransient
 	@ManyToMany
 	@JoinTable(name = "UserJoinsEvent",
 		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "login"),
