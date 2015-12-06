@@ -232,7 +232,7 @@ public class EventEJBTest {
     	principal.setName(user.getLogin());
     	
     	final List<Event> joinedEvents = asUser.call(
-    	    () -> events.getEventsJoinedByUser()
+    	    () -> events.getEventsJoinedByUser(0,100)
         );
     	
     	assertThat(joinedEvents, is(empty()));
@@ -248,7 +248,7 @@ public class EventEJBTest {
     	principal.setName(user.getLogin());
     	
     	final List<Event> joinedEvents = asUser.call(
-    	    () -> events.getEventsJoinedByUser()
+    	    () -> events.getEventsJoinedByUser(0,100)
         );
     	
     	assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));

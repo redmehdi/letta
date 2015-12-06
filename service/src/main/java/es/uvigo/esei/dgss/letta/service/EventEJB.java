@@ -203,14 +203,37 @@ public class EventEJB {
 	 * 		   is joined.
 	 */
 	@RolesAllowed("USER")
-	public List<Event> getEventsJoinedByUser() {
+	public List<Event> getEventsJoinedByUser(final int start, final int count) {
+		if (count == 0)
+			return emptyList();
+		
 		return em.createQuery(
 				"SELECT e "
 					+ "FROM User u JOIN u.usersJoinsEvents e "
-					+ "WHERE u.login=:login",
+					+ "WHERE u.login=:login ORDER BY date DESC, title ASC",
 				Event.class
 			)
 			.setParameter("login", auth.getCurrentUser().getLogin())
-		.getResultList();
+			.setFirstResult(start).setMaxResults(count).getResultList();
+	}
+	
+	/**
+	 * Retrieves a number of {@link Event Events} that authenticated {@link User} 
+	 * is joined.
+	 * This function is usefull to do the paginate of the list of events.
+	 * 
+	 * @return A number (int) of {@link Event Events} that authenticated {@link User} 
+	 * 		   is joined.
+	 */
+	@RolesAllowed("USER")
+	public int getCountEventsJoinedByUser() {
+
+		return  (int) (long) em.createQuery(
+				"SELECT COUNT(e.id) "
+					+ "FROM User u JOIN u.usersJoinsEvents e "
+					+ "WHERE u.login=:login"
+			)
+			.setParameter("login", auth.getCurrentUser().getLogin())
+			.getSingleResult();
 	}
 }

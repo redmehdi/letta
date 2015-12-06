@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Let's Talk About - Joined events.</title>
+</h:head>
+<h:body>
+	<ui:composition template="/template/templateLayout.xhtml">
+		<ui:define name="header">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand"><img height="20" alt="Brand"
+						src="img/logo.png" /></a>
+				</div>
+			</div>
+		</ui:define>
+		<ui:define name="content">
+			<div class="container ">
+				<div class="row ">
+					<div class="col-md-3 "></div>
+
+					<div class="col-md-6" >
+
+						<h:form>
+						<div>
+						<center>
+					    <h:commandButton value="&lt; prev" action="#{listJoinedEventsController.listJoinedEventsPrev()}" rendered="#{listJoinedEventsController.pages ne 0}"/>
+					    <h:outputText value="#{listJoinedEventsController.pageIndex} / #{listJoinedEventsController.pages}"/>
+					    <h:commandButton value="next &gt;" action="#{listJoinedEventsController.listJoinedEventsNext()}"/>
+					    <h:inputHidden value="#{listJoinedEventsController.pageIndex}"/>
+						</center>
+						</div>
+     
+                        
+                        <ui:repeat id="indexRepeat" var="event" value="#{listJoinedEventsController.eventList}" varStatus="status">
+                            <div class="col-xs-12 col-sm-6 col-md-3">
+                                <div class="cover-event">
+                                    <div class="hovereffect">
+                                        <img src="#{listJoinedEventsController.getIconFor(event.eventType)}" class="center-block img-responsive" alt="" />
+                                        <div class="overlay">
+                                            <h2>#{event.title}</h2>
+                           	            	<h:link class="info join-link" value="Join" rendered="#{!loginController.anonymous}" outcome="joinEvent.xhtml?id=#{event.id}" />
+                           	            	<h:link class="info" value="Sign Up" rendered="#{loginController.anonymous}" outcome="register.xhtml" />
+                                        </div>
+                                    </div>
+                                    <div class="event-info">
+                                        <h2>#{event.title}</h2>
+                                        <p>
+                                            LETTA #{event.shortDescription}<br />
+                                            At #{event.location}<br />
+                                            From <h:outputText value="#{event.date}"><f:convertDateTime pattern="dd/MM/yyyy, HH:mm" /></h:outputText><br />
+                                            <strong>9261</strong> people will be there
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ui:repeat>				  					        
+						</h:form>
+
+					</div>
+				</div>
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>
