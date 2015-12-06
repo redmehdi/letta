@@ -22,19 +22,6 @@
 
 	<ui:composition template="/template/templateLayout.xhtml">
 
-		<ui:define name="header">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand"><img height="20" alt="Brand"
-						src="img/logo.png" /></a>
-				</div>
-			</div>
-		</ui:define>
 
 		<ui:define name="content">
 			<div class="container ">
@@ -43,57 +30,71 @@
 
 					<div class="col-md-6">
 
-						<h:form>
-							<div style="overflow: hidden; padding-right: .5em;"
-								class="col-md-10">
-								<h:inputText id="search" required="false" maxlength="50"
-									class="form-control" value="#{searchController.terms}" />
+						<h:form id="results_form">
+							<div>
+								<center>
+									<h:commandButton value="&lt; prev"
+										action="#{searchController.doSearchPrev()}" />
+									<h:outputText id="number_of_pages"
+										value="#{searchController.pageIndex} / #{searchController.pages}" />
+									<h:commandButton value="next &gt;"
+										action="#{searchController.doSearchNext()}" />
+									<h:inputHidden value="#{searchController.pageIndex}" />
+									<h:inputHidden value="#{searchController.terms}" />
+								</center>
 							</div>
-							<div class="col-md-2">
-								<h:commandButton class="btn btn-default searchButton"
-									value="Search" action="#{searchController.doSearch()}">
-								</h:commandButton>
+
+
+							<ui:repeat id="indexRepeat" var="event"
+								value="#{searchController.searchResults}" varStatus="status">
+								<div class="col-xs-12 col-sm-6 col-md-3">
+									<div class="cover-event">
+										<div class="hovereffect">
+											<img src="#{indexController.getIconFor(event.eventType)}"
+												class="center-block img-responsive" alt="" />
+											<div class="overlay">
+												<h2>#{event.title}</h2>
+												<h:link class="info join-link" value="Join"
+													rendered="#{!loginController.anonymous}"
+													outcome="joinEvent.xhtml?id=#{event.id}" />
+												<h:link class="info" value="Sign Up"
+													rendered="#{loginController.anonymous}"
+													outcome="register.xhtml" />
+											</div>
+										</div>
+										<div class="event-info">
+											<h2>#{event.title}</h2>
+											<p>
+												LETTA #{event.shortDescription}<br /> At #{event.location}<br />
+												From
+												<h:outputText value="#{event.date}">
+													<f:convertDateTime pattern="dd/MM/yyyy, HH:mm" />
+												</h:outputText>
+												<br /> <strong>9261</strong> people will be there
+											</p>
+										</div>
+									</div>
+								</div>
+							</ui:repeat>
+
+							<div>
+								<ui:repeat value="#{searchController.pagesLinks}" var="page">
+									<h:commandLink value="#{page}"
+										action="#{searchController.jumpToPage(page)}"
+										  rendered="#{page != searchController.currentPage}"
+										/>
+										
+             				   <h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+                              rendered="#{page == searchController.currentPage}" />	
+								</ui:repeat>
+
 							</div>
-							<br />
-							<br />
-							<br />
-							<br />
-							<br />
-
-							<p:panel id="toUpdate"
-								rendered="#{searchController.searchResults2 ne null}">
 
 
-								<f:facet name="header">
-            Search results
-        </f:facet>
 
-									<p:dataTable var="event"
-									value="#{searchController.searchResults2}" paginator="true"  rows="10"
-									paginatorposition="bottom" 
-									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-									id="eventTable" lazy="true" >
-									<p:column headerText="Title" sortBy="#{event.title}">
-										<h:outputText value="#{event.title}" />
-									</p:column>
-									<p:column headerText="Date" sortBy="#{event.date}">
-										<h:outputText value="#{event.date}" />
-									</p:column>
-									<p:column headerText="Description"
-										sortBy="#{event.shortDescription}">
-										<h:outputText value="#{event.shortDescription}" />
-									</p:column>
-									<p:column headerText="Join!">
-										<h:commandLink class="info"
-											action="#{joinController.doJoin(event)}" value="Join" />
-									</p:column>
-								</p:dataTable>
-							</p:panel>
 						</h:form>
 
-						<br /> <br />
 					</div>
-					<div class="col-md-3 "></div>
 				</div>
 			</div>
 		</ui:define>

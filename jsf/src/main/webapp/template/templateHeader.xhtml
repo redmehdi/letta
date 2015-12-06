@@ -18,32 +18,51 @@
 	        </div>
 	        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
 	          <ul class="nav navbar-nav navbar-right">
-	          
-	           <li class="dropdown">
-	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">My Account&nbsp;<i class="fa fa-caret-down"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-						          <li>
-						          	<h:link value="Create Event" outcome="faces/createEvent.xhtml" />
-						          </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <h:link value="My joined events" outcome="faces/listJoinedEvents.xhtml" />
-                                </li>
-                                <li>
-                                    <h:link value="My created Events" outcome="faces/index.xhtml" />
-                                </li>
-                            </ul>
-                  </li>
-                  
+                <h:panelGroup rendered="#{!loginController.anonymous}">
+ 	           <li class="dropdown">
+ 	
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">My Account&nbsp;<i class="fa fa-caret-down"></i></a>
+
+                           <ul class="dropdown-menu" role="menu">
+
+					          <li>
+
+					          	<h:link value="Create Event" outcome="faces/createEvent.xhtml" />
+
+					          </li>
+
+                              <li class="divider"></li>
+
+                               <li>
+
+                                   <h:link value="My joined events" outcome="faces/listJoinedEvents.xhtml" />
+
+                               </li>
+
+                               <li>
+
+                                   <h:link value="My created Events" outcome="faces/index.xhtml" />
+
+                               </li>
+
+                          </ul>
+
+                </li>
+</h:panelGroup> 
 	            <li>
-	              <form class="navbar-form" role="search">
+	            	<h:form id="searchForm" class="navbar-form">
 	                <div class="input-group">
 	                  <div class="input-group-btn">
-	                    <button class="btn btn-default" type="submit"><i class="fa fa-fw fa-search"></i></button>
+	                <h:commandButton id="searchButton" class="btn btn-default" value="Search" action="#{searchController.doSearchNext()}">
+					</h:commandButton>
+	                    <!-- <button class="btn btn-default" type="submit"><i class="fa fa-fw fa-search"></i></button> -->
 	                  </div>
-	                  <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"/>
+	                  <h:inputText  class="form-control" id="srch-term" value="#{searchController.terms}" />
+	                  
+	                 <!--  <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"/>-->
 	                </div>
-	              </form>
+
+	              </h:form>
 	            </li>
 	            <li>
 	            	<h:link value="Login" rendered="#{loginController.anonymous}" outcome="faces/login.xhtml" />

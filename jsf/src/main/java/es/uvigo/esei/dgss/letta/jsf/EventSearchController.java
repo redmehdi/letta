@@ -1,15 +1,14 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 
-import org.primefaces.model.LazyDataModel;
-
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
-import es.uvigo.esei.dgss.letta.jsf.util.LazyEventList;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 
 /**
@@ -19,135 +18,180 @@ import es.uvigo.esei.dgss.letta.service.EventEJB;
  * @author Adrián Rodríguez Fariña
  * @author Alberto Gutiérrez Jácome
  */
-@ViewScoped
+
+@SessionScoped
 @ManagedBean(name = "searchController")
-public class EventSearchController {
+public class EventSearchController implements Serializable {
 
-    @Inject
-    private EventEJB searchEJB;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    private String terms = null;
-    private LazyDataModel<Event> searchResults2;
-    private List<Event> searchResults;
-    private boolean flag = false;
+	@Inject
+	private EventEJB searchEJB;
+	private int pageIndex = 0;
+	private int pages;
+	private int currentPage = 1;
 
-    /**
-     * Returns the EJB to work with events
-     *
-     * @return searchEJB
-     */
-    public EventEJB getSearchEJB() {
-        return searchEJB;
-    }
+	private ArrayList<String> pagesLinks = new ArrayList<>();
+	private String terms = null;
+	private List<Event> searchResults;
+	private boolean flag;
 
-    /**
-     * Set the internal EJB
-     *
-     * @param searchEJB
-     *            the external EJB
-     */
-    public void setSearchEJB(final EventEJB searchEJB) {
-        this.searchEJB = searchEJB;
-    }
+	public int getCurrentPage() {
+		return currentPage;
+	}
 
-    /**
-     * Set the result list to an external value
-     *
-     * @param searchResults
-     *            an external result list
-     */
-    public void setSearchResults(final List<Event> searchResults) {
-        this.searchResults = searchResults;
-    }
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
 
-    /**
-     * Returns the lazy data model
-     *
-     * @return the lazy data model
-     */
-    public LazyDataModel<Event> getSearchResults2() {
-        return searchResults2;
-    }
+	public ArrayList<String> getPagesLinks() {
+		return pagesLinks;
+	}
 
-    /**
-     * Set the lazy data model to an external value
-     *
-     * @param searchResults2
-     *            the external value
-     */
-    public void setSearchResults2(final LazyDataModel<Event> searchResults2) {
-        this.searchResults2 = searchResults2;
-    }
+	public void setPagesLinks(ArrayList<String> pagesLinks) {
+		this.pagesLinks = pagesLinks;
+	}
 
-    /**
-     * Returns the flag used to control whether to render the datable or not
-     *
-     * @return the boolean flag
-     */
-    public boolean getFlag() {
-        return flag;
-    }
+	public int getPages() {
+		return pages;
+	}
 
-    /**
-     * Set the internal flag to an external value
-     *
-     * @param flag
-     *            the external value
-     */
-    public void setFlag(final boolean flag) {
-        this.flag = flag;
-    }
+	public void setPages(int pages) {
+		this.pages = pages;
+	}
 
-    /**
-     * Returns the search term
-     *
-     * @return the search term
-     */
-    public String getTerms() {
-        return terms;
-    }
+	public int getPageIndex() {
+		return pageIndex;
+	}
 
-    /**
-     * Set the internal search term to the actual value
-     *
-     * @param terms
-     *            the external search term
-     */
-    public void setTerms(final String terms) {
-        this.terms = terms;
-    }
+	public void setPageIndex(int pageIndex) {
+		this.pageIndex = pageIndex;
+	}
 
-    /**
-     * Returns the result list of events
-     *
-     * @return the result {link List} of events
-     */
-    public List<Event> getSearchResults() {
-        return searchResults;
-    }
+	/**
+	 * Returns the EJB to work with events
+	 *
+	 * @return searchEJB
+	 */
+	public EventEJB getSearchEJB() {
+		return searchEJB;
+	}
 
-    /**
-     * Method to be called when the search command button is pressed
-     *
-     * @return a url to be redirected to (yet to be set)
-     */
-    public String doSearch() {
+	/**
+	 * Set the internal EJB
+	 *
+	 * @param searchEJB
+	 *            the external EJB
+	 */
+	public void setSearchEJB(final EventEJB searchEJB) {
+		this.searchEJB = searchEJB;
+	}
 
-        searchResults2 = new LazyEventList() {
+	/**
+	 * Set the result list to an external value
+	 *
+	 * @param searchResults
+	 *            an external result list
+	 */
+	public void setSearchResults(final List<Event> searchResults) {
+		this.searchResults = searchResults;
+	}
 
-            private static final long serialVersionUID = 1L;
+	/**
+	 * Returns the flag used to control whether to render the datable or not
+	 *
+	 * @return the boolean flag
+	 */
+	public boolean getFlag() {
+		return flag;
+	}
 
-            @Override
-            public List<Event> findEvent(final int first, final int pageSize) {
-                searchResults = searchEJB.search(terms, first, pageSize);
-                this.setCount(searchEJB.count());
-                System.out.println("Search result " + searchResults.size());
-                return searchResults;
-            }
+	/**
+	 * Set the internal flag to an external value
+	 *
+	 * @param flag
+	 *            the external value
+	 */
+	public void setFlag(final boolean flag) {
+		this.flag = flag;
+	}
 
-        };
-        flag = true;
-        return "si";
-    }
+	/**
+	 * Returns the search term
+	 *
+	 * @return the search term
+	 */
+	public String getTerms() {
+		return terms;
+	}
+
+	/**
+	 * Set the internal search term to the actual value
+	 *
+	 * @param terms
+	 *            the external search term
+	 */
+	public void setTerms(final String terms) {
+		this.terms = terms;
+	}
+
+	/**
+	 * Returns the result list of events
+	 *
+	 * @return the result {link List} of events
+	 */
+	public List<Event> getSearchResults() {
+		return searchResults;
+	}
+
+	/**
+	 * Method to be called when the search command button is pressed
+	 *
+	 * @return a url to be redirected to (yet to be set)
+	 */
+	public String doSearchNext() {
+		this.pages = searchEJB.search(terms, 0, searchEJB.count()).size() / 5;
+		if (this.pageIndex < pages) {
+			this.pageIndex++;
+		}
+		if (terms != null) {
+			if (pageIndex == 1) {
+				searchResults = searchEJB.search(terms, pageIndex - 1, 5);
+				for (int i = 0; i < pages; i++) {
+					pagesLinks.add(String.valueOf(i + 1));
+				}
+			} else {
+				searchResults = searchEJB.search(terms, (pageIndex - 1) * 5, 5);
+			}
+		}
+		this.currentPage = pageIndex;
+
+		return "si";
+	}
+
+	public String doSearchPrev() {
+		this.pages = searchEJB.search(terms, 0, searchEJB.count()).size() / 5;
+		if (this.pageIndex > 1) {
+			this.pageIndex--;
+		}
+		if (terms != null) {
+			if (pageIndex == 0) {
+			} else {
+				searchResults = searchEJB.search(terms, (pageIndex - 1) * 5, 5);
+			}
+		}
+		this.currentPage = pageIndex;
+		return "si";
+	}
+
+	public String jumpToPage(String pageNumber) {
+		System.out.println("PAGENUMBER " + pageNumber);
+		searchResults = searchEJB.search(terms, (Integer.parseInt(pageNumber) - 1) * 5, 5);
+		this.currentPage = Integer.parseInt(pageNumber);
+		return "si";
+	}
 
 }
