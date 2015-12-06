@@ -5,42 +5,40 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<f:metadata>
+	<f:event listener="#{loginController.redirectIfAnonymous}" type="preRenderView" />
+</f:metadata>
 <h:head>
+<style>
+.textRed {
+color: red;
+}
+</style>
     <title>Let's Talk About - Joined events.</title>
 </h:head>
 <h:body>
 	<ui:composition template="/template/templateLayout.xhtml">
-		<ui:define name="header">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle">
-						<span class="sr-only">Toggle navigation</span> <span
-							class="icon-bar"></span> <span class="icon-bar"></span> <span
-							class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand"><img height="20" alt="Brand"
-						src="img/logo.png" /></a>
-				</div>
-			</div>
-		</ui:define>
 		<ui:define name="content">
 			<div class="container ">
+				<h:form>
 				<div class="row ">
-					<div class="col-md-3 "></div>
-
-					<div class="col-md-6" >
-
-						<h:form>
 						<div>
 						<center>
-					    <h:commandButton value="&lt; prev" action="#{listJoinedEventsController.listJoinedEventsPrev()}" rendered="#{listJoinedEventsController.pages ne 0}"/>
-					    <h:outputText value="#{listJoinedEventsController.pageIndex} / #{listJoinedEventsController.pages}"/>
-					    <h:commandButton value="next &gt;" action="#{listJoinedEventsController.listJoinedEventsNext()}"/>
-					    <h:inputHidden value="#{listJoinedEventsController.pageIndex}"/>
+									<h:commandButton value="&lt; prev"
+										action="#{listJoinedEventsController.listJoinedEventsPrev()}"
+										rendered="#{listJoinedEventsController.pages ne 0}" />
+									<h:outputText
+										value="#{listJoinedEventsController.pageIndex} / #{listJoinedEventsController.pages}"
+										rendered="#{listJoinedEventsController.pages ne 0}" />
+									<h:commandButton value="next &gt;"
+										action="#{listJoinedEventsController.listJoinedEventsNext()}"
+										rendered="#{listJoinedEventsController.pages ne 0}" />
+									<h:inputHidden value="#{listJoinedEventsController.pageIndex}"/>
+									<h:outputText
+										value="Welcome! Join to some events to start."
+										rendered="#{listJoinedEventsController.pages eq 0}" />
 						</center>
 						</div>
-     
-                        
                         <ui:repeat id="indexRepeat" var="event" value="#{listJoinedEventsController.eventList}" varStatus="status">
                             <div class="col-xs-12 col-sm-6 col-md-3">
                                 <div class="cover-event">
@@ -57,18 +55,39 @@
                                         <p>
                                             LETTA #{event.shortDescription}<br />
                                             At #{event.location}<br />
-                                            From <h:outputText value="#{event.date}"><f:convertDateTime pattern="dd/MM/yyyy, HH:mm" /></h:outputText><br />
+                                            From
+											<h:outputText value="#{event.date}" style="color: red;"
+												rendered="#{listJoinedEventsController.isAfter(event.date)}">
+												<f:convertDateTime pattern="dd/MM/yyyy, HH:mm" />
+											</h:outputText>
+											<h:outputText value="#{event.date}"
+												rendered="#{listJoinedEventsController.isAfter(event.date) eq false}">
+												<f:convertDateTime pattern="dd/MM/yyyy, HH:mm" />
+											</h:outputText><br />
                                             <strong>9261</strong> people will be there
                                         </p>
                                     </div>
                                 </div>
                             </div>
-                        </ui:repeat>				  					        
-						</h:form>
-
+                        </ui:repeat>		
 					</div>
+					<div class="row">
+						<center>
+							<ui:repeat value="#{listJoinedEventsController.pagesLinks}"
+								var="page">
+								<h:commandLink value="#{page}"
+									action="#{listJoinedEventsController.jumpToPage(page)}"
+									rendered="#{page != listJoinedEventsController.pageIndex}" />
+
+								<h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+									rendered="#{page == listJoinedEventsController.pageIndex}" />
+							</ui:repeat>
+						</center>
+						<br/><br/><br/>
+					</div>			        
+					</h:form>
 				</div>
-			</div>
+
 		</ui:define>
 	</ui:composition>
 </h:body>

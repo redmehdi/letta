@@ -18,9 +18,23 @@
 	        </div>
 	        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
 	          <ul class="nav navbar-nav navbar-right">
-	          <li>
-	          	<h:link value="Create Event" rendered="#{!loginController.anonymous}" outcome="faces/createEvent.xhtml" />
-	          </li>
+	          
+	           <li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">My Account&nbsp;<i class="fa fa-caret-down"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+						          <li>
+						          	<h:link value="Create Event" outcome="faces/createEvent.xhtml" />
+						          </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <h:link value="My joined events" outcome="faces/listJoinedEvents.xhtml" />
+                                </li>
+                                <li>
+                                    <h:link value="My created Events" outcome="faces/index.xhtml" />
+                                </li>
+                            </ul>
+                  </li>
+                  
 	            <li>
 	              <form class="navbar-form" role="search">
 	                <div class="input-group">
