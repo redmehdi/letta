@@ -2,6 +2,7 @@ package es.uvigo.esei.dgss.letta.service;
 
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
 import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent.containsEventsInAnyOrder;
 import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent.equalToEventWithCreator;
@@ -253,5 +254,36 @@ public class EventEJBTest {
     	
     	assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));
     }
+    
+    /**
+     * Method for test events created by the owner user.
+     */
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testGetEventsCreatedByUser() {
+        User user = userWithLogin("john");
 
+        this.principal.setName("john");
+        
+        Event[] userEvents = filterEvents(event -> event.getCreator().equals(user));
+        List<Event> eventsCreatedByUser = asUser.call(() -> events.getEventsCreatedByOwnerUser());
+        
+    	assertThat(eventsCreatedByUser, containsEventsInAnyOrder(userEvents));
+    }
+    
+    /**
+     * Method for test events created by the owner user passing a null user.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testGetEventsCreatedByUserWithNullUser() {
+        User user = userWithLogin("");
+
+        this.principal.setName("");
+        
+        Event[] userEvents = filterEvents(event -> event.getCreator().equals(user));
+        List<Event> eventsCreatedByUser = asUser.call(() -> events.getEventsCreatedByOwnerUser());
+        
+        assertThat(eventsCreatedByUser, containsEventsInAnyOrder(userEvents));
+    }
 }

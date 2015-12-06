@@ -236,4 +236,40 @@ public class EventEJB {
 			.setParameter("login", auth.getCurrentUser().getLogin())
 			.getSingleResult();
 	}
+	
+    /**
+     * Get events created by a specific user.
+     * 
+     * @param user the owner of the events.
+     * @return a list of {@link Event} that contains the owner`s events.
+     * @throws IllegalArgumentException if the user is null.
+     */
+    @RolesAllowed("USER")
+    private List<Event> getEventsCreatedByUser(final User user) 
+    		throws IllegalArgumentException {
+        isTrue(nonNull(user), "User cannot be null");
+        
+        // TODO: Pending sort by number of attendees.
+        final TypedQuery<Event> query = em.createQuery(
+            "SELECT e FROM Event e " +
+            "WHERE e.creator = :creator " +
+            "ORDER BY e.date ASC ",
+            Event.class
+        );
+
+        return query.setParameter("creator", user)
+        	.getResultList();
+    }
+    
+    /**
+     * Get events created by the active user.
+     * 
+     * @return a list of {@link Event} that contains events of the current user.
+     */
+    @RolesAllowed("USER")
+    public List<Event> getEventsCreatedByOwnerUser() {
+        final User user = auth.getCurrentUser();
+
+    	return getEventsCreatedByUser(user);
+    }
 }
