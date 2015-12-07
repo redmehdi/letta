@@ -26,7 +26,7 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedExcepti
 /**
  * Resource that represents the {@link User} private funcionalities
  * 
- * @author Jesus Álvarez Casanova
+ * @author Jesús Álvarez Casanova
  * @author Adolfo Álvarez López
  *
  */
@@ -63,14 +63,16 @@ public class UserPrivateRest {
 	 */
 	@GET
 	@Path("{login}/joined")
-	public Response getEventsJoinedByUser(@PathParam("login") final String userLogin,
-			@QueryParam("start") @DefaultValue("1") final int start,
+	public Response getEventsJoinedByUser(
+			@PathParam("login") final String userLogin,
+			@QueryParam("start") @DefaultValue("0") final int start,
 			@QueryParam("count") @DefaultValue("20") final int count) {
-		isTrue(start >= 1, "The start number must be greater than zero");
+		isTrue(start >= 0, "The start number must be greater than zero");
 		isTrue(count >= 0, "Number of events must be non-negative");
 
 		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
-			return Response.ok(eventEJB.getEventsJoinedByUser(start, count)).build();
+			return Response.ok(eventEJB.getEventsJoinedByUser(start, count))
+					.build();
 		} else {
 			return Response.noContent().build();
 		}
@@ -87,7 +89,8 @@ public class UserPrivateRest {
 	 */
 	@GET
 	@Path("{login}/created")
-	public Response getEventsCreatedByUser(@PathParam("login") String userLogin) {
+	public Response getEventsCreatedByUser(
+			@PathParam("login") String userLogin) {
 		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
 			return Response.ok(eventEJB.getEventsCreatedByOwnerUser()).build();
 		} else {
@@ -111,9 +114,10 @@ public class UserPrivateRest {
 	 *             If the {@link User} is already register for the event.
 	 */
 	@POST
-	@Path("{login}/join")
-	public Response joinEvent(@PathParam("login") String userLogin, int eventId)
-			throws SecurityException, EventAlredyJoinedException {
+	@Path("{login}/joined")
+	public Response joinEvent(@PathParam("login") String userLogin,
+			@QueryParam("id") int eventId)
+					throws SecurityException, EventAlredyJoinedException {
 		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
 			eventEJB.registerToEvent(eventId);
 			return Response.ok().build();
