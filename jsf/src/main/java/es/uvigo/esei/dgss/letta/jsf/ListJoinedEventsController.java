@@ -30,9 +30,6 @@ public class ListJoinedEventsController{
 	@Inject
 	private EventEJB eventEJB;
 	
-    @Inject
-    private EventMappings eventMapper;
-        
 	private int pageIndex=1;
     private int pages=0;
     private final int CTE_NUM_EVENTS_PAGE=4;
@@ -113,7 +110,7 @@ public class ListJoinedEventsController{
      *         event type.
      */
     public String getIconFor(final EventType eventType) {
-        return eventMapper.getIconFor(eventType);
+        return EventMappings.getIconFor(eventType);
     }
     
     /**

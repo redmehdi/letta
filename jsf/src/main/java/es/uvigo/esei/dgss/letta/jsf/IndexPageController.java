@@ -24,9 +24,6 @@ import es.uvigo.esei.dgss.letta.service.EventEJB;
 public class IndexPageController {
 
     @Inject
-    private EventMappings eventMapper;
-
-    @Inject
     private EventEJB eventEJB;
 
     /**
@@ -52,16 +49,15 @@ public class IndexPageController {
 
     /**
      * Returns a {@link String} representing the path to the corresponding
-     * {@link EventType} icon image.
+     * {@link Event#getEventType() Event's type} icon image.
      *
-     * @param eventType
-     *            the {@link EventType} to be translated into a icon path.
+     * @param event The {@link Event} to be translated into a icon path.
      *
-     * @return a String with the path to the icon associated to the received
-     *         event type.
+     * @return A String with the path to the icon associated to the received
+     *         event.
      */
-    public String getIconFor(final EventType eventType) {
-        return eventMapper.getIconFor(eventType);
+    public String getIconFor(final Event event) {
+        return EventMappings.getIconFor(event.getEventType());
     }
 
 }

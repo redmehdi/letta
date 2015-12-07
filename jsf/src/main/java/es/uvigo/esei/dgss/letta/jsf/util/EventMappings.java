@@ -2,8 +2,7 @@ package es.uvigo.esei.dgss.letta.jsf.util;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.inject.Singleton;
+import java.util.Optional;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.EventType;
@@ -17,8 +16,10 @@ import static es.uvigo.esei.dgss.letta.domain.entities.EventType.*;
  * @author Alberto Gutiérrez Jácome
  * @author Redouane Mehdi
  */
-@Singleton
 public class EventMappings {
+
+    // Disallow construction
+    private EventMappings() { }
 
     /**
      * Returns a {@link String} representing the path to the corresponding
@@ -28,21 +29,26 @@ public class EventMappings {
      *
      * @return A {@link String} holding the path to the icon associated to the
      *         received {@link EventType}.
+     *
+     * @throws IllegalArgumentException If the received {@link EventType} does
+     *         not have an associated icon.
+     * @throws NullPointerException If the received {@link EventType} is null.
      */
-    public String getIconFor(final EventType type) {
+    public static String getIconFor(
+        final EventType type
+    ) throws IllegalArgumentException, NullPointerException {
         final Map<EventType, String> icons = new HashMap<>();
-        icons.put(LITERATURE , "img/book.svg");
-        icons.put(MUSIC      , "img/music.svg");
-        icons.put(CINEMA     , "img/movie.svg");
-        icons.put(TV         , "img/tv.svg");
-        icons.put(INTERNET   , "img/internet.svg");
+        icons.put(CINEMA     , "img/icons/movies.png");
+        icons.put(INTERNET   , "img/icons/internet.png");
+        icons.put(LITERATURE , "img/icons/books.png");
+        icons.put(MUSIC      , "img/icons/music.png");
+        icons.put(SPORTS     , "img/icons/sports.png");
+        icons.put(THEATRE    , "img/icons/theatre.png");
+        icons.put(TRAVELS    , "img/icons/travels.png");
+        icons.put(TV         , "img/icons/television.png");
 
-        return icons.getOrDefault(type, "http://placehold.it/512x512");
+        return Optional.ofNullable(icons.get(type))
+              .orElseThrow(IllegalArgumentException::new);
     }
-
-    public String getIconFor(final Event event) {
-        return getIconFor(event.getEventType());
-    }
-
 
 }
