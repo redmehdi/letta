@@ -26,9 +26,7 @@
 		<ui:define name="content">
 			<div class="container ">
 				<div class="row ">
-					<div class="col-md-3 "></div>
 
-					<div class="col-md-6">
 
 						<h:form id="results_form">
 							<div>
@@ -36,7 +34,7 @@
 									<h:commandButton value="&lt; prev"
 										action="#{searchController.doSearchPrev()}" />
 									<h:outputText id="number_of_pages"
-										value="#{searchController.pageIndex} / #{searchController.pages}" />
+										value="#{searchController.currentPage} / #{searchController.pages}" />
 									<h:commandButton value="next &gt;"
 										action="#{searchController.doSearchNext()}" />
 									<h:inputHidden value="#{searchController.pageIndex}" />
@@ -94,7 +92,6 @@
 
 						</h:form>
 
-					</div>
 				</div>
 			</div>
 		</ui:define>
