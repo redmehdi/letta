@@ -94,7 +94,7 @@ public class EventResource {
      */
     @GET
     @Path("search")
-    public Response seach(
+    public Response search(
         @QueryParam("query") @DefaultValue("")   final String query,
         @QueryParam("page")  @DefaultValue("1")  final int    page,
         @QueryParam("size")  @DefaultValue("20") final int    size

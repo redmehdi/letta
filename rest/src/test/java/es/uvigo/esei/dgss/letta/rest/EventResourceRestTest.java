@@ -57,8 +57,8 @@ public class EventResourceRestTest {
 
     @Test
     @InSequence(10) // test 1, sequence 0
-    @UsingDataSet({"users.xml", "events.xml"})
-    public void beforeListWithDefaultArguments() { }
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestListWithDefaultArguments() { }
 
     @Test
     @RunAsClient
@@ -86,6 +86,52 @@ public class EventResourceRestTest {
     @InSequence(12) // test 1, sequence 2
     @CleanupUsingScript("cleanup.sql")
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
-    public void afterListWithDefaultArguments() { }
+    public void afterTestListWithDefaultArguments() { }
+
+    @Test
+    @InSequence(20) // test 2, sequence 0
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestHighlighted() { }
+
+    @Test
+    @RunAsClient
+    @InSequence(21) // test 2, sequence 1
+    public void testHighlighted(
+        @ArquillianResteasyResource(basePath) final WebTarget target
+    ) {
+        final Response response = target.path("highlighted").request().get();
+        assertThat(response, hasHttpStatus(OK));
+
+        assertThat(response.readEntity(asEventList), hasSize(5));
+    }
+
+    @Test
+    @InSequence(22) // test 2, sequence 2
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void afterTestHighlighted() { }
+
+    @Test
+    @InSequence(30) // test 3, sequence 0
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestSearchWithDefaultArguments() { }
+
+    @Test
+    @RunAsClient
+    @InSequence(31) // test 3, sequence 1
+    public void testSearchWithDefaultArguments(
+        @ArquillianResteasyResource(basePath) final WebTarget target
+    ) {
+        final Response response = target.path("search").request().get();
+        assertThat(response, hasHttpStatus(OK));
+
+        assertThat(response.readEntity(asEventList), hasSize(20));
+    }
+
+    @Test
+    @InSequence(32) // test 3, sequence 2
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void afterTestSearchWithDefaultArguments() { }
 
 }
