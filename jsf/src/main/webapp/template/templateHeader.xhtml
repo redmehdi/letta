@@ -1,72 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:h="http://xmlns.jcp.org/jsf/html">
-<body>
-	<ui:composition>
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target="#navbar-ex-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a href="faces/index.xhtml" class="navbar-brand"><img
-					height="20" alt="Brand" src="img/logo.png" /></a>
-			</div>
-			<div class="collapse navbar-collapse" id="navbar-ex-collapse">
-				<ul class="nav navbar-nav navbar-right">
-					<h:panelGroup rendered="#{!loginController.anonymous}">
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" aria-expanded="false">My
-								Account&nbsp;<i class="fa fa-caret-down"></i>
-						</a>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <body>
+	    <ui:composition>
+	      <div class="container">
+	        <div class="navbar-header">
+	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+	            <span class="sr-only">Toggle navigation</span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </button>
+	          <a href="faces/index.xhtml" class="navbar-brand"><img height="20" alt="Brand" src="img/logo.png"/></a>
+	        </div>
+	        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+	          <ul class="nav navbar-nav navbar-right">
+                <h:panelGroup rendered="#{!loginController.anonymous}">
+ 	           <li class="dropdown">
+ 	
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">My Account&nbsp;<i class="fa fa-caret-down"></i></a>
 
-							<ul class="dropdown-menu" role="menu">
+                           <ul class="dropdown-menu" role="menu">
 
-								<li><h:link value="Create Event"
-										outcome="faces/createEvent.xhtml" /></li>
+					          <li>
 
-								<li class="divider"></li>
+					          	<h:link value="Create Event" outcome="faces/createEvent.xhtml" />
 
-								<li><h:link value="My joined events"
-										outcome="faces/listJoinedEvents.xhtml" /></li>
+					          </li>
 
-								<li><h:link value="My created Events"
-										outcome="faces/index.xhtml" /></li>
+                              <li class="divider"></li>
 
-							</ul></li>
-					</h:panelGroup>
-					<li><h:form id="search_event_form" class="navbar-form">
-							<div class="input-group">
-								<div class="input-group-btn">
-									<h:commandButton id="search_event_button"
-										class="btn btn-default" value="Search"
-										action="#{searchController.doSearchNext()}">
-									</h:commandButton>
-								</div>
-								<h:inputText class="form-control" id="srch-term"
-									value="#{searchController.terms}" />
+                               <li>
 
-								<!--  <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"/>-->
-							</div>
+                                   <h:link value="My joined events" outcome="faces/listJoinedEvents.xhtml" />
 
-						</h:form></li>
-					<li><h:link value="Login"
-							rendered="#{loginController.anonymous}"
-							outcome="faces/login.xhtml" /></li>
-					<li><h:link value="Sign up"
-							rendered="#{loginController.anonymous}"
-							outcome="faces/register.xhtml" /></li>
-					<li><h:link value="Logout"
-							rendered="#{!loginController.anonymous}"
-							outcome="faces/logout.xhtml" /></li>
-				</ul>
-			</div>
-		</div>
-	</ui:composition>
-</body>
+                               </li>
+
+                               <li>
+
+                                   <h:link value="My created Events" outcome="faces/index.xhtml" />
+
+                               </li>
+
+                          </ul>
+
+                </li>
+</h:panelGroup> 
+	            <li>
+	            	<h:form id="searchForm" class="navbar-form">
+	                <div class="input-group">
+	                  <div class="input-group-btn">
+	                <h:commandButton id="searchButton" class="btn btn-default" value="Search" action="#{searchController.doSearchNext()}">
+					</h:commandButton>
+	                    <!-- <button class="btn btn-default" type="submit"><i class="fa fa-fw fa-search"></i></button> -->
+	                  </div>
+	                  <h:inputText  class="form-control" id="srch-term" value="#{searchController.terms}" />
+	                  
+	                 <!--  <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"/>-->
+	                </div>
+
+	              </h:form>
+	            </li>
+	            <li>
+	            	<h:link value="Login" rendered="#{loginController.anonymous}" outcome="faces/login.xhtml" />
+		        </li>
+		        <li>
+			        <h:link rendered="#{!loginController.anonymous}" outcome="faces/user_private.xhtml">
+				          		#{loginController.currentUser.name}
+			        </h:link>
+		        </li>
+		        <li>
+		            <h:link value="Sign up" rendered="#{loginController.anonymous}" outcome="faces/register.xhtml" />
+		        </li>
+				<li>
+					<h:link value="Logout" rendered="#{!loginController.anonymous}" outcome="faces/logout.xhtml" />
+		        </li>
+	          </ul>
+	        </div>
+	      </div>
+	    </ui:composition>
+    </body>
 </html>

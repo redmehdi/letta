@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html">
+<body>
+	<ui:composition>
+
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+					<span class="sr-only">Toggle navigation</span> 
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span> 
+					<span class="icon-bar"></span>
+				</button>
+				<a href="faces/index.xhtml" class="navbar-brand">
+					<img height="20" alt="Brand" src="img/logo.png" />
+				</a>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-ex-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<h:link value="+&nbsp;Create Event" outcome="faces/createEvent.xhtml" />
+					</li>
+					<li>
+						<h:link value="Explore Events" outcome="faces/index.xhtml" />
+					</li>
+					<li>
+						<h:link outcome="faces/user_private.xhtml">
+			          		#{loginController.currentUser.name}
+			          	</h:link>
+		        	</li>
+					<li class="active">
+						<h:link value="Logout" outcome="faces/logout.xhtml" />
+					</li>
+				</ul>
+			</div>
+		</div>
+
+	</ui:composition>
+</body>
+</html>

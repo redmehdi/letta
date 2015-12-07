@@ -253,7 +253,7 @@ public class EventEJB {
         final TypedQuery<Event> query = em.createQuery(
             "SELECT e FROM Event e " +
             "WHERE e.creator = :creator " +
-            "ORDER BY e.date ASC ",
+            "ORDER BY e.date DESC ",
             Event.class
         );
 
