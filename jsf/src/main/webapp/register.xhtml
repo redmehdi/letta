@@ -32,7 +32,8 @@
 					    		<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 							</h:inputText><br/>  
 					    	<h:message for="password"/>
-					    	<h:inputSecret id="password" required="true" class="form-control" value="#{registerController.password}" a:placeholder="Password" requiredMessage="Password can't be empty"/><br/>  
+					    	<h:inputSecret id="password" required="true" class="form-control" value="#{registerController.password}" a:placeholder="Password" requiredMessage="Password can't be empty"/><br/>
+					        <h:inputSecret id="repassword" required="true" class="form-control" value="#{registerController.repassword}" a:placeholder="Repeat password" requiredMessage="Password can't be empty"/><br/>
 					    	<h:commandButton id="submit-button" class="btn btn-default" value="Register" action="#{registerController.doRegister()}"/>
 					    </h:form>
 					    <br/>

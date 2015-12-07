@@ -37,34 +37,41 @@ public class RegisterUserController {
 	private String login;
 	private String email;
 	private String password;
+	private String repassword;
 
 	/**
 	 * Register a user. If login or email are duplicated, shows a message.
 	 *
-	 * @return Redirect to index if login was fine or shows error message in
-	 *         other case.
+	 * @return Redirect to index if registration process was fine or shows error 
+	 *         message in other case.
 	 */
 	public String doRegister() {
-		final Registration registration = new Registration(new User(login,
-				password, email));
-
-		try {
-			userEJB.registerUser(registration);
-			error = false;
-			return path.redirectToPage("index.xhtml?register=true");
-		} catch (final LoginDuplicateException e) {
+		if(!password.equals(repassword)){
 			error = true;
-			errorMessage = "Login already exists";
+			errorMessage = "Passwords do not match.";
 			return path.getCurrentPage();
-		} catch (EmailDuplicateException e) {
-			error = true;
-			errorMessage = "Email already exists";
-			return path.getCurrentPage();
-		} catch (MessagingException e) {
-			error = true;
-			errorMessage = "An error happened while sending the confirmation email. "
-					+ "Please, try again in a few minutes or contact with the page administrators";
-			return path.getCurrentPage();
+		}else{
+			final Registration registration = new Registration(new User(login,
+					password, email));
+	
+			try {
+				userEJB.registerUser(registration);
+				error = false;
+				return path.redirectToPage("registrationSuccess.xhtml");
+			} catch (final LoginDuplicateException e) {
+				error = true;
+				errorMessage = "Login already exists";
+				return path.getCurrentPage();
+			} catch (EmailDuplicateException e) {
+				error = true;
+				errorMessage = "Email already exists";
+				return path.getCurrentPage();
+			} catch (MessagingException e) {
+				error = true;
+				errorMessage = "An error happened while sending the confirmation email. "
+						+ "Please, try again in a few minutes or contact with the page administrators";
+				return path.getCurrentPage();
+			}
 		}
 	}
 
@@ -144,5 +151,24 @@ public class RegisterUserController {
 	 */
 	public String getErrorMessage() {
 		return errorMessage;
+	}
+
+	/**
+	 * Getter method of repassword global variable.
+	 *
+	 * @return repassword global variable.
+	 */
+	public String getRepassword() {
+		return repassword;
+	}
+
+	/**
+	 * Setter method of repassword variable.
+	 *
+	 * @param repassword
+	 *            repassword global variable.
+	 */
+	public void setRepassword(String repassword) {
+		this.repassword = repassword;
 	}
 }
