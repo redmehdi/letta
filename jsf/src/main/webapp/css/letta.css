@@ -6049,6 +6049,7 @@ button.close {
   position: relative;
 }
 .carousel-inner {
+  max-height: 800px;
   position: relative;
   overflow: hidden;
   width: 100%;
