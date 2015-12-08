@@ -68,7 +68,7 @@ public class CreateEventController {
 		try {
 			eventEJB.createEvent(new Event(type, title, shortDescription, date, location));
 			error = false;
-			return path.redirectToPage("index.xhtml");
+			return path.redirectToPage("event_created.xhtml");
 		} catch (NullPointerException e) {
 			error = true;
 			setErrorMessage(e.getMessage());
