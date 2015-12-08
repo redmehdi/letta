@@ -173,7 +173,7 @@ public class EventSearchController implements Serializable {
 		}
 		this.currentPage = pageIndex;
 
-		return "si";
+		return "searchResults.xhtml";
 	}
 
 	public String doSearchPrev() {
