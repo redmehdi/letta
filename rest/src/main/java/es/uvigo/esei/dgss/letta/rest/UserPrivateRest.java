@@ -112,9 +112,10 @@ public class UserPrivateRest {
 	 *             If the {@link User} is already register for the event.
 	 */
 	@POST
-	@Path("{login}/joined")
+	@Path("{login}/joined/{id}")
+	@Consumes(MediaType.WILDCARD)
 	public Response joinEvent(@PathParam("login") String userLogin,
-			@QueryParam("id") int eventId)
+			@PathParam("id") int eventId)
 					throws SecurityException, EventAlredyJoinedException {
 		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
 			eventEJB.registerToEvent(eventId);
