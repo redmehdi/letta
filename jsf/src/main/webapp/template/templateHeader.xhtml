@@ -22,13 +22,10 @@
 	            	<h:form id="searchForm" class="navbar-form">
 	                <div class="input-group">
 	                  <div class="input-group-btn">
-	                <h:button id="searchButton" class="btn btn-default" value="Search" outcome="faces/searchResults.xhtml" >
-					</h:button>
-	                    <!-- <button class="btn btn-default" type="submit"><i class="fa fa-fw fa-search"></i></button> -->
+					<h:commandButton id="searchButton" class="btn btn-default" value="Search" action="#{searchController.doSearchNext()}">
+-					</h:commandButton>
 	                  </div>
 	                  <h:inputText  class="form-control" id="srch-term" value="#{searchController.terms}" />
-	                  
-	                 <!--  <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"/>-->
 	                </div>
 
 	              </h:form>
