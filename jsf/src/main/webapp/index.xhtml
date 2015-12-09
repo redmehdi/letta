@@ -20,7 +20,11 @@
                             <span class="event-location">At #{event.location}</span>
                             <span class="event-date">From <h:outputText value="#{event.date}"><f:convertDateTime pattern="dd/MM/yyyy, HH:mm" /></h:outputText></span>
                             <span class="event-attendees"><strong>9261</strong> people will be there</span>
-                            <span class="event-join"><h:link class="info join-link" value="Join now!" rendered="#{!loginController.anonymous}" outcome="joinEvent.xhtml?id=#{event.id}" /></span>
+                            <span class="event-join">
+                            	<h:link class="info join-link" value="Join now!" rendered="#{!loginController.anonymous and !privateController.ownEvents.contains(event)}" outcome="joinEvent.xhtml?id=#{event.id}" />
+                        		<h:outputText value="You are the creator of this event" rendered="#{!loginController.anonymous and privateController.ownEvents.contains(event)}" />
+                        	</span>
+                        	
                         </div>
                     </div>
                     </ui:repeat>
@@ -47,7 +51,8 @@
                             <div class="overlay">
                                 <h3 class="hover-title">#{event.title}</h3>
                                 <span class="event-join">
-                                    <h:link class="info join-link" value="Join" rendered="#{!loginController.anonymous}" outcome="joinEvent.xhtml?id=#{event.id}" />
+                                	<h:link class="info join-link" value="Join now!" rendered="#{!loginController.anonymous and !privateController.ownEvents.contains(event)}" outcome="joinEvent.xhtml?id=#{event.id}" />
+                        			<h:outputText value="You are the creator of this event" rendered="#{!loginController.anonymous and privateController.ownEvents.contains(event)}" />
                                     <h:link class="info" value="Sign Up" rendered="#{loginController.anonymous}" outcome="register.xhtml" />
                                 </span>
                             </div>
