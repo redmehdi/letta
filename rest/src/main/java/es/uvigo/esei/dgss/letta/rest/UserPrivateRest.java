@@ -2,7 +2,6 @@ package es.uvigo.esei.dgss.letta.rest;
 
 import static org.apache.commons.lang3.Validate.isTrue;
 
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -31,7 +30,6 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedExcepti
  *
  */
 @Path("/private/user")
-@Stateless
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserPrivateRest {
