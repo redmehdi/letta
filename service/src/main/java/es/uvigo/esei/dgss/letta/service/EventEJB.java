@@ -2,10 +2,14 @@ package es.uvigo.esei.dgss.letta.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -29,16 +33,10 @@ import static org.apache.commons.lang3.Validate.isTrue;
  * @author Adolfo Álvarez López
  * @author Adrián Rodríguez Fariña
  * @author Alberto Gutiérrez Jácome
- */
-/**
  * @author rvcameselle
- *
- */
-/**
- * @author rvcameselle
- *
  */
 @Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class EventEJB {
 
     @PersistenceContext
@@ -46,6 +44,9 @@ public class EventEJB {
 
 	@EJB
 	private UserAuthorizationEJB auth;
+	
+    @Resource
+    private SessionContext ctx;
 
 	/**
 	 * Counts how many {@link Event Events} currently exist in the database.
@@ -115,6 +116,7 @@ public class EventEJB {
 	 *             (!!!).
 	 */
 	@RolesAllowed("USER")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public Event createEvent(final Event event) throws IllegalArgumentException, SecurityException {
 		isTrue(nonNull(event), "Event to create cannot be null");
 
@@ -181,6 +183,7 @@ public class EventEJB {
 	 *             (!!!).
 	 */
 	@RolesAllowed("USER")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void registerToEvent(final int eventId)
 	throws EventAlredyJoinedException, SecurityException {
 		final User user = auth.getCurrentUser();
@@ -188,8 +191,12 @@ public class EventEJB {
 		
 		final List<Event> eventsJoinedByUser = user.getUsersJoinsEvents();
 
-		if (eventsJoinedByUser.contains(event))
+		if (eventsJoinedByUser.contains(event)) {
+			ctx.setRollbackOnly();
+		
 			throw new EventAlredyJoinedException(user, event);
+		}
+			
 
 		user.getUsersJoinsEvents().add(event);
 		event.getEventsJoinedByUsers().add(user);

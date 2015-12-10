@@ -4,7 +4,10 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
@@ -31,6 +34,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
  * @author Adrián Rodríguez Fariña
  */
 @Stateless
+@TransactionAttribute(TransactionAttributeType.SUPPORTS)
 public class UserEJB {
 
     @PersistenceContext
@@ -41,6 +45,9 @@ public class UserEJB {
 
     @Resource(lookup = "java:/letta/confirmation-url")
     private String confirmationUrl;
+    
+    @Resource
+    private SessionContext ctx;
 
     /**
      * Retrieves the {@link User} associated with the received login name,
@@ -106,13 +113,21 @@ public class UserEJB {
      *             exception thrown by the Messaging classes
      */
     @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void registerUser(
         final Registration registration
     ) throws LoginDuplicateException, EmailDuplicateException, MessagingException {
-        if (checkLogin(registration.getLogin()))
+        if (checkLogin(registration.getLogin())) {
+        	ctx.setRollbackOnly();
+        	
             throw new LoginDuplicateException("Login duplicated");
-        if (checkEmail(registration.getEmail()))
+        }
+        
+        if (checkEmail(registration.getEmail())) {
+        	ctx.setRollbackOnly();
+        	
             throw new EmailDuplicateException("Email duplicated");
+        }
 
         em.persist(registration);
 
