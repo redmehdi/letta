@@ -21,6 +21,8 @@ import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.mail.Email;
+import es.uvigo.esei.dgss.letta.mail.MailBox;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.mail.TestingMailer;
@@ -37,7 +39,7 @@ public class UserEJBTest {
     @Deployment
     public static Archive<?> deploy() {
         return deployment().withTestMailer().withClasses(
-            UserEJB.class
+            UserEJB.class, MailBox.class, Email.class
         ).build();
     }
 

@@ -4,6 +4,8 @@ import javax.enterprise.inject.Alternative;
 import javax.inject.Singleton;
 import javax.mail.MessagingException;
 
+import es.uvigo.esei.dgss.letta.mail.Email;
+import es.uvigo.esei.dgss.letta.mail.MailBox;
 import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 
 /**
@@ -15,22 +17,17 @@ import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
  */
 @Alternative
 @Singleton
-public class TestingMailer implements Mailer {
+public class TestingMailer extends MailBox implements Mailer {
 	private boolean forceException = false;
-
-	private String from;
-	private String subject;
-	private String email;
-	private String message;
+	private Email email;
 
 	@Override
 	public void sendEmail(String from, String email, String subject,
 			String message) throws MessagingException {
-		this.from = from;
-		this.subject = subject;
-		this.email = email;
-		this.message = message;
-
+		
+		this.email = new Email(from, email, subject, message);
+		super.sendEmail(this.email);
+		
 		if (this.forceException)
 			throw new MessagingException("Email could not be sent");
 	}
@@ -44,18 +41,18 @@ public class TestingMailer implements Mailer {
 	}
 
 	public String getFrom() {
-		return from;
+		return this.email.getFrom();
 	}
 
 	public String getSubject() {
-		return subject;
+		return this.email.getSubject();
 	}
 
 	public String getEmail() {
-		return email;
+		return this.email.getTo();
 	}
 
 	public String getMessage() {
-		return message;
+		return this.email.getMessage();
 	}
 }
