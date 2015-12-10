@@ -293,7 +293,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jsf:1.0"/>
         <subsystem xmlns="urn:jboss:domain:mail:1.0">
-		    <mail-session jndi-name="java:/Mail">  
+		    <mail-session jndi-name="java:/letta/mail">  
                 <smtp-server ssl="false" outbound-socket-binding-ref="mail-smtp">  
                     <login name="no_reply@letta.com" password="lettapassword"/>  
                 </smtp-server>  

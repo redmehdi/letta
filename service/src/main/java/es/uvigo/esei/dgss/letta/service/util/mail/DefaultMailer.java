@@ -24,7 +24,7 @@ import javax.mail.internet.MimeMessage;
 @Singleton
 public class DefaultMailer implements Mailer {
 
-	@Resource(name = "java:/Mail")
+	@Resource(name = "java:/letta/mail")
 	private Session mailSession;
 
 	/**
