@@ -7,6 +7,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
+import java.util.Optional;
+
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 
@@ -21,6 +23,7 @@ import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.domain.entities.UsersDataset;
 import es.uvigo.esei.dgss.letta.mail.Email;
 import es.uvigo.esei.dgss.letta.mail.MailBox;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
@@ -43,7 +46,43 @@ public class UserEJBTest {
         ).build();
     }
 
-	@Test
+
+    @Test
+    public void getRegistrationWithLoginNull(){
+    	assertThat(facade.registrationWithLogin("jake"),is(equalTo(null)));
+    }
+    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
+    public void getNullEmail(){
+    	facade.getByEmail(null);
+    }
+    
+    @Test
+    public void getEmptyEmail(){
+    	Optional<User> test =facade.getByEmail("jasdsa@adasd.com");
+        assertThat(test, is(Optional.empty()));
+
+    }
+    
+    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
+    public void get(){
+    	facade.get(null);
+    }
+
+        @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
+    public void getNull(){
+    	facade.get(null);
+    }
+    @Test
+	@UsingDataSet("users.xml")
+    public void getReal(){
+    	final User u = UsersDataset.existentUser();
+    	Optional<User> test =facade.get(u.getLogin());
+    	assertThat(u.getLogin(),is(equalTo(test.get().getLogin()))
+    			);
+    }
+    
+    
+    @Test
 	@UsingDataSet("registrations.xml")
 	@ShouldMatchDataSet("registrations-create.xml")
 	public void testRegisterUser() throws Exception {

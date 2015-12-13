@@ -262,6 +262,7 @@ public class UserEJB {
      * @return the result list of registrations
      * @return null if it does not exist
      */
+    @PermitAll
     public Registration registrationWithLogin(final String login) {
         return em.find(Registration.class, login);
     }
