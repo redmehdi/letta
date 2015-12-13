@@ -45,7 +45,7 @@ public class UserEJB {
 
     @Resource(lookup = "java:/letta/confirmation-url")
     private String confirmationUrl;
-    
+
     @Resource
     private SessionContext ctx;
 
@@ -119,13 +119,13 @@ public class UserEJB {
     ) throws LoginDuplicateException, EmailDuplicateException, MessagingException {
         if (checkLogin(registration.getLogin())) {
         	ctx.setRollbackOnly();
-        	
+
             throw new LoginDuplicateException("Login duplicated");
         }
-        
+
         if (checkEmail(registration.getEmail())) {
         	ctx.setRollbackOnly();
-        	
+
             throw new EmailDuplicateException("Email duplicated");
         }
 
@@ -145,6 +145,7 @@ public class UserEJB {
      * @return false if the {@code uuid} already exists
      */
     @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean userConfirmation(final String uuid) {
         if (em.find(Registration.class, uuid) == null)
             return false;
