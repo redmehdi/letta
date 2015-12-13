@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 import static org.apache.commons.lang3.Validate.inclusiveBetween;
@@ -222,42 +223,12 @@ public class User implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (email == null ? 0 : email.hashCode());
-		result = prime * result + (login == null ? 0 : login.hashCode());
-		result = prime * result
-				+ (password == null ? 0 : password.hashCode());
-		result = prime * result + (role == null ? 0 : role.hashCode());
-		return result;
+		return (login == null ? 0 : login.toLowerCase().hashCode());
 	}
 
 	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (login == null) {
-			if (other.login != null)
-				return false;
-		} else if (!login.equals(other.login))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		if (role != other.role)
-			return false;
-		return true;
+	public boolean equals(final Object that) {
+		return this == that || nonNull(that) && that instanceof User
+				&& this.login.toLowerCase() == ((User) that).login.toLowerCase();
 	}
 }

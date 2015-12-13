@@ -1,5 +1,7 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
+import static java.util.Objects.nonNull;
+
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -126,4 +128,16 @@ public class Registration {
 	public User getUser() {
 		return new User(this.login, this.password, this.email, this.role);
 	}
+
+	@Override
+	public int hashCode() {
+		return ((uuid == null) ? 0 : uuid.toLowerCase().hashCode());
+	}
+
+	@Override
+	public boolean equals(final Object that) {
+		return this == that || nonNull(that) && that instanceof Registration
+				&& this.uuid.toLowerCase() == ((Registration) that).uuid.toLowerCase();
+	}
+	
 }
