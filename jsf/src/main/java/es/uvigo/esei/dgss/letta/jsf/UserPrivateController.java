@@ -38,6 +38,16 @@ public class UserPrivateController {
 	public List<Event> getOwnEvents() {
 		return eventEJB.getEventsOwnedByCurrentUser();
 	}
+	
+	/**
+	 * Returns a {@link List} of {@link Event} that were created by the current
+	 * user
+	 *
+	 * @return {@link List} of {@link Event}
+	 */
+	public List<Event> getAttendingEvents() {
+		return eventEJB.getAttendingEvents(0, -1);
+	}
 
 	/**
 	 * Returns a {@link String} representing the path to the corresponding

@@ -71,8 +71,8 @@ public class IndexPageController {
         );
     }
     
-	public boolean isAfter(final LocalDateTime d) {
-	    return d.isAfter(LocalDateTime.now());
+    public boolean isAfter(final LocalDateTime d) {
+	    return LocalDateTime.now().isAfter(d);
 	}
 
 }

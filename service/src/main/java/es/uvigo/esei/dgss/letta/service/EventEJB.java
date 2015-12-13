@@ -217,8 +217,10 @@ public class EventEJB {
             "ORDER BY date DESC, title ASC",
             Event.class
         ).setParameter("user", auth.getCurrentUser());
-
-        return query.setFirstResult(start).setMaxResults(count).getResultList();
+        if (count < 0)
+            return query.getResultList();
+        else
+        	return query.setFirstResult(start).setMaxResults(count).getResultList();
     }
 
     /**
