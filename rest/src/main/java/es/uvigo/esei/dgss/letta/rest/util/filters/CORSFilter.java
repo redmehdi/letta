@@ -1,4 +1,4 @@
-package es.uvigo.esei.dgss.letta.rest.util.mapper;
+package es.uvigo.esei.dgss.letta.rest.util.filters;
 
 import java.io.IOException;
 

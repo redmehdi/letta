@@ -1,4 +1,4 @@
-package es.uvigo.esei.dgss.letta.domain.entities;
+package es.uvigo.esei.dgss.letta.domain.matchers;
 
 import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
@@ -11,13 +11,13 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
  * @author Miguel Reboiro Jato
  *
  */
-public class IsEqualsToUser extends IsEqualsToEntity<User> {
+public class IsEqualToUser extends IsEqualToEntity<User> {
 	/**
-	 * Constructs a new instance of {@link IsEqualsToUser}.
+	 * Constructs a new instance of {@link IsEqualToUser}.
 	 *
 	 * @param user the expected user.
 	 */
-	public IsEqualsToUser(User user) {
+	public IsEqualToUser(User user) {
 		super(user);
 	}
 
@@ -37,31 +37,31 @@ public class IsEqualsToUser extends IsEqualsToEntity<User> {
 	}
 
 	/**
-	 * Factory method that creates a new {@link IsEqualsToEntity} matcher with
+	 * Factory method that creates a new {@link IsEqualToEntity} matcher with
 	 * the provided {@link User} as the expected value.
 	 * 
 	 * @param user the expected user.
-	 * @return a new {@link IsEqualsToEntity} matcher with the provided
+	 * @return a new {@link IsEqualToEntity} matcher with the provided
 	 * {@link User} as the expected value.
 	 */
 	@Factory
-	public static IsEqualsToUser equalsToUser(User user) {
-		return new IsEqualsToUser(user);
+	public static IsEqualToUser equalsToUser(User user) {
+		return new IsEqualToUser(user);
 	}
 	
 	/**
 	 * Factory method that returns a new {@link Matcher} that includes several
-	 * {@link IsEqualsToUser} matchers, each one using an {@link User} of the
+	 * {@link IsEqualToUser} matchers, each one using an {@link User} of the
 	 * provided ones as the expected value.
 	 * 
 	 * @param users the users to be used as the expected values.
 	 * @return a new {@link Matcher} that includes several
-	 * {@link IsEqualsToUser} matchers, each one using an {@link User} of the
+	 * {@link IsEqualToUser} matchers, each one using an {@link User} of the
 	 * provided ones as the expected value.
-	 * @see IsEqualsToEntity#containsEntityInAnyOrder(java.util.function.Function, Object...)
+	 * @see IsEqualToEntity#containsEntityInAnyOrder(java.util.function.Function, Object...)
 	 */
 	@Factory
 	public static Matcher<Iterable<? extends User>> containsUsersInAnyOrder(User ... users) {
-		return containsEntityInAnyOrder(IsEqualsToUser::equalsToUser, users);
+		return containsEntityInAnyOrder(IsEqualToUser::equalsToUser, users);
 	}
 }

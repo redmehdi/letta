@@ -1,4 +1,4 @@
-package es.uvigo.esei.dgss.letta.rest.util.mapper;
+package es.uvigo.esei.dgss.letta.rest.util.mappers;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

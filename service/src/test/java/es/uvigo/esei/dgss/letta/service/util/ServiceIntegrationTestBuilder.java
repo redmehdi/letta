@@ -9,8 +9,9 @@ import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
-import es.uvigo.esei.dgss.letta.domain.entities.IsEqualsToUser;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToUser;
+import es.uvigo.esei.dgss.letta.domain.util.converters.LocalDateTimeConverter;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.mail.TestingMailer;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
@@ -44,8 +45,9 @@ public final class ServiceIntegrationTestBuilder {
     private ServiceIntegrationTestBuilder() {
         deployment.addClass(ServiceIntegrationTestBuilder.class);
         deployment.addPackage(User.class.getPackage());
-        deployment.addPackage(IsEqualsToUser.class.getPackage());
+        deployment.addPackage(LocalDateTimeConverter.class.getPackage());
         deployment.addPackage(EventAlredyJoinedException.class.getPackage());
+        deployment.addPackage(IsEqualToUser.class.getPackage());
         deployment.addAsResource("test-persistence.xml", "META-INF/persistence.xml");
         deployment.addAsWebInfResource("jboss-web.xml");
     }

@@ -1,5 +1,6 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -7,9 +8,11 @@ import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
-import es.uvigo.esei.dgss.letta.domain.entities.EventType;
+import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.jsf.util.EventMappings;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
+
+import static java.time.format.FormatStyle.MEDIUM;
 
 /**
  * {@linkplain IndexPageController} is a JSF controller for LETTA's front page.
@@ -49,15 +52,21 @@ public class IndexPageController {
 
     /**
      * Returns a {@link String} representing the path to the corresponding
-     * {@link Event#getEventType() Event's type} icon image.
+     * {@link Category} icon image.
      *
-     * @param event The {@link Event} to be translated into a icon path.
+     * @param event the {@link Event} to be translated into a icon path.
      *
      * @return A String with the path to the icon associated to the received
      *         event.
      */
     public String getIconFor(final Event event) {
-        return EventMappings.getIconFor(event.getEventType());
+        return EventMappings.getIconFor(event.getCategory());
+    }
+
+    public String getDate(final Event event) {
+        return event.getDate().format(
+            DateTimeFormatter.ofLocalizedDateTime(MEDIUM)
+        );
     }
 
 }

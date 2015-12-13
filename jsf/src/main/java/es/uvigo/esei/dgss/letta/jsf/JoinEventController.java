@@ -44,7 +44,7 @@ public class JoinEventController {
 			.getOrDefault("id", null);
 
 		try {
-			eventEJB.registerToEvent(Integer.parseInt(id));
+			eventEJB.attendToEvent(Integer.parseInt(id));
 			context.redirect("index.xhtml?joined=true");
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,24 +1,5 @@
 package es.uvigo.esei.dgss.letta.service;
 
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
-import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent.containsEventsInAnyOrder;
-import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent.equalToEventWithCreator;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.newUser;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogin;
-import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertThat;
-
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -46,6 +27,25 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedExcepti
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.lessThan;
+import static org.junit.Assert.assertThat;
+
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.newUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogin;
+import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.containsEventsInAnyOrder;
+import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.equalToEventWithOwner;
+import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
+
 @RunWith(Arquillian.class)
 @CleanupUsingScript("cleanup.sql")
 public class EventEJBTest {
@@ -65,7 +65,8 @@ public class EventEJBTest {
     @Deployment
     public static Archive<WebArchive> deploy() {
         return deployment().withTestPrincipal().withClasses(
-            EventEJB.class, UserAuthorizationEJB.class
+            EventEJB.class,
+            UserAuthorizationEJB.class
         ).build();
     }
 
@@ -125,7 +126,7 @@ public class EventEJBTest {
 
     @Test
     @UsingDataSet("users.xml")
-    @ShouldMatchDataSet({ "users.xml", "users-create-event.xml" })
+    @ShouldMatchDataSet({ "users.xml", "new-event.xml" })
     public void testCreateEventCorrectlyInsertsValidEventInDatabase() {
         principal.setName(existentUser().getLogin());
         asUser.run(() -> events.createEvent(newEventWithoutCreator()));
@@ -149,18 +150,18 @@ public class EventEJBTest {
 
     @Test
     @UsingDataSet("users.xml")
-    @ShouldMatchDataSet({ "users.xml", "users-create-event.xml" })
+    @ShouldMatchDataSet({ "users.xml", "new-event.xml" })
     public void testCreateReturnsTheInsertedEvent() {
         principal.setName(existentUser().getLogin());
 
         final Event expect = newEventWithoutCreator();
-        expect.setCreator(existentUser());
+        expect.setOwner(existentUser());
 
         final Event actual = asUser.call(
             () -> events.createEvent(newEventWithoutCreator())
         );
 
-        assertThat(actual, is(equalToEventWithCreator(expect)));
+        assertThat(actual, is(equalToEventWithOwner(expect)));
     }
 
 
@@ -206,144 +207,127 @@ public class EventEJBTest {
         assertThat(events.search(EventsDataset.nonExistentTitle(), 0, 25), is(empty()));
         assertThat(events.search(EventsDataset.nonExistentDescription(), 0, 25), is(empty()));
     }
-        
+
     @Test
-    @UsingDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void testSearchCountZero(){
     	assertThat(events.search("Example", 0, 0), hasSize(0));
     }
-    
+
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
-    @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-joins-event-15.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-attends-event-15.xml" })
     public void testRegisterUserToEvent() throws EventAlredyJoinedException {
         User user = UsersDataset.userWithLogin("anne");
-        
+
         principal.setName(user.getLogin());
-        asUser.throwingRun(() -> events.registerToEvent(15));
+        asUser.throwingRun(() -> events.attendToEvent(15));
     }
 
-    @Test(expected = EventAlredyJoinedException.class)
-    @UsingDataSet({ "users.xml", "events.xml", "anne-joins-event-15.xml" })
-    @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-joins-event-15.xml" })
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml", "anne-attends-event-15.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-attends-event-15.xml" })
     public void testRegisterUserAlreadyRegistered() throws EventAlredyJoinedException {
-        User user = userWithLogin("anne");
-        
+        thrown.expect(EventAlredyJoinedException.class);
+
+        final User user = userWithLogin("anne");
         principal.setName(user.getLogin());
-        asUser.throwingRun(() -> events.registerToEvent(15));
+
+        asUser.throwingRun(() -> events.attendToEvent(15));
     }
-    
+
     @Test
-    @UsingDataSet({ "users.xml", "new-user.xml", "events.xml", "user-joins-event.xml" })
+    @UsingDataSet({ "users.xml", "new-user.xml", "events.xml", "event-attendees.xml" })
     public void testGetEventsJoinedByUserEmpty(){
-    	final User user = newUser();
-    	principal.setName(user.getLogin());
-    	
-    	final List<Event> joinedEvents = asUser.call(
-    	    () -> events.getEventsJoinedByUser(0,100)
+        final User user = newUser();
+        principal.setName(user.getLogin());
+
+        final List<Event> joinedEvents = asUser.call(
+            () -> events.getAttendingEvents(0,100)
         );
-    	
-    	assertThat(joinedEvents, is(empty()));
+
+        assertThat(joinedEvents, is(empty()));
     }
-    
+
     @Test
-    @UsingDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void testGetEventsJoinedByUserCountZero(){
     	final User user = userWithLogin("anne");
-    	
+
     	principal.setName(user.getLogin());
-    	
+
     	final List<Event> joinedEvents = asUser.call(
-    	    () -> events.getEventsJoinedByUser(0,0)
+    	    () -> events.getAttendingEvents(0, 0)
         );
-    	
+
     	assertThat(joinedEvents, is(empty()));
     }
-    
+
     @Test
-    @UsingDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void testGetEventsJoinedByUserNotEmpty(){
-    	final User user = userWithLogin("anne");
-    	final Event[] expectedEvents = filterEventsWithTwoJoinedUsers(
-    		event -> event.getEventsJoinedByUsers().contains(user));
-    	
-    	principal.setName(user.getLogin());
-    	
-    	final List<Event> joinedEvents = asUser.call(
-    	    () -> events.getEventsJoinedByUser(0,100)
+        final User user = userWithLogin("anne");
+        principal.setName(user.getLogin());
+
+        final Event[] expectedEvents = filterEventsWithTwoJoinedUsers(
+            event -> event.hasAttendee(user)
         );
-    	
-    	assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));
+
+        final List<Event> joinedEvents = asUser.call(
+            () -> events.getAttendingEvents(0, 100)
+        );
+
+        assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));
     }
-    
-    /**
-     * Method for test events created by the owner user.
-     */
+
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     public void testGetEventsCreatedByUser() {
-        User user = userWithLogin("john");
+        principal.setName(existentUser().getLogin());
 
-        this.principal.setName("john");
-        
-        Event[] userEvents = filterEvents(event -> event.getCreator().equals(user));
-        List<Event> eventsCreatedByUser = asUser.call(() -> events.getEventsCreatedByOwnerUser());
-        
-    	assertThat(eventsCreatedByUser, containsEventsInAnyOrder(userEvents));
-    }
-    
-    /**
-     * Method for test events created by the owner user passing a null user.
-     */
-    @Test(expected = IllegalArgumentException.class)
-    @UsingDataSet({ "users.xml", "events.xml" })
-    public void testGetEventsCreatedByUserWithNullUser() {
-        User user = userWithLogin("");
+        final Event[] userEvents = filterEvents(
+            event -> event.getOwner().equals(existentUser())
+        );
 
-        this.principal.setName("");
-        
-        Event[] userEvents = filterEvents(event -> event.getCreator().equals(user));
-        List<Event> eventsCreatedByUser = asUser.call(() -> events.getEventsCreatedByOwnerUser());
-        
+        final List<Event> eventsCreatedByUser = asUser.call(
+            () -> events.getEventsOwnedByCurrentUser()
+        );
+
         assertThat(eventsCreatedByUser, containsEventsInAnyOrder(userEvents));
     }
-    
+
     @Test
     public void testCountEmpty() {
         final int count = events.count();
-        assertThat(count, is(equalTo(0)));
+        assertThat(count, is(0));
     }
-    
+
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     public void testCountNotEmpty() {
 
         final int count = events.count();
-        assertThat(count, is(equalTo(25)));
+        assertThat(count, is(25));
     }
-    
+
     @Test
-    @UsingDataSet({ "users.xml", "new-user.xml", "events.xml", "user-joins-event.xml" })
+    @UsingDataSet({ "users.xml", "new-user.xml", "events.xml", "event-attendees.xml" })
     public void testGetCountEventsJoinedByUserEmpty(){
-    	final User user = newUser();
-    	principal.setName(user.getLogin());
-    	
-    	final int count = asUser.call( () -> events.getCountEventsJoinedByUser() );
-    	
-    	assertThat(count, is(equalTo(0)));
+    	principal.setName(newUser().getLogin());
+
+    	final int count = asUser.call(events::countAttendingEvents);
+
+    	assertThat(count, is(0));
     }
-    
+
     @Test
-    @UsingDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
-    public void testGetCountEventsJoinedByUserNotEmpty(){
-    	final User user = userWithLogin("anne");
-    	
-    	principal.setName(user.getLogin());
-    	
-    	final int count = asUser.call( () -> events.getCountEventsJoinedByUser() );
-    	
-    	assertThat(count, is(equalTo(10)));
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void testGetCountEventsJoinedByUserNotEmpty() {
+        principal.setName("anne");
+
+        final int count = asUser.call(events::countAttendingEvents);
+
+        assertThat(count, is(10));
     }
-    
-    
+
 }

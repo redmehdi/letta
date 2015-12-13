@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <Event id="1"   eventType="LITERATURE" title="Example1 literature" shortDescription="This is a description literature 1" date="2000-01-01 01:01:01" location="Location X" creator="john"/>
-    <Event id="2"   eventType="LITERATURE" title="Example2 literature" shortDescription="This is a description literature 2" date="2000-01-01 01:01:01" location="Location X" creator="john"/>
-    <Event id="3"   eventType="MUSIC"      title="Example1 music"      shortDescription="This is a description  music 1"     date="2000-01-01 01:01:01" location="Location X" creator="john"/>
-    <Event id="4"   eventType="MUSIC"      title="Example2 music"      shortDescription="This is a description music 2"      date="2000-01-01 01:01:01" location="Location X" creator="john"/>
-    <Event id="5"   eventType="CINEMA"     title="Example1 cinema"     shortDescription="This is a description cinema 1"     date="2000-01-01 01:01:01" location="Location X" creator="john"/>
-    <Event id="6"   eventType="CINEMA"     title="Example2 cinema"     shortDescription="This is a description cinema 2"     date="2000-01-01 01:01:01" location="Location X" creator="anne"/>
-    <Event id="7"   eventType="TV"         title="Example1 tv"         shortDescription="This is a description tv 1"         date="2000-01-01 01:01:01" location="Location X" creator="anne"/>
-    <Event id="8"   eventType="TV"         title="Example2 tv"         shortDescription="This is a description tv 2"         date="2000-01-01 01:01:01" location="Location X" creator="anne"/>
-    <Event id="9"   eventType="SPORTS"     title="Example1 sports"     shortDescription="This is a description sports 1"     date="2000-01-01 01:01:01" location="Location X" creator="anne"/>
-    <Event id="10"  eventType="SPORTS"     title="Example2 sports"     shortDescription="This is a description sports 2"     date="2000-01-01 01:01:01" location="Location X" creator="anne"/>
-    <Event id="11"  eventType="INTERNET"   title="Example1 internet"   shortDescription="This is a description internet 1"   date="2000-01-01 01:01:01" location="Location X" creator="mary"/>
-    <Event id="12"  eventType="INTERNET"   title="Example2 internet"   shortDescription="This is a description internet 2"   date="2000-01-01 01:01:01" location="Location X" creator="mary"/>
-    <Event id="13"  eventType="TRAVELS"    title="Example1 travels"    shortDescription="This is a description travels 1"    date="2000-01-01 01:01:01" location="Location X" creator="mary"/>
-    <Event id="14"  eventType="TRAVELS"    title="Example2 travels"    shortDescription="This is a description travels 2"    date="2000-01-01 01:01:01" location="Location X" creator="mary"/>
-    <Event id="15"  eventType="THEATRE"    title="Example1 theatre"    shortDescription="This is a description theatre 1"    date="2000-01-01 01:01:01" location="Location X" creator="mike"/>
-    <Event id="16"  eventType="THEATRE"    title="Example2 theatre"    shortDescription="This is a description theatre 2"    date="2000-01-01 01:01:01" location="Location X" creator="joan"/>
+    <Event id="1"  category="BOOKS"      title="Example1 Literature" summary="This is a description literature 1" date="2000-01-01 01:01:01" location="Location X" owner="john"/>
+    <Event id="2"  category="BOOKS"      title="Example2 Literature" summary="This is a description literature 2" date="2000-01-01 01:01:01" location="Location X" owner="john"/>
+    <Event id="3"  category="MUSIC"      title="Example1 Music"      summary="This is a description  music 1"     date="2000-01-01 01:01:01" location="Location X" owner="john"/>
+    <Event id="4"  category="MUSIC"      title="Example2 Music"      summary="This is a description music 2"      date="2000-01-01 01:01:01" location="Location X" owner="john"/>
+    <Event id="5"  category="MOVIES"     title="Example1 Cinema"     summary="This is a description cinema 1"     date="2000-01-01 01:01:01" location="Location X" owner="john"/>
+    <Event id="6"  category="MOVIES"     title="Example2 Cinema"     summary="This is a description cinema 2"     date="2000-01-01 01:01:01" location="Location X" owner="anne"/>
+    <Event id="7"  category="TELEVISION" title="Example1 Tv"         summary="This is a description tv 1"         date="2000-01-01 01:01:01" location="Location X" owner="anne"/>
+    <Event id="8"  category="TELEVISION" title="Example2 Tv"         summary="This is a description tv 2"         date="2000-01-01 01:01:01" location="Location X" owner="anne"/>
+    <Event id="9"  category="SPORTS"     title="Example1 Sports"     summary="This is a description sports 1"     date="2000-01-01 01:01:01" location="Location X" owner="anne"/>
+    <Event id="10" category="SPORTS"     title="Example2 Sports"     summary="This is a description sports 2"     date="2000-01-01 01:01:01" location="Location X" owner="anne"/>
+    <Event id="11" category="INTERNET"   title="Example1 Internet"   summary="This is a description internet 1"   date="2000-01-01 01:01:01" location="Location X" owner="mary"/>
+    <Event id="12" category="INTERNET"   title="Example2 Internet"   summary="This is a description internet 2"   date="2000-01-01 01:01:01" location="Location X" owner="mary"/>
+    <Event id="13" category="TRAVELS"    title="Example1 Travels"    summary="This is a description travels 1"    date="2000-01-01 01:01:01" location="Location X" owner="mary"/>
+    <Event id="14" category="TRAVELS"    title="Example2 Travels"    summary="This is a description travels 2"    date="2000-01-01 01:01:01" location="Location X" owner="mary"/>
+    <Event id="15" category="THEATRE"    title="Example1 Theatre"    summary="This is a description theatre 1"    date="2000-01-01 01:01:01" location="Location X" owner="mike"/>
+    <Event id="16" category="THEATRE"    title="Example2 Theatre"    summary="This is a description theatre 2"    date="2000-01-01 01:01:01" location="Location X" owner="joan"/>
 </dataset>

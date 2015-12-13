@@ -1,245 +1,387 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
-import org.junit.Before;
 import org.junit.Test;
 
-import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.validUser;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
+import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
+
+import static java.util.Arrays.stream;
+
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
-/**
- * Class for test the {@link Event} class.
- * 
- * @author aalopez
- * @author apsoto
- * @author abmiguez
- *
- */
-public class EventTest {
+import static es.uvigo.esei.dgss.letta.domain.entities.EventParameters.*;
 
-	private EventType eventType;
-	private String title;
-	private String shortDescription;
-	private String location;
-	private Date date;
-	private Event event;
-	private User creator;
+public final class EventTest {
 
-	/**
-	 * Method for set up the attributes.
-	 */
-	@Before
-	public void setUp() {
-		this.eventType = EventType.CINEMA;
-		this.title = "Event title";
-		this.shortDescription = "Event description";
-		this.location = "Event location";
-		this.date = new Date();
-		this.event = new Event();
-		this.creator = validUser();
-	}
+    @Test
+    public void testConstructorWithValidTitles() {
+        final Category      category = aCategory();
+        final String        summary  = aSummary();
+        final LocalDateTime date     = aDate();
+        final String        location = aLocation();
 
-	/**
-	 * Method for test {@code Event} constructor.
-	 */
-	@Test
-	public void testEvent() {
-		Event event = new Event(this.eventType, this.title,
-				this.shortDescription, this.date, this.location, this.creator);
-		assertThat(event.getEventType(), is(equalTo(this.eventType)));
-		assertThat(event.getTitle(), is(equalTo(this.title)));
-		assertThat(event.getShortDescription(),
-				is(equalTo(this.shortDescription)));
-		assertThat(event.getDate(), is(equalTo(this.date)));
-		assertThat(event.getLocation(), is(equalTo(this.location)));
-		assertThat(event.getCreator(), is(equalTo(this.creator)));
-	}
+        final String[] validTitles = {
+            aTitle(), anotherTitle(), longestValidTitle(), shortestValidTitle()
+        };
 
-	/**
-	 * Method for test {@code Event} constructor with null creator.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testEventNullCreator() {
-		new Event(this.eventType, this.title, this.shortDescription, this.date,
-				this.location, null);
-	}
+        stream(validTitles).forEach(title -> {
+            final Event event = new Event(
+                category, title, summary, date, location
+            );
 
-	/**
-	 * Method for test {@code Event} constructor with null {@code EventType}.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testEventNullEventType() {
-		new Event(null, this.title, this.shortDescription, this.date,
-				this.location, this.creator);
-	}
+            assertThat(event.getCategory(), is(equalTo(category)));
+            assertThat(event.getTitle(),    is(equalToIgnoringCase(title)));
+            assertThat(event.getSummary(),  is(equalToIgnoringCase(summary)));
+            assertThat(event.getDate(),     is(equalTo(date)));
+            assertThat(event.getLocation(), is(equalToIgnoringCase(location)));
+        });
+    }
 
-	/**
-	 * Method for test {@code Event} constructor with null title.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testEventNullTitle() {
-		new Event(this.eventType, null, this.shortDescription, this.date,
-				this.location, this.creator);
-	}
+    @Test
+    public void testConstructorWithValidSummaries() {
+        final Category      category = aCategory();
+        final String        title    = aTitle();
+        final LocalDateTime date     = aDate();
+        final String        location = aLocation();
 
-	/**
-	 * Method for test {@code Event} constructor with null description.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testEventNullDescription() {
-		new Event(this.eventType, this.title, null, this.date, this.location,
-				this.creator);
-	}
+        final String[] validSummaries = {
+            aSummary(),
+            anotherSummary(),
+            longestValidSummary(),
+            shortestValidSummary(),
+        };
 
-	/**
-	 * Method for test {@code Event} constructor with empty title.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testEventEmptyTitle() {
-		new Event(this.eventType, "", this.shortDescription, this.date,
-				this.location, this.creator);
-	}
+        stream(validSummaries).forEach(summary -> {
+            final Event event = new Event(
+                category, title, summary, date, location
+            );
 
-	/**
-	 * Method for test {@code Event} constructor with empty description.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testEventEmptyDescription() {
-		new Event(this.eventType, this.title, "", this.date, this.location,
-				this.creator);
-	}
+            assertThat(event.getCategory(), is(equalTo(category)));
+            assertThat(event.getTitle(),    is(equalToIgnoringCase(title)));
+            assertThat(event.getSummary(),  is(equalToIgnoringCase(summary)));
+            assertThat(event.getDate(),     is(equalTo(date)));
+            assertThat(event.getLocation(), is(equalToIgnoringCase(location)));
+        });
+    }
 
-	/**
-	 * Method for test {@code Event} constructor with title longer than 20.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testEventTooLongTitle() {
-		new Event(this.eventType, String.format("%1$" + 21 + "s", ""),
-				this.shortDescription, this.date, this.location, this.creator);
-	}
+    @Test
+    public void testConstructorWithValidLocations() {
+        final Category      category = aCategory();
+        final String        title    = aTitle();
+        final String        summary  = aSummary();
+        final LocalDateTime date     = aDate();
 
-	/**
-	 * Method for test {@code Event} constructor with description longer than
-	 * 50.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testEventTooLongDescription() {
-		new Event(this.eventType, this.title, String.format("%1$" + 51 + "s",
-				""), this.date, this.location, this.creator);
-	}
+        final String[] validLocations = {
+            aLocation(),
+            anotherLocation(),
+            longestValidLocation(),
+            shortestValidLocation(),
+        };
 
-	@Test(expected = NullPointerException.class)
-	public void testEventNullLocation() {
-		new Event(this.eventType, this.title, this.shortDescription, this.date,
-				null, this.creator);
-	}
+        stream(validLocations).forEach(location -> {
+            final Event event = new Event(
+                category, title, summary, date, location
+            );
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testEventEmptyLocation() {
-		new Event(this.eventType, this.title, this.shortDescription, this.date,
-				"", this.creator);
-	}
+            assertThat(event.getCategory(), is(equalTo(category)));
+            assertThat(event.getTitle(),    is(equalToIgnoringCase(title)));
+            assertThat(event.getSummary(),  is(equalToIgnoringCase(summary)));
+            assertThat(event.getDate(),     is(equalTo(date)));
+            assertThat(event.getLocation(), is(equalToIgnoringCase(location)));
+        });
+    }
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testEventTooLongLocation() {
-		new Event(this.eventType, this.title, this.shortDescription, this.date,
-				String.format("%1$" + 101 + "s", ""), this.creator);
-	}
+    @Test(expected = NullPointerException.class)
+    public void testThatConstructorThrowsExceptionOnNullCategory() {
+        new Event(null, aTitle(), aSummary(), aDate(), aLocation());
+    }
 
-	/**
-	 * Method for test creator setter with null argument.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testSetCreator() {
-		this.event.setCreator(null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void testThatConstructorThrowsExceptionOnNullTitle() {
+        new Event(aCategory(), null, aSummary(), aDate(), aLocation());
+    }
 
-	/**
-	 * Method for test {@code EventType} setter with null argument.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testSetEventType() {
-		this.event.setEventType(null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void testThatConstructorThrowsExceptionOnNullSummary() {
+        new Event(aCategory(), aTitle(), null, aDate(), aLocation());
+    }
 
-	/**
-	 * Method for test title setter with null argument.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testSetTitleWithNullArgument() {
-		this.event.setTitle(null);
-	}
+    @Test(expected = NullPointerException.class)
+    public void testThatConstructorThrowsExceptionOnNullDate() {
+        new Event(aCategory(), aTitle(), aSummary(), null, aLocation());
+    }
 
-	/**
-	 * Method for test title setter with empty argument.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetTitleWithEmptyArgument() {
-		this.event.setTitle("");
-	}
+    @Test(expected = NullPointerException.class)
+    public void testThatConstructorThrowsExceptionOnNullLocation() {
+        new Event(aCategory(), aTitle(), aSummary(), aDate(), null);
+    }
 
-	/**
-	 * Method for test title setter with argument longer than 20.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetTitleWithTooLongArgument() {
-		this.event.setTitle(String.format("%1$" + 21 + "s", ""));
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatConstructorThrowsExceptionOnEmptyTitle() {
+        new Event(aCategory(), emptyTitle(), aSummary(), aDate(), aLocation());
+    }
 
-	/**
-	 * Method for test description setter with null argument.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testSetDescriptionWithNullArgument() {
-		this.event.setShortDescription(null);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatConstructorThrowsExceptionOnTooLongTitle() {
+        new Event(aCategory(), tooLongTitle(), aSummary(), aDate(), aLocation());
+    }
 
-	/**
-	 * Method for test description setter with empty argument.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetDescriptionWithEmptyArgument() {
-		this.event.setShortDescription("");
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatConstructorThrowsExceptionOnEmptySummary() {
+        new Event(aCategory(), aTitle(), emptySummary(), aDate(), aLocation());
+    }
 
-	/**
-	 * Method for test description setter with argument longer than 50.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetDescriptionWithTooLongArgument() {
-		this.event.setShortDescription(String.format("%1$" + 51 + "s", ""));
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatConstructorThrowsExceptionOnTooLongSummary() {
+        new Event(aCategory(), aTitle(), tooLongSummary(), aDate(), aLocation());
+    }
 
-	/**
-	 * Method for test {@code Date} setter with null argument.
-	 */
-	@Test(expected = NullPointerException.class)
-	public void testSetDateWithNullArgument() {
-		this.event.setDate(null);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatConstructorThrowsExceptionOnEmptLocation() {
+        new Event(aCategory(), aTitle(), aSummary(), aDate(), emptyLocation());
+    }
 
-	@Test(expected = NullPointerException.class)
-	public void testSetLocationWithNullArgument() {
-		this.event.setDate(null);
-	}
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatConstructorThrowsExceptionOnTooLongLocation() {
+        new Event(aCategory(), aTitle(), aSummary(), aDate(), tooLongLocation());
+    }
 
-	/**
-	 * Method for test description setter with empty argument.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetLocationWithEmptyArgument() {
-		this.event.setShortDescription("");
-	}
+    @Test
+    public void testSetCategoryWithValidCategory() {
+        final Event event = validEvent();
 
-	/**
-	 * Method for test description setter with argument longer than 50.
-	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void testSetLocationWithTooLongArgument() {
-		this.event.setShortDescription(String.format("%1$" + 101 + "s", ""));
-	}
+        event.setCategory(anotherCategory());
+        assertThat(event.getCategory(), is(equalTo(anotherCategory())));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatSetCategoryThrowsExceptionOnNullCategory() {
+        validEvent().setCategory(null);
+    }
+
+    @Test
+    public void testSetTitleWithValidTitles() {
+        final String[] validTitles = {
+            anotherTitle(), longestValidTitle(), shortestValidTitle()
+        };
+
+        stream(validTitles).forEach(title -> {
+            final Event event = validEvent();
+            event.setTitle(title);
+            assertThat(event.getTitle(), is(equalToIgnoringCase(title)));
+        });
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatSetTitleThrowsExceptionOnNullTitle() {
+        validEvent().setTitle(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatSetTitleThrowsExceptionOnEmptyTitle() {
+        validEvent().setTitle(emptyTitle());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatSetTitleThrowsExceptionOnTooLongTitle() {
+        validEvent().setTitle(tooLongTitle());
+    }
+
+    @Test
+    public void testSetSummaryWithValidSummaries() {
+        final String[] validSummaries = {
+            anotherSummary(), longestValidSummary(), shortestValidSummary()
+        };
+
+        stream(validSummaries).forEach(summary -> {
+            final Event event = validEvent();
+            event.setSummary(summary);
+            assertThat(event.getSummary(), is(equalToIgnoringCase(summary)));
+        });
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatSetSummaryThrowsExceptionOnNullSummary() {
+        validEvent().setSummary(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatSetSummaryThrowsExceptionOnEmptySummary() {
+        validEvent().setSummary(emptySummary());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatSetSummaryThrowsExceptionOnTooLongSummary() {
+        validEvent().setSummary(tooLongSummary());
+    }
+
+    @Test
+    public void testSetDateWithValidDate() {
+        final Event event = validEvent();
+
+        event.setDate(anotherDate());
+        assertThat(event.getDate(), is(equalTo(anotherDate())));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatSetDateThrowsExceptionOnNullDate() {
+        validEvent().setDate(null);
+    }
+
+    @Test
+    public void testSetLocationWithValidLocations() {
+        final String[] validLocations = {
+            anotherLocation(), longestValidLocation(), shortestValidLocation()
+        };
+
+        stream(validLocations).forEach(location -> {
+            final Event event = validEvent();
+            event.setLocation(location);
+            assertThat(event.getLocation(), is(equalToIgnoringCase(location)));
+        });
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatSetLocationThrowsExceptionOnNullLocation() {
+        validEvent().setLocation(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatSetLocationThrowsExceptionOnEmptyLocation() {
+        validEvent().setLocation(emptyLocation());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatSetLocationThrowsExceptionOnTooLongLocation() {
+        validEvent().setLocation(tooLongLocation());
+    }
+
+    @Test
+    public void testSetOwnerWithValidOwners() {
+        final User[] validOwners = { anOwner(), anotherOwner() };
+
+        stream(validOwners).forEach(owner -> {
+            final Event event = validEvent();
+            event.setOwner(owner);
+            assertThat(event.getOwner(), is(equalTo(owner)));
+        });
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatSetOwnerThrowsExceptionOnNullOwner() {
+        validEvent().setOwner(null);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testThatGetAttendeesReturnsAnUnmodifiableSet() {
+        validEvent().getAttendees().add(anAttendee());
+    }
+
+    @Test
+    public void testAddAttendeeWithValidAttendees() {
+        final Event event = validEvent();
+
+        stream(someAttendees()).forEach(attendee -> {
+            assertThat(event.getAttendees(), not(hasItem(attendee)));
+            event.addAttendee(attendee);
+            assertThat(event.getAttendees(), hasItem(attendee));
+        });
+
+        assertThat(event.getAttendees(), containsInAnyOrder(someAttendees()));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatAddAttendeeThrowsExceptionOnNullAttendee() {
+        validEvent().addAttendee(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatAddAttendeeThrowsExceptionOnAlreadyAddedAttendee() {
+        final Event event = validEvent();
+        event.addAttendee(anAttendee());
+        event.addAttendee(anAttendee());
+    }
+
+    @Test
+    public void testRemoveAttendeeWithValidAttendees() {
+        final Event event = validEvent();
+        stream(someAttendees()).forEach(event::addAttendee);
+
+        stream(someAttendees()).forEach(attendee -> {
+            assertThat(event.getAttendees(), hasItem(attendee));
+            event.removeAttendee(attendee);
+            assertThat(event.getAttendees(), not(hasItem(attendee)));
+        });
+
+        assertThat(event.getAttendees(), is(empty()));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatRemoveAttendeeThrowsExceptionOnNullAttendee() {
+        validEvent().removeAttendee(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testThatRemoveAttendeeThrowsExceptionOnNonExistentAttendee() {
+        validEvent().removeAttendee(anAttendee());
+    }
+
+    @Test
+    public void testThatCountAttendeesIsInSyncWithGetAttendees() {
+        final Event event = validEvent();
+
+        stream(someAttendees()).forEach(event::addAttendee);
+        assertThat(event.countAttendees(), is(someAttendees().length));
+        assertThat(event.getAttendees()  , hasSize(event.countAttendees()));
+
+        stream(someAttendees()).forEach(event::removeAttendee);
+        assertThat(event.countAttendees(), is(0));
+        assertThat(event.getAttendees()  , hasSize(event.countAttendees()));
+    }
+
+    @Test
+    public void testThatHasAttendeeReturnsTrueIfAttendeeIsPresent() {
+        final Event event = validEvent();
+        event.addAttendee(anAttendee());
+        assertThat(event.hasAttendee(anAttendee()), is(true));
+    }
+
+    @Test
+    public void testThatHasAttendeeReturnsFalseIfAttendeeIsNotPresent() {
+        assertThat(validEvent().hasAttendee(anAttendee()), is(false));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testThatHasAttendeeThrowsExceptionOnNullAttendee() {
+        validEvent().hasAttendee(null);
+    }
+
+    @Test
+    public void testThatHasAtendeeIsInSyncWithGetAttendees() {
+        final Event event = validEvent();
+
+        stream(someAttendees()).forEach(event::addAttendee);
+        stream(someAttendees()).forEach(
+            attendee -> assertThat(event.hasAttendee(attendee), is(true))
+        );
+
+        stream(someAttendees()).forEach(event::removeAttendee);
+        stream(someAttendees()).forEach(
+            attendee -> assertThat(event.hasAttendee(attendee), is(false))
+        );
+    }
+
+    @Test
+    public void testEqualsHashCodeContract() {
+        EqualsVerifier.forClass(Event.class).suppress(
+            Warning.NULL_FIELDS,
+            Warning.NONFINAL_FIELDS
+        ).verify();
+    }
 
 }

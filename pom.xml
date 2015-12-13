@@ -53,6 +53,7 @@
 		<junit.version>4.12</junit.version>
 		<hamcrest.version>2.0.0.0</hamcrest.version>
 		<easymock.version>3.4</easymock.version>
+		<equalsverifier.version>1.7.5</equalsverifier.version>
 		<jacoco.version>0.7.5.201505241946</jacoco.version>
 		<arquillian.jacoco.version>1.0.0.Alpha8</arquillian.jacoco.version>
 		<arquillian.persistence.dbunit.version>1.0.0.Alpha7</arquillian.persistence.dbunit.version>
@@ -151,6 +152,11 @@
 				<groupId>org.easymock</groupId>
 				<artifactId>easymock</artifactId>
 				<version>${easymock.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>nl.jqno.equalsverifier</groupId>
+				<artifactId>equalsverifier</artifactId>
+				<version>${equalsverifier.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jboss.arquillian.extension</groupId>

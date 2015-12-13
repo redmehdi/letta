@@ -186,9 +186,4 @@ public class UserTest {
 		assertThat(user.getEmail(), is(equalTo(newEmail)));
 	}
 	
-	@Test(expected = NullPointerException.class)
-	public void testSetUsersJoinsEventsNull() {
-		validUser().setUsersJoinsEvents(null);
-	}
-	
 }

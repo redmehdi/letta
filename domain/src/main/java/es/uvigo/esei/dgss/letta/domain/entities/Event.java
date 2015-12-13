@@ -1,434 +1,421 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
-import static java.util.Objects.requireNonNull;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
+import es.uvigo.esei.dgss.letta.domain.util.adapters.LocalDateTimeAdapter;
+import es.uvigo.esei.dgss.letta.domain.util.annotations.VisibleForJPA;
+import es.uvigo.esei.dgss.letta.domain.util.annotations.VisibleForTesting;
+import es.uvigo.esei.dgss.letta.domain.util.converters.LocalDateTimeConverter;
+
+import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
+import static java.util.Collections.unmodifiableSet;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
+
+import static org.apache.commons.lang3.Validate.inclusiveBetween;
+import static org.apache.commons.lang3.Validate.isTrue;
 
 /**
- * An entity that represents an event of the application.
- * 
- * @author aalopez
- * @author apsoto
- * @author abmiguez
+ * {@linkplain Event} is a JPA entity that represents an event of the
+ * application.
  *
+ * @author Adolfo Álvarez López
+ * @author Alberto Pardellas Soto
+ * @author Aitor Blanco Míguez
+ * @author Alberto Gutiérrez Jácome
  */
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Event {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-	@Enumerated(EnumType.STRING)
-	@NotNull
-	private EventType eventType;
-	@NotNull
-	@Column(length = 20)
-	private String title;
-	@NotNull
-	@Column(length = 50)
-	private String shortDescription;
-	@NotNull
-	private Date date;
-	@XmlTransient
-	@ManyToMany(mappedBy = "usersJoinsEvents")
-	private List<User> eventsJoinedByUsers = new LinkedList<User>();
-	@Column(length = 100, nullable = false, updatable = true)
-	private String location;
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "creator", referencedColumnName = "login")
-	private User creator;
 
-	/**
-	 * Constructs a new instance of {@link Event}. This constructor is required
-	 * by the JPA framework.
-	 */
-	Event() {
-	}
-	
-	/**
-	 * Constructs a new instance of {@link Event}. This constructor is expected
-	 * to be used for testing purposes only.
-	 *
-	 * @param id
-	 *            identifier of the event.
-	 * @param eventType
-	 *            the event type of the event. This paramenter must be a non
-	 *            {@code null} {@code EventType}.
-	 * @param title
-	 *            the title of the envent. This paramenter must be a non
-	 *            {@code null} string with with a maximum length of 20.
-	 * @param shortDescription
-	 *            the description of the event. This paramenter must be a non
-	 *            {@code null} string with with a maximum length of 50.
-	 * @param date
-	 *            the date of the event. This paramenter must be a non
-	 *            {@code null}.
-	 * @param location
-	 *            the location of the event
-	 * @param creator
-	 *            the creator of the event
-	 */
-	Event(
-		int id,
-		EventType eventType,
-		String title,
-		String shortDescription,
-		Date date,
-		String location,
-		User creator
-	) {
-		super();
-		this.id = id;
-		this.eventType = eventType;
-		this.title = title;
-		this.shortDescription = shortDescription;
-		this.date = date;
-		this.eventsJoinedByUsers = new ArrayList<>();
-		this.location = location;
-		this.creator = creator;
-	}
+    /**
+     * Enum representing all the available event categories: Books, Internet,
+     * Movies, Music, Sports, Television, Theatre and Travels.
+     */
+    public static enum Category {
+        BOOKS, INTERNET, MOVIES, MUSIC, SPORTS, TELEVISION, THEATRE, TRAVELS
+    }
 
-	/**
-	 * Creates a new instance of {@code Event}.
-	 *
-	 * @param eventType
-	 *            the event type of the event. This paramenter must be a non
-	 *            {@code null} {@code EventType}.
-	 * @param title
-	 *            the title of the envent. This paramenter must be a non
-	 *            {@code null} string with with a maximum length of 20.
-	 * @param shortDescription
-	 *            the description of the event. This paramenter must be a non
-	 *            {@code null} string with with a maximum length of 50.
-	 * @param date
-	 *            the date of the event. This paramenter must be a non
-	 *            {@code null}.
-	 * @param location
-	 *            the location of the event
-	 */
-	public Event(final EventType eventType, final String title,
-			final String shortDescription, final Date date,
-			final String location) {
-		this.setEventType(eventType);
-		this.setTitle(title);
-		this.setShortDescription(shortDescription);
-		this.setDate(date);
-		this.setLocation(location);
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-	/**
-	 * Creates a new instance of {@code Event}.
-	 *
-	 * @param eventType
-	 *            the event type of the event. This paramenter must be a non
-	 *            {@code null} {@code EventType}.
-	 * @param title
-	 *            the title of the envent. This paramenter must be a non
-	 *            {@code null} string with with a maximum length of 20.
-	 * @param shortDescription
-	 *            the description of the event. This paramenter must be a non
-	 *            {@code null} string with with a maximum length of 50.
-	 * @param date
-	 *            the date of the event. This paramenter must be a non
-	 *            {@code null}.
-	 * @param location
-	 *            the location of the event
-	 * @param creator
-	 *            the creator of the event
-	 */
-	public Event(final EventType eventType, final String title,
-			final String shortDescription, final Date date,
-			final String location, final User creator) {
-		this.setEventType(eventType);
-		this.setTitle(title);
-		this.setShortDescription(shortDescription);
-		this.setDate(date);
-		this.setLocation(location);
-		this.setCreator(creator);
-	}
-	
-	/**
-	 * Creates a new instance of {@code Event}.
-	 *
-	 * @param eventType
-	 *            the event type of the event. This paramenter must be a non
-	 *            {@code null} {@code EventType}.
-	 * @param title
-	 *            the title of the envent. This paramenter must be a non
-	 *            {@code null} string with with a maximum length of 20.
-	 * @param shortDescription
-	 *            the description of the event. This paramenter must be a non
-	 *            {@code null} string with with a maximum length of 50.
-	 * @param date
-	 *            the date of the event. This paramenter must be a non
-	 *            {@code null}.
-	 * @param location
-	 *            the location of the event
-	 * @param creator
-	 *            the creator of the event
-	 * @param eventsJoinedByUsers
-	 *            Users who was joined to the event
-	 */
-	public Event(final EventType eventType, final String title,
-			final String shortDescription, final Date date,
-			final String location, final User creator,
-			final List<User> eventsJoinedByUsers) {
-		this.setEventType(eventType);
-		this.setTitle(title);
-		this.setShortDescription(shortDescription);
-		this.setDate(date);
-		this.setLocation(location);
-		this.setCreator(creator);
-		for(User userJoin : eventsJoinedByUsers) {
-			this.eventsJoinedByUsers.add(userJoin);
-			final List <Event> listEvent = new LinkedList<Event>();
-			listEvent.add(this);
-			userJoin.setUsersJoinsEvents(listEvent);
-		}
-	}
+    @Enumerated(EnumType.STRING)
+    @Column(length = 10, nullable = false)
+    private Category category;
 
-	/**
-	 * The getter for the eventType parameter.
-	 *
-	 * @return the event type for the event.
-	 */
-	public EventType getEventType() {
-		return eventType;
-	}
+    @Column(length = 20, nullable = false)
+    private String title;
 
-	/**
-	 * The setter for the eventType parameter.
-	 * 
-	 * @param eventType
-	 *            the event type of the event. This paramenter must be a non
-	 *            {@code null} {@code EventType}.
-	 * 
-	 * @throws NullPointerException
-	 *             if a {@code null} value is passed as the value for this
-	 *             parameter.
-	 */
-	public void setEventType(EventType eventType) {
-		if (eventType == null) {
-			throw new NullPointerException("eventType can't be null");
-		}
-		this.eventType = eventType;
-	}
+    @Column(length = 50, nullable = false)
+    private String summary;
 
-	/**
-	 * The getter for the title parameter.
-	 * 
-	 * @return a string with the title of the event.
-	 */
-	public String getTitle() {
-		return title;
-	}
+    @Column(nullable = false)
+    @Convert(converter = LocalDateTimeConverter.class)
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+    private LocalDateTime date;
 
-	/**
-	 * The setter for the title parameter.
-	 * 
-	 * @param title
-	 *            the title of the envent. This paramenter must be a non
-	 *            {@code null} string with with a maximum length of 20.
-	 * 
-	 * @throws NullPointerException
-	 *             if a {@code null} value is passed as the value for this
-	 *             parameter.
-	 * @throws IllegalArgumentException
-	 *             if value provided for the is not valid according to its
-	 *             description.
-	 */
-	public void setTitle(String title) {
+    @Column(length = 20, nullable = false)
+    private String location;
 
-		if (title == null) {
-			throw new NullPointerException("title can't be null");
-		}
-		if (title.isEmpty()) {
-			throw new IllegalArgumentException("title can't be an empty string");
-		}
-		if (title.length() > 20) {
-			throw new IllegalArgumentException(
-					"title can't be more than 20 characters");
-		}
-		this.title = title;
-	}
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "owner", referencedColumnName = "login")
+    private User owner;
 
-	/**
-	 * The getter for the description parameter.
-	 * 
-	 * @return a string with the description of the event.
-	 */
-	public String getShortDescription() {
-		return shortDescription;
-	}
+    @XmlTransient
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "EventAttendees",
+        joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "id") },
+        inverseJoinColumns = { @JoinColumn(name = "user_login", referencedColumnName = "login") })
+    private Set<User> attendees;
 
-	/**
-	 * The setter for the description parameter.
-	 * 
-	 * @param shortDescription
-	 *            the description of the event. This paramenter must be a non
-	 *            {@code null} string with with a maximum length of 50.
-	 * @throws NullPointerException
-	 *             if a {@code null} value is passed as the value for this
-	 *             parameter.
-	 * @throws IllegalArgumentException
-	 *             if value provided for description is not valid according to
-	 *             its description.
-	 */
-	public void setShortDescription(String shortDescription) {
-		if (shortDescription == null) {
-			throw new NullPointerException("description can't be null");
-		}
-		if (shortDescription.isEmpty()) {
-			throw new IllegalArgumentException(
-					"description can't be an empty string");
-		}
-		if (shortDescription.length() > 50) {
-			throw new IllegalArgumentException(
-					"description can't be more than 50 characters");
-		}
-		this.shortDescription = shortDescription;
-	}
+    /**
+     * Constructs a new instance of {@link Event}. This empty constructor is
+     * required by the JPA framework and <strong>should never be used
+     * directly</strong>.
+     */
+    @VisibleForJPA Event() { }
 
-	/**
-	 * The getter for the date parameter.
-	 * 
-	 * @return a {@code Date} with the date of the event.
-	 */
-	public Date getDate() {
-		return date;
-	}
+    /**
+     * Constructs a new instance of {@link Event}. This constructor is expected
+     * to be used <strong>only for testing purposes</strong>. Specifically, it
+     * will only be used to create datasets that match specific database states.
+     */
+    @VisibleForTesting Event(
+        final int           id,
+        final Category      category,
+        final String        title,
+        final String        summary,
+        final LocalDateTime date,
+        final String        location,
+        final User          owner,
+        final Set<User>     attendees
+    ) throws NullPointerException {
+        this.id        = id;
+        this.category  = requireNonNull(category);
+        this.title     = requireNonNull(title);
+        this.summary   = requireNonNull(summary);
+        this.date      = requireNonNull(date);
+        this.location  = requireNonNull(location);
+        this.owner     = requireNonNull(owner);
+        this.attendees = requireNonNull(attendees);
+    }
 
-	/**
-	 * The setter for the {@code Date} parameter.
-	 * 
-	 * @param date
-	 *            the date of the event. This paramenter must be a non
-	 *            {@code null}.
-	 * @throws NullPointerException
-	 *             if a {@code null} value is passed as the value for any
-	 *             parameter.
-	 */
-	public void setDate(Date date) {
-		if (date == null) {
-			throw new NullPointerException("date can't be null");
-		}
-		this.date = date;
-	}
+    /**
+     * Constructs a new instance of {@link Event}.
+     *
+     * @param category The {@link Category} of the event. It cannot be null.
+     * @param title A {@link String} with the title of the event. It must be
+     *        non-null, non-empty and no greater than 20 characters.
+     * @param summary A {@link String} with the summary of the event. It must
+     *        be non-null, non-empty and no greater than 50 characters.
+     * @param date The {@link LocalDateTime} of the event. It cannot be null.
+     * @param location A {@link String} with the location of the event. It must
+     *        be non-null, non-empty and no greater than 20 characters.
+     *
+     * @throws IllegalArgumentException If any of the {@link Event Event's}
+     *         field requirements does not hold.
+     * @throws NullPointerException If any of the given arguments is
+     *         {@code null}.
+     */
+    public Event(
+        final Category      category,
+        final String        title,
+        final String        summary,
+        final LocalDateTime date,
+        final String        location
+    ) throws IllegalArgumentException, NullPointerException {
+        setCategory(category);
+        setTitle(title);
+        setSummary(summary);
+        setDate(date);
+        setLocation(location);
 
-	/**
-	 * Extracts the value of the current Event's location.
-	 *
-	 * @return A String representing the Event's location.
-	 */
-	public String getLocation() {
-		return location;
-	}
+        this.owner     = null;
+        this.attendees = new LinkedHashSet<>();
+    }
 
-	/**
-	 * Sets the location of the current event to the received String.
-	 *
-	 * @param location
-	 *            A no-null, non-empty String, which length is not greater than
-	 *            100 characters.
-	 * @throws NullPointerException
-	 *             If a null String is received.
-	 * @throws IllegalArgumentException
-	 *             If received String's length is not between 1 and 100.
-	 */
-	public void setLocation(final String location) throws NullPointerException,
-			IllegalArgumentException {
-		requireNonNull(location, "Location can't be null");
+    /**
+     * Returns the identifier of the event.
+     *
+     * @return The identifier of the event.
+     */
+    public int getId() {
+        return id;
+    }
 
-		if (location.isEmpty() || location.length() > 100)
-			throw new IllegalArgumentException(
-					"Location length must be between 1 and 100");
+    /**
+     * Returns the {@link Category} of the event.
+     *
+     * @return The category of the event.
+     */
+    public Category getCategory() {
+        return category;
+    }
 
-		this.location = location;
-	}
+    /**
+     * Changes the {@link Category} of the event.
+     *
+     * @param category The new event's category. It cannot be {@code null}.
+     *
+     * @throws NullPointerException If a {@code null} category is received.
+     */
+    public void setCategory(
+        final Category category
+    ) throws NullPointerException {
+        this.category = requireNonNull(category, "Event's category cannot be null.");
+    }
 
-	/**
-	 * The getter for the id parameter.
-	 * 
-	 * @return the unique id for the instance.
-	 */
-	public int getId() {
-		return id;
-	}
+    /**
+     * Returns the event's title as a {@link String}.
+     *
+     * @return The title of the event.
+     */
+    public String getTitle() {
+        return title;
+    }
 
-	/**
-	 * The getter for the event creator
-	 * 
-	 * @return the event creator
-	 */
-	public User getCreator() {
-		return creator;
-	}
+    /**
+     * Changes the title of the event.
+     *
+     * @param title The new event's title as a {@link String}. It cannot be
+     *        {@code null}, empty nor greater than 20 characters.
+     *
+     * @throws IllegalArgumentException If the title is empty or its length
+     *         exceeds the limit of 20 characters.
+     * @throws NullPointerException If a {@code null} title is received.
+     */
+    public void setTitle(
+        final String title
+    ) throws IllegalArgumentException, NullPointerException {
+        requireNonNull(title, "Event's title cannot be null.");
+        inclusiveBetween(1, 20, title.length(), "Event's title length must be in the range [1, 20].");
 
-	/**
-	 * The setter for the event creator
-	 * 
-	 * @param creator
-	 *            represents the event creator
-	 */
-	public void setCreator(final User creator) {
-		if (creator == null)
-			throw new NullPointerException("creator can't be null");
-		else
-			this.creator = creator;
-	}
+        this.title = WordUtils.capitalize(title);
+    }
 
-	/**
-	 * Return all the users who have joined an event
-	 * 
-	 * @return all the users who have joined an event
-	 */
-	public List<User> getEventsJoinedByUsers() {
-		return eventsJoinedByUsers;
-	}
+    /**
+     * Returns the event's summary as a {@link String}.
+     *
+     * @return The summary of the event.
+     */
+    public String getSummary() {
+        return summary;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
-	}
+    /**
+     * Changes the summary of the event.
+     *
+     * @param summary The new event's summary as a {@link String}. It cannot be
+     *        {@code null}, empty nor greater than 50 characters.
+     *
+     * @throws IllegalArgumentException If the summary is empty or its length
+     *         exceeds the limit of 50 characters.
+     * @throws NullPointerException If a {@code null} summary is received.
+     */
+    public void setSummary(
+        final String summary
+    ) throws IllegalArgumentException, NullPointerException {
+        requireNonNull(summary, "Event's summary cannot be null.");
+        inclusiveBetween(1, 50, summary.length(), "Event's summary length must be in the range [1, 50].");
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Event other = (Event) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
+        this.summary = StringUtils.capitalize(summary);
+    }
 
-	@Override
-	public String toString() {
-		return Integer.toString(this.id);
-	}
+    /**
+     * Returns the event's date as a {@link LocalDateTime}.
+     *
+     * @return The date of the event.
+     */
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    /**
+     * Changes the date of the event.
+     *
+     * @param date The new event's date as a {@link LocalDateTime}. It cannot be
+     *        {@code null}.
+     *
+     * @throws NullPointerException If a {@code null} date is received.
+     */
+    public void setDate(
+        final LocalDateTime date
+    ) throws NullPointerException {
+        this.date = requireNonNull(date, "Event's date cannot be null.");
+    }
+
+    /**
+     * Returns the event's location as a {@link String}.
+     *
+     * @return The location of the event.
+     */
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * Changes the location of the event.
+     *
+     * @param location The new event's location as a {@link String}. It cannot
+     *        be {@code null}, empty nor greater than 20 characters.
+     *
+     * @throws IllegalArgumentException If the location is empty or its length
+     *         exceeds the limit of 20 characters.
+     * @throws NullPointerException If a {@code null} location is received.
+     */
+    public void setLocation(
+        final String location
+    ) throws IllegalArgumentException, NullPointerException {
+        requireNonNull(location, "Event's location cannot be null.");
+        inclusiveBetween(1, 20, location.length(), "Event's location length must be in the range [1, 20].");
+
+        this.location = StringUtils.capitalize(location);
+    }
+
+    /**
+     * Returns the event's owner as an {@link User}.
+     *
+     * @return The owner of the event.
+     */
+    public User getOwner() {
+        return owner;
+    }
+
+    /**
+     * Changes the owner of the event.
+     *
+     * @param owner The new event's owner as an {@link User}. It cannot be
+     *        {@code null}.
+     *
+     * @throws NullPointerException If a {@code null} owner is received.
+     */
+    public void setOwner(final User owner) throws NullPointerException {
+        this.owner = requireNonNull(owner, "Event's owner cannot be null.");
+    }
+
+    /**
+     * Returns the current number of attendees of this event.
+     *
+     * @return The number of attendees of the event.
+     */
+    public int countAttendees() {
+        return attendees.size();
+    }
+
+    /**
+     * Checks whether a given {@link User} is an attendee of the current event.
+     *
+     * @param attendee The user to check if it is an attendee of the event.
+     *
+     * @return True if the user is an attendee, false otherwise.
+     */
+    public boolean hasAttendee(final User attendee) {
+        requireNonNull(attendee, "User cannot be null.");
+        return attendees.contains(attendee);
+    }
+
+    /**
+     * Returns the attendees of this event, as an unmodifiable {@link Set} of
+     * {@link User Users}.
+     *
+     * @return The attendees of the event.
+     */
+    public Set<User> getAttendees() {
+        return unmodifiableSet(attendees);
+    }
+
+    /**
+     * Adds a new {@link User} to this event's attendees set.
+     *
+     * @param attendee The new user to add to the attendees set. It cannot be
+     *        {@code null} nor already contained in the attendees set.
+     *
+     * @throws IllegalArgumentException If the received user already is part of
+     *         this event's attendees set.
+     * @throws NullPointerException If a {@code null} attendee is received.
+     */
+    public void addAttendee(
+        final User attendee
+    ) throws IllegalArgumentException, NullPointerException {
+        requireNonNull(attendee, "Event's attendee cannot be null.");
+        isTrue(!attendees.contains(attendee), "Event's attendees already contains the given user.");
+
+        attendees.add(attendee);
+    }
+
+    /**
+     * Removes an {@link User} from this event's attendees set.
+     *
+     * @param attendee The user to remove from the attendees set. It cannot be
+     *        {@code null}, and must be contained in the attendees set.
+     *
+     * @throws IllegalArgumentException If the received user is not part of this
+     *         event's attendees set.
+     * @throws NullPointerException If a {@code null} attendee is received.
+     */
+    public void removeAttendee(
+        final User attendee
+    ) throws IllegalArgumentException, NullPointerException {
+        requireNonNull(attendee, "Event's attendee cannot be null");
+        isTrue(attendees.contains(attendee), "Event's attendees dos not contain the given user.");
+
+        attendees.remove(attendee);
+    }
+
+    @Override
+    public final int hashCode() {
+        return id;
+    }
+
+    @Override
+    public final boolean equals(final Object that) {
+        return this == that
+            || nonNull(that)
+            && that instanceof Event
+            && this.id == ((Event) that).id;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Event(%d; %s; '%s'; '%s'; %s; '%s'; %s; %d)",
+            id,
+            WordUtils.capitalizeFully(category.name()),
+            title,
+            summary,
+            date.atZone(ZoneId.systemDefault()).format(RFC_1123_DATE_TIME),
+            location,
+            isNull(owner) ? "null" : owner.getLogin(),
+            attendees.size()
+        );
+    }
+
 }

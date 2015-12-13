@@ -31,7 +31,7 @@
 								<div class="col-xs-12 col-sm-6 col-md-3">
 									<div class="cover-event">
 										<div class="hovereffect">
-											<img src="#{privateController.getIconFor(event.eventType)}"
+											<img src="#{privateController.getIconFor(event.category)}"
 												class="center-block img-responsive" alt="" />
 											<div class="overlay">
 												<h2>#{event.title}</h2>
@@ -43,11 +43,9 @@
 										</ui:fragment>
 											<h2>#{event.title}</h2>
 											<p>
-												LETTA #{event.shortDescription}<br /> At #{event.location}<br />
-												From
-												<h:outputText value="#{event.date}">
-													<f:convertDateTime pattern="dd/MM/yyyy, HH:mm" />
-												</h:outputText>
+												LETTA #{event.summary}<br />
+                                                At #{event.location}<br />
+                                                From #{indexController.getDate(event)}
 											</p>
 										</div>
 									</div>

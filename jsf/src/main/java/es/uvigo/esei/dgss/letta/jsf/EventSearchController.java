@@ -2,7 +2,6 @@ package es.uvigo.esei.dgss.letta.jsf;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -10,7 +9,6 @@ import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
-import es.uvigo.esei.dgss.letta.domain.entities.EventType;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 
 /**
@@ -26,7 +24,7 @@ import es.uvigo.esei.dgss.letta.service.EventEJB;
 public class EventSearchController implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -45,7 +43,7 @@ public class EventSearchController implements Serializable {
 		return currentPage;
 	}
 
-	public void setCurrentPage(int currentPage) {
+	public void setCurrentPage(final int currentPage) {
 		this.currentPage = currentPage;
 	}
 
@@ -53,7 +51,7 @@ public class EventSearchController implements Serializable {
 		return pagesLinks;
 	}
 
-	public void setPagesLinks(ArrayList<String> pagesLinks) {
+	public void setPagesLinks(final ArrayList<String> pagesLinks) {
 		this.pagesLinks = pagesLinks;
 	}
 
@@ -61,7 +59,7 @@ public class EventSearchController implements Serializable {
 		return pages;
 	}
 
-	public void setPages(int pages) {
+	public void setPages(final int pages) {
 		this.pages = pages;
 	}
 
@@ -69,7 +67,7 @@ public class EventSearchController implements Serializable {
 		return pageIndex;
 	}
 
-	public void setPageIndex(int pageIndex) {
+	public void setPageIndex(final int pageIndex) {
 		this.pageIndex = pageIndex;
 	}
 
@@ -155,22 +153,18 @@ public class EventSearchController implements Serializable {
 	 * @return a url to be redirected to (yet to be set)
 	 */
 	public String doSearchNext() {
-		
+
 		this.pages = searchEJB.search(terms, 0, searchEJB.count()).size() / 4;
-		if (this.pageIndex < pages) {
-			this.pageIndex++;
-		}
-		if (terms != null) {
-			if (pageIndex == 1) {
+		if (this.pageIndex < pages)
+            this.pageIndex++;
+		if (terms != null)
+            if (pageIndex == 1) {
 				searchResults = searchEJB.search(terms, pageIndex - 1, 4);
 
-				for (int i = 0; i < pages; i++) {
-					pagesLinks.add(String.valueOf(i + 1));
-				}
-			} else {
-				searchResults = searchEJB.search(terms, (pageIndex - 1) * 4, 4);
-			}
-		}
+				for (int i = 0; i < pages; i++)
+                    pagesLinks.add(String.valueOf(i + 1));
+			} else
+                searchResults = searchEJB.search(terms, (pageIndex - 1) * 4, 4);
 		this.currentPage = pageIndex;
 
 		return "searchResults.xhtml";
@@ -178,20 +172,17 @@ public class EventSearchController implements Serializable {
 
 	public String doSearchPrev() {
 		this.pages = searchEJB.search(terms, 0, searchEJB.count()).size() / 4;
-		if (this.pageIndex > 1) {
-			this.pageIndex--;
-		}
-		if (terms != null) {
-			if (pageIndex == 0) {
-			} else {
-				searchResults = searchEJB.search(terms, (pageIndex - 1) * 4, 4);
-			}
-		}
+		if (this.pageIndex > 1)
+            this.pageIndex--;
+		if (terms != null)
+            if (pageIndex == 0) {
+			} else
+                searchResults = searchEJB.search(terms, (pageIndex - 1) * 4, 4);
 		this.currentPage = pageIndex;
 		return "si";
 	}
 
-	public String jumpToPage(String pageNumber) {
+	public String jumpToPage(final String pageNumber) {
 		System.out.println("PAGENUMBER " + pageNumber);
 		searchResults = searchEJB.search(terms, (Integer.parseInt(pageNumber) - 1) * 4, 4);
 		this.currentPage = Integer.parseInt(pageNumber);

@@ -1,32 +1,28 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
-import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.Validate.inclusiveBetween;
-import static org.apache.commons.lang3.Validate.matchesPattern;
-
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
+import static java.util.Objects.requireNonNull;
+
+import static org.apache.commons.lang3.Validate.inclusiveBetween;
+import static org.apache.commons.lang3.Validate.matchesPattern;
+
 /**
  * An entity that represents an user of the application. User's represented by
  * this entity have the USER role.
- * 
+ *
  * @author Miguel Reboiro Jato
  *
  */
@@ -42,6 +38,7 @@ public class User implements Serializable {
 	@Column(length = 20)
 	private String login;
 
+	@XmlTransient
 	@Column(length = 32, nullable = false)
 	private String password;
 
@@ -51,14 +48,6 @@ public class User implements Serializable {
 	@Column(length = 10, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Role role;
-
-	@XmlTransient
-	@ManyToMany
-	@JoinTable(name = "UserJoinsEvent",
-		joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "login"),
-		inverseJoinColumns = @JoinColumn(name = "event_id", referencedColumnName = "id")
-	)
-	private List<Event> usersJoinsEvents;
 
 	/**
 	 * Constructs a new instance of {@link User}. This constructor is required
@@ -78,13 +67,12 @@ public class User implements Serializable {
 	 * @param email
 	 *            the email of the user.
 	 */
-	public User(String login, String password, String email) {
+	public User(final String login, final String password, final String email) {
 		this.setLogin(login);
 		this.changePassword(password);
 		this.setEmail(email);
 
 		this.role = Role.USER;
-		this.usersJoinsEvents = new LinkedList<>();
 	}
 
 	/**
@@ -102,17 +90,16 @@ public class User implements Serializable {
 	 * @param role
 	 *            the role of the user.
 	 */
-	User(String login, String password, String email, Role role) {
+	User(final String login, final String password, final String email, final Role role) {
 		this.login = login;
 		this.password = password;
 		this.email = email;
 		this.role = role;
-		this.usersJoinsEvents = new LinkedList<>();
 	}
 
 	/**
 	 * Returns the login of this user.
-	 * 
+	 *
 	 * @return the login of this user.
 	 */
 	public String getLogin() {
@@ -121,7 +108,7 @@ public class User implements Serializable {
 
 	/**
 	 * Sets the login of this user.
-	 * 
+	 *
 	 * @param login
 	 *            the login that identifies the user. This parameter must be a
 	 *            non empty and non {@code null} string with a maximum length of
@@ -131,7 +118,7 @@ public class User implements Serializable {
 	 * @throws IllegalArgumentException
 	 *             if the length of the string passed is not valid.
 	 */
-	public void setLogin(String login) {
+	public void setLogin(final String login) {
 		requireNonNull(login, "login can't be null");
 		inclusiveBetween(1, 100, login.length(),
 				"login must have a length between 1 and 100");
@@ -142,7 +129,7 @@ public class User implements Serializable {
 	/**
 	 * Returns the MD5 of the user's password. Capital letters are used in the
 	 * returned string.
-	 * 
+	 *
 	 * @return the MD5 of the user's password. Capital letters are used in the
 	 *         returned string.
 	 */
@@ -153,7 +140,7 @@ public class User implements Serializable {
 	/**
 	 * Sets the MD5 password of the user. The MD5 string is stored with
 	 * lowercase letters.
-	 * 
+	 *
 	 * @param password
 	 *            the MD5 password of the user. This parameter must be a non
 	 *            {@code null} MD5 string.
@@ -162,7 +149,7 @@ public class User implements Serializable {
 	 * @throws IllegalArgumentException
 	 *             if the string passed is not a valid MD5 string.
 	 */
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		requireNonNull(password, "password can't be null");
 		matchesPattern(password, MD5_REGEX,
 				"password must be a valid MD5 string");
@@ -173,17 +160,17 @@ public class User implements Serializable {
 	/**
 	 * Changes the password of the user. This method receives the rawvalue of
 	 * the password and stores it in MD5 format.
-	 * 
+	 *
 	 * @param password
 	 *            the raw password of the user. This parameter must be a non
 	 *            {@code null} string with a minimum length of 6 chars.
-	 * 
+	 *
 	 * @throws NullPointerException
 	 *             if the {@code password} is {@code null}.
 	 * @throws IllegalArgumentException
 	 *             if the length of the string passed is not valid.
 	 */
-	public void changePassword(String password) {
+	public void changePassword(final String password) {
 		requireNonNull(password, "password can't be null");
 		if (password.length() < 6)
 			throw new IllegalArgumentException(
@@ -203,7 +190,7 @@ public class User implements Serializable {
 
 	/**
 	 * Returns the email of the user.
-	 * 
+	 *
 	 * @return the email of the user.
 	 */
 	public String getEmail() {
@@ -212,13 +199,13 @@ public class User implements Serializable {
 
 	/**
 	 * Sets the email of the user.
-	 * 
+	 *
 	 * @param email
 	 *            the email of the user.
 	 * @throws IllegalArgumentException
 	 *             if the email provided is not a valid email.
 	 */
-	public void setEmail(String email) {
+	public void setEmail(final String email) {
 		matchesPattern(email, EMAIL_REGEX, "invalid email");
 
 		this.email = email;
@@ -226,50 +213,27 @@ public class User implements Serializable {
 
 	/**
 	 * Returns the role of the user.
-	 * 
+	 *
 	 * @return the role of the user.
 	 */
 	public Role getRole() {
 		return role;
 	}
 
-	/**
-	 * Return all the users who have joined an event
-	 * 
-	 * @return all the users who have joined an event
-	 */
-	public List<Event> getUsersJoinsEvents() {
-		return usersJoinsEvents;
-	}
-	
-	/**
-	 * Setter method of userJoinsEvents variable
-	 * 
-	 * @param usersJoinsEvents global variable
-	 */
-
-	public void setUsersJoinsEvents(List<Event> usersJoinsEvents) {
-		requireNonNull(usersJoinsEvents, "usersJoinsEvents can't be null");
-		this.usersJoinsEvents = usersJoinsEvents;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
+		result = prime * result + (email == null ? 0 : email.hashCode());
+		result = prime * result + (login == null ? 0 : login.hashCode());
 		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
-		result = prime * result + ((role == null) ? 0 : role.hashCode());
-		result = prime
-				* result
-				+ ((usersJoinsEvents == null) ? 0 : usersJoinsEvents.hashCode());
+				+ (password == null ? 0 : password.hashCode());
+		result = prime * result + (role == null ? 0 : role.hashCode());
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -293,11 +257,6 @@ public class User implements Serializable {
 		} else if (!password.equals(other.password))
 			return false;
 		if (role != other.role)
-			return false;
-		if (usersJoinsEvents == null) {
-			if (other.usersJoinsEvents != null)
-				return false;
-		} else if (!usersJoinsEvents.equals(other.usersJoinsEvents))
 			return false;
 		return true;
 	}

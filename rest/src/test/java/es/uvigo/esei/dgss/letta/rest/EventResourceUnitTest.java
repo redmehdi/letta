@@ -32,7 +32,7 @@ import static org.junit.Assert.assertThat;
 
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
-import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualToEvent.containsEventsListInOrder;
+import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.containsEventsListInOrder;
 import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
 
 @RunWith(EasyMockRunner.class)
@@ -158,7 +158,7 @@ public class EventResourceUnitTest {
     public void testSearchReturnsAValidListOfEvents() {
         final List<Event> events = asList(filterEvents(
             e -> e.getTitle().contains("music")
-              || e.getShortDescription().contains("music")
+              || e.getSummary().contains("music")
         ));
 
         expect(eventsEJB.search("music", 0, events.size())).andReturn(events);

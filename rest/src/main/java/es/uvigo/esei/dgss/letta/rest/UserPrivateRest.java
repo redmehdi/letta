@@ -69,7 +69,7 @@ public class UserPrivateRest {
 		isTrue(count >= 0, "Number of events must be non-negative");
 
 		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
-			return Response.ok(eventEJB.getEventsJoinedByUser(start, count))
+			return Response.ok(eventEJB.getAttendingEvents(start, count))
 					.build();
 		} else {
 			return Response.noContent().build();
@@ -90,7 +90,7 @@ public class UserPrivateRest {
 	public Response getEventsCreatedByUser(
 			@PathParam("login") String userLogin) {
 		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
-			return Response.ok(eventEJB.getEventsCreatedByOwnerUser()).build();
+			return Response.ok(eventEJB.getEventsOwnedByCurrentUser()).build();
 		} else {
 			return Response.noContent().build();
 		}
@@ -118,7 +118,7 @@ public class UserPrivateRest {
 			@PathParam("id") int eventId)
 					throws SecurityException, EventAlredyJoinedException {
 		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
-			eventEJB.registerToEvent(eventId);
+			eventEJB.attendToEvent(eventId);
 			return Response.ok().build();
 		} else {
 			return Response.noContent().build();

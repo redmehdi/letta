@@ -24,7 +24,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
-import es.uvigo.esei.dgss.letta.rest.util.mapper.IllegalArgumentExceptionMapper;
+import es.uvigo.esei.dgss.letta.domain.util.adapters.LocalDateTimeAdapter;
+import es.uvigo.esei.dgss.letta.domain.util.converters.LocalDateTimeConverter;
+import es.uvigo.esei.dgss.letta.rest.util.mappers.IllegalArgumentExceptionMapper;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 
 import static javax.ws.rs.core.Response.Status.OK;
@@ -46,9 +48,11 @@ public class EventResourceRestTest {
     public static Archive<WebArchive> deploy() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
               .addClass(EventResource.class)
+              .addPackage(Event.class.getPackage())
+              .addPackage(LocalDateTimeAdapter.class.getPackage())
+              .addPackage(LocalDateTimeConverter.class.getPackage())
               .addPackage(IllegalArgumentExceptionMapper.class.getPackage())
               .addPackages(true, EventEJB.class.getPackage())
-              .addPackages(true, Event.class.getPackage())
               .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
               .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
               .addAsWebInfResource("jboss-web.xml")

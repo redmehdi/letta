@@ -60,11 +60,8 @@
 										<div class="event-info">
 											<h2>#{event.title}</h2>
 											<p>
-												LETTA #{event.shortDescription}<br /> At #{event.location}<br />
-												From
-												<h:outputText value="#{event.date}">
-													<f:convertDateTime pattern="dd/MM/yyyy, HH:mm" />
-												</h:outputText>
+												LETTA #{event.summary}<br /> At #{event.location}<br />
+												From #{indexController.getDate(event)}
 												<br /> <strong>9261</strong> people will be there
 											</p>
 										</div>

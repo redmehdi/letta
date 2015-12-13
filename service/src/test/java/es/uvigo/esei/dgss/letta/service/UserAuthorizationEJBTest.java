@@ -24,9 +24,9 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-import static es.uvigo.esei.dgss.letta.domain.entities.IsEqualsToUser.equalsToUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.users;
+import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToUser.equalsToUser;
 import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
 
 @RunWith(Arquillian.class)

@@ -74,7 +74,7 @@ public class EventResource {
     /**
      * Returns the list of {@link Event Events} matching a given search query.
      * The search will be performed in both the event's {@link Event#getTitle()
-     * title} and the {@link Event#getShortDescription() summary}.
+     * title} and the {@link Event#getSummary() summary}.
      *
      * @param query The search query (title/summary terms) to perform. If not
      *        set, it will be defaulted to an empty search query, thus
