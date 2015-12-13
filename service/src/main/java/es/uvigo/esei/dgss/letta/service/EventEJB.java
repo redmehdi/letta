@@ -33,7 +33,6 @@ import static org.apache.commons.lang3.Validate.isTrue;
  * @author Adolfo Álvarez López
  * @author Adrián Rodríguez Fariña
  * @author Alberto Gutiérrez Jácome
- * @author rvcameselle
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)

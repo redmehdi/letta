@@ -11,6 +11,7 @@ import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.newUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogin;
 import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
@@ -205,7 +206,13 @@ public class EventEJBTest {
         assertThat(events.search(EventsDataset.nonExistentTitle(), 0, 25), is(empty()));
         assertThat(events.search(EventsDataset.nonExistentDescription(), 0, 25), is(empty()));
     }
-
+        
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
+    public void testSearchCountZero(){
+    	assertThat(events.search("Example", 0, 0), hasSize(0));
+    }
+    
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-joins-event-15.xml" })
@@ -234,6 +241,20 @@ public class EventEJBTest {
     	
     	final List<Event> joinedEvents = asUser.call(
     	    () -> events.getEventsJoinedByUser(0,100)
+        );
+    	
+    	assertThat(joinedEvents, is(empty()));
+    }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
+    public void testGetEventsJoinedByUserCountZero(){
+    	final User user = userWithLogin("anne");
+    	
+    	principal.setName(user.getLogin());
+    	
+    	final List<Event> joinedEvents = asUser.call(
+    	    () -> events.getEventsJoinedByUser(0,0)
         );
     	
     	assertThat(joinedEvents, is(empty()));
@@ -286,4 +307,43 @@ public class EventEJBTest {
         
         assertThat(eventsCreatedByUser, containsEventsInAnyOrder(userEvents));
     }
+    
+    @Test
+    public void testCountEmpty() {
+        final int count = events.count();
+        assertThat(count, is(equalTo(0)));
+    }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testCountNotEmpty() {
+
+        final int count = events.count();
+        assertThat(count, is(equalTo(25)));
+    }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "new-user.xml", "events.xml", "user-joins-event.xml" })
+    public void testGetCountEventsJoinedByUserEmpty(){
+    	final User user = newUser();
+    	principal.setName(user.getLogin());
+    	
+    	final int count = asUser.call( () -> events.getCountEventsJoinedByUser() );
+    	
+    	assertThat(count, is(equalTo(0)));
+    }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml", "user-joins-event.xml" })
+    public void testGetCountEventsJoinedByUserNotEmpty(){
+    	final User user = userWithLogin("anne");
+    	
+    	principal.setName(user.getLogin());
+    	
+    	final int count = asUser.call( () -> events.getCountEventsJoinedByUser() );
+    	
+    	assertThat(count, is(equalTo(10)));
+    }
+    
+    
 }
