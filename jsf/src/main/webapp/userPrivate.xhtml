@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:letta="http://java.sun.com/jsf/composite/tags">
 <h:head>
 	<title>Private zone</title>
 </h:head>
@@ -29,26 +30,7 @@
 							<ui:repeat id="indexRepeat" var="event"
 								value="#{privateController.ownEvents}" varStatus="status">
 								<div class="col-xs-12 col-sm-6 col-md-3">
-									<div class="cover-event">
-										<div class="hovereffect">
-											<img src="#{privateController.getIconFor(event.category)}"
-												class="center-block img-responsive" alt="" />
-											<div class="overlay">
-												<h2>#{event.title}</h2>
-											</div>
-										</div>
-										<div class="event-info">
-										<ui:fragment rendered="#{privateController.isPassed(event)}">
-										    <h1>Event PASSED</h1>
-										</ui:fragment>
-											<h2>#{event.title}</h2>
-											<p>
-												LETTA #{event.summary}<br />
-                                                At #{event.location}<br />
-                                                From #{indexController.getDate(event)}
-											</p>
-										</div>
-									</div>
+									<letta:event event="#{event}"/>
 								</div>
 							</ui:repeat>
 						</c:if>

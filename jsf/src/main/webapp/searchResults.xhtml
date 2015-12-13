@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:letta="http://java.sun.com/jsf/composite/tags">
 <h:head>
 	<title>Search results</title>
 	<style>
@@ -46,26 +47,7 @@
 							<ui:repeat id="indexRepeat" var="event"
 								value="#{searchController.searchResults}" varStatus="status">
 								<div class="col-xs-12 col-sm-6 col-md-3">
-									<div class="cover-event">
-										<div class="hovereffect">
-											<img src="#{indexController.getIconFor(event)}"
-												class="center-block img-responsive" alt="" />
-											<div class="overlay">
-												<h2>#{event.title}</h2>		                          
-                                				<h:link class="info join-link" value="Join" rendered="#{!loginController.anonymous and !privateController.ownEvents.contains(event)}" outcome="joinEvent.xhtml?id=#{event.id}" />
-                        						<h:outputText value="You are the creator of this event" rendered="#{!loginController.anonymous and privateController.ownEvents.contains(event)}" />
-                                    			<h:link class="info" value="Sign Up" rendered="#{loginController.anonymous}" outcome="register.xhtml" />
-											</div>
-										</div>
-										<div class="event-info">
-											<h2>#{event.title}</h2>
-											<p>
-												LETTA #{event.summary}<br /> At #{event.location}<br />
-												From #{indexController.getDate(event)}
-												<br /> <strong>9261</strong> people will be there
-											</p>
-										</div>
-									</div>
+									<letta:event event="#{event}"/>
 								</div>
 							</ui:repeat>
 

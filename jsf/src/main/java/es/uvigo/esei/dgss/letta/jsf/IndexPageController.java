@@ -14,6 +14,8 @@ import es.uvigo.esei.dgss.letta.service.EventEJB;
 
 import static java.time.format.FormatStyle.MEDIUM;
 
+import java.time.LocalDateTime;
+
 /**
  * {@linkplain IndexPageController} is a JSF controller for LETTA's front page.
  * Its solely purpose is to retrieve the required data from the
@@ -68,5 +70,9 @@ public class IndexPageController {
             DateTimeFormatter.ofLocalizedDateTime(MEDIUM)
         );
     }
+    
+	public boolean isAfter(final LocalDateTime d) {
+	    return d.isAfter(LocalDateTime.now());
+	}
 
 }

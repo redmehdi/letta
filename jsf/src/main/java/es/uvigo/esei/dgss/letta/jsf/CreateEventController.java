@@ -72,7 +72,7 @@ public class CreateEventController {
 			eventEJB.createEvent(
 					new Event(type, title, shortDescription, date, location));
 			this.error = false;
-			context.redirect("event_created.xhtml");
+			context.redirect("eventCreated.xhtml");
 		} catch (NullPointerException e) {
 			this.error = true;
 			setErrorMessage(e.getMessage());

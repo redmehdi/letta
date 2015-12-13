@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:letta="http://java.sun.com/jsf/composite/tags">
 <f:metadata>
 	<f:event listener="#{loginController.redirectIfAnonymous}" type="preRenderView" />
 </f:metadata>
@@ -41,30 +42,7 @@ color: red;
 						</div>
                         <ui:repeat id="indexRepeat" var="event" value="#{listJoinedEventsController.eventList}" varStatus="status">
                             <div class="col-xs-12 col-sm-6 col-md-3">
-                                <div class="cover-event">
-                                    <div class="hovereffect">
-                                        <img src="#{listJoinedEventsController.getIconFor(event.category)}" class="center-block img-responsive" alt="" />
-                                        <div class="overlay">
-                                            <h2>#{event.title}</h2>
-                           	            	<h:link class="info join-link" value="Join" rendered="#{!loginController.anonymous}" outcome="joinEvent.xhtml?id=#{event.id}" />
-                           	            	<h:link class="info" value="Sign Up" rendered="#{loginController.anonymous}" outcome="register.xhtml" />
-                                        </div>
-                                    </div>
-                                    <div class="event-info">
-                                        <h2>#{event.title}</h2>
-                                        <p>
-                                            LETTA #{event.summary}<br />
-                                            At #{event.location}<br />
-											<h:outputText value="#{indexController.getDate(event)}" style="color: red;"
-												rendered="#{listJoinedEventsController.isAfter(event.date)}">
-											</h:outputText>
-											<h:outputText value="#{indexController.getDate(event)}"
-												rendered="#{listJoinedEventsController.isAfter(event.date) eq false}">
-											</h:outputText><br />
-                                            <strong>9261</strong> people will be there
-                                        </p>
-                                    </div>
-                                </div>
+								<letta:event event="#{event}"/>
                             </div>
                         </ui:repeat>		
 					</div>
