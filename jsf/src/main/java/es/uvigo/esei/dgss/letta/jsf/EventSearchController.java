@@ -71,24 +71,6 @@ public class EventSearchController implements Serializable {
 		this.pageIndex = pageIndex;
 	}
 
-	/**
-	 * Returns the EJB to work with events
-	 *
-	 * @return searchEJB
-	 */
-	public EventEJB getSearchEJB() {
-		return searchEJB;
-	}
-
-	/**
-	 * Set the internal EJB
-	 *
-	 * @param searchEJB
-	 *            the external EJB
-	 */
-	public void setSearchEJB(final EventEJB searchEJB) {
-		this.searchEJB = searchEJB;
-	}
 
 	/**
 	 * Set the result list to an external value

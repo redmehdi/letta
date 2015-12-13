@@ -1,5 +1,6 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -9,12 +10,13 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.validation.constraints.Size;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
-import es.uvigo.esei.dgss.letta.jsf.util.JSFPagePathUtils;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 
 /**
@@ -31,8 +33,9 @@ public class CreateEventController {
 
 	@Inject
 	EventEJB eventEJB;
-	@Inject
-	private JSFPagePathUtils path;
+
+	private ExternalContext context = FacesContext.getCurrentInstance()
+			.getExternalContext();
 
 	private boolean error = false;
 	private String errorMessage;
@@ -42,7 +45,6 @@ public class CreateEventController {
 	private Date date;
 	private Category type;
 	private Map<String, Category> types = new HashMap<String, Category>();
-	private Event createdEvent;
 
 	@PostConstruct
 	public void init() {
@@ -57,18 +59,23 @@ public class CreateEventController {
 		types.put("Theatre", Category.THEATRE);
 	}
 
-	public String doCreate() {
+	/**
+	 * Create an {@link Event}
+	 * 
+	 * @throws IOException
+	 *             if an input/output error occurs
+	 */
+	public void doCreate() throws IOException {
 		try {
-		    final LocalDateTime date = LocalDateTime.ofInstant(
-		        this.date.toInstant(), ZoneId.systemDefault()
-		    );
-		    eventEJB.createEvent(new Event(type, title, shortDescription, date, location));
-			error = false;
-			return path.redirectToPage("event_created.xhtml");
+			final LocalDateTime date = LocalDateTime
+					.ofInstant(this.date.toInstant(), ZoneId.systemDefault());
+			eventEJB.createEvent(
+					new Event(type, title, shortDescription, date, location));
+			this.error = false;
+			context.redirect("event_created.xhtml");
 		} catch (NullPointerException e) {
-			error = true;
+			this.error = true;
 			setErrorMessage(e.getMessage());
-			return path.getCurrentPage();
 		}
 	}
 
@@ -79,16 +86,6 @@ public class CreateEventController {
 	 */
 	public boolean isError() {
 		return error;
-	}
-
-	/**
-	 * Setter method of error variable
-	 *
-	 * @param error
-	 *            global variable
-	 */
-	public void setError(final boolean error) {
-		this.error = error;
 	}
 
 	/**
@@ -206,25 +203,6 @@ public class CreateEventController {
 	 */
 	public void setTypes(final Map<String, Category> types) {
 		this.types = types;
-	}
-
-	/**
-	 * Getter method of createdEvent variable
-	 *
-	 * @return createdEvent global variable
-	 */
-	public Event getCreatedEvent() {
-		return createdEvent;
-	}
-
-	/**
-	 * Setter method of createdEvent variable
-	 *
-	 * @param createdEvent
-	 *            global variable
-	 */
-	public void setCreatedEvent(final Event createdEvent) {
-		this.createdEvent = createdEvent;
 	}
 
 	/**

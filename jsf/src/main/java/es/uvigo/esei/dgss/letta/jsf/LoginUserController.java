@@ -11,8 +11,6 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import es.uvigo.esei.dgss.letta.jsf.util.JSFPagePathUtils;
-
 /**
  * {@linkplain LoginUserController} is a JSF controller to perform login
  * actions.
@@ -28,11 +26,8 @@ public class LoginUserController {
 	@Inject
 	private Principal currentUserPrincipal;
 
-	@Inject
-	private HttpServletRequest request;
-
-	@Inject
-	private JSFPagePathUtils path;
+	private ExternalContext context = FacesContext.getCurrentInstance()
+			.getExternalContext();
 
 	private boolean error = false;
 	private String errorMessage;
@@ -43,18 +38,19 @@ public class LoginUserController {
 	/**
 	 * Login petition. If login or password dont match, shows a message.
 	 *
-	 * @return Redirect to index if login and password match or shows error
-	 *         message in other case.
+	 * @throws IOException
+	 *             if an input/output error occurs
 	 */
-	public String doLogin() {
+	public void doLogin() throws IOException {
 		try {
+			HttpServletRequest request = (HttpServletRequest) context
+					.getRequest();
 			request.login(this.getLogin(), this.getPassword());
 			this.error = false;
-			return path.redirectToPage("index.xhtml")+"&login=true";
+			context.redirect("index.xhtml?login=true");
 		} catch (ServletException e) {
 			this.error = true;
 			this.errorMessage = "Login or password don't match";
-			return path.getCurrentPage();
 		}
 	}
 
@@ -67,8 +63,7 @@ public class LoginUserController {
 	 *             if an error happens on the redirection.
 	 */
 	public void doLogout() throws ServletException, IOException {
-		final ExternalContext context = FacesContext.getCurrentInstance()
-				.getExternalContext();
+		HttpServletRequest request = (HttpServletRequest) context.getRequest();
 		request.logout();
 		context.redirect("index.xhtml?logout=true");
 	}
@@ -137,33 +132,36 @@ public class LoginUserController {
 	public String getErrorMessage() {
 		return errorMessage;
 	}
-	
+
 	/**
 	 * Checks if the current user is the "anonymous" user.
+	 * 
 	 * @return {@code true} if the current user is the "anonymous" user.
-	 * {@code false} otherwise.
+	 *         {@code false} otherwise.
 	 */
 	public boolean isAnonymous() {
 		return "anonymous".equals(this.getCurrentUser().getName());
 	}
-	
+
 	/**
 	 * Forces a page redirect to the index if the current user is the anonymous
 	 * user.
 	 * 
-	 * @throws IOException if an error happens while redirecting.
+	 * @throws IOException
+	 *             if an error happens while redirecting.
 	 */
 	public void redirectIfAnonymous() throws IOException {
 		if (this.isAnonymous()) {
 			redirectToIndex();
 		}
 	}
-	
+
 	/**
 	 * Forces a page redirect to the index if the current user is not an
 	 * anonymous user.
 	 * 
-	 * @throws IOException if an error happens while redirecting.
+	 * @throws IOException
+	 *             if an error happens while redirecting.
 	 */
 	public void redirectIfNotAnonymous() throws IOException {
 		if (!this.isAnonymous()) {
@@ -172,7 +170,7 @@ public class LoginUserController {
 	}
 
 	private void redirectToIndex() throws IOException {
-		FacesContext.getCurrentInstance()
-			.getExternalContext().redirect("index.xhtml");
+		FacesContext.getCurrentInstance().getExternalContext()
+				.redirect("index.xhtml");
 	}
 }

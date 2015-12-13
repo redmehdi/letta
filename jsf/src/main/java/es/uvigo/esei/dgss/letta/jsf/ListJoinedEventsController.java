@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
@@ -22,7 +22,7 @@ import es.uvigo.esei.dgss.letta.service.EventEJB;
  * @author Adrian Rodriguez Fariña
  *
  */
-@SessionScoped
+@ViewScoped
 @ManagedBean(name = "listJoinedEventsController")
 public class ListJoinedEventsController{
 
