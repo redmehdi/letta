@@ -137,7 +137,7 @@ public class Registration {
 	@Override
 	public boolean equals(final Object that) {
 		return this == that || nonNull(that) && that instanceof Registration
-				&& this.uuid.toLowerCase() == ((Registration) that).uuid.toLowerCase();
+				&& this.uuid.toLowerCase().equals(((Registration) that).uuid.toLowerCase());
 	}
 	
 }

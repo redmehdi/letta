@@ -31,6 +31,9 @@ import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
+
 public class UserTest {
 	@Test
 	public void testConstructorValidLogins() {
@@ -185,5 +188,13 @@ public class UserTest {
 		
 		assertThat(user.getEmail(), is(equalTo(newEmail)));
 	}
+	
+    @Test
+    public void testEqualsHashCodeContract() {
+        EqualsVerifier.forClass(User.class).suppress(
+            Warning.NULL_FIELDS,
+            Warning.NONFINAL_FIELDS
+        ).verify();
+    }
 	
 }

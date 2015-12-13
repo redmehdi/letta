@@ -222,13 +222,13 @@ public class User implements Serializable {
 	}
 
 	@Override
-	public int hashCode() {
-		return (login == null ? 0 : login.toLowerCase().hashCode());
+	public final int hashCode() {
+		return ((login == null) ? 0 : login.toLowerCase().hashCode());
 	}
 
 	@Override
-	public boolean equals(final Object that) {
+	public final boolean equals(final Object that) {
 		return this == that || nonNull(that) && that instanceof User
-				&& this.login.toLowerCase() == ((User) that).login.toLowerCase();
+				&& this.login.toLowerCase().equals(((User) that).login.toLowerCase());
 	}
 }
