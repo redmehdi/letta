@@ -1,62 +1,61 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:h="http://xmlns.jcp.org/jsf/html"
-	  xmlns:f="http://xmlns.jcp.org/jsf/core"
-	  xmlns:p="http://primefaces.org/ui"
-	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	  xmlns:composite="http://java.sun.com/jsf/composite">
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite">
 <h:body>
 
-<composite:interface>
-	<composite:attribute name="event" />
-	<composite:attribute name="status" />
-</composite:interface>
-<composite:implementation>
-	<div class="event-info center-block hovereffect">
-		<h:graphicImage class="joined-img"
-	   					value="img/joined.png"
-	   					rendered="#{!loginController.anonymous 
-								and privateController.attendingEvents.contains(cc.attrs.event)}"/>
-		<img  class="event-icon img-responsive"
-			  src="#{indexController.getIconFor(cc.attrs.event)}" />
-		<h3   class="event-title">#{cc.attrs.event.title}</h3>
-		<span class="event-summary">LETTA #{cc.attrs.event.summary}</span> 
-		<span class="event-location">At #{cc.attrs.event.location}</span> 
-		<span class="event-date">From 
-			<h:outputText value="#{indexController.getDate(cc.attrs.event)}" 
-						  style="color: red;"
-				          rendered="#{indexController.isAfter(cc.attrs.event.date)}">
-			</h:outputText>
-			<h:outputText value="#{indexController.getDate(cc.attrs.event)}"
-				rendered="#{indexController.isAfter(cc.attrs.event.date) eq false}">
-			</h:outputText><br />
-		</span> 
-		<span class="event-attendees"><strong>9261</strong> people
-			will be there</span>
-		<div class="overlay">
-			<h3 class="hover-title">#{cc.attrs.event.title}</h3>
-			<span class="event-join"> 
-				<h:link class="info join-link" 
-						value="Join now!" 
+	<composite:interface>
+		<composite:attribute name="event" />
+		<composite:attribute name="status" />
+	</composite:interface>
+	<composite:implementation>
+		<div class="event-info center-block hovereffect">
+			<h:graphicImage class="joined-img" value="img/joined.png"
+				rendered="#{!loginController.anonymous 
+								and privateController.attendingEvents.contains(cc.attrs.event)}" />
+			<img class="event-icon img-responsive"
+				src="#{indexController.getIconFor(cc.attrs.event)}" />
+			<h3 class="event-title">#{cc.attrs.event.title}</h3>
+			<span class="event-summary">LETTA #{cc.attrs.event.summary}</span> <span
+				class="event-location">At #{cc.attrs.event.location}</span> <span
+				class="event-date">From <h:outputText
+					value="#{indexController.getDate(cc.attrs.event)}"
+					style="color: red;"
+					rendered="#{indexController.isAfter(cc.attrs.event.date)}">
+				</h:outputText> <h:outputText value="#{indexController.getDate(cc.attrs.event)}"
+					rendered="#{indexController.isAfter(cc.attrs.event.date) eq false}">
+				</h:outputText><br />
+			</span> <span class="event-attendees"><strong>9261</strong> people
+				will be there</span>
+			<div class="overlay">
+				<h3 class="hover-title">#{cc.attrs.event.title}</h3>
+				<span class="event-join"> <h:link class="info join-link"
+						value="Join now!"
 						rendered="#{!loginController.anonymous 
 								and !privateController.ownEvents.contains(cc.attrs.event) 
-								and !privateController.attendingEvents.contains(cc.attrs.event)}" 
-						outcome="joinEvent.xhtml?id=#{cc.attrs.event.id}" />
-                   <h:outputText value="You are the creator of this event" 
-                   		      rendered="#{!loginController.anonymous 
+								and !privateController.attendingEvents.contains(cc.attrs.event)}"
+						outcome="joinEvent.xhtml?id=#{cc.attrs.event.id}" /> <h:outputText
+						value="You are the creator of this event"
+						rendered="#{!loginController.anonymous 
                    		      		  and  privateController.ownEvents.contains(cc.attrs.event)}" />
-                   <h:outputText value="You are alredy joined to this event" 
-                   		      rendered="#{!loginController.anonymous 
-                   		      		  and  privateController.attendingEvents.contains(cc.attrs.event)}" />
-				<h:link class="info"
-						value="Sign Up" 
-						rendered="#{loginController.anonymous}"
-						outcome="register.xhtml" />
-			</span>
+					<h:outputText value="You have already joined this event"
+						rendered="#{!loginController.anonymous 
+                                      and  privateController.attendingEvents.contains(cc.attrs.event)}" />
+					<h:link class="info join-link" value="Unjoin event!"
+						rendered="#{!loginController.anonymous and privateController.attendingEvents.contains(cc.attrs.event)}"
+						outcome="unjoinEvent.xhtml?id=#{event.id}" /> 
+					<h:link
+						class="info" value="Sign Up"
+						rendered="#{loginController.anonymous}" outcome="register.xhtml" />
+
+				</span>
+			</div>
 		</div>
-	</div>
-</composite:implementation>
+	</composite:implementation>
 
 </h:body>
 </html>

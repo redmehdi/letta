@@ -28,8 +28,8 @@ public class JoinEventController {
 	private EventEJB eventEJB;
 
 	/**
-	 * Joins into a selected event. The event identifier should be received as
-	 * a request parameters. This action redirects, immediately, to the index
+	 * Joins into a selected event. The event identifier should be received as a
+	 * request parameters. This action redirects, immediately, to the index
 	 * page, including the request parameter "joined" with {@code true} value if
 	 * the user was effectively joined, or {@code false} otherwise.
 	 *
@@ -37,11 +37,9 @@ public class JoinEventController {
 	 *             if an error happens on the redirection.
 	 */
 	public void doJoin() throws IOException {
-		final ExternalContext context = FacesContext.getCurrentInstance()
-			.getExternalContext();
-		
-		final String id = context.getRequestParameterMap()
-			.getOrDefault("id", null);
+		final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+
+		final String id = context.getRequestParameterMap().getOrDefault("id", null);
 
 		try {
 			eventEJB.attendToEvent(Integer.parseInt(id));
@@ -51,4 +49,19 @@ public class JoinEventController {
 			context.redirect("index.xhtml?joined=false");
 		}
 	}
+
+	public void doUnJoin() throws IOException {
+		final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+
+		final String id = context.getRequestParameterMap().getOrDefault("id", null);
+
+		try {
+			eventEJB.unattendToEvent(Integer.parseInt(id));
+			context.redirect("index.xhtml?joined=false");
+		} catch (Exception e) {
+			e.printStackTrace();
+			context.redirect("index.xhtml?joined=true");
+		}
+	}
+
 }

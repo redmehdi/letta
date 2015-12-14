@@ -17,6 +17,7 @@ import javax.persistence.TypedQuery;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
 
 import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
@@ -279,4 +280,33 @@ public class EventEJB {
     public List<Event> getEventsOwnedByCurrentUser() {
         return getEventsOwnedBy(auth.getCurrentUser());
     }
+    
+    @RolesAllowed("USER")
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void unattendToEvent(
+        final int eventId
+    ) throws  SecurityException, EventNotJoinedException {
+        final User user   = auth.getCurrentUser();
+        final Event event = em.find(Event.class, eventId);
+ 
+        if (event.hasAttendee(user)) {
+            event.removeAttendee(user);
+        }else{
+            ctx.setRollbackOnly();
+            throw new EventNotJoinedException(user,event);
+                    
+        }
+ 
+        em.merge(event);
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

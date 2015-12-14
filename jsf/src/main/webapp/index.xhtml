@@ -32,7 +32,8 @@
 									people will be there</span> <span class="event-join"> <h:link
 										class="info join-link" value="Join now!"
 										rendered="#{!loginController.anonymous and !privateController.ownEvents.contains(event)}"
-										outcome="joinEvent.xhtml?id=#{event.id}" /> <h:outputText
+										outcome="joinEvent.xhtml?id=#{event.id}" /> 
+										<h:outputText
 										value="You are the owner of this event"
 										rendered="#{!loginController.anonymous and privateController.ownEvents.contains(event)}" />
 								</span>

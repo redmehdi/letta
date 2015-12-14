@@ -24,6 +24,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.EventsDataset;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.domain.entities.UsersDataset;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
 
@@ -346,5 +347,21 @@ public class EventEJBTest {
 
         assertThat(count, is(10));
     }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void testGetCountEventsAfterUnJoin() throws SecurityException, EventNotJoinedException{
+    	principal.setName("anne");
+        asUser.throwingRun(() -> events.unattendToEvent(2));
+    	final int count2=asUser.call(events::countAttendingEvents);
+        assertThat(count2, is(9));
+    }
+    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void testUnAttendNotJoinedException() throws SecurityException, EventNotJoinedException{
+    	principal.setName("anne");
+        asUser.throwingRun(() -> events.unattendToEvent(99));
+    }
+    
 
 }
