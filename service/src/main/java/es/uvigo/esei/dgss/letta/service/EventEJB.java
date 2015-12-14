@@ -218,7 +218,7 @@ public class EventEJB {
             Event.class
         ).setParameter("user", auth.getCurrentUser());
         if (count < 0)
-            return query.getResultList();
+            return query.setFirstResult(0).setMaxResults(Integer.MAX_VALUE).getResultList();
         else
         	return query.setFirstResult(start).setMaxResults(count).getResultList();
     }

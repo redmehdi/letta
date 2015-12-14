@@ -262,6 +262,23 @@ public class EventEJBTest {
 
     	assertThat(joinedEvents, is(empty()));
     }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void testGetEventsJoinedByUserCountNegative(){
+        final User user = userWithLogin("anne");
+        principal.setName(user.getLogin());
+
+        final Event[] expectedEvents = filterEventsWithTwoJoinedUsers(
+            event -> event.hasAttendee(user)
+        );
+
+        final List<Event> joinedEvents = asUser.call(
+            () -> events.getAttendingEvents(0, -1)
+        );
+        
+        assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));
+    }
 
     @Test
     @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
