@@ -120,7 +120,7 @@ public class Event {
         final String        location,
         final User          owner,
         final Set<User>     attendees,
-        final boolean		candelled
+        final boolean		cancelled
     ) throws NullPointerException {
         this.id        = id;
         this.category  = requireNonNull(category);
