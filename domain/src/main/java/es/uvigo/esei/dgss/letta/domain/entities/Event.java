@@ -95,6 +95,9 @@ public class Event {
         joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "id") },
         inverseJoinColumns = { @JoinColumn(name = "user_login", referencedColumnName = "login") })
     private Set<User> attendees;
+    
+	@Column(nullable = false)
+	private boolean cancelled;
 
     /**
      * Constructs a new instance of {@link Event}. This empty constructor is
@@ -116,7 +119,8 @@ public class Event {
         final LocalDateTime date,
         final String        location,
         final User          owner,
-        final Set<User>     attendees
+        final Set<User>     attendees,
+        final boolean		candelled
     ) throws NullPointerException {
         this.id        = id;
         this.category  = requireNonNull(category);
@@ -126,6 +130,7 @@ public class Event {
         this.location  = requireNonNull(location);
         this.owner     = requireNonNull(owner);
         this.attendees = requireNonNull(attendees);
+        this.cancelled = requireNonNull(cancelled);
     }
 
     /**
@@ -160,6 +165,7 @@ public class Event {
 
         this.owner     = null;
         this.attendees = new LinkedHashSet<>();
+        this.cancelled = false;
     }
 
     /**
@@ -321,7 +327,26 @@ public class Event {
         this.owner = requireNonNull(owner, "Event's owner cannot be null.");
     }
 
-    /**
+	/**
+	 * Returns if the event is cancelled
+	 * 
+	 * @return {@code true} if the event is cancelled, {@code false} otherwise
+	 */
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	/**
+	 * Changes if the event is cancelled
+	 * 
+	 * @param cancelled
+	 *            global variable
+	 */
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
+	}
+
+	/**
      * Returns the current number of attendees of this event.
      *
      * @return The number of attendees of the event.

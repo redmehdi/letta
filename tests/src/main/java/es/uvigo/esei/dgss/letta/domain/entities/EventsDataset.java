@@ -50,31 +50,31 @@ public final class EventsDataset {
         final LocalDateTime date = LocalDateTime.of(2000, 1, 1, 1, 1, 1);
 
         return new Event[] {
-            new Event( 1, BOOKS,      "Example1 literature", "This is a description literature 1", date, "Location X", users[0], emptySet()),
-            new Event( 2, BOOKS,      "Example2 literature", "This is a description literature 2", date, "Location X", users[0], emptySet()),
-            new Event( 3, MUSIC,      "Example1 music",      "This is a description music 1",      date, "Location X", users[0], emptySet()),
-            new Event( 4, MUSIC,      "Example2 music",      "This is a description music 2",      date, "Location X", users[0], emptySet()),
-            new Event( 5, MOVIES,     "Example1 cinema",     "This is a description cinema 1",     date, "Location X", users[0], emptySet()),
-            new Event( 6, MOVIES,     "Example2 cinema",     "This is a description cinema 2",     date, "Location X", users[1], emptySet()),
-            new Event( 7, TELEVISION, "Example1 tv",         "This is a description tv 1",         date, "Location X", users[1], emptySet()),
-            new Event( 8, TELEVISION, "Example2 tv",         "This is a description tv 2",         date, "Location X", users[1], emptySet()),
-            new Event( 9, SPORTS,     "Example1 sports",     "This is a description sports 1",     date, "Location X", users[1], emptySet()),
-            new Event(10, SPORTS,     "Example2 sports",     "This is a description sports 2",     date, "Location X", users[1], emptySet()),
-            new Event(11, INTERNET,   "Example1 internet",   "This is a description internet 1",   date, "Location X", users[2], emptySet()),
-            new Event(12, INTERNET,   "Example2 internet",   "This is a description internet 2",   date, "Location X", users[2], emptySet()),
-            new Event(13, TRAVELS,    "Example1 travels",    "This is a description travels 1",    date, "Location X", users[2], emptySet()),
-            new Event(14, TRAVELS,    "Example2 travels",    "This is a description travels 2",    date, "Location X", users[2], emptySet()),
-            new Event(15, THEATRE,    "Example1 theatre",    "This is a description theatre 1",    date, "Location X", users[2], emptySet()),
-            new Event(16, THEATRE,    "Example2 theatre",    "This is a description theatre 2",    date, "Location X", users[3], emptySet()),
-            new Event(17, SPORTS,     "Example3 sports",     "This is a description sports 3",     date, "Location X", users[3], emptySet()),
-            new Event(18, INTERNET,   "Example3 internet",   "This is a description internet 3",   date, "Location X", users[3], emptySet()),
-            new Event(19, TRAVELS,    "Example3 travels",    "This is a description travels 3",    date, "Location X", users[3], emptySet()),
-            new Event(20, MOVIES,     "Example3 cinema",     "This is a description cinema 3",     date, "Location X", users[3], emptySet()),
-            new Event(21, TELEVISION, "Example3 tv",         "This is a description tv 3",         date, "Location X", users[4], emptySet()),
-            new Event(22, MUSIC,      "Example3 music",      "This is a description music 3",      date, "Location X", users[4], emptySet()),
-            new Event(23, BOOKS,      "Example3 literature", "This is a description literature 3", date, "Location X", users[4], emptySet()),
-            new Event(24, BOOKS,      "Example4 literature", "This is a description literature 4", date, "Location X", users[4], emptySet()),
-            new Event(25, BOOKS,      "Example5 literature", "This is a description literature 5", date, "Location X", users[4], emptySet())
+            new Event( 1, BOOKS,      "Example1 literature", "This is a description literature 1", date, "Location X", users[0], emptySet(), false),
+            new Event( 2, BOOKS,      "Example2 literature", "This is a description literature 2", date, "Location X", users[0], emptySet(), false),
+            new Event( 3, MUSIC,      "Example1 music",      "This is a description music 1",      date, "Location X", users[0], emptySet(), false),
+            new Event( 4, MUSIC,      "Example2 music",      "This is a description music 2",      date, "Location X", users[0], emptySet(), false),
+            new Event( 5, MOVIES,     "Example1 cinema",     "This is a description cinema 1",     date, "Location X", users[0], emptySet(), false),
+            new Event( 6, MOVIES,     "Example2 cinema",     "This is a description cinema 2",     date, "Location X", users[1], emptySet(), false),
+            new Event( 7, TELEVISION, "Example1 tv",         "This is a description tv 1",         date, "Location X", users[1], emptySet(), false),
+            new Event( 8, TELEVISION, "Example2 tv",         "This is a description tv 2",         date, "Location X", users[1], emptySet(), false),
+            new Event( 9, SPORTS,     "Example1 sports",     "This is a description sports 1",     date, "Location X", users[1], emptySet(), false),
+            new Event(10, SPORTS,     "Example2 sports",     "This is a description sports 2",     date, "Location X", users[1], emptySet(), false),
+            new Event(11, INTERNET,   "Example1 internet",   "This is a description internet 1",   date, "Location X", users[2], emptySet(), false),
+            new Event(12, INTERNET,   "Example2 internet",   "This is a description internet 2",   date, "Location X", users[2], emptySet(), false),
+            new Event(13, TRAVELS,    "Example1 travels",    "This is a description travels 1",    date, "Location X", users[2], emptySet(), false),
+            new Event(14, TRAVELS,    "Example2 travels",    "This is a description travels 2",    date, "Location X", users[2], emptySet(), false),
+            new Event(15, THEATRE,    "Example1 theatre",    "This is a description theatre 1",    date, "Location X", users[2], emptySet(), false),
+            new Event(16, THEATRE,    "Example2 theatre",    "This is a description theatre 2",    date, "Location X", users[3], emptySet(), false),
+            new Event(17, SPORTS,     "Example3 sports",     "This is a description sports 3",     date, "Location X", users[3], emptySet(), false),
+            new Event(18, INTERNET,   "Example3 internet",   "This is a description internet 3",   date, "Location X", users[3], emptySet(), false),
+            new Event(19, TRAVELS,    "Example3 travels",    "This is a description travels 3",    date, "Location X", users[3], emptySet(), false),
+            new Event(20, MOVIES,     "Example3 cinema",     "This is a description cinema 3",     date, "Location X", users[3], emptySet(), false),
+            new Event(21, TELEVISION, "Example3 tv",         "This is a description tv 3",         date, "Location X", users[4], emptySet(), true),
+            new Event(22, MUSIC,      "Example3 music",      "This is a description music 3",      date, "Location X", users[4], emptySet(), true),
+            new Event(23, BOOKS,      "Example3 literature", "This is a description literature 3", date, "Location X", users[4], emptySet(), true),
+            new Event(24, BOOKS,      "Example4 literature", "This is a description literature 4", date, "Location X", users[4], emptySet(), true),
+            new Event(25, BOOKS,      "Example5 literature", "This is a description literature 5", date, "Location X", users[4], emptySet(), true)
         };
     }
 
@@ -336,7 +336,8 @@ public final class EventsDataset {
                 event.getDate(),
                 event.getLocation(),
                 event.getOwner(),
-                groups[index]
+                groups[index],
+                event.isCancelled()
             );
         }).toArray(Event[]::new);
     }

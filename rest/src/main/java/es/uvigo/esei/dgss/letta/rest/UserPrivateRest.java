@@ -21,6 +21,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 
 /**
  * Resource that represents the {@link User} private funcionalities
@@ -110,13 +111,15 @@ public class UserPrivateRest {
 	 *             sent
 	 * @throws EventAlredyJoinedException
 	 *             If the {@link User} is already register for the event.
+	 * @throws EventIsCancelledException
+	 *             If the {@link Event} is cancelled
 	 */
 	@POST
 	@Path("{login}/joined/{id}")
 	@Consumes(MediaType.WILDCARD)
 	public Response joinEvent(@PathParam("login") String userLogin,
 			@PathParam("id") int eventId)
-					throws SecurityException, EventAlredyJoinedException {
+					throws SecurityException, EventAlredyJoinedException, EventIsCancelledException {
 		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
 			eventEJB.attendToEvent(eventId);
 			return Response.ok().build();

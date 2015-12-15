@@ -24,6 +24,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.EventsDataset;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.domain.entities.UsersDataset;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
@@ -177,7 +178,7 @@ public class EventEJBTest {
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testSearchTitleMultipleResult() {
-        assertThat(events.search("Example", 0, 25), hasSize(25));
+        assertThat(events.search("Example", 0, 25), hasSize(20));
     }
 
     @Test
@@ -191,14 +192,14 @@ public class EventEJBTest {
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testSearchDescriptionMultipleResult() {
-        assertThat(events.search("This is a description", 0, 25), hasSize(25));
+        assertThat(events.search("This is a description", 0, 25), hasSize(20));
     }
 
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testSearchOnTitleAndDescription() {
-        assertThat(events.search("literature", 0, 25), hasSize(5));
+        assertThat(events.search("literature", 0, 25), hasSize(2));
     }
 
     @Test
@@ -218,7 +219,7 @@ public class EventEJBTest {
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-attends-event-15.xml" })
-    public void testRegisterUserToEvent() throws EventAlredyJoinedException {
+    public void testRegisterUserToEvent() throws Exception {
         User user = UsersDataset.userWithLogin("anne");
 
         principal.setName(user.getLogin());
@@ -228,13 +229,23 @@ public class EventEJBTest {
     @Test
     @UsingDataSet({ "users.xml", "events.xml", "anne-attends-event-15.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-attends-event-15.xml" })
-    public void testRegisterUserAlreadyRegistered() throws EventAlredyJoinedException {
+    public void testRegisterUserAlreadyRegistered() throws Exception {
         thrown.expect(EventAlredyJoinedException.class);
 
         final User user = userWithLogin("anne");
         principal.setName(user.getLogin());
 
         asUser.throwingRun(() -> events.attendToEvent(15));
+    }
+    
+    @Test(expected = EventIsCancelledException.class)
+    @UsingDataSet({ "users.xml", "events.xml"})
+    @ShouldMatchDataSet({ "users.xml", "events.xml", "anne-attends-event-cancelled-25.xml" })
+    public void testRegisterUserEventCancelled() throws Exception {
+        final User user = userWithLogin("anne");
+        principal.setName(user.getLogin());
+
+        asUser.throwingRun(() -> events.attendToEvent(25));
     }
 
     @Test

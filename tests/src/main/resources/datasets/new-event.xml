@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-    <Event id="1" category="BOOKS" title="New Literature Event" summary="This is a description" date="2000-01-01 01:01:00" location="Location X" owner="john" />
+    <Event id="1" category="BOOKS" title="New Literature Event" summary="This is a description" date="2000-01-01 01:01:00" location="Location X" owner="john" cancelled="0"/>
 </dataset>

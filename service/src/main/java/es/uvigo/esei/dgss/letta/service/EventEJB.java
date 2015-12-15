@@ -18,6 +18,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 
 import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
@@ -161,8 +162,9 @@ public class EventEJB {
         // TODO: Pending sort by number of attendees.
         final TypedQuery<Event> query = em.createQuery(
             "SELECT e FROM Event e " +
-            "WHERE LOWER(e.title) LIKE :search " +
-            "   OR LOWER(e.summary) LIKE :search " +
+            "WHERE ( LOWER(e.title) LIKE :search " +
+            "   OR LOWER(e.summary) LIKE :search ) " +
+            "AND e.cancelled =  FALSE " +
             "ORDER BY e.date ASC",
             Event.class
         ).setParameter("search", "%" + search.toLowerCase() + "%");
@@ -183,19 +185,25 @@ public class EventEJB {
      *         is already registered for the {@link Event}.
      * @throws SecurityException if the currently identified user is not found
      *         in the database (!!!).
+     * @throws EventIsCancelledException if the {@link Event} is cancelled
      */
     @RolesAllowed("USER")
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void attendToEvent(
         final int eventId
-    ) throws EventAlredyJoinedException, SecurityException {
+    ) throws EventAlredyJoinedException, SecurityException, EventIsCancelledException {
         final User user   = auth.getCurrentUser();
         final Event event = em.find(Event.class, eventId);
 
-        if (event.hasAttendee(user)) {
-            ctx.setRollbackOnly();
-            throw new EventAlredyJoinedException(user, event);
-        }
+		if (event.hasAttendee(user)) {
+			ctx.setRollbackOnly();
+			throw new EventAlredyJoinedException(user, event);
+		}
+		
+		if (event.isCancelled()) {
+			ctx.setRollbackOnly();
+			throw new EventIsCancelledException(event);
+		}
 
         event.addAttendee(user);
         em.merge(event);
@@ -299,14 +307,4 @@ public class EventEJB {
  
         em.merge(event);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

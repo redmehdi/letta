@@ -276,6 +276,15 @@ public final class EventTest {
     public void testThatSetOwnerThrowsExceptionOnNullOwner() {
         validEvent().setOwner(null);
     }
+    
+    @Test
+    public void testSetCancelled() {
+        final Event event = validEvent();
+
+        event.setCancelled(true);
+        assertThat(event.isCancelled(), is(equalTo(true)));
+    }
+    
 
     @Test(expected = UnsupportedOperationException.class)
     public void testThatGetAttendeesReturnsAnUnmodifiableSet() {
