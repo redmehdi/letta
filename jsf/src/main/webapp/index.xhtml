@@ -19,8 +19,6 @@
 					<ui:repeat var="event" value="#{indexController.highlights}"
 						varStatus="status">
 						<div class="#{ status.first ? ' item active' : 'item' }">
-							<img class="img-responsive item-background"
-								src="https://unsplash.imgix.net/photo-1418479631014-8cbf89db3431?w=1024&amp;q=50&amp;fm=jpg&amp;s=478a9a2196033db7c0bf3c8ba3707f4d" />
 							<div class="carousel-caption event-info">
 								<img class="event-icon img-responsive center-block"
 									src="#{indexController.getIconFor(event)}" />

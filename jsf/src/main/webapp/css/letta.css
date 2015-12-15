@@ -6049,7 +6049,8 @@ button.close {
   position: relative;
 }
 .carousel-inner {
-  max-height: 800px;
+  max-height: 500px;
+  background-color: #337cbb !important;
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -6060,11 +6061,44 @@ button.close {
   -webkit-transition: 0.6s ease-in-out left;
   -o-transition: 0.6s ease-in-out left;
   transition: 0.6s ease-in-out left;
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 500px;
 }
+
+.carousel-inner > .item:nth-child(n+1) {
+  background-image: url('../img/carousel/carousel_image1.jpg');
+}
+
+.carousel-inner > .item:nth-child(n+2) {
+  background-image: url('../img/carousel/carousel_image2.jpg');
+}
+
+.carousel-inner > .item:nth-child(n+3) {
+  background-image: url('../img/carousel/carousel_image3.jpg');
+}
+
+.carousel-inner > .item:nth-child(n+4) {
+  background-image: url('../img/carousel/carousel_image4.jpg');
+}
+
+.carousel-inner > .item:nth-child(n+5) {
+  background-image: url('../img/carousel/carousel_image5.jpg');
+}
+
 .carousel-inner > .item > img.item-background,
 .carousel-inner > .item > a > img.item-background {
   line-height: 1;
+  /*max-height: 500px;*/
 }
+
+/*.carousel .item img.item-background {
+	min-width: 0% !important;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}*/
+
 @media all and (transform-3d), (-webkit-transform-3d) {
   .carousel-inner > .item {
     -webkit-transition: -webkit-transform 0.6s ease-in-out;
