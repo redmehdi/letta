@@ -322,4 +322,15 @@ public class EventEJB {
             Integer.class
         ).setParameter("event", event).getSingleResult();
     }
+	/**
+	 * Returns an {@link Event}
+	 * 
+	 * @param id
+	 *            indicates the {@link Event} id.
+	 * @return A {@link Event} if it is found, {@code null} otherwise
+	 */
+	@PermitAll
+	public Event getEvent(int id) {
+		return em.find(Event.class, id);
+	}
 }

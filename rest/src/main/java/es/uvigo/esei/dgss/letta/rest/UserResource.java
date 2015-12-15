@@ -1,6 +1,9 @@
 package es.uvigo.esei.dgss.letta.rest;
 
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.apache.commons.lang3.Validate.isTrue;
+
+import java.net.URI;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -33,7 +36,7 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledExceptio
 @Path("/private/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class UserPrivateRest {
+public class UserResource {
 
 	@Context
 	private UriInfo uriInfo;
@@ -73,7 +76,7 @@ public class UserPrivateRest {
 			return Response.ok(eventEJB.getAttendingEvents(start, count))
 					.build();
 		} else {
-			return Response.noContent().build();
+			return Response.status(UNAUTHORIZED).build();
 		}
 	}
 
@@ -93,7 +96,7 @@ public class UserPrivateRest {
 		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
 			return Response.ok(eventEJB.getEventsOwnedByCurrentUser()).build();
 		} else {
-			return Response.noContent().build();
+			return Response.status(UNAUTHORIZED).build();
 		}
 	}
 
@@ -118,14 +121,41 @@ public class UserPrivateRest {
 	@Path("{login}/joined/{id}")
 	@Consumes(MediaType.WILDCARD)
 	public Response joinEvent(@PathParam("login") String userLogin,
-			@PathParam("id") int eventId)
-					throws SecurityException, EventAlredyJoinedException, EventIsCancelledException {
+			@PathParam("id") int eventId) throws SecurityException,
+					EventAlredyJoinedException, EventIsCancelledException {
 		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
 			eventEJB.attendToEvent(eventId);
 			return Response.ok().build();
 		} else {
-			return Response.noContent().build();
+			return Response.status(UNAUTHORIZED).build();
 		}
 	}
 
+	/**
+	 * 
+	 * Creates an {@link Event}
+	 * 
+	 * @param userLogin
+	 *            indicates the owner login
+	 * @param event
+	 *            indicates the new {@link Event}
+	 * @return {@code CREATED} response with the URI of the new event in the
+	 *         {@code Location} header.
+	 * @throws SecurityException
+	 *             If the {@link User} logged login doesn't match with the login
+	 *             sent
+	 */
+	@POST
+	@Path("{login}/create")
+	public Response createEvent(@PathParam("login") String userLogin,
+			Event event) throws SecurityException {
+		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
+			final Event newEvent = eventEJB.createEvent(event);
+			final URI eventUri = uriInfo.getAbsolutePathBuilder()
+					.path(Integer.toString(newEvent.getId())).build();
+			return Response.created(eventUri).build();
+		} else {
+			return Response.status(UNAUTHORIZED).build();
+		}
+	}
 }

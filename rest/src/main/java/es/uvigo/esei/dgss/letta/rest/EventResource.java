@@ -1,10 +1,15 @@
 package es.uvigo.esei.dgss.letta.rest;
 
+import static javax.ws.rs.core.Response.status;
+import static javax.ws.rs.core.Response.Status.OK;
+import static org.apache.commons.lang3.Validate.isTrue;
+
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -12,11 +17,6 @@ import javax.ws.rs.core.Response;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
-
-import static javax.ws.rs.core.Response.status;
-import static javax.ws.rs.core.Response.Status.OK;
-
-import static org.apache.commons.lang3.Validate.isTrue;
 
 /**
  * Resource that represents the {@link Event Events} in the application.
@@ -30,7 +30,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
 public class EventResource {
 
     @EJB
-    private EventEJB events;
+    private EventEJB eventEJB;
 
     /**
      * Returns the list of {@link Event Events} stored in the application,
@@ -56,7 +56,7 @@ public class EventResource {
         isTrue(size >= 0, "Page size must be non-negative");
 
         final int start = (page - 1) * size;
-        return status(OK).entity(events.listByDate(start, size)).build();
+        return status(OK).entity(eventEJB.listByDate(start, size)).build();
     }
 
     /**
@@ -68,7 +68,7 @@ public class EventResource {
     @GET
     @Path("highlighted")
     public Response highlighted() {
-        return status(OK).entity(events.listHighlighted()).build();
+        return status(OK).entity(eventEJB.listHighlighted()).build();
     }
 
     /**
@@ -103,7 +103,29 @@ public class EventResource {
         isTrue(size >= 0, "Page size must be non-negative");
 
         final int start = (page - 1) * size;
-        return status(OK).entity(events.search(query, start, size)).build();
+        return status(OK).entity(eventEJB.search(query, start, size)).build();
     }
+    
+	/**
+	 * 
+	 * Returns the {@link Event} information
+	 * 
+	 * @param eventId
+	 *            indicates the Event id
+	 * @return the {@link Event} information
+	 * @throws IllegalArgumentException
+	 *             if the {@link Event} is not found
+	 */
+	@GET
+	@Path("{id}")
+	public Response eventInfo(@PathParam("id") int eventId)
+			throws IllegalArgumentException {
+		final Event event = eventEJB.getEvent(eventId);
+
+		if (event == null)
+			throw new IllegalArgumentException("Event not found: " + eventId);
+		else
+			return Response.ok(event).build();
+	}
 
 }

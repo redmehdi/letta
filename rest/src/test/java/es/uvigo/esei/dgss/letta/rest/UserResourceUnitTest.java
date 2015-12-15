@@ -34,12 +34,12 @@ import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogi
 import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
 
 @RunWith(EasyMockRunner.class)
-public class UserUnitTest extends EasyMockSupport {
+public class UserResourceUnitTest extends EasyMockSupport {
 
 	private static int EVENT_ID = 1;
 
 	@TestSubject
-	private UserPrivateRest resource = new UserPrivateRest();
+	private UserResource resource = new UserResource();
 
 	@Mock
 	private EventEJB eventEJB;
