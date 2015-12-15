@@ -1,5 +1,9 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import static java.util.Collections.emptyList;
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.Validate.isTrue;
+
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,13 +21,8 @@ import javax.persistence.TypedQuery;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
-import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
-
-import static java.util.Collections.emptyList;
-import static java.util.Objects.nonNull;
-
-import static org.apache.commons.lang3.Validate.isTrue;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
 
 /**
  * {@linkplain EventEJB} is a service bean providing all the required
@@ -306,5 +305,21 @@ public class EventEJB {
         }
  
         em.merge(event);
+    }
+    
+    /**
+     * Returns a {@code int} with the number of {@link User} attendants of
+     * the {@link Event}.
+     *
+     * @param event the {@link Event} to get the attendants.
+     *
+     * @return A {@code int} with the number of attendants.
+     */
+    @PermitAll
+    public int getAttendees(final Event event){
+    	return em.createQuery(
+            "SELECT size(e.attendees) from Event e WHERE e=:event",
+            Integer.class
+        ).setParameter("event", event).getSingleResult();
     }
 }

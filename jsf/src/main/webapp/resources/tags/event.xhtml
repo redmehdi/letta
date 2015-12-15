@@ -29,8 +29,7 @@
 				</h:outputText> <h:outputText value="#{indexController.getDate(cc.attrs.event)}"
 					rendered="#{indexController.isAfter(cc.attrs.event.date) eq false}">
 				</h:outputText><br />
-			</span> <span class="event-attendees"><strong>9261</strong> people
-				will be there</span>
+			</span> <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
 			<div class="overlay">
 				<h3 class="hover-title">#{cc.attrs.event.title}</h3>
 				<span class="event-join"> <h:link class="info join-link"

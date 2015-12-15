@@ -26,8 +26,7 @@
 								<span class="event-summary">LETTA #{event.summary}</span> <span
 									class="event-location">At #{event.location}</span> <span
 									class="event-date">From
-									#{indexController.getDate(event)}</span> <span class="event-attendees"><strong>9261</strong>
-									people will be there</span> <span class="event-join"> <h:link
+									#{indexController.getDate(event)}</span><span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span> <span class="event-join"> <h:link
 										class="info join-link" value="Join now!"
 										rendered="#{!loginController.anonymous and !privateController.ownEvents.contains(event)}"
 										outcome="joinEvent.xhtml?id=#{event.id}" /> 

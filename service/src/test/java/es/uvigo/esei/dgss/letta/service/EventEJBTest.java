@@ -37,6 +37,7 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEvent;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
@@ -367,6 +368,13 @@ public class EventEJBTest {
     	final int count2=asUser.call(events::countAttendingEvents);
         assertThat(count2, is(9));
     }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void testGetAttendees(){        
+        assertThat(events.getAttendees(existentEvent()), is(2));
+    }
+    
     @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
     @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void testUnAttendNotJoinedException() throws SecurityException, EventNotJoinedException{

@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
+import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.jsf.util.EventMappings;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
  *
  * @author Redouane Mehdi
  * @author Alberto Gutiérrez Jácome
+ * @author Aitor Blanco Míguez
  */
 @RequestScoped
 @ManagedBean(name = "indexController")
@@ -73,6 +75,27 @@ public class IndexPageController {
     
     public boolean isAfter(final LocalDateTime d) {
 	    return LocalDateTime.now().isAfter(d);
-	}
+    }
+    
+    /**
+     * Returns a {@code int} with the number of {@link User} attendants of
+     * the {@link Event}.
+     *
+     * @param event the {@link Event} to get the attendants.
+     *
+     * @return A {@code int} with the number of attendants.
+     */
+    public String getAttendees(final Event event){
+    	final int attendees = eventEJB.getAttendees(event);
+    	if (attendees == 0)
+    		return "<strong>Nobody</strong> will be there";
+    	else
+    		if(attendees == 1)
+    			return "<strong>"+attendees+"</strong> person will be "
+    					+ "there";
+    		else
+    			return "<strong>"+attendees+"</strong> people will be "
+    					+ "there";
+    }
 
 }
