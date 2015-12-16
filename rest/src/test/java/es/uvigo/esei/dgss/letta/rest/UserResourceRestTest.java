@@ -55,7 +55,7 @@ public class UserResourceRestTest {
 	private static final String NON_EXISTENT_ID_EVENT_JOIN = "/1000";
 	private static final String EXISTENT_LOGIN = "anne";
 	private static final String NON_EXISTENT_LOGIN = "annen";
-	private static final String BASIC_AUTHORIZATION = "Basic YW5uZTphbm5lcGFzcw==";
+	private static final String EXISTENT_AUTHORIZATION = "Basic YW5uZTphbm5lcGFzcw==";
 	private static final String NON_EXISTENT_AUTHORIZATION = "Basic YW5uZW46YW5uZW5wYXM=";
 
 	private static final GenericType<List<Event>> asEventList = new GenericType<List<Event>>() {
@@ -90,7 +90,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(11)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testGetCreatedEvents(@ArquillianResteasyResource(BASE_PATH
 			+ EXISTENT_LOGIN + "/created") final ResteasyWebTarget webTarget)
 					throws Exception {
@@ -115,7 +115,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(22)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testGetJoinedEvents(@ArquillianResteasyResource(BASE_PATH
 			+ EXISTENT_LOGIN + "/joined") final ResteasyWebTarget webTarget)
 					throws Exception {
@@ -140,7 +140,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(32)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testJoinEvent(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN + "/joined"
 					+ ID_EVENT_JOIN) final ResteasyWebTarget webTarget)
@@ -166,7 +166,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(42)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testNonExistentUserCreated(
 			@ArquillianResteasyResource(BASE_PATH + NON_EXISTENT_LOGIN
 					+ "/created") final ResteasyWebTarget webTarget)
@@ -214,7 +214,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(62)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testEventAlreadyJoined(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN + "/joined"
 					+ ID_EVENT_JOIN) final ResteasyWebTarget webTarget)
@@ -241,7 +241,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(72)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testNonExistentEventToJoin(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN + "/joined"
 					+ NON_EXISTENT_ID_EVENT_JOIN) final ResteasyWebTarget webTarget)
@@ -265,7 +265,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(82)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testGetJoinedEventsIncorrectStartNumberCorrectCountNumber(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN
 					+ "/joined?start=-1&count=0") final ResteasyWebTarget webTarget)
@@ -290,7 +290,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(92)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testGetJoinedEventsCorrectStartNumberIncorrectCountNumber(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN
 					+ "/joined?start=0&count=-1") final ResteasyWebTarget webTarget)
@@ -315,7 +315,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(102)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testGetJoinedEventsIncorrectStartNumberIncorrectCountNumber(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN
 					+ "/joined?start=-1&count=-1") final ResteasyWebTarget webTarget)
@@ -340,7 +340,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(112)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testNonExistentUserJoined(@ArquillianResteasyResource(BASE_PATH
 			+ NON_EXISTENT_LOGIN + "/joined") final ResteasyWebTarget webTarget)
 					throws Exception {
@@ -387,7 +387,7 @@ public class UserResourceRestTest {
 	@Test
 	@InSequence(132)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
 	public void testCreateEvent(@ArquillianResteasyResource(BASE_PATH
 			+ EXISTENT_LOGIN + "/create") final ResteasyWebTarget webTarget)
 					throws Exception {
