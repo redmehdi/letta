@@ -118,7 +118,7 @@ public class EventResource {
 	 */
 	@GET
 	@Path("{id}")
-	public Response eventInfo(@PathParam("id") int eventId)
+	public Response getEventInfo(@PathParam("id") int eventId)
 			throws IllegalArgumentException {
 		final Event event = eventEJB.getEvent(eventId);
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<Event id="26" category="BOOKS" title="New literature event"
+		summary="This is a description" date="2000-01-01 01:01:01" location="Location X"
+		owner="anne" cancelled="0" />
+</dataset>

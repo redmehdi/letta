@@ -1,9 +1,28 @@
 package es.uvigo.esei.dgss.letta.rest;
 
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEvent;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogin;
+import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
+import static java.util.Arrays.asList;
+import static javax.ws.rs.core.Response.Status.CREATED;
+import static javax.ws.rs.core.Response.Status.OK;
+import static org.easymock.EasyMock.expect;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.Assert.assertThat;
+
+import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
@@ -16,22 +35,6 @@ import org.junit.runner.RunWith;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
-
-import static java.util.Arrays.asList;
-
-import static javax.ws.rs.core.Response.Status.OK;
-
-import static org.easymock.EasyMock.expect;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertThat;
-
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentLogin;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogin;
-import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
 
 @RunWith(EasyMockRunner.class)
 public class UserResourceUnitTest extends EasyMockSupport {
@@ -46,6 +49,9 @@ public class UserResourceUnitTest extends EasyMockSupport {
 
 	@Mock
 	private UriBuilder uriBuilder;
+	
+	@Mock
+	private UriInfo uriInfo;
 
 	@Mock
 	private UserAuthorizationEJB auth;
@@ -101,4 +107,30 @@ public class UserResourceUnitTest extends EasyMockSupport {
 
 		assertThat(response, hasHttpStatus(OK));
 	}
+	
+	@Test
+	public void testCreateEvent() throws Exception {
+		final Event newEvent = newEventWithoutCreator();
+		final Event createdEvent = newEvent();
+
+		final URI mockUri = new URI(
+				"http://host/api/public/event/" + createdEvent.getId());
+		
+		expect(eventEJB.createEvent(newEvent)).andReturn(createdEvent);
+		expect(auth.getCurrentUser()).andReturn(userWithLogin(existentLogin()));
+		expect(uriInfo.getAbsolutePathBuilder()).andReturn(uriBuilder);
+		expect(uriBuilder.path(Integer.toString(createdEvent.getId())))
+				.andReturn(uriBuilder);
+		expect(uriBuilder.build()).andReturn(mockUri);
+
+		replayAll();
+
+		final Response response = resource.createEvent(existentLogin(),
+				newEvent);
+
+		assertThat(response, hasHttpStatus(CREATED));
+		assertThat(response.getHeaderString("Location"),
+				is(equalTo(mockUri.toString())));
+	}
+	
 }

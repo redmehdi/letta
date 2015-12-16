@@ -1,13 +1,24 @@
 package es.uvigo.esei.dgss.letta.rest;
 
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
+import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
+import static javax.ws.rs.client.Entity.json;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.CREATED;
+import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
+import static javax.ws.rs.core.Response.Status.OK;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
 import java.util.List;
 
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.container.test.api.ShouldThrowException;
 import org.jboss.arquillian.extension.rest.client.ArquillianResteasyResource;
 import org.jboss.arquillian.extension.rest.client.Header;
 import org.jboss.arquillian.junit.Arquillian;
@@ -34,14 +45,6 @@ import es.uvigo.esei.dgss.letta.rest.util.mappers.SecurityExceptionMapper;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
-import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
-
-import static javax.ws.rs.core.Response.Status.OK;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
-
-import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
 
 @RunWith(Arquillian.class)
 @Cleanup(phase = TestExecutionPhase.NONE)
@@ -49,11 +52,11 @@ public class UserResourceRestTest {
 
 	private static final String BASE_PATH = "api/private/user/";
 	private static final String ID_EVENT_JOIN = "/15";
-	private static final String NON_ID_EVENT_JOIN = "/16";
+	private static final String NON_EXISTENT_ID_EVENT_JOIN = "/1000";
 	private static final String EXISTENT_LOGIN = "anne";
 	private static final String NON_EXISTENT_LOGIN = "annen";
 	private static final String BASIC_AUTHORIZATION = "Basic YW5uZTphbm5lcGFzcw==";
-	private static final String NON_BASIC_AUTHORIZATION = "Basic YW5uZW46YW5uZW5wYXM=";
+	private static final String NON_EXISTENT_AUTHORIZATION = "Basic YW5uZW46YW5uZW5wYXM=";
 
 	private static final GenericType<List<Event>> asEventList = new GenericType<List<Event>>() {
 	};
@@ -156,24 +159,50 @@ public class UserResourceRestTest {
 
 	@Test
 	@InSequence(41)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestNonExistentUserCreated() {
+	}
+
+	@Test
+	@InSequence(42)
 	@RunAsClient
 	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
-	@ShouldThrowException(SecurityException.class)
-	public void testNonExistentOwner(
+	public void testNonExistentUserCreated(
 			@ArquillianResteasyResource(BASE_PATH + NON_EXISTENT_LOGIN
 					+ "/created") final ResteasyWebTarget webTarget)
 							throws Exception {
+		final Response response = webTarget.request().get();
+		assertThat(response, hasHttpStatus(Status.UNAUTHORIZED));
+	}
+
+	@Test
+	@InSequence(43)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void afterTestNonExistentUserCreated() {
 	}
 
 	@Test
 	@InSequence(51)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestNonExistentAuthorizationCreated() {
+	}
+
+	@Test
+	@InSequence(52)
 	@RunAsClient
-	@Header(name = "Authorization", value = NON_BASIC_AUTHORIZATION)
-	@ShouldThrowException(SecurityException.class)
-	public void testNonExistentAuthorization(
+	@Header(name = "Authorization", value = NON_EXISTENT_AUTHORIZATION)
+	public void testNonExistentAuthorizationCreated(
 			@ArquillianResteasyResource(BASE_PATH + NON_EXISTENT_LOGIN
 					+ "/created") final ResteasyWebTarget webTarget)
 							throws Exception {
+		final Response response = webTarget.request().get();
+		assertThat(response, hasHttpStatus(Status.UNAUTHORIZED));
+	}
+
+	@Test
+	@InSequence(53)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void afterTestNonExistentAuthorizationCreated() {
 	}
 
 	@Test
@@ -186,11 +215,13 @@ public class UserResourceRestTest {
 	@InSequence(62)
 	@RunAsClient
 	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
-	@ShouldThrowException(EventAlredyJoinedException.class)
 	public void testEventAlreadyJoined(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN + "/joined"
 					+ ID_EVENT_JOIN) final ResteasyWebTarget webTarget)
 							throws Exception {
+		final Response response = webTarget.request().post(null);
+		assertThat(response, hasHttpStatus(INTERNAL_SERVER_ERROR));
+
 	}
 
 	@Test
@@ -203,133 +234,197 @@ public class UserResourceRestTest {
 
 	@Test
 	@InSequence(71)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestNonExistentEventToJoin() {
+	}
+
+	@Test
+	@InSequence(72)
 	@RunAsClient
 	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
-	@ShouldThrowException(NullPointerException.class)
 	public void testNonExistentEventToJoin(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN + "/joined"
-					+ NON_ID_EVENT_JOIN) final ResteasyWebTarget webTarget)
+					+ NON_EXISTENT_ID_EVENT_JOIN) final ResteasyWebTarget webTarget)
 							throws Exception {
+		final Response response = webTarget.request().post(null);
+		assertThat(response, hasHttpStatus(BAD_REQUEST));
+	}
+
+	@Test
+	@InSequence(73)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void afterTestNonExistentEventToJoin() {
 	}
 
 	@Test
 	@InSequence(81)
 	@UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-	public void beforeTestGetJoinedEventsIncorrectStartNumber() {
+	public void beforeTestGetJoinedEventsIncorrectStartNumberCorrectCountNumber() {
 	}
 
 	@Test
 	@InSequence(82)
 	@RunAsClient
 	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
-	@ShouldThrowException(IllegalArgumentException.class)
-	public void testGetJoinedEventsIncorrectStartNumber(
+	public void testGetJoinedEventsIncorrectStartNumberCorrectCountNumber(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN
-					+ "/joined?start=-1") final ResteasyWebTarget webTarget)
+					+ "/joined?start=-1&count=0") final ResteasyWebTarget webTarget)
 							throws Exception {
+		final Response response = webTarget.request().get();
+		assertThat(response, hasHttpStatus(BAD_REQUEST));
 	}
 
 	@Test
 	@InSequence(83)
 	@CleanupUsingScript("cleanup.sql")
 	@ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-	public void afterTestGetJoinedEventsIncorrectStartNumber() {
+	public void afterTestGetJoinedEventsIncorrectStartNumberCorrectCountNumber() {
 	}
 
 	@Test
 	@InSequence(91)
 	@UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-	public void beforeTestGetJoinedEventsIncorrectCountNumber() {
+	public void beforeTestGetJoinedEventsCorrectStartNumberIncorrectCountNumber() {
 	}
 
 	@Test
 	@InSequence(92)
 	@RunAsClient
 	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
-	@ShouldThrowException(IllegalArgumentException.class)
-	public void testGetJoinedEventsIncorrectCountNumber(
+	public void testGetJoinedEventsCorrectStartNumberIncorrectCountNumber(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN
-					+ "/joined?count=-1") final ResteasyWebTarget webTarget)
+					+ "/joined?start=0&count=-1") final ResteasyWebTarget webTarget)
 							throws Exception {
+		final Response response = webTarget.request().get();
+		assertThat(response, hasHttpStatus(BAD_REQUEST));
 	}
 
 	@Test
 	@InSequence(93)
 	@CleanupUsingScript("cleanup.sql")
 	@ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-	public void afterTestGetJoinedEventsIncorrectCountNumber() {
+	public void afterTestGetJoinedEventsCorrectStartNumberIncorrectCountNumber() {
 	}
 
 	@Test
 	@InSequence(101)
 	@UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-	public void beforeTestGetJoinedEventsIncorrectStartNumberCorrectCountNumber() {
+	public void beforeTestGetJoinedEventsIncorrectStartNumberIncorrectCountNumber() {
 	}
 
 	@Test
 	@InSequence(102)
 	@RunAsClient
 	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
-	@ShouldThrowException(IllegalArgumentException.class)
-	public void testGetJoinedEventsIncorrectStartNumberCorrectCountNumber(
+	public void testGetJoinedEventsIncorrectStartNumberIncorrectCountNumber(
 			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN
-					+ "/joined?start=-1&count=0") final ResteasyWebTarget webTarget)
+					+ "/joined?start=-1&count=-1") final ResteasyWebTarget webTarget)
 							throws Exception {
+		final Response response = webTarget.request().get();
+		assertThat(response, hasHttpStatus(BAD_REQUEST));
 	}
 
 	@Test
 	@InSequence(103)
 	@CleanupUsingScript("cleanup.sql")
 	@ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-	public void afterTestGetJoinedEventsIncorrectStartNumberCorrectCountNumber() {
+	public void afterTestGetJoinedEventsIncorrectStartNumberIncorrectCountNumber() {
 	}
 
 	@Test
 	@InSequence(111)
-	@UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-	public void beforeTestGetJoinedEventsCorrectStartNumberIncorrectCountNumber() {
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestNonExistentUserJoined() {
 	}
 
 	@Test
 	@InSequence(112)
 	@RunAsClient
 	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
-	@ShouldThrowException(IllegalArgumentException.class)
-	public void testGetJoinedEventsCorrectStartNumberIncorrectCountNumber(
-			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN
-					+ "/joined?start=0&count=-1") final ResteasyWebTarget webTarget)
-							throws Exception {
+	public void testNonExistentUserJoined(@ArquillianResteasyResource(BASE_PATH
+			+ NON_EXISTENT_LOGIN + "/joined") final ResteasyWebTarget webTarget)
+					throws Exception {
+		final Response response = webTarget.request().get();
+		assertThat(response, hasHttpStatus(UNAUTHORIZED));
 	}
 
 	@Test
 	@InSequence(113)
-	@CleanupUsingScript("cleanup.sql")
-	@ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-	public void afterTestGetJoinedEventsCorrectStartNumberIncorrectCountNumber() {
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void afterTestNonExistentUserJoined() {
 	}
 
 	@Test
 	@InSequence(121)
-	@UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-	public void beforeTestGetJoinedEventsIncorrectStartNumberIncorrectCountNumber() {
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestNonExistentAuthorizationJoined() {
 	}
 
 	@Test
 	@InSequence(122)
 	@RunAsClient
-	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
-	@ShouldThrowException(IllegalArgumentException.class)
-	public void beforeTestGetJoinedEventsIncorrectStartNumberIncorrectCountNumber(
-			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN
-					+ "/joined?start=0&count=-1") final ResteasyWebTarget webTarget)
+	@Header(name = "Authorization", value = NON_EXISTENT_AUTHORIZATION)
+	public void testNonExistentAuthorizationJoined(
+			@ArquillianResteasyResource(BASE_PATH + NON_EXISTENT_LOGIN
+					+ "/joined") final ResteasyWebTarget webTarget)
 							throws Exception {
+		final Response response = webTarget.request().get();
+		assertThat(response, hasHttpStatus(UNAUTHORIZED));
 	}
 
 	@Test
 	@InSequence(123)
-	@CleanupUsingScript("cleanup.sql")
-	@ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-	public void afterTestGetJoinedEventsIncorrectStartNumberIncorrectCountNumber() {
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void afterTestNonExistentAuthorizationJoined() {
+	}
+
+	@Test
+	@InSequence(131)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestCreateEvent() {
+	}
+
+	@Test
+	@InSequence(132)
+	@RunAsClient
+	@Header(name = "Authorization", value = BASIC_AUTHORIZATION)
+	public void testCreateEvent(@ArquillianResteasyResource(BASE_PATH
+			+ EXISTENT_LOGIN + "/create") final ResteasyWebTarget webTarget)
+					throws Exception {
+		final Response response = webTarget.request()
+				.post(json(newEventWithoutCreator()));
+		assertThat(response, hasHttpStatus(CREATED));
+	}
+
+	@Test
+	@InSequence(133)
+	@UsingDataSet({ "users.xml", "events.xml", "events-create.xml" })
+	public void afterTestCreateEvent() {
+	}
+
+	@Test
+	@InSequence(141)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestNonExistentAuthorizationCreateEvent() {
+	}
+
+	@Test
+	@InSequence(142)
+	@RunAsClient
+	@Header(name = "Authorization", value = NON_EXISTENT_AUTHORIZATION)
+	public void testNonExistentAuthorizationCreateEvent(
+			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN
+					+ "/create") final ResteasyWebTarget webTarget)
+							throws Exception {
+		final Response response = webTarget.request()
+				.post(json(newEventWithoutCreator()));
+		assertThat(response, hasHttpStatus(UNAUTHORIZED));
+	}
+
+	@Test
+	@InSequence(143)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void afterTestNonExistentAuthorizationCreateEvent() {
 	}
 
 }

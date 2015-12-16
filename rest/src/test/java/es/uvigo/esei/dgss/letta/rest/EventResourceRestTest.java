@@ -1,5 +1,11 @@
 package es.uvigo.esei.dgss.letta.rest;
 
+import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.OK;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
 import java.util.List;
 
 import javax.ws.rs.client.WebTarget;
@@ -29,18 +35,13 @@ import es.uvigo.esei.dgss.letta.domain.util.converters.LocalDateTimeConverter;
 import es.uvigo.esei.dgss.letta.rest.util.mappers.IllegalArgumentExceptionMapper;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 
-import static javax.ws.rs.core.Response.Status.OK;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
-
-import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
-
 @RunWith(Arquillian.class)
 @Cleanup(phase = TestExecutionPhase.NONE)
 public class EventResourceRestTest {
 
     private static final String basePath = "api/public/event";
+    private static final String existent_id = "/1";
+    private static final String non_existent_id = "/1000";
 
     private static final GenericType<List<Event>> asEventList = new GenericType<List<Event>>() { };
 
@@ -137,5 +138,46 @@ public class EventResourceRestTest {
     @CleanupUsingScript("cleanup.sql")
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void afterTestSearchWithDefaultArguments() { }
+    
+    @Test
+    @InSequence(40) 
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestGetEventInfo() { }
 
+    @Test
+    @RunAsClient
+    @InSequence(41) 
+    public void testGetEventInfo(
+        @ArquillianResteasyResource(basePath + existent_id) final WebTarget target
+    ) {
+        final Response response = target.request().get();
+        assertThat(response, hasHttpStatus(OK));
+    }
+
+    @Test
+    @InSequence(42)
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void afterTestGetEventInfo() { }
+
+    @Test
+    @InSequence(50) 
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestGetNonExistentEventInfo() { }
+
+    @Test
+    @RunAsClient
+    @InSequence(51) 
+    public void testGetNonExistentEventInfo(
+        @ArquillianResteasyResource(basePath + non_existent_id) final WebTarget target
+    ) {
+        final Response response = target.request().get();
+        assertThat(response, hasHttpStatus(BAD_REQUEST));
+    }
+
+    @Test
+    @InSequence(52)
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void afterTestGetNonExistentEventInfo() { }
 }

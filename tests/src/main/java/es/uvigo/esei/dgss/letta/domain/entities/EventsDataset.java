@@ -278,12 +278,12 @@ public final class EventsDataset {
      * @return An event that should not exist in the database.
      */
     public static Event newEvent() {
-        return new Event(
-            TRAVELS,
-            "New travels event",
-            "New travels description",
-            LocalDateTime.of(1988, 8, 15, 21, 47, 41),
-            "the inexistent location"
+    	return new Event(
+            BOOKS,
+            "New literature event",
+            "This is a description",
+            LocalDateTime.of(2000, 1, 1, 1, 1, 1),
+            "Location X"
         );
     }
 
@@ -300,7 +300,7 @@ public final class EventsDataset {
             BOOKS,
             "New literature event",
             "This is a description",
-            LocalDateTime.of(2000, 1, 1, 1, 1, 0),
+            LocalDateTime.of(2000, 1, 1, 1, 1, 1),
             "Location X"
         );
     }

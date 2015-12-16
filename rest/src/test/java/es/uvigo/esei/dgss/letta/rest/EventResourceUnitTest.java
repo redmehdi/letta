@@ -1,24 +1,13 @@
 package es.uvigo.esei.dgss.letta.rest;
 
-import java.util.List;
-
-import javax.ws.rs.core.Response;
-
-import org.easymock.EasyMockRunner;
-import org.easymock.Mock;
-import org.easymock.TestSubject;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import es.uvigo.esei.dgss.letta.domain.entities.Event;
-import es.uvigo.esei.dgss.letta.service.EventEJB;
-
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
+import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.containsEventsListInOrder;
+import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.copyOf;
 import static java.util.Collections.emptyList;
-
 import static javax.ws.rs.core.Response.Status.OK;
-
 import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.easymock.EasyMock.expect;
@@ -30,221 +19,254 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
-import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.containsEventsListInOrder;
-import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
+import java.util.List;
+
+import javax.ws.rs.core.Response;
+
+import org.easymock.EasyMockRunner;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
+import org.easymock.TestSubject;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import es.uvigo.esei.dgss.letta.domain.entities.Event;
+import es.uvigo.esei.dgss.letta.domain.entities.EventsDataset;
+import es.uvigo.esei.dgss.letta.service.EventEJB;
 
 @RunWith(EasyMockRunner.class)
-public class EventResourceUnitTest {
+public class EventResourceUnitTest extends EasyMockSupport {
 
-    @TestSubject
-    private EventResource resource = new EventResource();
+	@TestSubject
+	private EventResource resource = new EventResource();
 
-    @Mock
-    private EventEJB eventsEJB;
+	@Mock
+	private EventEJB eventEJB;
 
-    @SuppressWarnings("unchecked")
-    private void assertThatResponseContainsEvents(
-        final Response response, final List<Event> expected
-    ) {
-        assertThat(response.getEntity(), is(instanceOf(List.class)));
-        assertThat(
-            (List<Event>) response.getEntity(),
-            containsEventsListInOrder(expected)
-        );
-    }
 
-    @Test
-    public void testListReturnsAValidListOfEvents() {
-        final List<Event> events = asList(events());
+	@SuppressWarnings("unchecked")
+	private void assertThatResponseContainsEvents(final Response response,
+			final List<Event> expected) {
+		assertThat(response.getEntity(), is(instanceOf(List.class)));
+		assertThat((List<Event>) response.getEntity(),
+				containsEventsListInOrder(expected));
+	}
 
-        expect(eventsEJB.listByDate(0, events.size())).andReturn(events);
-        replay(eventsEJB);
+	@Test
+	public void testListReturnsAValidListOfEvents() {
+		final List<Event> events = asList(events());
 
-        final Response response = resource.list(1, events.size());
-        verify(eventsEJB);
+		expect(eventEJB.listByDate(0, events.size())).andReturn(events);
+		replay(eventEJB);
 
-        assertThat(response, hasHttpStatus(OK));
-        assertThatResponseContainsEvents(response, events);
-    }
+		final Response response = resource.list(1, events.size());
+		verify(eventEJB);
 
-    @Test
-    @SuppressWarnings("unchecked")
-    public void testListReturnsEmptyListIfNoEventsInEJB() {
-        expect(eventsEJB.listByDate(0, 20)).andReturn(emptyList());
-        replay(eventsEJB);
+		assertThat(response, hasHttpStatus(OK));
+		assertThatResponseContainsEvents(response, events);
+	}
 
-        final Response response = resource.list(1, 20);
-        verify(eventsEJB);
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testListReturnsEmptyListIfNoEventsInEJB() {
+		expect(eventEJB.listByDate(0, 20)).andReturn(emptyList());
+		replay(eventEJB);
 
-        assertThat(response, hasHttpStatus(OK));
-        assertThat(response.getEntity(), is(instanceOf(List.class)));
-        assertThat((List<Event>) response.getEntity(), is(empty()));
-    }
+		final Response response = resource.list(1, 20);
+		verify(eventEJB);
 
-    @Test
-    public void testListRetrievesTheSpecifiedNumberOfEventsPerPage() {
-        for (int pageSize = 1; pageSize <= 20; ++pageSize) {
-            final List<Event> events = asList(events()).subList(0, pageSize);
+		assertThat(response, hasHttpStatus(OK));
+		assertThat(response.getEntity(), is(instanceOf(List.class)));
+		assertThat((List<Event>) response.getEntity(), is(empty()));
+	}
 
-            expect(eventsEJB.listByDate(0, pageSize)).andReturn(events);
-            replay(eventsEJB);
+	@Test
+	public void testListRetrievesTheSpecifiedNumberOfEventsPerPage() {
+		for (int pageSize = 1; pageSize <= 20; ++pageSize) {
+			final List<Event> events = asList(events()).subList(0, pageSize);
 
-            final Response response = resource.list(1, pageSize);
-            verify(eventsEJB);
-            reset(eventsEJB);
+			expect(eventEJB.listByDate(0, pageSize)).andReturn(events);
+			replay(eventEJB);
 
-            assertThatResponseContainsEvents(response, events);
-        }
-    }
+			final Response response = resource.list(1, pageSize);
+			verify(eventEJB);
+			reset(eventEJB);
 
-    @Test
-    public void testListRetrievesTheSpecifiedPageNumber() {
-        for (int pageNumber = 1; pageNumber < 5; ++pageNumber) {
-            final int from = (pageNumber - 1) * 5;
+			assertThatResponseContainsEvents(response, events);
+		}
+	}
 
-            final List<Event> events = asList(events()).subList(from, from + 5);
-            expect(eventsEJB.listByDate(from, 5)).andReturn(events);
-            replay(eventsEJB);
+	@Test
+	public void testListRetrievesTheSpecifiedPageNumber() {
+		for (int pageNumber = 1; pageNumber < 5; ++pageNumber) {
+			final int from = (pageNumber - 1) * 5;
 
-            final Response response = resource.list(pageNumber, 5);
-            verify(eventsEJB);
-            reset(eventsEJB);
+			final List<Event> events = asList(events()).subList(from, from + 5);
+			expect(eventEJB.listByDate(from, 5)).andReturn(events);
+			replay(eventEJB);
 
-            assertThatResponseContainsEvents(response, events);
-        }
-    }
+			final Response response = resource.list(pageNumber, 5);
+			verify(eventEJB);
+			reset(eventEJB);
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testListThrowsIllegalArgumentExceptionWhenPageLessThanOneIsGiven() {
-        resource.list(nextInt(Integer.MIN_VALUE, 1), 5);
-    }
+			assertThatResponseContainsEvents(response, events);
+		}
+	}
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testListThrowsIllegalArgumentExceptionWhenPageSizeLessThanZeroIsGiven() {
-        resource.list(1, nextInt(Integer.MIN_VALUE, 0));
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void testListThrowsIllegalArgumentExceptionWhenPageLessThanOneIsGiven() {
+		resource.list(nextInt(Integer.MIN_VALUE, 1), 5);
+	}
 
-    @Test
-    public void testHighlightedReturnsAValidListOfEvents() {
-        final List<Event> events = asList(copyOf(events(), 5));
+	@Test(expected = IllegalArgumentException.class)
+	public void testListThrowsIllegalArgumentExceptionWhenPageSizeLessThanZeroIsGiven() {
+		resource.list(1, nextInt(Integer.MIN_VALUE, 0));
+	}
 
-        expect(eventsEJB.listHighlighted()).andReturn(events);
-        replay(eventsEJB);
+	@Test
+	public void testHighlightedReturnsAValidListOfEvents() {
+		final List<Event> events = asList(copyOf(events(), 5));
 
-        final Response response = resource.highlighted();
-        verify(eventsEJB);
+		expect(eventEJB.listHighlighted()).andReturn(events);
+		replay(eventEJB);
 
-        assertThat(response, hasHttpStatus(OK));
-        assertThatResponseContainsEvents(response, events);
-    }
+		final Response response = resource.highlighted();
+		verify(eventEJB);
 
-    @Test
-    @SuppressWarnings("unchecked")
-    public void testHighlightedReturnsEmptyListIfNoEventsInEJB() {
-        expect(eventsEJB.listHighlighted()).andReturn(emptyList());
-        replay(eventsEJB);
+		assertThat(response, hasHttpStatus(OK));
+		assertThatResponseContainsEvents(response, events);
+	}
 
-        final Response response = resource.highlighted();
-        verify(eventsEJB);
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testHighlightedReturnsEmptyListIfNoEventsInEJB() {
+		expect(eventEJB.listHighlighted()).andReturn(emptyList());
+		replay(eventEJB);
 
-        assertThat(response, hasHttpStatus(OK));
-        assertThat(response.getEntity(), is(instanceOf(List.class)));
-        assertThat((List<Event>) response.getEntity(), is(empty()));
-    }
+		final Response response = resource.highlighted();
+		verify(eventEJB);
 
-    @Test
-    public void testSearchReturnsAValidListOfEvents() {
-        final List<Event> events = asList(filterEvents(
-            e -> e.getTitle().contains("music")
-              || e.getSummary().contains("music")
-        ));
+		assertThat(response, hasHttpStatus(OK));
+		assertThat(response.getEntity(), is(instanceOf(List.class)));
+		assertThat((List<Event>) response.getEntity(), is(empty()));
+	}
 
-        expect(eventsEJB.search("music", 0, events.size())).andReturn(events);
-        replay(eventsEJB);
+	@Test
+	public void testSearchReturnsAValidListOfEvents() {
+		final List<Event> events = asList(
+				filterEvents(e -> e.getTitle().contains("music")
+						|| e.getSummary().contains("music")));
 
-        final Response response = resource.search("music", 1, events.size());
-        verify(eventsEJB);
+		expect(eventEJB.search("music", 0, events.size())).andReturn(events);
+		replay(eventEJB);
 
-        assertThat(response, hasHttpStatus(OK));
-        assertThatResponseContainsEvents(response, events);
-    }
+		final Response response = resource.search("music", 1, events.size());
+		verify(eventEJB);
 
-    @Test
-    @SuppressWarnings("unchecked")
-    public void testSearchReturnsEmptyListIfNoEventsInEJB() {
-        expect(eventsEJB.search("asd", 0, 20)).andReturn(emptyList());
-        replay(eventsEJB);
+		assertThat(response, hasHttpStatus(OK));
+		assertThatResponseContainsEvents(response, events);
+	}
 
-        final Response response = resource.search("asd", 1, 20);
-        verify(eventsEJB);
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testSearchReturnsEmptyListIfNoEventsInEJB() {
+		expect(eventEJB.search("asd", 0, 20)).andReturn(emptyList());
+		replay(eventEJB);
 
-        assertThat(response, hasHttpStatus(OK));
-        assertThat(response.getEntity(), is(instanceOf(List.class)));
-        assertThat((List<Event>) response.getEntity(), is(empty()));
-    }
+		final Response response = resource.search("asd", 1, 20);
+		verify(eventEJB);
 
-    @Test
-    public void testSearchReturnsAllEventsWhenAnEmptyQueryIsExecuted() {
-        final List<Event> events = asList(copyOf(events(), 20));
+		assertThat(response, hasHttpStatus(OK));
+		assertThat(response.getEntity(), is(instanceOf(List.class)));
+		assertThat((List<Event>) response.getEntity(), is(empty()));
+	}
 
-        expect(eventsEJB.search("", 0, 20)).andReturn(events);
-        replay(eventsEJB);
+	@Test
+	public void testSearchReturnsAllEventsWhenAnEmptyQueryIsExecuted() {
+		final List<Event> events = asList(copyOf(events(), 20));
 
-        final Response response = resource.search("", 1, 20);
-        verify(eventsEJB);
+		expect(eventEJB.search("", 0, 20)).andReturn(events);
+		replay(eventEJB);
 
-        assertThat(response, hasHttpStatus(OK));
-        assertThatResponseContainsEvents(response, events);
-    }
+		final Response response = resource.search("", 1, 20);
+		verify(eventEJB);
 
-    @Test
-    public void testSearchRetrievesTheSpecifiedNumberOfEventsPerPage() {
-        for (int pageSize = 1; pageSize <= 10; ++pageSize) {
-            final List<Event> events = asList(filterEvents(
-                e -> e.getTitle().contains("Example")
-            )).subList(0, pageSize);
+		assertThat(response, hasHttpStatus(OK));
+		assertThatResponseContainsEvents(response, events);
+	}
 
-            expect(eventsEJB.search("Example", 0, pageSize)).andReturn(events);
-            replay(eventsEJB);
+	@Test
+	public void testSearchRetrievesTheSpecifiedNumberOfEventsPerPage() {
+		for (int pageSize = 1; pageSize <= 10; ++pageSize) {
+			final List<Event> events = asList(
+					filterEvents(e -> e.getTitle().contains("Example")))
+							.subList(0, pageSize);
 
-            final Response response = resource.search("Example", 1, pageSize);
-            verify(eventsEJB);
-            reset(eventsEJB);
+			expect(eventEJB.search("Example", 0, pageSize)).andReturn(events);
+			replay(eventEJB);
 
-            assertThatResponseContainsEvents(response, events);
-        }
-    }
+			final Response response = resource.search("Example", 1, pageSize);
+			verify(eventEJB);
+			reset(eventEJB);
 
-    @Test
-    public void testSearchRetrievesTheSpecifiedPageNumber() {
-        for (int pageNumber = 1; pageNumber < 5; ++pageNumber) {
-            final int from = (pageNumber - 1) * 5;
+			assertThatResponseContainsEvents(response, events);
+		}
+	}
 
-            final List<Event> events = asList(filterEvents(
-                e -> e.getTitle().contains("Example")
-            )).subList(from, from + 5);
+	@Test
+	public void testSearchRetrievesTheSpecifiedPageNumber() {
+		for (int pageNumber = 1; pageNumber < 5; ++pageNumber) {
+			final int from = (pageNumber - 1) * 5;
 
-            expect(eventsEJB.search("Example", from, 5)).andReturn(events);
-            replay(eventsEJB);
+			final List<Event> events = asList(
+					filterEvents(e -> e.getTitle().contains("Example")))
+							.subList(from, from + 5);
 
-            final Response response = resource.search("Example", pageNumber, 5);
-            verify(eventsEJB);
-            reset(eventsEJB);
+			expect(eventEJB.search("Example", from, 5)).andReturn(events);
+			replay(eventEJB);
 
-            assertThatResponseContainsEvents(response, events);
-        }
-    }
+			final Response response = resource.search("Example", pageNumber, 5);
+			verify(eventEJB);
+			reset(eventEJB);
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testSearchThrowsIllegalArgumentExceptionWhenPageLessThanOneIsGiven() {
-        resource.search(random(5), nextInt(Integer.MIN_VALUE, 1), 5);
-    }
+			assertThatResponseContainsEvents(response, events);
+		}
+	}
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testSearchThrowsIllegalArgumentExceptionWhenPageSizeLessThanZeroIsGiven() {
-        resource.search(random(5), 1, nextInt(Integer.MIN_VALUE, 0));
-    }
+	@Test(expected = IllegalArgumentException.class)
+	public void testSearchThrowsIllegalArgumentExceptionWhenPageLessThanOneIsGiven() {
+		resource.search(random(5), nextInt(Integer.MIN_VALUE, 1), 5);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testSearchThrowsIllegalArgumentExceptionWhenPageSizeLessThanZeroIsGiven() {
+		resource.search(random(5), 1, nextInt(Integer.MIN_VALUE, 0));
+	}
+
+	@Test
+	public void testGetEventInfo() {
+		final Event event = EventsDataset.existentEvent();
+
+		expect(eventEJB.getEvent(1)).andReturn(event);
+		replayAll();
+
+		final Response response = resource.getEventInfo(event.getId());
+		verify(eventEJB);
+		reset(eventEJB);
+
+		assertThat(response, hasHttpStatus(OK));
+		assertThat(response.getEntity(), is(instanceOf(Event.class)));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetNonExistentEventInfo() {
+		final int eventId = EventsDataset.existentEventId();
+
+		expect(eventEJB.getEvent(eventId)).andReturn(null);
+
+		replayAll();
+
+		resource.getEventInfo(eventId);
+	}
 
 }

@@ -185,28 +185,36 @@ public class EventEJB {
      * @throws SecurityException if the currently identified user is not found
      *         in the database (!!!).
      * @throws EventIsCancelledException if the {@link Event} is cancelled
+     * 
+     * @throws IllegalArgumentException if the {@link Event} does not exist
      */
-    @RolesAllowed("USER")
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void attendToEvent(
-        final int eventId
-    ) throws EventAlredyJoinedException, SecurityException, EventIsCancelledException {
-        final User user   = auth.getCurrentUser();
-        final Event event = em.find(Event.class, eventId);
+	@RolesAllowed("USER")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void attendToEvent(final int eventId)
+			throws EventAlredyJoinedException, SecurityException,
+			EventIsCancelledException, IllegalArgumentException {
+		final User user = auth.getCurrentUser();
+		final Event event = em.find(Event.class, eventId);
+
+		if (event == null) {
+			ctx.setRollbackOnly();
+			throw new IllegalArgumentException(
+					"The Event with the ID " + eventId + " does not exist");
+		}
 
 		if (event.hasAttendee(user)) {
 			ctx.setRollbackOnly();
 			throw new EventAlredyJoinedException(user, event);
 		}
-		
+
 		if (event.isCancelled()) {
 			ctx.setRollbackOnly();
 			throw new EventIsCancelledException(event);
 		}
 
-        event.addAttendee(user);
-        em.merge(event);
-    }
+		event.addAttendee(user);
+		em.merge(event);
+	}
 
     /**
      * Return a {@link List} of {@link Event Events} that authenticated
