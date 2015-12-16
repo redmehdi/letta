@@ -1,15 +1,16 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:h="http://xmlns.jcp.org/jsf/html"
-	  xmlns:f="http://xmlns.jcp.org/jsf/core"
-	  xmlns:p="http://primefaces.org/ui"
-	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
 	xmlns:letta="http://java.sun.com/jsf/composite/tags">
 <h:head>
 	<title>Search results</title>
 	<style>
+
 .ui-datagrid-content {
 	border: none;
 }
@@ -17,6 +18,7 @@
 .searchButton {
 	float: right;
 }
+
 </style>
 </h:head>
 <h:body>
@@ -27,47 +29,47 @@
 		<ui:define name="content">
 			<div class="container ">
 				<div class="row ">
+					<h:form id="results_form">
+						<div>
+							<center>
+								<h:commandButton value="prev &gt;"
+									onclick="
+									var a=document.getElementById('searchForm:srch-term').value;
+									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{searchController.pageIndex-1}'+'&amp;count=4';
+									return false;"
+								 rendered="#{not empty searchController.searchResults}" />
+								<h:outputText id="number_of_pages"
+									value="#{searchController.pageIndex+1} / #{searchController.pages}" rendered="#{not empty searchController.searchResults}"  />
+								<h:commandButton value="next &gt;"
+									onclick="
+									var a=document.getElementById('searchForm:srch-term').value;
+									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{searchController.pageIndex+1}'+'&amp;count=4';
+									return false;" rendered="#{not empty searchController.searchResults}" />
+								<h:inputHidden value="#{searchController.pageIndex}" />
+								<h:inputHidden value="#{searchController.terms}" />
+							</center>
+						</div>
+					</h:form>
+					<h:outputText id="empty_result_list" value="No events match your query" rendered="#{empty searchController.searchResults}" />
+					<ui:repeat id="indexRepeat" var="event"
+						value="#{searchController.searchResults}" varStatus="status">
+						<div class="col-xs-12 col-sm-6 col-md-3">
+							<letta:event event="#{event}" rendered="#{not empty searchController.searchResults}" />
+						</div>
+					</ui:repeat>
 
-
-						<h:form id="results_form">
-							<div>
-								<center>
-									<h:commandButton value="&lt; prev"
-										action="#{searchController.doSearchPrev()}" />
-									<h:outputText id="number_of_pages"
-										value="#{searchController.currentPage} / #{searchController.pages}" />
-									<h:commandButton value="next &gt;"
-										action="#{searchController.doSearchNext()}" />
-									<h:inputHidden value="#{searchController.pageIndex}" />
-									<h:inputHidden value="#{searchController.terms}" />
-								</center>
-							</div>
-
-
-							<ui:repeat id="indexRepeat" var="event"
-								value="#{searchController.searchResults}" varStatus="status">
-								<div class="col-xs-12 col-sm-6 col-md-3">
-									<letta:event event="#{event}"/>
-								</div>
-							</ui:repeat>
-
-							<div>
-								<ui:repeat value="#{searchController.pagesLinks}" var="page">
-									<h:commandLink value="#{page}"
-										action="#{searchController.jumpToPage(page)}"
-										  rendered="#{page != searchController.currentPage}"
-										/>
-										
-             				   <h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
-                              rendered="#{page == searchController.currentPage}" />	
-								</ui:repeat>
-
-							</div>
-
-
-
-						</h:form>
-
+					<h:form id="navigationBottom">
+						<ui:repeat value="#{searchController.pagesLinks}" var="page">
+							<h:commandLink value="#{page}"
+								onclick="
+									var a=document.getElementById('searchForm:srch-term').value;
+									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{page-1}'+'&amp;count=4';
+									return false;"
+								rendered="#{page-1 != searchController.pageIndex}" />
+							<h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+								rendered="#{page-1 == searchController.pageIndex}" />
+						</ui:repeat>
+					</h:form>
 				</div>
 			</div>
 		</ui:define>

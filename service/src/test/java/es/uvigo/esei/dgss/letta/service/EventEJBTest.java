@@ -328,7 +328,7 @@ public class EventEJBTest {
 
     @Test
     public void testCountEmpty() {
-        final int count = events.count();
+        final int count = events.count("");
         assertThat(count, is(0));
     }
 
@@ -336,10 +336,16 @@ public class EventEJBTest {
     @UsingDataSet({ "users.xml", "events.xml" })
     public void testCountNotEmpty() {
 
-        final int count = events.count();
-        assertThat(count, is(25));
+        final int count = events.count("");
+        assertThat(count, is(20));
     }
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testCountExampleTerm() {
 
+        final int count = events.count("example");
+        assertThat(count, is(20));
+    }
     @Test
     @UsingDataSet({ "users.xml", "new-user.xml", "events.xml", "event-attendees.xml" })
     public void testGetCountEventsJoinedByUserEmpty(){

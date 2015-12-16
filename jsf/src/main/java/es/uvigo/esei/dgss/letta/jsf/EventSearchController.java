@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
@@ -19,25 +21,71 @@ import es.uvigo.esei.dgss.letta.service.EventEJB;
  * @author Alberto Gutiérrez Jácome
  */
 
-@SessionScoped
+@ViewScoped
 @ManagedBean(name = "searchController")
 public class EventSearchController implements Serializable {
-
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Inject
 	private EventEJB searchEJB;
+
 	private int pageIndex = 0;
-	private int pages;
+	private int pages = 0;
 	private int currentPage = 1;
 
-	private ArrayList<String> pagesLinks = new ArrayList<>();
+	private List<String> pagesLinks = new ArrayList<>();
 	private String terms = null;
 	private List<Event> searchResults;
-	private boolean flag;
+
+	@PostConstruct
+	public void init() {
+
+		System.out.println("Entrou en post construct");
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		if (facesContext.getExternalContext().getRequestParameterMap()
+				.size() != 0) {
+
+			String srch_terms = (String) facesContext.getExternalContext()
+					.getRequestParameterMap().get("term");
+
+			System.out.println(facesContext.getExternalContext()
+					.getRequestParameterMap().toString());
+			int page = Integer.parseInt(facesContext.getExternalContext()
+					.getRequestParameterMap().get("page"));
+			int elements_per_page = Integer
+					.parseInt(facesContext.getExternalContext()
+							.getRequestParameterMap().get("count"));
+
+			System.out.println("Teño unha busca sobre " + srch_terms
+					+ " e estou na paxina " + page + "con " + elements_per_page
+					+ "elementos por paxina");
+			if (srch_terms != "") {
+				this.terms = srch_terms;
+			}
+
+			int count = searchEJB.count(srch_terms);
+			this.pageIndex = page;
+			
+			if (count> 0) {
+				int num_pages = count / 4;
+				if (count % 4 != 0)
+					num_pages++;
+				
+				this.pages = num_pages;
+				System.out.println("PAGES VALE " + this.pages);
+				if(pagesLinks.isEmpty()){
+					System.out.println("entrei");
+					for (int i = 0; i < pages; i++)
+						pagesLinks.add(String.valueOf(i + 1));
+				}
+				System.out.println("Pages links vale "+pagesLinks.toString());
+					searchResults = searchEJB.search(this.terms,
+							this.pageIndex * 4, 4);
+				
+			}
+
+		}
+	}
 
 	public int getCurrentPage() {
 		return currentPage;
@@ -47,11 +95,11 @@ public class EventSearchController implements Serializable {
 		this.currentPage = currentPage;
 	}
 
-	public ArrayList<String> getPagesLinks() {
+	public List<String> getPagesLinks() {
 		return pagesLinks;
 	}
 
-	public void setPagesLinks(final ArrayList<String> pagesLinks) {
+	public void setPagesLinks(final List<String> pagesLinks) {
 		this.pagesLinks = pagesLinks;
 	}
 
@@ -71,7 +119,6 @@ public class EventSearchController implements Serializable {
 		this.pageIndex = pageIndex;
 	}
 
-
 	/**
 	 * Set the result list to an external value
 	 *
@@ -80,25 +127,6 @@ public class EventSearchController implements Serializable {
 	 */
 	public void setSearchResults(final List<Event> searchResults) {
 		this.searchResults = searchResults;
-	}
-
-	/**
-	 * Returns the flag used to control whether to render the datable or not
-	 *
-	 * @return the boolean flag
-	 */
-	public boolean getFlag() {
-		return flag;
-	}
-
-	/**
-	 * Set the internal flag to an external value
-	 *
-	 * @param flag
-	 *            the external value
-	 */
-	public void setFlag(final boolean flag) {
-		this.flag = flag;
 	}
 
 	/**
@@ -136,39 +164,26 @@ public class EventSearchController implements Serializable {
 	 */
 	public String doSearchNext() {
 
-		this.pages = searchEJB.search(terms, 0, searchEJB.count()).size() / 4;
 		if (this.pageIndex < pages)
-            this.pageIndex++;
-		if (terms != null)
-            if (pageIndex == 1) {
-				searchResults = searchEJB.search(terms, pageIndex - 1, 4);
+			this.pageIndex++;
+		return "searchResults.xhtml";
 
-				for (int i = 0; i < pages; i++)
-                    pagesLinks.add(String.valueOf(i + 1));
-			} else
-                searchResults = searchEJB.search(terms, (pageIndex - 1) * 4, 4);
-		this.currentPage = pageIndex;
+	}
+
+	public String doSearchPrev() {
+		if (this.pageIndex > 1)
+			this.pageIndex--;
 
 		return "searchResults.xhtml";
 	}
 
-	public String doSearchPrev() {
-		this.pages = searchEJB.search(terms, 0, searchEJB.count()).size() / 4;
-		if (this.pageIndex > 1)
-            this.pageIndex--;
-		if (terms != null)
-            if (pageIndex == 0) {
-			} else
-                searchResults = searchEJB.search(terms, (pageIndex - 1) * 4, 4);
-		this.currentPage = pageIndex;
-		return "si";
-	}
-
 	public String jumpToPage(final String pageNumber) {
-		System.out.println("PAGENUMBER " + pageNumber);
-		searchResults = searchEJB.search(terms, (Integer.parseInt(pageNumber) - 1) * 4, 4);
-		this.currentPage = Integer.parseInt(pageNumber);
-		return "si";
+		return doSearchNext();
+		// this.searchResults = searchEJB.search(terms,
+		// (Integer.parseInt(pageNumber) - 1) * 4, 4);
+		// this.currentPage = Integer.parseInt(pageNumber);
+		// this.pageIndex = this.currentPage - 1;
+		// return "searchResults.xhtml";
 	}
 
 }

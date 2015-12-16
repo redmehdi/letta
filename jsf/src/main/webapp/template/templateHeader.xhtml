@@ -22,8 +22,19 @@
 	            	<h:form id="searchForm" class="navbar-form">
 	                <div class="input-group">
 	                  <div class="input-group-btn">
-					<h:commandButton id="searchButton" class="btn btn-default" value="Search" action="#{searchController.doSearchNext()}">
--					</h:commandButton>
+									<h:commandButton id="searchButton" class="btn btn-default"
+										value="Search"
+										onclick="
+		var a=document.getElementById('searchForm:srch-term').value;
+		var current_location= window.location.pathname;
+		if(current_location=='/letta/jsf/'){		
+		window.location='faces/searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4';
+		}else{
+		window.location='searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4';
+		}
+		return false;
+									">
+									</h:commandButton>
 	                  </div>
 	                  <h:inputText  class="form-control" id="srch-term" value="#{searchController.terms}" />
 	                </div>

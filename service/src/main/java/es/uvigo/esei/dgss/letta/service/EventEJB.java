@@ -54,10 +54,17 @@ public class EventEJB {
      * @return An integer value representing the total number of events.
      */
     @PermitAll
-    public int count() {
-        return em.createQuery(
-            "SELECT COUNT(c.id) FROM Event c", Long.class
-        ).getSingleResult().intValue();
+    public int count(String search) {
+    	final TypedQuery<Event> query = em.createQuery(
+                "SELECT e FROM Event e " +
+                "WHERE ( LOWER(e.title) LIKE :search " +
+                "   OR LOWER(e.summary) LIKE :search ) " +
+                "AND e.cancelled =  FALSE " +
+                "ORDER BY e.date ASC",
+                Event.class
+            ).setParameter("search", "%" + search.toLowerCase() + "%");
+
+    	return query.getResultList().size();
     }
 
     /**
