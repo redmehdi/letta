@@ -6907,12 +6907,12 @@ body {
   transition-delay         : 0.1s;
 }
 
-.hovereffect a.info {
+.hovereffect .info {
   display            : inline-block;
   text-decoration    : none;
   padding            : 7px 14px;
   text-transform     : uppercase;
-  margin             : 50px 0 0 0;
+  margin             : 20px 0 0 0;
   background-color   : transparent;
   -webkit-transform  : translateY(-200px);
   -ms-transform      : translateY(-200px);
@@ -6923,11 +6923,11 @@ body {
   transition         : all ease-in-out 0.15s;
 }
 
-.hovereffect a.info:hover {
+.hovereffect .info:hover {
   box-shadow : 0 0 5px #fff;
 }
 
-.hovereffect:hover a.info {
+.hovereffect:hover .info {
   -webkit-transform        : translateY(0px);
   -ms-transform            : translateY(0px);
   transform                : translateY(0px);
@@ -6943,3 +6943,4 @@ body {
   position : absolute !important;
   z-index  : 1;
 }
+
