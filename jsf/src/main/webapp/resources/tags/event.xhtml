@@ -47,7 +47,11 @@
                                       and  privateController.attendingEvents.contains(cc.attrs.event)}" />
 					<h:link class="info join-link" value="Unjoin event!"
 						rendered="#{!loginController.anonymous and privateController.attendingEvents.contains(cc.attrs.event)}"
-						onclick="if (!confirm('Are you sure you want to leave this event?')) return false;alert('You have left this event correctly!');return false;"
+						onclick="if (confirm('Are you sure you want to leave this event?')){
+							alert('You have left this event correctly');
+							return true;
+						}
+						else {return false;}"
 						outcome="unjoinEvent.xhtml?id=#{cc.attrs.event.id}" /> 
 					<h:link
 						class="info" value="Sign Up"
