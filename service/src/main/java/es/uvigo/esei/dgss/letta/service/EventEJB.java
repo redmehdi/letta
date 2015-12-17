@@ -23,7 +23,9 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
+
 
 /**
  * {@linkplain EventEJB} is a service bean providing all the required
@@ -52,6 +54,8 @@ public class EventEJB {
     /**
      * Counts how many {@link Event Events} currently exist in the database.
      *
+     * @param search string to search
+     *     
      * @return An integer value representing the total number of events.
      */
     @PermitAll
@@ -352,7 +356,7 @@ public class EventEJB {
 		return em.find(Event.class, id);
 	}
 	
-	
+
 	
 	/**
 	 * Modifies an existent {@link Event} if the currently identified user is
@@ -387,4 +391,73 @@ public class EventEJB {
 		}
         em.merge(event);
     }
+
+    /**
+     * Register the current identified {@link User} into a {@link Event}. It the
+     * the current {@link User} is already registered for the event the method
+     * will throw an {@link EventAlredyJoinedException}, otherwise it will
+     * register the {@link User} to the event.
+     *
+     * @param eventId Identifier of the {@link Event} that the {@link User}
+     *        wants to register.
+     *
+     * @throws SecurityException if the currently identified user is not found
+     *         in the database (!!!).
+     * @throws EventIsCancelledException if the {@link Event} is cancelled
+     * 
+     * @throws IllegalArgumentException if the {@link Event} does not exist
+     * @throws IllegalEventOwnerException  if the event does not exist
+     */
+	@RolesAllowed("USER")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void cancelEvent(final int eventId)
+			throws SecurityException,
+			EventIsCancelledException, IllegalArgumentException, IllegalEventOwnerException {
+		final User user = auth.getCurrentUser();
+		final Event event = em.find(Event.class, eventId);
+
+		if (event == null) {
+			ctx.setRollbackOnly();
+			throw new IllegalArgumentException(
+					"The Event with the ID " + eventId + " does not exist");
+		}
+		
+		if (event.getOwner()!=user) {
+			ctx.setRollbackOnly();
+			throw new IllegalEventOwnerException(
+					"The User " + user + " is not the owner of the event" + eventId);
+		}
+
+		if (event.isCancelled()) {
+			ctx.setRollbackOnly();
+			throw new EventIsCancelledException(event);
+		}
+
+		event.setCancelled(true);
+		em.merge(event);
+	}
+	
+
+	/**
+	 * Retrieves if a event is cancelled.
+	 * 
+	 * @param eventId the id of the {@link Event} to check
+	 * @return true if the event is cancelled, false otherwhise
+	 * @throws IllegalArgumentException if the event does not exist
+	 */
+	@PermitAll
+	public boolean isCancelled(final int eventId)
+			throws 
+			IllegalArgumentException {
+		final Event event = em.find(Event.class, eventId);
+
+		if (event == null) {
+			ctx.setRollbackOnly();
+			throw new IllegalArgumentException(
+					"The Event with the ID " + eventId + " does not exist");
+		}
+		
+		return event.isCancelled();
+	}
+
 }

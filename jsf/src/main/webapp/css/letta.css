@@ -6944,3 +6944,9 @@ body {
   z-index  : 1;
 }
 
+
+.cancelled-img {
+  width    : 100%;
+  position : absolute !important;
+  z-index  : 1;
+}

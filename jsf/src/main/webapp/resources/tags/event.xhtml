@@ -1,99 +1,134 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:composite="http://java.sun.com/jsf/composite">
+<html 
+	xmlns           = "http://www.w3.org/1999/xhtml"
+	xmlns:h         = "http://xmlns.jcp.org/jsf/html"
+	xmlns:f         = "http://xmlns.jcp.org/jsf/core"
+	xmlns:p         = "http://primefaces.org/ui"
+	xmlns:ui        = "http://xmlns.jcp.org/jsf/facelets"
+	xmlns:composite = "http://java.sun.com/jsf/composite"
+>
 <h:body>
 
-	<composite:interface>
-		<composite:attribute name="event" />
-		<composite:attribute name="status" />
-	</composite:interface>
-	<composite:implementation>
-		<div class="event-info center-block hovereffect">
-			<h:graphicImage class="joined-img" value="img/joined.png"
-				rendered="#{!loginController.anonymous 
-								and privateController.attendingEvents.contains(cc.attrs.event)}" />
-			<img class="event-icon img-responsive"
-				src="#{indexController.getIconFor(cc.attrs.event)}" />
-			<h3 class="event-title">#{cc.attrs.event.title}</h3>
-			<span class="event-summary">LETTA #{cc.attrs.event.summary}</span> <span
-				class="event-location">At #{cc.attrs.event.location}</span> <span
-				class="event-date">From <h:outputText
-					value="#{indexController.getDate(cc.attrs.event)}"
-					style="color: red;"
-					rendered="#{indexController.isAfter(cc.attrs.event.date)}">
-				</h:outputText> <h:outputText value="#{indexController.getDate(cc.attrs.event)}"
-					rendered="#{indexController.isAfter(cc.attrs.event.date) eq false}">
-				</h:outputText><br />
-			</span> <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
-			<div class="overlay">
-				<h3 class="hover-title">#{cc.attrs.event.title}</h3>
-				<span class="event-join"> <h:link class="info join-link"
-						value="Join now!"
-						rendered="#{!loginController.anonymous 
-								and !privateController.ownEvents.contains(cc.attrs.event) 
-								and !privateController.attendingEvents.contains(cc.attrs.event)}"
-						outcome="joinEvent.xhtml?id=#{cc.attrs.event.id}" /> 
-					<h:outputText
-						value="You are the creator of this event"
-						rendered="#{!loginController.anonymous 
-                   		      		  and  privateController.ownEvents.contains(cc.attrs.event)}" />
-					<h:outputText value="You have already joined this event"
-						rendered="#{!loginController.anonymous 
-                                      and  privateController.attendingEvents.contains(cc.attrs.event)}" />
-					<h:link class="info join-link" value="Unjoin event!"
-						rendered="#{!loginController.anonymous and privateController.attendingEvents.contains(cc.attrs.event)}"
-						onclick="if (confirm('Are you sure you want to leave this event?')){
-							alert('You have left this event correctly');
-							return true;
-						}
-						else {return false;}"
-						outcome="unjoinEvent.xhtml?id=#{cc.attrs.event.id}" /> 
-					<h:link
-						class="info" value="Sign Up"
-						rendered="#{loginController.anonymous}" outcome="register.xhtml" />
-					<h:link
-						class="info" value="Modify"
-						rendered="#{!loginController.anonymous 
-                   		      		  and  privateController.ownEvents.contains(cc.attrs.event)}"
-                   		outcome="modifyEvent.xhtml?id=#{cc.attrs.event.id}" />						
+<composite:interface>
+	<composite:attribute name="event" />
+</composite:interface>
+<composite:implementation>
+	<div class="event-info center-block hovereffect">
+		<h:graphicImage class="joined-img" value="img/joined.png"
+			rendered="#{!loginController.anonymous 
+							and privateController.attendingEvents.contains(cc.attrs.event)}" />
+ 		<h:graphicImage class="cancelled-img" value="img/cancelled.png" 
+				rendered="#{cancelEventController.isCancelled(cc.attrs.event.id)}" /> 
+		<img class = "event-icon img-responsive"
+			 src   = "#{indexController.getIconFor(cc.attrs.event)}" />
+		<h3 class="event-title">#{cc.attrs.event.title}</h3>
+		<span class = "event-summary">LETTA #{cc.attrs.event.summary}</span> 
+		<span class = "event-location">At #{cc.attrs.event.location}</span> 
+		<span class = "event-date">From 
+			<h:outputText
+				value    = "#{indexController.getDate(cc.attrs.event)}"
+				style    = "color: red;"
+				rendered = "#{indexController.isAfter(cc.attrs.event.date)}">
+			</h:outputText> 
+			<h:outputText 
+				value    = "#{indexController.getDate(cc.attrs.event)}"
+				rendered = "#{indexController.isAfter(cc.attrs.event.date) eq false}">
+			</h:outputText><br />
+		</span> 
+		<span class="event-attendees">
+				<h:outputText value="#{indexController.getAttendees(event)}" escape="false"/>
+		</span>
+		<div class="overlay">
+			<h3 class="hover-title">#{cc.attrs.event.title}</h3>
+			<span class="event-join"> 
+				<h:link
+					class    = "info join-link"
+					value    = "Join now!"
+					outcome  = "joinEvent.xhtml?id=#{cc.attrs.event.id}" 
+					rendered = "#{!loginController.anonymous 
+							and !privateController.ownEvents.contains(cc.attrs.event) 
+							and !privateController.attendingEvents.contains(cc.attrs.event)
+							and !cancelEventController.isCancelled(cc.attrs.event.id)}" /> 
+				<h:outputText
+					value    = "You are the creator of this event"
+					rendered = "#{!loginController.anonymous 
+                  		 and  privateController.ownEvents.contains(cc.attrs.event)}" />
+				<h:outputText 
+					value    = "You have already joined this event"
+					rendered = "#{!loginController.anonymous 
+                             and  privateController.attendingEvents.contains(cc.attrs.event)}" />
+				<h:link 
+					class    = "info join-link" 
+					value    = "Unjoin event!"
+					rendered = "#{!loginController.anonymous 
+							and privateController.attendingEvents.contains(cc.attrs.event)}"
+					onclick  = "if (confirm('Are you sure you want to leave this event?')){
+						alert('You have left this event correctly');
+						return true;
+					}
+					else {return false;}"
+					outcome="unjoinEvent.xhtml?id=#{cc.attrs.event.id}" /> 
+				<h:link
+					class    = "info" 
+					value    = "Sign Up"
+					rendered = "#{loginController.anonymous}" outcome="register.xhtml" />		
+				<h:panelGroup rendered="#{!loginController.anonymous 
+		    		      		  and  privateController.ownEvents.contains(cc.attrs.event)
+		    		      		  and !cancelEventController.isCancelled(cc.attrs.event.id)}" >			
+					<div></div>
+					<button 
+						type        = "button" 
+						class       = "info" 
+						data-toggle = "modal" 
+						data-target = "#confirmCancelModal#{cc.attrs.event.id}"> Cancel event </button>
+                </h:panelGroup>
+                
+                <h:panelGroup
+                	rendered = "#{!loginController.anonymous 
+                  	      	and  privateController.ownEvents.contains(cc.attrs.event)}">
+                  	<div></div>
+	                <h:link
+						class    = "info" 
+						value    = "Modify"
+	                  	outcome  = "modifyEvent.xhtml?id=#{cc.attrs.event.id}" />					
+                </h:panelGroup>  	      		
 				<div></div>
-				<button type="button" class="info" data-toggle="modal" 
-					data-target="#myModal#{cc.attrs.event.id}"> View more </button>
+				<button 
+					type        = "button" 
+					class       = "info" 
+					data-toggle = "modal" 
+					data-target = "#descriptionModal#{cc.attrs.event.id}"> View more </button>
 			</span>
 		</div>
 	</div>
 	
 	
-<div class="modal fade" id="myModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="descriptionModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="descriptionModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h3 class="modal-title" id="myModalLabel">#{cc.attrs.event.title}</h3>
+        <h3 class="modal-title" id="descriptionModalLabel">#{cc.attrs.event.title}</h3>
       </div>
       <div class="modal-body">
-      		<div style='width: 20%;'>
-			<img class="event-icon img-responsive"
-				src="#{indexController.getIconFor(cc.attrs.event)}" />
-			</div>
-			<span class="event-summary">LETTA #{cc.attrs.event.summary}</span> 
-			<span class="event-location">At #{cc.attrs.event.location}</span> 
-			<span class="event-date">From 
-				<h:outputText
-					value="#{indexController.getDate(cc.attrs.event)}"
-					style="color: red;"
-					rendered="#{indexController.isAfter(cc.attrs.event.date)}">
-				</h:outputText> <h:outputText value="#{indexController.getDate(cc.attrs.event)}"
-					rendered="#{indexController.isAfter(cc.attrs.event.date) eq false}">
-				</h:outputText><br />
+      	<div style='width: 20%;'>
+			<img class = "event-icon img-responsive"
+				 src   = "#{indexController.getIconFor(cc.attrs.event)}" />
+		</div><div>&nbsp;</div>
+		<span class = "event-summary">LETTA #{cc.attrs.event.summary}</span> 
+		<span class = "event-location">At #{cc.attrs.event.location}</span> 
+		<span class = "event-date">From 
+			<h:outputText
+				value    = "#{indexController.getDate(cc.attrs.event)}"
+				style    = "color: red;"
+				rendered = "#{indexController.isAfter(cc.attrs.event.date)}">
+				</h:outputText>
+				 <h:outputText 
+				 	value    = "#{indexController.getDate(cc.attrs.event)}"
+					rendered = "#{indexController.isAfter(cc.attrs.event.date) eq false}">
+				</h:outputText ><br />
 			</span> <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
-
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -101,7 +136,34 @@
     </div>
   </div>
 </div>
-	</composite:implementation>
+
+<h:panelGroup rendered="#{!loginController.anonymous 
+              		      		  and  privateController.ownEvents.contains(cc.attrs.event)}" >
+<div class="modal fade" id="confirmCancelModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="confirmCancelModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+		  <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        	<span aria-hidden="true">&times;</span>
+	        </button>
+	        <h4 class="modal-title" id="confirmCancelModalLabel">Cancel event.</h4>
+	      </div>
+	      <div class="modal-body">
+		      Are you sure to cancel the event: 
+		      <br/>&bnsp;<h3>#{cc.attrs.event.title}  ?</h3>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <h:link 
+	        	class   = "btn btn-primary"
+				outcome = "cancelEvent.xhtml?id=#{cc.attrs.event.id}"
+				value   = "Cancel event"/>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</h:panelGroup>
+</composite:implementation>
 
 </h:body>
 </html>
