@@ -379,18 +379,20 @@ public class EventEJBTest {
         assertThat(count2, is(9));
     }
     
+    @Test(expected=EventNotJoinedException.class)
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void testUnAttendNotJoinedException() throws SecurityException, EventNotJoinedException{
+    	principal.setName("anne");
+        asUser.throwingRun(() -> events.unattendToEvent(13));
+    }
+    
     @Test
     @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void testGetAttendees(){        
         assertThat(events.getAttendees(existentEvent()), is(2));
     }
     
-    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
-    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-    public void testUnAttendNotJoinedException() throws SecurityException, EventNotJoinedException{
-    	principal.setName("anne");
-        asUser.throwingRun(() -> events.unattendToEvent(99));
-    }
+
     
     @Test  
     @UsingDataSet({ "users.xml", "events.xml" })
