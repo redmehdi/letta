@@ -231,6 +231,31 @@ public final class EventsDataset {
     public static Event existentEvent() {
         return events()[0];
     }
+    
+    /**
+     * Returns an {@link Event} that has be modified.
+     *
+     * @return An {@link Event} that has be modified.
+     */
+    public static Event modifiedEvent() {
+        final Event modified = events()[7];
+        modified.setTitle("New title");
+        return modified;
+    }
+    
+    public static Event nonExistentEvent() {
+        return new Event( 
+    		33, 
+    		BOOKS, 
+    		"Example1 literature", 
+    		"This is a description literature 1",
+    		LocalDateTime.of(2000, 1, 1, 1, 1, 1), 
+    		"Location X",
+    		users()[1],
+    		emptySet(),
+    		false
+        );        
+    }
 
     /**
      * Returns the ID of a {@link Event} that should exist in the database. This
@@ -303,7 +328,7 @@ public final class EventsDataset {
             LocalDateTime.of(2000, 1, 1, 1, 1, 1),
             "Location X"
         );
-    }
+    } 
 
     /**
      * An array of twenty-five events that should exist in the database, and

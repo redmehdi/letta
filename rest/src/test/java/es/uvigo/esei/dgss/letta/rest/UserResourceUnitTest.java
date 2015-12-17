@@ -1,5 +1,6 @@
 package es.uvigo.esei.dgss.letta.rest;
 
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEvent;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEvent;
@@ -131,6 +132,20 @@ public class UserResourceUnitTest extends EasyMockSupport {
 		assertThat(response, hasHttpStatus(CREATED));
 		assertThat(response.getHeaderString("Location"),
 				is(equalTo(mockUri.toString())));
+	}
+	
+	@Test
+	public void testModifyEvent() throws Exception {
+		final Event modified = existentEvent();
+		modified.setTitle("New title");
+		
+		eventEJB.modifyEvent(modified);
+		expect(auth.getCurrentUser()).andReturn(userWithLogin(existentLogin()));
+		replayAll();
+		
+		final Response response = resource.modifyEvent(existentLogin(), modified);
+		
+		assertThat(response, hasHttpStatus(OK));
 	}
 	
 }

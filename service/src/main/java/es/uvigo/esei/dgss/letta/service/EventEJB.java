@@ -23,6 +23,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
 
 /**
  * {@linkplain EventEJB} is a service bean providing all the required
@@ -337,6 +338,8 @@ public class EventEJB {
             Integer.class
         ).setParameter("event", event).getSingleResult();
     }
+    
+    
 	/**
 	 * Returns an {@link Event}
 	 * 
@@ -348,4 +351,40 @@ public class EventEJB {
 	public Event getEvent(int id) {
 		return em.find(Event.class, id);
 	}
+	
+	
+	
+	/**
+	 * Modifies an existent {@link Event} if the currently identified user is
+	 * the owner.
+	 * 
+	 * @param modified the {@link Event} already modified
+	 * @throws SecurityException  if the currently identified user is not found
+     *         in the database or if he is not the owner of the event.
+	 */
+	@RolesAllowed("USER")
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void modifyEvent( final Event modified ) 
+    		throws IllegalArgumentException, UserNotAuthorizedException, SecurityException{
+		
+        final User user   = auth.getCurrentUser();
+        final Event event = em.find(Event.class, modified.getId());
+        
+        if (event == null) {
+			ctx.setRollbackOnly();
+			throw new IllegalArgumentException("The Event does not exist");
+		}else{        
+	        if(event.getOwner().equals(user)){
+		        event.setLocation(modified.getLocation());
+		        event.setDate(modified.getDate());
+		        event.setCategory(modified.getCategory());
+		        event.setSummary(modified.getSummary());
+		        event.setTitle(modified.getTitle());    
+	        }else{
+	        	ctx.setRollbackOnly();
+	        	throw new UserNotAuthorizedException(user,event);
+	        }
+		}
+        em.merge(event);
+    }
 }

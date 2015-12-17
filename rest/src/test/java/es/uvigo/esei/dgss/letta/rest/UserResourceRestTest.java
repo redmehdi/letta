@@ -1,6 +1,8 @@
 package es.uvigo.esei.dgss.letta.rest;
 
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.modifiedEvent;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.nonExistentEvent;
 import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
 import static javax.ws.rs.client.Entity.json;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
@@ -426,5 +428,127 @@ public class UserResourceRestTest {
 	@UsingDataSet({ "users.xml", "events.xml" })
 	public void afterTestNonExistentAuthorizationCreateEvent() {
 	}
+	
+	@Test
+	@InSequence(151)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestModifyEvent() {
+	}
 
+	@Test
+	@InSequence(152)
+	@RunAsClient
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
+	public void testModifyEvent(@ArquillianResteasyResource(BASE_PATH
+			+ EXISTENT_LOGIN + "/modify") final ResteasyWebTarget webTarget)
+					throws Exception {
+		final Response response = webTarget.request()
+				.put(json(modifiedEvent()));
+		assertThat(response, hasHttpStatus(OK));
+	}
+
+	@Test
+	@InSequence(153)
+	@UsingDataSet({ "users.xml", "events-modified.xml" })
+	public void afterTestModifyEvent() {
+	}
+
+	@Test
+	@InSequence(161)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestNonExistentAuthorizationModifyEvent() {
+	}
+
+	@Test
+	@InSequence(162)
+	@RunAsClient
+	@Header(name = "Authorization", value = NON_EXISTENT_AUTHORIZATION)
+	public void testNonExistentAuthorizationModifyEvent(
+			@ArquillianResteasyResource(BASE_PATH + EXISTENT_LOGIN
+					+ "/modify") final ResteasyWebTarget webTarget)
+							throws Exception {
+		final Response response = webTarget.request()
+				.put(json(modifiedEvent()));
+		assertThat(response, hasHttpStatus(UNAUTHORIZED));
+	}
+
+	@Test
+	@InSequence(163)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void afterTestNonExistentAuthorizationModifyEvent() {
+	}
+	
+	@Test
+	@InSequence(171)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestUserNotAuthorizedModifyEvent() {
+	}
+
+	@Test
+	@InSequence(172)
+	@RunAsClient
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
+	public void testUserNotAuthorizedModifyEvent(@ArquillianResteasyResource(BASE_PATH
+			+ EXISTENT_LOGIN + "/modify") final ResteasyWebTarget webTarget)
+					throws Exception {
+		final Response response = webTarget.request()
+				.put(json(nonExistentEvent()));
+		assertThat(response, hasHttpStatus(BAD_REQUEST));
+	}
+
+	@Test
+	@InSequence(173)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void afterTestUserNotAuthorizedModifyEvent() {
+	}
+	
+	@Test
+	@InSequence(181)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestNonExistentEventModifyEvent() {
+	}
+
+	@Test
+	@InSequence(182)
+	@RunAsClient
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
+	public void testNonExistentEventModifyEvent(@ArquillianResteasyResource(BASE_PATH
+			+ EXISTENT_LOGIN + "/modify") final ResteasyWebTarget webTarget)
+					throws Exception {
+		final Response response = webTarget.request()
+				.put(json(nonExistentEvent()));
+		assertThat(response, hasHttpStatus(BAD_REQUEST));
+	}
+
+	@Test
+	@InSequence(183)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void afterTestNonExistentEventModifyEvent() {
+	}
+
+	@Test
+	@InSequence(191)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void beforeTestNonMatchAuthorizationModifyEvent() {
+	}
+
+	@Test
+	@InSequence(192)
+	@RunAsClient
+	@Header(name = "Authorization", value = EXISTENT_AUTHORIZATION)
+	public void testNonMatchAuthorizationModifyEvent(
+			@ArquillianResteasyResource(BASE_PATH + "jonh"
+					+ "/modify") final ResteasyWebTarget webTarget)
+							throws Exception {
+		final Response response = webTarget.request()
+				.put(json(modifiedEvent()));
+		assertThat(response, hasHttpStatus(UNAUTHORIZED));
+	}
+
+	@Test
+	@InSequence(193)
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void afterTestNonMatchAuthorizationModifyEvent() {
+	}
+	
 }

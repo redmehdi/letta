@@ -10,6 +10,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -25,6 +26,7 @@ import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
 
 /**
  * Resource that represents the {@link User} private funcionalities
@@ -154,6 +156,35 @@ public class UserResource {
 			final URI eventUri = uriInfo.getAbsolutePathBuilder()
 					.path(Integer.toString(newEvent.getId())).build();
 			return Response.created(eventUri).build();
+		} else {
+			return Response.status(UNAUTHORIZED).build();
+		}
+	}
+	
+	/**
+	 * 
+	 * Modifies an {@link Event}
+	 * 
+	 * @param userLogin
+	 *            indicates the owner login
+	 * @param event
+	 *            indicates the modified {@link Event}
+	 * @return An {@code OK} HTTP response or a response with no content if the
+	 *         login doesn't match with the logged user
+	 * @throws SecurityException
+	 *             If the {@link User} logged login doesn't match with the login
+	 *             sent
+	 * @throws UserNotAuthorizedException If the {@link User} is not the owner
+	 * @throws IllegalArgumentException If the {@link Event} does not exists
+	 */
+	@PUT
+	@Path("{login}/modify")
+	public Response modifyEvent(@PathParam("login") String userLogin, Event event)
+			throws SecurityException, IllegalArgumentException,
+			       UserNotAuthorizedException {
+		if (userLogin.equals(auth.getCurrentUser().getLogin())) {
+			eventEJB.modifyEvent(event);
+			return Response.ok().build();
 		} else {
 			return Response.status(UNAUTHORIZED).build();
 		}

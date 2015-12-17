@@ -1,5 +1,7 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -20,27 +22,29 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
+import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.domain.entities.EventsDataset;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.domain.entities.UsersDataset;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
-
+import static java.time.LocalDateTime.ofInstant;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
-
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEvent;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.nonExistentEvent;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.newUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
@@ -388,5 +392,87 @@ public class EventEJBTest {
         asUser.throwingRun(() -> events.unattendToEvent(99));
     }
     
+    @Test  
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testModifyEventTittle() 
+    		throws SecurityException, IllegalArgumentException, 
+    		UserNotAuthorizedException{
+    	principal.setName("john");
+    	final Event modified = existentEvent();
+    	modified.setTitle("New tittle");
+        asUser.throwingRun(() -> events.modifyEvent(modified));
+        assertThat(events.getEvent(existentEvent().getId()), is(modified));
+    }
+    
+    @Test  
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testModifyEventSummary() 
+    		throws SecurityException, IllegalArgumentException, 
+    		UserNotAuthorizedException{
+    	principal.setName("john");
+    	final Event modified = existentEvent();
+    	modified.setSummary("New Summary");
+        asUser.throwingRun(() -> events.modifyEvent(modified));
+        assertThat(events.getEvent(existentEvent().getId()), is(modified));
+    }    
+    
+    @Test  
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testModifyEventCategory() 
+    		throws SecurityException, IllegalArgumentException, 
+    		UserNotAuthorizedException{
+    	principal.setName("john");
+    	final Event modified = existentEvent();
+    	modified.setCategory(Category.SPORTS);
+        asUser.throwingRun(() -> events.modifyEvent(modified));
+        assertThat(events.getEvent(existentEvent().getId()), is(modified));
+    }    
+    
+    @Test  
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testModifyEventLocation() 
+    		throws SecurityException, IllegalArgumentException, 
+    		UserNotAuthorizedException{
+    	principal.setName("john");
+    	final Event modified = existentEvent();
+    	modified.setLocation("New location");
+        asUser.throwingRun(() -> events.modifyEvent(modified));
+        assertThat(events.getEvent(existentEvent().getId()), is(modified));
+    }
+    
+    @Test  
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testModifyEventDate() 
+    		throws SecurityException, IllegalArgumentException, 
+    		UserNotAuthorizedException{
+    	principal.setName("john");
+    	final Date date = new Date();
+    	final Event modified = existentEvent();
+    	modified.setDate(ofInstant(date.toInstant(), ZoneId.systemDefault()));
+        asUser.throwingRun(() -> events.modifyEvent(modified));
+        assertThat(events.getEvent(existentEvent().getId()), is(modified));
+    }
+    
+    @Test(expected=UserNotAuthorizedException.class)  
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testModifyEventUnatorized() 
+    		throws SecurityException, IllegalArgumentException, 
+    		UserNotAuthorizedException{
+    	principal.setName("anne");
+    	final Event modified = existentEvent();
+    	modified.setLocation("New location");
+        asUser.throwingRun(() -> events.modifyEvent(modified));
+    } 
+    
+    
+    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testModifyEventNotExists() 
+    		throws SecurityException, IllegalArgumentException, 
+    		UserNotAuthorizedException{
+    	principal.setName("anne");
+    	final Event modified = nonExistentEvent();
+        asUser.throwingRun(() -> events.modifyEvent(modified));
+    } 
 
 }
