@@ -55,7 +55,12 @@
 						outcome="unjoinEvent.xhtml?id=#{cc.attrs.event.id}" /> 
 					<h:link
 						class="info" value="Sign Up"
-						rendered="#{loginController.anonymous}" outcome="register.xhtml" />					
+						rendered="#{loginController.anonymous}" outcome="register.xhtml" />
+					<h:link
+						class="info" value="Modify"
+						rendered="#{!loginController.anonymous 
+                   		      		  and  privateController.ownEvents.contains(cc.attrs.event)}"
+                   		outcome="modifyEvent.xhtml?id=#{cc.attrs.event.id}" />						
 				<div></div>
 				<button type="button" class="info" data-toggle="modal" 
 					data-target="#myModal#{cc.attrs.event.id}"> View more </button>

@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <f:metadata>
+		<f:event listener="#{loginController.redirectIfAnonymous}" type="preRenderView" />
+	</f:metadata>
+	
+	<h:head>
+		<title>Create Event</title>
+	</h:head>
+	<h:body>
+		<ui:composition template="/template/templateLayout.xhtml">
+			<ui:define name="content">
+				<div class="container ">
+					<div class="row ">
+						<div class="col-md-3 "></div>
+	
+						<div class="col-md-6">
+							<br /> <br />
+							<h1>Modify Event</h1>
+							<br />
+							<h:form id="createEvent-form">
+								<h:message for="title-field" />
+								<h:inputText id="title-field" required="true" maxlength="20"
+									class="form-control" value="#{modifyEventController.title}"
+									a:placeholder="Title" requiredMessage="Title can't be empty" />
+								<br />
+	
+								<h:message for="shortDescription-field" />
+								<h:inputText id="shortDescription-field" required="true" maxlength="50"
+									class="form-control"
+									value="#{modifyEventController.shortDescription}"
+									a:placeholder="Description"
+									requiredMessage="Description can't be empty">
+								</h:inputText>
+								<br />
+	
+								<h:message for="date-field" />
+								<br/>
+								<p:calendar id="date-field" value="#{modifyEventController.date}"
+									required="true" requiredMessage="Date can't be empty"
+									a:placeholder="Date" pattern="dd/MM/yyyy HH:mm" />
+								<br />
+								<br />
+	
+								<h:message for="location-field" />
+								<h:inputText id="location-field" required="true" maxlength="100"
+									class="form-control" value="#{modifyEventController.location}"
+									a:placeholder="Location"
+									requiredMessage="Location can't be empty">
+								</h:inputText>
+								<br />
+	
+								<h:message for="type-field" />
+								<h:selectOneMenu id="type-field" value="#{modifyEventController.type}"
+									class="form-control">
+									<f:selectItem itemLabel="Select one type" itemValue="" />
+									<f:selectItems value="#{modifyEventController.types}" />
+								</h:selectOneMenu>
+								<br />
+	
+								<h:commandButton id="submit-button" class="
+									btn btn-default" value="Modify"
+									action="#{modifyEventController.doModify()}" />
+							</h:form>
+							<br />
+							<div class="row">
+								<h:panelGroup id="store-error" class="alert alert-danger"
+									role="alert" rendered="#{modifyEventController.error}">
+									Error: #{modifyEventController.errorMessage}
+								</h:panelGroup>
+							</div>
+							<br /> <br />
+						</div>
+						<div class="col-md-3 "></div>
+					</div>
+				</div>
+			</ui:define>
+		</ui:composition>
+	</h:body>
+</html>
