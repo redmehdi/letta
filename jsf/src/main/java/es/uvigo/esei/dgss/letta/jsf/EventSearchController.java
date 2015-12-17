@@ -39,26 +39,19 @@ public class EventSearchController implements Serializable {
 
 	@PostConstruct
 	public void init() {
-
-		System.out.println("Entrou en post construct");
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		if (facesContext.getExternalContext().getRequestParameterMap()
-				.size() != 0) {
-
+		System.out.println("Request parameter map "+ facesContext.getExternalContext().getRequestParameterMap().toString());
+		if (facesContext.getExternalContext().getRequestParameterMap().get("term")
+				!= null) {
 			String srch_terms = (String) facesContext.getExternalContext()
 					.getRequestParameterMap().get("term");
 
-			System.out.println(facesContext.getExternalContext()
-					.getRequestParameterMap().toString());
 			int page = Integer.parseInt(facesContext.getExternalContext()
 					.getRequestParameterMap().get("page"));
 			int elements_per_page = Integer
 					.parseInt(facesContext.getExternalContext()
 							.getRequestParameterMap().get("count"));
 
-			System.out.println("Teño unha busca sobre " + srch_terms
-					+ " e estou na paxina " + page + "con " + elements_per_page
-					+ "elementos por paxina");
 			if (srch_terms != "") {
 				this.terms = srch_terms;
 			}
