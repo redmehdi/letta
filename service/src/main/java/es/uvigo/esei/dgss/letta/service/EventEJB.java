@@ -62,8 +62,9 @@ public class EventEJB {
     public int count(String search) {
     	final TypedQuery<Event> query = em.createQuery(
                 "SELECT e FROM Event e " +
-                "WHERE ( LOWER(e.title) LIKE :search " +
-                "   OR LOWER(e.summary) LIKE :search ) " +
+                " WHERE ( LOWER(e.title) LIKE :search " +
+                "    OR LOWER(e.summary) LIKE :search " +
+                "OR LOWER(e.description) LIKE :search )" +
                 "AND e.cancelled =  FALSE " +
                 "ORDER BY e.date ASC",
                 Event.class
@@ -146,8 +147,9 @@ public class EventEJB {
      * query, and returns the results as a paginated {@link List}. If the given
      * search pattern is null, a {@link NullPointerException} will be thrown.
      * <br>
-     * The method will search inside the event's {@link Event#getTitle() title}
-     * and {@link Event#getSummary() short description}. Results are sorted by
+     * The method will search inside the event's {@link Event#getTitle() title},
+     * and {@link Event#getSummary() short description} and 
+     * {@link Event#getDescription() long description}. Results are sorted by
      * ascending date and descending number of attendees.
      *
      * @param search The search pattern as a simple {@link String}.
@@ -173,8 +175,9 @@ public class EventEJB {
         // TODO: Pending sort by number of attendees.
         final TypedQuery<Event> query = em.createQuery(
             "SELECT e FROM Event e " +
-            "WHERE ( LOWER(e.title) LIKE :search " +
-            "   OR LOWER(e.summary) LIKE :search ) " +
+            " WHERE ( LOWER(e.title) LIKE :search " +
+            "    OR LOWER(e.summary) LIKE :search " +
+            "OR LOWER(e.description) LIKE :search ) " +
             "AND e.cancelled =  FALSE " +
             "ORDER BY e.date ASC",
             Event.class

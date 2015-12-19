@@ -206,6 +206,13 @@ public class EventEJBTest {
     public void testSearchOnTitleAndDescription() {
         assertThat(events.search("literature", 0, 25), hasSize(2));
     }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events-less-than-twenty.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-less-than-twenty.xml" })
+    public void testSearchOnLongDescription() {
+        assertThat(events.search("long", 0, 25), hasSize(16));
+    }
 
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
