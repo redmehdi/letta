@@ -25,6 +25,7 @@ import es.uvigo.esei.dgss.letta.service.EventEJB;
  *
  * @author Jesús Álvarez Casanova
  * @author redouane
+ * @author Borja Cordeiro Gonzalez
  *
  */
 @RequestScoped
@@ -37,14 +38,15 @@ public class CreateEventController {
 	private ExternalContext context = FacesContext.getCurrentInstance()
 			.getExternalContext();
 
-	private boolean error = false;
-	private String errorMessage;
-	private String title;
-	private String shortDescription;
-	private String location;
-	private Date date;
+	private boolean  error = false;
+	private String   errorMessage;
+	private String   title;
+	private String   shortDescription;
+	private String   location;
+	private Date     date;
 	private Category type;
 	private Map<String, Category> types = new HashMap<String, Category>();
+	private String   description;
 
 	@PostConstruct
 	public void init() {
@@ -70,7 +72,7 @@ public class CreateEventController {
 			final LocalDateTime date = LocalDateTime
 					.ofInstant(this.date.toInstant(), ZoneId.systemDefault());
 			eventEJB.createEvent(
-					new Event(type, title, shortDescription, date, location));
+					new Event(type, title, shortDescription, date, location, description));
 			this.error = false;
 			context.redirect("eventCreated.xhtml");
 		} catch (NullPointerException e) {
@@ -223,5 +225,26 @@ public class CreateEventController {
 	public void setErrorMessage(final String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
+
+	/**
+	 * Getter method of description variable
+	 *
+	 * @return description global variable
+	 */
+	public String getDescription() {
+		return description;
+	}
+	
+	/**
+	 * Setter method of description variable
+	 *
+	 * @param description
+	 *            global variable
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
 
 }

@@ -190,14 +190,14 @@ public class EventEJBTest {
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testSearchDescriptionSingleResult() {
-        assertThat(events.search("This is a description literature 1", 0, 25), hasSize(1));
+        assertThat(events.search("This is a summary of literature 1", 0, 25), hasSize(1));
     }
 
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testSearchDescriptionMultipleResult() {
-        assertThat(events.search("This is a description", 0, 25), hasSize(20));
+        assertThat(events.search("This is a summary", 0, 25), hasSize(20));
     }
 
     @Test

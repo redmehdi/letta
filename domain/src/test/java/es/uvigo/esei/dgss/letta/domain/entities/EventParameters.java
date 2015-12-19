@@ -72,6 +72,15 @@ final class EventParameters {
     public static String tooLongTitle() {
         return random(21);
     }
+    
+    /**
+     * Returns a valid description.
+     *
+     * @return a valid event description.
+     */
+    public static String aDescription() {
+        return "This is an event summary";
+    }
 
     /**
      * Returns a valid summary.
@@ -270,7 +279,7 @@ final class EventParameters {
      *         parameters.
      */
     public static Event validEvent() {
-        return new Event(aCategory(), aTitle(), aSummary(), aDate(), aLocation());
+        return new Event(aCategory(), aTitle(), aSummary(), aDate(), aLocation(), aDescription());
     }
 
 }

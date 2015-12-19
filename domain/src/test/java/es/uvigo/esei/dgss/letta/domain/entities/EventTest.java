@@ -20,10 +20,11 @@ public final class EventTest {
 
     @Test
     public void testConstructorWithValidTitles() {
-        final Category      category = aCategory();
-        final String        summary  = aSummary();
-        final LocalDateTime date     = aDate();
-        final String        location = aLocation();
+        final Category      category    = aCategory();
+        final String        summary     = aSummary();
+        final LocalDateTime date        = aDate();
+        final String        location    = aLocation();
+        final String		description = aDescription();
 
         final String[] validTitles = {
             aTitle(), anotherTitle(), longestValidTitle(), shortestValidTitle()
@@ -31,7 +32,7 @@ public final class EventTest {
 
         stream(validTitles).forEach(title -> {
             final Event event = new Event(
-                category, title, summary, date, location
+                category, title, summary, date, location, description
             );
 
             assertThat(event.getCategory(), is(equalTo(category)));
@@ -44,10 +45,11 @@ public final class EventTest {
 
     @Test
     public void testConstructorWithValidSummaries() {
-        final Category      category = aCategory();
-        final String        title    = aTitle();
-        final LocalDateTime date     = aDate();
-        final String        location = aLocation();
+        final Category      category    = aCategory();
+        final String        title       = aTitle();
+        final LocalDateTime date        = aDate();
+        final String        location    = aLocation();
+        final String		description = aDescription();
 
         final String[] validSummaries = {
             aSummary(),
@@ -58,7 +60,7 @@ public final class EventTest {
 
         stream(validSummaries).forEach(summary -> {
             final Event event = new Event(
-                category, title, summary, date, location
+                category, title, summary, date, location, description
             );
 
             assertThat(event.getCategory(), is(equalTo(category)));
@@ -71,10 +73,11 @@ public final class EventTest {
 
     @Test
     public void testConstructorWithValidLocations() {
-        final Category      category = aCategory();
-        final String        title    = aTitle();
-        final String        summary  = aSummary();
-        final LocalDateTime date     = aDate();
+        final Category      category    = aCategory();
+        final String        title       = aTitle();
+        final String        summary     = aSummary();
+        final LocalDateTime date        = aDate();
+        final String		description = aDescription();
 
         final String[] validLocations = {
             aLocation(),
@@ -85,7 +88,7 @@ public final class EventTest {
 
         stream(validLocations).forEach(location -> {
             final Event event = new Event(
-                category, title, summary, date, location
+                category, title, summary, date, location, description
             );
 
             assertThat(event.getCategory(), is(equalTo(category)));
@@ -98,57 +101,57 @@ public final class EventTest {
 
     @Test(expected = NullPointerException.class)
     public void testThatConstructorThrowsExceptionOnNullCategory() {
-        new Event(null, aTitle(), aSummary(), aDate(), aLocation());
+        new Event(null, aTitle(), aSummary(), aDate(), aLocation(), aDescription());
     }
 
     @Test(expected = NullPointerException.class)
     public void testThatConstructorThrowsExceptionOnNullTitle() {
-        new Event(aCategory(), null, aSummary(), aDate(), aLocation());
+        new Event(aCategory(), null, aSummary(), aDate(), aLocation(), aDescription());
     }
 
     @Test(expected = NullPointerException.class)
     public void testThatConstructorThrowsExceptionOnNullSummary() {
-        new Event(aCategory(), aTitle(), null, aDate(), aLocation());
+        new Event(aCategory(), aTitle(), null, aDate(), aLocation(), aDescription());
     }
 
     @Test(expected = NullPointerException.class)
     public void testThatConstructorThrowsExceptionOnNullDate() {
-        new Event(aCategory(), aTitle(), aSummary(), null, aLocation());
+        new Event(aCategory(), aTitle(), aSummary(), null, aLocation(), aDescription());
     }
 
     @Test(expected = NullPointerException.class)
     public void testThatConstructorThrowsExceptionOnNullLocation() {
-        new Event(aCategory(), aTitle(), aSummary(), aDate(), null);
+        new Event(aCategory(), aTitle(), aSummary(), aDate(), null, aDescription());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testThatConstructorThrowsExceptionOnEmptyTitle() {
-        new Event(aCategory(), emptyTitle(), aSummary(), aDate(), aLocation());
+        new Event(aCategory(), emptyTitle(), aSummary(), aDate(), aLocation(), aDescription());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testThatConstructorThrowsExceptionOnTooLongTitle() {
-        new Event(aCategory(), tooLongTitle(), aSummary(), aDate(), aLocation());
+        new Event(aCategory(), tooLongTitle(), aSummary(), aDate(), aLocation(), aDescription());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testThatConstructorThrowsExceptionOnEmptySummary() {
-        new Event(aCategory(), aTitle(), emptySummary(), aDate(), aLocation());
+        new Event(aCategory(), aTitle(), emptySummary(), aDate(), aLocation(), aDescription());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testThatConstructorThrowsExceptionOnTooLongSummary() {
-        new Event(aCategory(), aTitle(), tooLongSummary(), aDate(), aLocation());
+        new Event(aCategory(), aTitle(), tooLongSummary(), aDate(), aLocation(), aDescription());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testThatConstructorThrowsExceptionOnEmptLocation() {
-        new Event(aCategory(), aTitle(), aSummary(), aDate(), emptyLocation());
+        new Event(aCategory(), aTitle(), aSummary(), aDate(), emptyLocation(), aDescription());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testThatConstructorThrowsExceptionOnTooLongLocation() {
-        new Event(aCategory(), aTitle(), aSummary(), aDate(), tooLongLocation());
+        new Event(aCategory(), aTitle(), aSummary(), aDate(), tooLongLocation(), aDescription());
     }
 
     @Test

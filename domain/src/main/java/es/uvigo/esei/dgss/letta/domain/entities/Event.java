@@ -99,6 +99,10 @@ public class Event {
 	@Column(nullable = false)
 	private boolean cancelled;
 
+	@Column(length = 1000, nullable = true)
+	private String description;
+
+
     /**
      * Constructs a new instance of {@link Event}. This empty constructor is
      * required by the JPA framework and <strong>should never be used
@@ -120,17 +124,19 @@ public class Event {
         final String        location,
         final User          owner,
         final Set<User>     attendees,
-        final boolean		cancelled
+        final boolean		cancelled,
+        final String        description
     ) throws NullPointerException {
-        this.id        = id;
-        this.category  = requireNonNull(category);
-        this.title     = requireNonNull(title);
-        this.summary   = requireNonNull(summary);
-        this.date      = requireNonNull(date);
-        this.location  = requireNonNull(location);
-        this.owner     = requireNonNull(owner);
-        this.attendees = requireNonNull(attendees);
-        this.cancelled = requireNonNull(cancelled);
+        this.id          = id;
+        this.category    = requireNonNull(category);
+        this.title       = requireNonNull(title);
+        this.summary     = requireNonNull(summary);
+        this.date        = requireNonNull(date);
+        this.location    = requireNonNull(location);
+        this.owner       = requireNonNull(owner);
+        this.attendees   = requireNonNull(attendees);
+        this.cancelled   = requireNonNull(cancelled);
+        this.description = requireNonNull(description);
     }
 
     /**
@@ -155,13 +161,15 @@ public class Event {
         final String        title,
         final String        summary,
         final LocalDateTime date,
-        final String        location
+        final String        location,
+        final String		description
     ) throws IllegalArgumentException, NullPointerException {
         setCategory(category);
         setTitle(title);
         setSummary(summary);
         setDate(date);
         setLocation(location);
+        setDescription(description);
 
         this.owner     = null;
         this.attendees = new LinkedHashSet<>();
@@ -344,6 +352,25 @@ public class Event {
 	 */
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
+	}
+	
+	/**
+	 * Retrieves the long description of a event
+	 * 
+	 * @return the long description of a event
+	 */
+	public String getDescription() {
+		return description;
+	}
+	
+	/**
+	 * Changes if the event long description is modified
+	 * 
+	 * @param description
+	 *            global variable
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	/**
