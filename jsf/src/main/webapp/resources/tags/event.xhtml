@@ -17,9 +17,11 @@
 	<div class="event-info center-block hovereffect">
 		<h:graphicImage class="joined-img" value="img/joined.png"
 			rendered="#{!loginController.anonymous 
-							and privateController.attendingEvents.contains(cc.attrs.event)}" />
- 		<h:graphicImage class="cancelled-img" value="img/cancelled.png" 
-				rendered="#{cancelEventController.isCancelled(cc.attrs.event.id)}" /> 
+					and privateController.attendingEvents.contains(cc.attrs.event)}" />
+ 		<h:graphicImage 
+ 				class    = "cancelled-img" 
+ 				value    = "img/cancelled.png" 
+				rendered = "#{cancelEventController.isCancelled(cc.attrs.event.id)}" /> 
 		<img class = "event-icon img-responsive"
 			 src   = "#{indexController.getIconFor(cc.attrs.event)}" />
 		<h3 class="event-title">#{cc.attrs.event.title}</h3>
@@ -37,7 +39,9 @@
 			</h:outputText><br />
 		</span> 
 		<span class="event-attendees">
-				<h:outputText value="#{indexController.getAttendees(event)}" escape="false"/>
+				<h:outputText 
+					value  = "#{indexController.getAttendees(event)}" 
+					escape = "false"/>
 		</span>
 		<div class="overlay">
 			<h3 class="hover-title">#{cc.attrs.event.title}</h3>
@@ -140,29 +144,30 @@
 <h:panelGroup rendered="#{!loginController.anonymous 
               		      		  and  privateController.ownEvents.contains(cc.attrs.event)}" >
 <div class="modal fade" id="confirmCancelModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="confirmCancelModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-		  <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	        	<span aria-hidden="true">&times;</span>
-	        </button>
-	        <h4 class="modal-title" id="confirmCancelModalLabel">Cancel event.</h4>
-	      </div>
-	      <div class="modal-body">
-		      Are you sure to cancel the event: 
-		      <br/>&bnsp;<h3>#{cc.attrs.event.title}  ?</h3>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <h:link 
-	        	class   = "btn btn-primary"
-				outcome = "cancelEvent.xhtml?id=#{cc.attrs.event.id}"
-				value   = "Cancel event"/>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+	  <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        	<span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="confirmCancelModalLabel">Cancel event.</h4>
+      </div>
+      <div class="modal-body">
+	      Are you sure to cancel the event: 
+	      <br/>&bnsp;<h3>#{cc.attrs.event.title}  ?</h3>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <h:link 
+        	class   = "btn btn-primary"
+			outcome = "cancelEvent.xhtml?id=#{cc.attrs.event.id}"
+			value   = "Cancel event"/>
+      </div>
+    </div>
+  </div>
+</div>
 </h:panelGroup>
+
 </composite:implementation>
 
 </h:body>

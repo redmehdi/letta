@@ -43,6 +43,32 @@
 					</div>
 				</div>
 			</div>
+		<h:panelGroup rendered="#{!loginController.anonymous 
+		              		    and param['cancelled']}" >
+			 <script type="text/javascript">
+			 jQuery(function ($) { 
+	             $('#successCancelModal').modal('show');
+	         });
+			</script>
+			<div class="modal fade" id="successCancelModal" tabindex="-1" role="dialog" aria-labelledby="successCancelModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+				  <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			        	<span aria-hidden="true">&times;</span>
+			        </button>
+			        <h4 class="modal-title" id="successCancelModalLabel">Event cancelled.</h4>
+			      </div>
+			      <div class="modal-body">
+				      The event was successfully cancelled.
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</h:panelGroup>
 		</ui:define>
 
 	</ui:composition>

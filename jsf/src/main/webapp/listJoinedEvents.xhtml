@@ -23,15 +23,18 @@ color: red;
 			<div class="container ">
 				<h:form>
 				<div class="row ">
+						<h1>Attending evenets.</h1>
 						<div>
 						<center>
 									<h:commandButton value="&lt; prev"
+										class="btn btn-default"
 										action="#{listJoinedEventsController.listJoinedEventsPrev()}"
 										rendered="#{listJoinedEventsController.pages ne 0}" />
 									<h:outputText
-										value="#{listJoinedEventsController.pageIndex} / #{listJoinedEventsController.pages}"
+										value=" #{listJoinedEventsController.pageIndex} / #{listJoinedEventsController.pages} "
 										rendered="#{listJoinedEventsController.pages ne 0}" />
 									<h:commandButton value="next &gt;"
+										class="btn btn-default"
 										action="#{listJoinedEventsController.listJoinedEventsNext()}"
 										rendered="#{listJoinedEventsController.pages ne 0}" />
 									<h:inputHidden value="#{listJoinedEventsController.pageIndex}"/>
@@ -39,6 +42,8 @@ color: red;
 										value="Welcome! Join to some events to start."
 										rendered="#{listJoinedEventsController.pages eq 0}" />
 						</center>
+						<div>&nbsp;</div>
+						<div>&nbsp;</div>
 						</div>
                         <ui:repeat id="indexRepeat" var="event" value="#{listJoinedEventsController.eventList}" varStatus="status">
                             <div class="col-xs-12 col-sm-6 col-md-3">
@@ -46,6 +51,8 @@ color: red;
                             </div>
                         </ui:repeat>		
 					</div>
+					<div>&nbsp;</div>
+					<div>&nbsp;</div>
 					<div class="row">
 						<center>
 							<ui:repeat value="#{listJoinedEventsController.pagesLinks}"
@@ -62,7 +69,32 @@ color: red;
 					</div>			        
 					</h:form>
 				</div>
-
+		<h:panelGroup rendered="#{!loginController.anonymous 
+		              		    and param['cancelled']}" >
+			 <script type="text/javascript">
+			 jQuery(function ($) { 
+	             $('#successCancelModal').modal('show');
+	         });
+			</script>
+			<div class="modal fade" id="successCancelModal" tabindex="-1" role="dialog" aria-labelledby="successCancelModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+				  <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			        	<span aria-hidden="true">&times;</span>
+			        </button>
+			        <h4 class="modal-title" id="successCancelModalLabel">Event cancelled.</h4>
+			      </div>
+			      <div class="modal-body">
+				      The event was successfully cancelled.
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</h:panelGroup>
 		</ui:define>
 	</ui:composition>
 </h:body>
