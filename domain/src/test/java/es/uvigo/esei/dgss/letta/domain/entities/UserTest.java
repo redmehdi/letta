@@ -44,6 +44,28 @@ import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
 public class UserTest {
+	
+	
+	
+	@Test
+	public void testAdminConstructorUserRole(){	
+		final String password = aPassword();
+		final String passwordMD5 = aPasswordMD5();
+		final String email = anEmail();
+		final User user = new User(shortestLogin(), password, email,false);
+		assertThat(user.getRole(), is(equalTo(Role.USER)));	
+	}
+	
+	@Test
+	public void testAdminConstructorAdminRole(){
+		final String password = aPassword();
+		final String passwordMD5 = aPasswordMD5();
+		final String email = anEmail();
+		final User user = new User(shortestLogin(), password, email,true);
+		assertThat(user.getRole(), is(equalTo(Role.ADMIN)));
+		
+	}
+	
 	@Test
 	public void testConstructorValidLogins() {
 		final String[] logins = { shortestLogin(), aLogin(), longestLogin() };

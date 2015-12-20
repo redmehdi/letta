@@ -103,7 +103,21 @@ public class User implements Serializable {
 
 		this.role = Role.USER;
 	}
-	
+	public User(final String login, final String password, final String email,boolean isAdmin) {
+		this.setLogin(login);
+		this.changePassword(password);
+		this.setEmail(email);
+		this.completeName = null;
+		this.description = null;
+		this.fbUrl = null;
+		this.twUrl = null;
+		this.personalUrl = null;
+		this.image = null;
+		if(isAdmin)
+			this.role = Role.ADMIN;
+		else
+			this.role=Role.USER;
+	}
 	/**
 	 * Constructs a new instance of {@link User} with the USER role.
 	 * 

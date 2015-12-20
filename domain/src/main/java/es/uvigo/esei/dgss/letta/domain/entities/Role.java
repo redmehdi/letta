@@ -8,7 +8,7 @@ package es.uvigo.esei.dgss.letta.domain.entities;
  */
 public enum Role {
 	/**
-	 * A regular user.
+	 * The role can ben a regular user or an admin.
 	 */
-	USER;
+	USER,ADMIN;
 }

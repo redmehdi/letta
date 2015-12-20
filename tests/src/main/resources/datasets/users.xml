@@ -20,4 +20,9 @@
 		email="mike@email.com" role="USER" completeName="mike name"
 		description="mike description" fbUrl="https://www.facebook.com/mike"
 		twUrl="https://twitter.com/mike" personalUrl="https://mikepersonal.com/" />
+	<User login="kurt" password="81252633317d5b5bc1ab9feb1bd3af69"
+		email="kurt@email.com" role="ADMIN" completeName="kurt name"
+		description="kurt description" fbUrl="https://www.facebook.com/kurt"
+		twUrl="https://twitter.com/kurt" personalUrl="https://kurtpersonal.com/" />
+	
 </dataset>

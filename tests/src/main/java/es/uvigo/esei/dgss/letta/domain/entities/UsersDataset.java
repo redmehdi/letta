@@ -67,7 +67,10 @@ public final class UsersDataset {
 				new User("joan", "joanpass", "joan@email.com", "joan name", "joan description",
 						"https://www.facebook.com/joan", "https://twitter.com/joan", "https://joanpersonal.com/", null),
 				new User("mike", "mikepass", "mike@email.com", "mike name", "mike description",
-						"https://www.facebook.com/mike", "https://twitter.com/mike", "https://mikepersonal.com/", null) };
+						"https://www.facebook.com/mike", "https://twitter.com/mike", "https://mikepersonal.com/", null),
+				new User("kurt", "kurtpass", "kurt@email.com", "kurt name", "kurt description",
+						"https://www.facebook.com/kurt", "https://twitter.com/kurt", "https://kurtpersonal.com/", null)		
+		};
 	}
 	
 	/**
@@ -120,6 +123,8 @@ public final class UsersDataset {
 		md5s.put("mikepass", "b1b668f82813956ef1fe9688e6c05011");
 		md5s.put("bartpass", "f67884174ac391b5a6c409715d16ba60");
 		md5s.put("nonepass", "16348ade4c752d71b257924b04b06a94");
+		md5s.put("kurtpass", "81252633317d5b5bc1ab9feb1bd3af69");
+
 		
 		return md5s.get(password);
 	}
@@ -161,6 +166,14 @@ public final class UsersDataset {
 	 */
 	public static User existentUser() {
 		return users()[0];
+	}
+	
+	/**
+	 * Returns an user whose role is ADMIN
+	 * @return an user that should exist in the database with the role of an ADMIN
+	 */
+	public static User adminUser(){
+		return users()[5];
 	}
 	
 	/**
