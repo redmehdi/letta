@@ -10,6 +10,8 @@ import org.junit.Test;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import nl.jqno.equalsverifier.EqualsVerifier;
+import nl.jqno.equalsverifier.Warning;
 
 public class RegistrationTest {
 	@Test
@@ -44,4 +46,12 @@ public class RegistrationTest {
 			fail("Invalid UUID: " + uuid);
 		}
 	}
+	
+    @Test
+    public void testEqualsHashCodeContract() {
+        EqualsVerifier.forClass(Registration.class).suppress(
+            Warning.NULL_FIELDS,
+            Warning.NONFINAL_FIELDS
+        ).verify();
+    }
 }

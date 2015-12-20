@@ -12,6 +12,12 @@ CREATE TABLE `Registration` (
   `login`    varchar(20)  NOT NULL,
   `password` varchar(32)  NOT NULL,
   `role`     varchar(10)  NOT NULL,
+  `completeName` varchar(30) DEFAULT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  `fbUrl`    varchar(50) DEFAULT NULL,
+  `twURL`    varchar(50) DEFAULT NULL,
+  `personalUrl` varchar(50) DEFAULT NULL,
+  `image`    longblob DEFAULT NULL,
 
   PRIMARY KEY (`uuid`),
   UNIQUE KEY `UK_Registration_email` (`email`),
@@ -23,6 +29,12 @@ CREATE TABLE `User` (
   `email`    varchar(100) NOT NULL,
   `password` varchar(32)  NOT NULL,
   `role`     varchar(10)  NOT NULL,
+  `completeName` varchar(30) DEFAULT NULL,
+  `description` varchar(1000) DEFAULT NULL,
+  `fbUrl`    varchar(50) DEFAULT NULL,
+  `twURL`    varchar(50) DEFAULT NULL,
+  `personalUrl` varchar(50) DEFAULT NULL,
+  `image`    longblob DEFAULT NULL,
 
   PRIMARY KEY (`login`),
   UNIQUE KEY `UK_User_email` (`email`)
@@ -59,12 +71,12 @@ CREATE TABLE `EventAttendees` (
 
 
 -- Data Insertion
-INSERT INTO User (login, password, email, role) VALUES
-  ("john","3bffe7a2bc163d273184e8902afe66b7", "john@email.com", "USER"),
-  ("anne","1afee8bef2d82a3bef6f52b2614f16ab", "anne@email.com", "USER"),
-  ("mary","a5446c2cfe2b8a015caa8a7e825bb8af", "mary@email.com", "USER"),
-  ("joan","ce8a660555a5701617403c77f6654d65", "joan@email.com", "USER"),
-  ("mike","b1b668f82813956ef1fe9688e6c05011", "mike@email.com", "USER");
+INSERT INTO User (login, password, email, role, completeName, description, fbUrl, twUrl, personalUrl) VALUES
+  ("john","3bffe7a2bc163d273184e8902afe66b7", "john@email.com", "USER", "john name", "john description", "https://www.facebook.com/john", "https://twitter.com/john", "https://johnpersonal.com/"),
+  ("anne","1afee8bef2d82a3bef6f52b2614f16ab", "anne@email.com", "USER", "anne name", "anne description", "https://www.facebook.com/anne", "https://twitter.com/anne", "https://annepersonal.com/"),
+  ("mary","a5446c2cfe2b8a015caa8a7e825bb8af", "mary@email.com", "USER", "mary name", "mary description", "https://www.facebook.com/mary", "https://twitter.com/mary", "https://marypersonal.com/"),
+  ("joan","ce8a660555a5701617403c77f6654d65", "joan@email.com", "USER", "joan name", "joan description", "https://www.facebook.com/joan", "https://twitter.com/joan", "https://joanpersonal.com/"),
+  ("mike","b1b668f82813956ef1fe9688e6c05011", "mike@email.com", "USER", "mike name", "mike description", "https://www.facebook.com/mike", "https://twitter.com/mike", "https://mikepersonal.com/");
 
 INSERT INTO Event (id, category, title, summary, date, location, owner, cancelled, description) VALUES
   ( 1, "BOOKS",      "Example1 Literature", "This is a summary of literature 1", "2000-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of literature 1"),

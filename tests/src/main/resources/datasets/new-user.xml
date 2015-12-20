@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<User login="bart" password="f67884174ac391b5a6c409715d16ba60" email="bart@email.com" role="USER"/>
+	<User login="bart" password="f67884174ac391b5a6c409715d16ba60"
+		email="bart@email.com" role="USER" completeName="bart name"
+		description="bart description" fbUrl="https://www.facebook.com/bart"
+		twUrl="https://twitter.com/bart" personalUrl="https://bartpersonal.com/"
+		image="null" />
 </dataset>

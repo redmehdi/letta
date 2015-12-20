@@ -108,10 +108,12 @@ public class UserEJBTest {
 	@UsingDataSet("registrations.xml")
 	@ShouldMatchDataSet("registrations-create.xml")
 	public void testRegisterUserEmailDuplicated() throws Exception {
-		Registration registration = new Registration(new User("login","password","email@email.com"));
+		Registration registration = new Registration(new User("login", "password", "email@email.com", "complete name",
+				"description", "fb url", "tw url", "personal url", null));
 		facade.registerUser(registration);
 
-		Registration registration2 = new Registration(new User("login2","password","email@email.com"));
+		Registration registration2 = new Registration(new User("login2", "password", "email@email.com", "complete name",
+				"description", "fb url", "tw url", "personal url", null));
 		facade.registerUser(registration2);
 	}
 

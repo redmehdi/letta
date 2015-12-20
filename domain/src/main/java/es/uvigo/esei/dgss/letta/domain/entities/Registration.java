@@ -4,11 +4,13 @@ import static java.util.Objects.nonNull;
 
 import java.util.UUID;
 
+import javax.jws.soap.SOAPBinding.Use;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 
 /**
  * A {@linkplain Registration} is a temporary entity created when a user is
@@ -36,6 +38,25 @@ public class Registration {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
+	@Column(length = 30)
+	private String completeName;
+	
+	@Column(length = 1000)
+	private String description;
+	
+	@Column(length = 50)
+	private String fbUrl;
+	
+	@Column(length = 50)
+	private String twUrl;
+	
+	@Column(length = 50)
+	private String personalUrl;
+	
+	@Lob
+	@Column
+	private byte[] image;
+	
 	/**
 	 * Constructs a new instance of {@link Registration}. This constructor is
 	 * required by the JPA framework.
@@ -69,6 +90,11 @@ public class Registration {
 		this.password = user.getPassword();
 		this.email = user.getEmail();
 		this.role = user.getRole();
+		this.completeName = user.getCompleteName();
+		this.description = user.getDescription();
+		this.fbUrl = user.getFbUrl();
+		this.twUrl = user.getTwUrl();
+		this.personalUrl = user.getPersonalUrl();
 	}
 
 	/**
@@ -121,21 +147,81 @@ public class Registration {
 	}
 
 	/**
+	 * Returns the complete name of the user to be registered.
+	 * 
+	 * @return the complete name of the user to be registered.
+	 * @see User#getCompleteName()
+	 */
+	public String getCompleteName() {
+		return completeName;
+	}
+
+	/**
+	 * Returns the description of the user to be registered.
+	 * 
+	 * @return the cdescription of the user to be registered.
+	 * @see User#getDescription()
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Returns the url to the facebook profile of the user to be registered.
+	 * 
+	 * @return the url to the facebook profile of the user to be registered.
+	 * @see User#getFbUrl()
+	 */
+	public String getFbUrl() {
+		return fbUrl;
+	}
+
+	/**
+	 * Returns the url to the twitter profile of the user to be registered.
+	 * 
+	 * @return the url to the twitter profile of the user to be registered.
+	 * @see User#getTwUrl()
+	 */
+	public String getTwUrl() {
+		return twUrl;
+	}
+
+	/**
+	 * Returns the url to the personal website or blog profile of the user to be registered.
+	 * 
+	 * @return the url to the personal website or blog profile of the user to be registered.
+	 * @see User#getPersonalUrl()
+	 */
+	public String getPersonalUrl() {
+		return personalUrl;
+	}
+	
+	/**
+	 * Returns the image of the profile of the user to be registered.
+	 * 
+	 * @return the image of the profile of the user to be registered.
+	 * @see User#getImage()
+	 */
+	public byte[] getImage() {
+		return image;
+	}
+
+	/**
 	 * Returns the registered user.
 	 * 
 	 * @return the registered user.
 	 */
 	public User getUser() {
-		return new User(this.login, this.password, this.email, this.role);
+		return new User(this.login, this.password, this.email, this.role, this.completeName, this.description, this.fbUrl, this.twUrl, this.personalUrl, this.image);
 	}
 
 	@Override
-	public int hashCode() {
+	public final int hashCode() {
 		return ((uuid == null) ? 0 : uuid.toLowerCase().hashCode());
 	}
 
 	@Override
-	public boolean equals(final Object that) {
+	public final boolean equals(final Object that) {
 		return this == that || nonNull(that) && that instanceof Registration
 				&& this.uuid.toLowerCase().equals(((Registration) that).uuid.toLowerCase());
 	}

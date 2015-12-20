@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-	<User login="john" password="3bffe7a2bc163d273184e8902afe66b7" email="john@email.com" role="USER"/>
-	<User login="anne" password="1afee8bef2d82a3bef6f52b2614f16ab" email="anne@email.com" role="USER"/>
-	<User login="mary" password="a5446c2cfe2b8a015caa8a7e825bb8af" email="mary@email.com" role="USER"/>
-	<User login="joan" password="ce8a660555a5701617403c77f6654d65" email="joan@email.com" role="USER"/>
-	<User login="mike" password="b1b668f82813956ef1fe9688e6c05011" email="mike@email.com" role="USER"/>
+	<User login="john" password="3bffe7a2bc163d273184e8902afe66b7"
+		email="john@email.com" role="USER" completeName="john name"
+		description="john description" fbUrl="https://www.facebook.com/john"
+		twUrl="https://twitter.com/john" personalUrl="https://johnpersonal.com/" />
+	<User login="anne" password="1afee8bef2d82a3bef6f52b2614f16ab"
+		email="anne@email.com" role="USER" completeName="anne name"
+		description="anne description" fbUrl="https://www.facebook.com/anne"
+		twUrl="https://twitter.com/anne" personalUrl="https://annepersonal.com/" />
+	<User login="mary" password="a5446c2cfe2b8a015caa8a7e825bb8af"
+		email="mary@email.com" role="USER" completeName="mary name"
+		description="mary description" fbUrl="https://www.facebook.com/mary"
+		twUrl="https://twitter.com/mary" personalUrl="https://marypersonal.com/" />
+	<User login="joan" password="ce8a660555a5701617403c77f6654d65"
+		email="joan@email.com" role="USER" completeName="joan name"
+		description="joan description" fbUrl="https://www.facebook.com/joan"
+		twUrl="https://twitter.com/joan" personalUrl="https://joanpersonal.com/" />
+	<User login="mike" password="b1b668f82813956ef1fe9688e6c05011"
+		email="mike@email.com" role="USER" completeName="mike name"
+		description="mike description" fbUrl="https://www.facebook.com/mike"
+		twUrl="https://twitter.com/mike" personalUrl="https://mikepersonal.com/" />
 </dataset>

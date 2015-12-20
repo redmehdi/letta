@@ -58,12 +58,16 @@ public final class UsersDataset {
 	 */
 	public static User[] users() {
 		return new User[] {
-			new User("john", "johnpass", "john@email.com"),
-			new User("anne", "annepass", "anne@email.com"),
-			new User("mary", "marypass", "mary@email.com"),
-			new User("joan", "joanpass", "joan@email.com"),
-			new User("mike", "mikepass", "mike@email.com")
-		};
+				new User("john", "johnpass", "john@email.com", "john name", "john description",
+						"https://www.facebook.com/john", "https://twitter.com/john", "https://johnpersonal.com/", null),
+				new User("anne", "annepass", "anne@email.com", "anne name", "anne description",
+						"https://www.facebook.com/anne", "https://twitter.com/anne", "https://annepersonal.com/", null),
+				new User("mary", "marypass", "mary@email.com", "mary name", "mary description",
+						"https://www.facebook.com/mary", "https://twitter.com/mary", "https://marypersonal.com/", null),
+				new User("joan", "joanpass", "joan@email.com", "joan name", "joan description",
+						"https://www.facebook.com/joan", "https://twitter.com/joan", "https://joanpersonal.com/", null),
+				new User("mike", "mikepass", "mike@email.com", "mike name", "mike description",
+						"https://www.facebook.com/mike", "https://twitter.com/mike", "https://mikepersonal.com/", null) };
 	}
 	
 	/**
@@ -165,7 +169,8 @@ public final class UsersDataset {
 	 * @return an user that should not exist in the database.
 	 */
 	public static User nonExistentUser() {
-		return new User("none", "nonepass", "none@email.com");
+		return new User("none", "nonepass", "none@email.com", "none name", "none description",
+				"https://facebook.com/none", "https://twitter.com/none", "https://nonepersonal.com/", null);
 	}
 	
 	/**
@@ -175,6 +180,7 @@ public final class UsersDataset {
 	 * @return an user that should not exist in the database.
 	 */
 	public static User newUser() {
-		return new User("bart", "bartpass", "bart@email.com");
+		return new User("bart", "bartpass", "bart@email.com", "bart name", "bart description",
+				"https://www.facebook.com/bart", "https://twitter.com/bart", "https://bartpersonal.com/", null);
 	}
 }

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
@@ -49,7 +50,26 @@ public class User implements Serializable {
 	@Column(length = 10, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Role role;
+	
+	@Column(length = 30)
+	private String completeName;
+	
+	@Column(length = 1000)
+	private String description;
+	
+	@Column(length = 50)
+	private String fbUrl;
+	
+	@Column(length = 50)
+	private String twUrl;
+	
+	@Column(length = 50)
+	private String personalUrl;
 
+	@Lob
+	@Column
+	private byte[] image;
+	
 	/**
 	 * Constructs a new instance of {@link User}. This constructor is required
 	 * by the JPA framework.
@@ -72,6 +92,51 @@ public class User implements Serializable {
 		this.setLogin(login);
 		this.changePassword(password);
 		this.setEmail(email);
+		this.completeName = null;
+		this.description = null;
+		this.fbUrl = null;
+		this.twUrl = null;
+		this.personalUrl = null;
+		this.image = null;
+
+		this.role = Role.USER;
+	}
+	
+	/**
+	 * Constructs a new instance of {@link User} with the USER role.
+	 * 
+	 * @param login
+	 *            the login of the new user. This login must be unique in the
+	 *            system.
+	 * @param password
+	 *            the raw password of the user.
+	 * @param email
+	 *            the email of the user.
+	 * @param completeName
+	 *            the complete name of the user.
+	 * @param description
+	 *            the description of the user.
+	 * @param fbUrl
+	 *            the link to the user's Facebook page.
+	 * @param twUrl
+	 *            the link to the user's Twitter page.
+	 * @param personalUrl
+	 *            the link to the user's personal web or blog.
+	 * @param image
+	 *            the image of the user's profile.
+	 */
+	public User(final String login, final String password, final String email, final String completeName,
+			final String description, final String fbUrl, final String twUrl, final String personalUrl,
+			final byte[] image) {
+		this.setLogin(login);
+		this.changePassword(password);
+		this.setEmail(email);
+		this.completeName = completeName;
+		this.description = description;
+		this.fbUrl = fbUrl;
+		this.twUrl = twUrl;
+		this.personalUrl = personalUrl;
+		this.image = image;
 
 		this.role = Role.USER;
 	}
@@ -95,6 +160,54 @@ public class User implements Serializable {
 		this.login = login;
 		this.password = password;
 		this.email = email;
+		this.completeName = null;
+		this.description = null;
+		this.fbUrl = null;
+		this.twUrl = null;
+		this.personalUrl = null;
+		this.image = null;
+		this.role = role;
+	}
+
+	/**
+	 * Constructs a new instance of {@link User} with the USER role. This
+	 * constructor is expected to be used only by the {@code Registration}
+	 * class.
+	 *
+	 * @param login
+	 *            the login of the new user. This login must be unique in the
+	 *            system.
+	 * @param password
+	 *            the MD5 password of the user.
+	 * @param email
+	 *            the email of the user.
+	 * @param role
+	 *            the role of the user.
+	 * @param completeName
+	 *            the complete name of the user.
+	 * @param description
+	 *            the description of the user.
+	 * @param fbUrl
+	 *            the link to the user's Facebook page.
+	 * @param twUrl
+	 *            the link to the user's Twitter page.
+	 * @param personalUrl
+	 *            the link to the user's personal web or blog.
+	 * @param image
+	 *            the image of the user's profile.
+	 */
+	User(final String login, final String password, final String email, final Role role, final String completeName,
+			final String description, final String fbUrl, final String twUrl, final String personalUrl,
+			final byte[] image) {
+		this.login = login;
+		this.password = password;
+		this.email = email;
+		this.completeName = completeName;
+		this.description = description;
+		this.fbUrl = fbUrl;
+		this.twUrl = twUrl;
+		this.personalUrl = personalUrl;
+		this.image = image;
 		this.role = role;
 	}
 
@@ -219,6 +332,147 @@ public class User implements Serializable {
 	 */
 	public Role getRole() {
 		return role;
+	}
+
+	/**
+	 * Sets the complete name of the user.
+	 * 
+	 * @param completeName
+	 *            the complete name of the user. This parameter can be an empty
+	 *            or a {@code null} string and the maximum length is 30 chars.
+	 * @throws IllegalArgumentException
+	 *             if the length of the string passed is not valid.
+	 */
+	public void setCompleteName(final String completeName) {
+		if (completeName != null) {
+			inclusiveBetween(0, 30, completeName.length(), "complete name must have a length between 0 and 30");
+		}
+		this.completeName = completeName;
+	}
+
+	/**
+	 * Returns the complete name of the user.
+	 * 
+	 * @return the complete name of the user.
+	 */
+	public String getCompleteName() {
+		return completeName;
+	}
+
+	/**
+	 * Sets the description of the user.
+	 * 
+	 * @param description
+	 *            the description of the user. This parameter can be an empty
+	 *            or a {@code null} string and the maximum length is 1000 chars.
+	 * @throws IllegalArgumentException
+	 *             if the length of the string passed is not valid.
+	 */
+	public void setDescription(final String description) {
+		if (description != null) {
+			inclusiveBetween(0, 1000, description.length(), "description must have a length between 0 and 1000");
+		}
+		this.description = description;
+	}
+
+	/**
+	 * Returns the description of the user.
+	 * 
+	 * @return the description of the user.
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Sets the url to the facebook profile of the user.
+	 * 
+	 * @param fbUrl
+	 *            the url to the facebook profile of the user.
+	 * @throws IllegalArgumentException
+	 *             if the length of the string passed is not valid.
+	 */
+	public void setFbUrl(final String fbUrl) {
+		if (fbUrl != null) {
+			inclusiveBetween(0, 50, fbUrl.length(), "fbUrl must have a length between 1 and 50");
+		}
+		this.fbUrl = fbUrl;
+	}
+
+	/**
+	 * Returns the url to the facebook profile of the user.
+	 * 
+	 * @return the url to the facebook profile of the user.
+	 */
+	public String getFbUrl() {
+		return fbUrl;
+	}
+
+	/**
+	 * Sets the url to the twitter profile of the user.
+	 * 
+	 * @param twUrl
+	 *            the url to the twitter profile of the user.
+	 * @throws IllegalArgumentException
+	 *             if the length of the string passed is not valid.
+	 */
+	public void setTwUrl(final String twUrl) {
+		if (twUrl != null) {
+			inclusiveBetween(0, 50, twUrl.length(), "twUrl must have a length between 1 and 50");
+		}
+		this.twUrl = twUrl;
+	}
+
+	/**
+	 * Returns the url to the twitter profile of the user.
+	 * 
+	 * @return the url to the twitter profile of the user.
+	 */
+	public String getTwUrl() {
+		return twUrl;
+	}
+
+	/**
+	 * Sets the url to the personal page or blog of the user.
+	 * 
+	 * @param personalUrl
+	 *            the url to the personal page or blog of the user.
+	 * @throws IllegalArgumentException
+	 *             if the length of the string passed is not valid.
+	 */
+	public void setPersonalUrl(final String personalUrl) {
+		if (personalUrl != null) {
+			inclusiveBetween(0, 50, completeName.length(), "personalUrl must have a length between 1 and 50");
+		}
+		this.personalUrl = personalUrl;
+	}
+
+	/**
+	 * Returns the url to the personal page or blog of the user.
+	 * 
+	 * @return the url to the personal page or blog of the user.
+	 */
+	public String getPersonalUrl() {
+		return personalUrl;
+	}
+	
+	/**
+	 * Sets the image of the user's profile.
+	 * 
+	 * @param image
+	 *            the image of the user's profile.
+	 */
+	public void setImage(final byte[] image) {
+		this.image = image;
+	}
+
+	/**
+	 * Returns the image of the user's profile.
+	 * 
+	 * @return the image of the user's profile.
+	 */
+	public byte[] getImage() {
+		return image;
 	}
 
 	@Override

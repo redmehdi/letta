@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
 	<Registration login="john" password="3bffe7a2bc163d273184e8902afe66b7"
-		email="john@email.com" role="USER" uuid="00000000-0000-0000-0000-000000000000" />
+		email="john@email.com" role="USER" uuid="00000000-0000-0000-0000-000000000000"
+		completeName="john name" description="john description" fbUrl="https://www.facebook.com/john"
+		twUrl="https://twitter.com/john" personalUrl="https://johnpersonal.com/" />
 	<Registration login="anne" password="1afee8bef2d82a3bef6f52b2614f16ab"
-		email="anne@email.com" role="USER" uuid="11111111-0000-0000-0000-000000000000" />
+		email="anne@email.com" role="USER" uuid="11111111-0000-0000-0000-000000000000"
+		completeName="anne name" description="anne description" fbUrl="https://www.facebook.com/anne"
+		twUrl="https://twitter.com/anne" personalUrl="https://annepersonal.com/" />
 	<Registration login="mary" password="a5446c2cfe2b8a015caa8a7e825bb8af"
-		email="mary@email.com" role="USER" uuid="22222222-0000-0000-0000-000000000000" />
+		email="mary@email.com" role="USER" uuid="22222222-0000-0000-0000-000000000000"
+		completeName="mary name" description="mary description" fbUrl="https://www.facebook.com/mary"
+		twUrl="https://twitter.com/mary" personalUrl="https://marypersonal.com/" />
 	<Registration login="joan" password="ce8a660555a5701617403c77f6654d65"
-		email="joan@email.com" role="USER" uuid="33333333-0000-0000-0000-000000000000" />
+		email="joan@email.com" role="USER" uuid="33333333-0000-0000-0000-000000000000"
+		completeName="joan name" description="joan description" fbUrl="https://www.facebook.com/joan"
+		twUrl="https://twitter.com/joan" personalUrl="https://joanpersonal.com/" />
 	<Registration login="mike" password="b1b668f82813956ef1fe9688e6c05011"
-		email="mike@email.com" role="USER" uuid="44444444-0000-0000-0000-000000000000" />
+		email="mike@email.com" role="USER" uuid="44444444-0000-0000-0000-000000000000"
+		completeName="mike name" description="mike description" fbUrl="https://www.facebook.com/mike"
+		twUrl="https://twitter.com/mike" personalUrl="https://mikepersonal.com/" />
 	<Registration login="bart" password="f67884174ac391b5a6c409715d16ba60"
-		email="bart@email.com" role="USER" uuid="55555555-0000-0000-0000-000000000000" />
+		email="bart@email.com" role="USER" uuid="55555555-0000-0000-0000-000000000000"
+		completeName="bart name" description="bart description" fbUrl="https://www.facebook.com/bart"
+		twUrl="https://twitter.com/bart" personalUrl="https://bartpersonal.com/" />
 </dataset>
