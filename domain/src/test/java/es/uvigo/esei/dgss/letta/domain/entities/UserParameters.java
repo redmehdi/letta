@@ -9,6 +9,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
  * entities.
  * 
  * @author Miguel Reboiro Jato
+ * @author Adolfo Álvarez López
  *
  */
 public final class UserParameters {
@@ -167,5 +168,93 @@ public final class UserParameters {
 	 */
 	public static User validUser() {
 		return new User(aLogin(), aPassword(), anEmail());
+	}
+	
+	/**
+	 * Returns a valid user with the {@link #aLogin()}, {@link #aPassword()},
+	 * {@link #anEmail()}, {@link #aCompleteName()}, {@link #aDescription()},
+	 * {@link #aFbUrl()}, {@link #aFbUrl()}, {@link #aTwUrl()} and
+	 * {@link #aPersonalUrl()} parameters.
+	 * 
+	 * @return a valid user with the {@link #aLogin()}, {@link #aPassword()}
+	 *         {@link #anEmail()}, {@link #aCompleteName()},
+	 *         {@link #aDescription()}, {@link #aFbUrl()}, {@link #aFbUrl()},
+	 *         {@link #aTwUrl()} and {@link #aPersonalUrl()} parameters.
+	 */
+	public static User validUserWitOptinalData() {
+		return new User(aLogin(), aPassword(), anEmail(), aCompleteName(), aDescription(), aFbUrl(), aTwUrl(),
+				aPersonalUrl(), null);
+	}
+	
+	/**
+	 * Returns a valid user complete name.
+	 * 
+	 * @return a valid user complete name.
+	 */
+	public static String aCompleteName(){
+		return "complete name";
+	}
+	
+	/**
+	 * Returns an invalid complete name longer than the maximum valid length.
+	 * 
+	 * @return an invalid complete name longer than the maximum valid length.
+	 */
+	public static String longCompleteName(){
+		return repeat('a', 31);
+	}
+	
+	/**
+	 * Returns a valid user description.
+	 * 
+	 * @return a valid user description.
+	 */
+	public static String aDescription(){
+		return "description";
+	}
+	
+	/**
+	 * Returns an invalid description longer than the maximum valid length.
+	 * 
+	 * @return an invalid description longer than the maximum valid length.
+	 */
+	public static String longDescription(){
+		return repeat('a', 1001);
+	}
+	
+	/**
+	 * Returns a valid user facebook url.
+	 * 
+	 * @return a valid user facebook url.
+	 */
+	public static String aFbUrl(){
+		return "https://facebook.com/user";
+	}
+	
+	/**
+	 * Returns a valid user twitter url.
+	 * 
+	 * @return a valid user twitter url.
+	 */
+	public static String aTwUrl(){
+		return "https://twitter.com/user";
+	}
+	
+	/**
+	 * Returns a valid user personal website or blog url.
+	 * 
+	 * @return a valid user personal website or blog url.
+	 */
+	public static String aPersonalUrl(){
+		return "https://personal.com/";
+	}
+	
+	/**
+	 * Returns an invalid url longer than the maximum valid length.
+	 * 
+	 * @return an invalid url longer than the maximum valid length.
+	 */
+	public static String longUrl(){
+		return repeat('a', 51);
 	}
 }

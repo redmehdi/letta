@@ -26,6 +26,7 @@ import static org.apache.commons.lang3.Validate.matchesPattern;
  * this entity have the USER role.
  *
  * @author Miguel Reboiro Jato
+ * @author Adolfo Álvarez López
  *
  */
 @Entity
@@ -51,6 +52,7 @@ public class User implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	
+	//optional data
 	@Column(length = 30)
 	private String completeName;
 	
@@ -442,7 +444,7 @@ public class User implements Serializable {
 	 */
 	public void setPersonalUrl(final String personalUrl) {
 		if (personalUrl != null) {
-			inclusiveBetween(0, 50, completeName.length(), "personalUrl must have a length between 1 and 50");
+			inclusiveBetween(0, 50, personalUrl.length(), "personalUrl must have a length between 1 and 50");
 		}
 		this.personalUrl = personalUrl;
 	}

@@ -6,17 +6,26 @@ import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.aPasswordM
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.anEmail;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.anEmailWithBadFormat;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.emptyLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.longCompleteName;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.longDescription;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.longLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.longUrl;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.longestLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.aCompleteName;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.aDescription;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.newEmail;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.aFbUrl;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.newLogin;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.newPassword;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.newPasswordMD5;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.aPersonalUrl;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.aTwUrl;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.shortPassword;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.shortestLogin;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.shortestPassword;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.shortestPasswordMD5;
 import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.validUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UserParameters.validUserWitOptinalData;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasItem;
@@ -196,5 +205,75 @@ public class UserTest {
             Warning.NONFINAL_FIELDS
         ).verify();
     }
+    
+    @Test
+    public void testSetValidOptionalData(){
+    	final User user = validUser();
+    	String newCompleteName = aCompleteName();
+    	String newDescription = aDescription();
+    	String newFbUrl = aFbUrl();
+    	String newTwUrl = aTwUrl();
+    	String newPersonalUrl = aPersonalUrl();
+
+    	user.setCompleteName(newCompleteName);
+		user.setDescription(newDescription);
+		user.setFbUrl(newFbUrl);
+		user.setTwUrl(newTwUrl);
+		user.setPersonalUrl(newPersonalUrl);
+    	
+    	assertThat(user.getCompleteName(), is(equalTo(newCompleteName)));
+    	assertThat(user.getDescription(), is(equalTo(newDescription)));
+    	assertThat(user.getFbUrl(), is(equalTo(newFbUrl)));
+    	assertThat(user.getTwUrl(), is(equalTo(newTwUrl)));
+    	assertThat(user.getPersonalUrl(), is(equalTo(newPersonalUrl)));
+    }
+    
+	@Test
+	public void testSetNullOptionalData() {
+		final User user = validUserWitOptinalData();
+
+		user.setCompleteName(null);
+		user.setDescription(null);
+		user.setFbUrl(null);
+		user.setTwUrl(null);
+		user.setPersonalUrl(null);
+
+		assertThat(user.getCompleteName(), is(equalTo(null)));
+		assertThat(user.getDescription(), is(equalTo(null)));
+		assertThat(user.getFbUrl(), is(equalTo(null)));
+		assertThat(user.getTwUrl(), is(equalTo(null)));
+		assertThat(user.getPersonalUrl(), is(equalTo(null)));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooLongCompleteName() {
+		final User user = validUser();
+		user.setCompleteName(longCompleteName());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooLongDescription() {
+		final User user = validUser();
+		user.setDescription(longDescription());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooLongFbUrl() {
+		final User user = validUser();
+		user.setFbUrl(longUrl());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooLongTwUrl() {
+		final User user = validUser();
+		user.setTwUrl(longUrl());
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testTooLongPersonalUrl() {
+		final User user = validUser();
+		user.setPersonalUrl(longUrl());
+	}
+    
 	
 }

@@ -25,6 +25,12 @@ public class RegistrationTest {
 		assertThat(registration.getPassword(), is(equalTo(user.getPassword())));
 		assertThat(registration.getEmail(), is(equalTo(user.getEmail())));
 		assertThat(registration.getRole(), is(equalTo(user.getRole())));
+		assertThat(registration.getCompleteName(), is(equalTo(user.getCompleteName())));
+		assertThat(registration.getDescription(), is(equalTo(user.getDescription())));
+		assertThat(registration.getFbUrl(), is(equalTo(user.getFbUrl())));
+		assertThat(registration.getTwUrl(), is(equalTo(user.getTwUrl())));
+		assertThat(registration.getPersonalUrl(), is(equalTo(user.getPersonalUrl())));
+		assertThat(registration.getImage(), is(equalTo(user.getImage())));
 		
 		final User registeredUser = registration.getUser();
 		
@@ -32,6 +38,12 @@ public class RegistrationTest {
 		assertThat(registeredUser.getPassword(), is(equalTo(user.getPassword())));
 		assertThat(registeredUser.getEmail(), is(equalTo(user.getEmail())));
 		assertThat(registeredUser.getRole(), is(equalTo(user.getRole())));
+		assertThat(registeredUser.getCompleteName(), is(equalTo(user.getCompleteName())));
+		assertThat(registeredUser.getDescription(), is(equalTo(user.getDescription())));
+		assertThat(registeredUser.getFbUrl(), is(equalTo(user.getFbUrl())));
+		assertThat(registeredUser.getTwUrl(), is(equalTo(user.getTwUrl())));
+		assertThat(registeredUser.getPersonalUrl(), is(equalTo(user.getPersonalUrl())));
+		assertThat(registeredUser.getImage(), is(equalTo(user.getImage())));
 	}
 	
 	@Test(expected = NullPointerException.class)

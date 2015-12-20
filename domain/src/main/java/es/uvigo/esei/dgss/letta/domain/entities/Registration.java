@@ -18,6 +18,7 @@ import javax.persistence.Lob;
  * identifier that should be used to confirm the users registration.
  * 
  * @author Miguel Reboiro Jato
+ * @author Adolfo Álvarez López
  */
 @Entity
 public class Registration {
