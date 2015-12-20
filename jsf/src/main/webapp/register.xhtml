@@ -18,24 +18,29 @@
 		    <ui:define name="content">
 		    	<div class="container ">
 			        <div class="row ">
-			          <div class="col-md-3 "></div>
-			          
-			          <div class="col-md-6">
+			          <div class="col-md-offset-3 col-md-6">
 			          	<br/><br/>
 			          	<h1>Sign up</h1>
 			          	<h3>It's free and always will be.</h3><br/>
-		    			<h:form id="register-form">
+		    			<h:form id="register-form" enctype="multipart/form-data">
 		    				<h:message for="login"/>
-					    	<h:inputText id="login" required="true" maxlength="100" class="form-control" value="#{registerController.login}" a:placeholder="Login" requiredMessage="Login can't be empty"/><br/>
+					    	<h:inputText id="login" required="true" maxlength="100" class="form-control" value="#{registerController.login}" a:placeholder="Login*" requiredMessage="Login can't be empty"/><br/>
 					    	<h:message for="email"/>
-					    	<h:inputText id="email" required="true" renderedType="email" class="form-control" value="#{registerController.email}" a:placeholder="Email" requiredMessage="Email can't be empty" validatorMessage="This email is not valid">
+					    	<h:inputText id="email" required="true" renderedType="email" class="form-control" value="#{registerController.email}" a:placeholder="Email*" requiredMessage="Email can't be empty" validatorMessage="This email is not valid">
 					    		<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 							</h:inputText><br/>  
 					    	<h:message for="password"/>
-					    	<h:inputSecret id="password" required="true" class="form-control" value="#{registerController.password}" a:placeholder="Password" requiredMessage="Password can't be empty"/><br/>
-					        <h:inputSecret id="repassword" required="true" class="form-control" value="#{registerController.repassword}" a:placeholder="Repeat password" requiredMessage="Password can't be empty"/><br/>
+					    	<h:inputSecret id="password" required="true" class="form-control" value="#{registerController.password}" a:placeholder="Password*" requiredMessage="Password can't be empty"/><br/>
+					        <h:inputSecret id="repassword" required="true" class="form-control" value="#{registerController.repassword}" a:placeholder="Repeat password*" requiredMessage="Password can't be empty"/><br/>
+					    	<h:inputFile id="image" value="#{registerController.image}"></h:inputFile><br/>
+					    	<h:inputText id="completeName" required="false" maxlength="30" class="form-control" value="#{registerController.completeName}" a:placeholder="Complete name"/><br/>
+					    	<h:inputText id="fbUrl" required="false" maxlength="50" class="form-control" value="#{registerController.fbUrl}" a:placeholder="Facebook profile"/><br/>
+					    	<h:inputText id="twUrl" required="false" maxlength="50" class="form-control" value="#{registerController.twUrl}" a:placeholder="Twitter profile"/><br/>
+					    	<h:inputText id="personalUrl" required="false" maxlength="50" class="form-control" value="#{registerController.personalUrl}" a:placeholder="Your personal website"/><br/>
+					    	<h:inputTextarea rows="4" id="description" required="false" maxlength="1000" class="form-control" value="#{registerController.description}" a:placeholder="Your description"/><br/>
 					    	<h:commandButton id="submit-button" class="btn btn-default" value="Register" action="#{registerController.doRegister()}"/>
 					    </h:form>
+				    	<small>* Obligatory fields</small>
 					    <br/>
 					    <div class="row">
 							<h:panelGroup id="store-error" class="alert alert-danger" role="alert" rendered="#{registerController.error}">
@@ -48,9 +53,6 @@
 			        </div>
 			      </div>
     		</ui:define>
-			
     	</ui:composition>
-    	
     </h:body>
-
 </html>

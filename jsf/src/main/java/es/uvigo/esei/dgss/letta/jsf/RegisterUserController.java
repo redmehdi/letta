@@ -1,6 +1,7 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -8,7 +9,10 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
+import javax.servlet.http.Part;
 import javax.validation.constraints.Size;
+
+import org.apache.commons.io.IOUtils;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
@@ -41,6 +45,12 @@ public class RegisterUserController {
 	private String email;
 	private String password;
 	private String repassword;
+	private Part image;
+	private String completeName;
+	private String description;
+	private String fbUrl;
+	private String twUrl;
+	private String personalUrl;
 
 	/**
 	 * Register a user. If login or email are duplicated, shows a message.
@@ -54,8 +64,11 @@ public class RegisterUserController {
 			error = true;
 			errorMessage = "Passwords do not match.";
 		} else {
-			final Registration registration = new Registration(
-					new User(login, password, email));
+			InputStream imageInputStream=image.getInputStream();
+	        byte[] imageRaw = IOUtils.toByteArray(imageInputStream);
+			
+	        final Registration registration = new Registration(
+					new User(login, password, email, completeName, description, fbUrl, twUrl, personalUrl,imageRaw));
 
 			try {
 				userEJB.registerUser(registration);
@@ -74,7 +87,7 @@ public class RegisterUserController {
 			}
 		}
 	}
-
+	
 	/**
 	 * Getter method of login variable.
 	 *
@@ -171,4 +184,119 @@ public class RegisterUserController {
 	public void setRepassword(String repassword) {
 		this.repassword = repassword;
 	}
+
+	/**
+	 * Getter method of image global variable.
+	 *
+	 * @return image global variable.
+	 */
+	public Part getImage() {
+		return image;
+	}
+
+	/**
+	 * Setter method of image variable.
+	 *
+	 * @param image
+	 *            image global variable.
+	 */
+	public void setImage(Part image) {
+		this.image = image;
+	}
+
+	/**
+	 * Getter method of completeName global variable.
+	 *
+	 * @return completeName global variable.
+	 */
+	public String getCompleteName() {
+		return completeName;
+	}
+
+	/**
+	 * Setter method of completeName variable.
+	 *
+	 * @param completeName
+	 *            completeName global variable.
+	 */
+	public void setCompleteName(String completeName) {
+		this.completeName = completeName;
+	}
+
+	/**
+	 * Getter method of description global variable.
+	 *
+	 * @return description global variable.
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Setter method of description variable.
+	 *
+	 * @param description
+	 *            description global variable.
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * Getter method of fbUrl global variable.
+	 *
+	 * @return fbUrl global variable.
+	 */
+	public String getFbUrl() {
+		return fbUrl;
+	}
+
+	/**
+	 * Setter method of fbUrl variable.
+	 *
+	 * @param fbUrl
+	 *            fbUrl global variable.
+	 */
+	public void setFbUrl(String fbUrl) {
+		this.fbUrl = fbUrl;
+	}
+
+	/**
+	 * Getter method of twUrl global variable.
+	 *
+	 * @return twUrl global variable.
+	 */
+	public String getTwUrl() {
+		return twUrl;
+	}
+
+	/**
+	 * Setter method of twUrl variable.
+	 *
+	 * @param twUrl
+	 *            twUrl global variable.
+	 */
+	public void setTwUrl(String twUrl) {
+		this.twUrl = twUrl;
+	}
+
+	/**
+	 * Getter method of personalUrl global variable.
+	 *
+	 * @return personalUrl global variable.
+	 */
+	public String getPersonalUrl() {
+		return personalUrl;
+	}
+
+	/**
+	 * Setter method of personalUrl variable.
+	 *
+	 * @param personalUrl
+	 *            personalUrl global variable.
+	 */
+	public void setPersonalUrl(String personalUrl) {
+		this.personalUrl = personalUrl;
+	}
+	
 }

@@ -96,6 +96,7 @@ public class Registration {
 		this.fbUrl = user.getFbUrl();
 		this.twUrl = user.getTwUrl();
 		this.personalUrl = user.getPersonalUrl();
+		this.image = user.getImage();
 	}
 
 	/**
