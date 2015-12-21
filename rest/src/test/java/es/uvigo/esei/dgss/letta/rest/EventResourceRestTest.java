@@ -250,7 +250,7 @@ public class EventResourceRestTest {
     public void afterTestHighlighted() { }
 
 
-    
+    /*
     
     @Test
     @InSequence(800)
@@ -258,7 +258,7 @@ public class EventResourceRestTest {
     public void beforeTestAdvancedSearchWithDefaultArguments() { }
 
     
-    /*
+    
     @Test
     @RunAsClient
     @InSequence(801) // test 8, sequence 1

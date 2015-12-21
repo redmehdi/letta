@@ -199,10 +199,9 @@ public class EventResource {
         }else{
         	aux=false;
         }
-        Category cat =null;
-        Category nova= cat.valueOf("category");
+        Category cat= Category.valueOf(category);
         final int start = (page - 1) * size;
-        List<Event> rlist= events.advanced_search(nova, query, aux, start, size);
+        List<Event> rlist= events.advanced_search(cat, query, aux, start, size);
         System.out.println("O resultado e "+rlist.toString());
         return status(OK).entity(rlist).build();
     }
