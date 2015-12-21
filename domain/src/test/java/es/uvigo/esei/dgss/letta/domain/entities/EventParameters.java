@@ -79,7 +79,7 @@ final class EventParameters {
      * @return a valid event description.
      */
     public static String aDescription() {
-        return "This is an event summary";
+        return "This is an event description";
     }
 
     /**

@@ -96,6 +96,7 @@ public final class EventTest {
             assertThat(event.getSummary(),  is(equalToIgnoringCase(summary)));
             assertThat(event.getDate(),     is(equalTo(date)));
             assertThat(event.getLocation(), is(equalToIgnoringCase(location)));
+            assertThat(event.getDescription(), is(equalToIgnoringCase(description)));
         });
     }
 
