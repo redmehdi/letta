@@ -279,7 +279,7 @@ public final class EventTest {
     public void testThatSetOwnerThrowsExceptionOnNullOwner() {
         validEvent().setOwner(null);
     }
-    
+
     @Test
     public void testSetCancelled() {
         final Event event = validEvent();
@@ -287,7 +287,7 @@ public final class EventTest {
         event.setCancelled(true);
         assertThat(event.isCancelled(), is(equalTo(true)));
     }
-    
+
 
     @Test(expected = UnsupportedOperationException.class)
     public void testThatGetAttendeesReturnsAnUnmodifiableSet() {
@@ -391,7 +391,6 @@ public final class EventTest {
     @Test
     public void testEqualsHashCodeContract() {
         EqualsVerifier.forClass(Event.class).suppress(
-            Warning.NULL_FIELDS,
             Warning.NONFINAL_FIELDS
         ).verify();
     }

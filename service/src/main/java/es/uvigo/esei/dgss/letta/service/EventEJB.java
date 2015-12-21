@@ -1,10 +1,7 @@
 package es.uvigo.esei.dgss.letta.service;
 
-import static java.util.Collections.emptyList;
-import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.Validate.isTrue;
-
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
@@ -15,6 +12,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
@@ -25,6 +24,11 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledExceptio
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
+
+import static java.util.Collections.emptyList;
+import static java.util.Objects.nonNull;
+
+import static org.apache.commons.lang3.Validate.isTrue;
 
 
 /**
@@ -51,15 +55,40 @@ public class EventEJB {
     @Resource
     private SessionContext ctx;
 
+    @PermitAll
+    public Optional<Event> get(final int id) {
+        return Optional.ofNullable(em.find(Event.class, id));
+    }
+
+    @PermitAll
+    @Deprecated
+    public Event getEvent(final int id) {
+        return get(id).orElse(null);
+    }
+
+    @PermitAll
+    public Optional<Event> getWithAttendees(final int id) {
+        final TypedQuery<Event> query = em.createQuery(
+            "SELECT e FROM Event e JOIN FETCH e.attendees WHERE e.id = :id",
+            Event.class
+        ).setParameter("id", id);
+
+        try {
+            return Optional.of(query.getSingleResult());
+        } catch (final NoResultException | NonUniqueResultException e) {
+            return Optional.empty();
+        }
+    }
+
     /**
      * Counts how many {@link Event Events} currently exist in the database.
      *
      * @param search string to search
-     *     
+     *
      * @return An integer value representing the total number of events.
      */
     @PermitAll
-    public int count(String search) {
+    public int count(final String search) {
     	final TypedQuery<Event> query = em.createQuery(
                 "SELECT e FROM Event e " +
                 " WHERE ( LOWER(e.title) LIKE :search " +
@@ -148,7 +177,7 @@ public class EventEJB {
      * search pattern is null, a {@link NullPointerException} will be thrown.
      * <br>
      * The method will search inside the event's {@link Event#getTitle() title},
-     * and {@link Event#getSummary() short description} and 
+     * and {@link Event#getSummary() short description} and
      * {@link Event#getDescription() long description}. Results are sorted by
      * ascending date and descending number of attendees.
      *
@@ -200,7 +229,7 @@ public class EventEJB {
      * @throws SecurityException if the currently identified user is not found
      *         in the database (!!!).
      * @throws EventIsCancelledException if the {@link Event} is cancelled
-     * 
+     *
      * @throws IllegalArgumentException if the {@link Event} does not exist
      */
 	@RolesAllowed("USER")
@@ -310,7 +339,7 @@ public class EventEJB {
     public List<Event> getEventsOwnedByCurrentUser() {
         return getEventsOwnedBy(auth.getCurrentUser());
     }
-    
+
     @RolesAllowed("USER")
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void unattendToEvent(
@@ -318,18 +347,18 @@ public class EventEJB {
     ) throws  SecurityException, EventNotJoinedException {
         final User user   = auth.getCurrentUser();
         final Event event = em.find(Event.class, eventId);
- 
-        if (event.hasAttendee(user)) {
+
+        if (event.hasAttendee(user))
             event.removeAttendee(user);
-        }else{
+        else{
             ctx.setRollbackOnly();
             throw new EventNotJoinedException(user,event);
-                    
+
         }
- 
+
         em.merge(event);
     }
-    
+
     /**
      * Returns a {@code int} with the number of {@link User} attendants of
      * the {@link Event}.
@@ -345,53 +374,36 @@ public class EventEJB {
             Integer.class
         ).setParameter("event", event).getSingleResult();
     }
-    
-    
-	/**
-	 * Returns an {@link Event}
-	 * 
-	 * @param id
-	 *            indicates the {@link Event} id.
-	 * @return A {@link Event} if it is found, {@code null} otherwise
-	 */
-	@PermitAll
-	public Event getEvent(int id) {
-		return em.find(Event.class, id);
-	}
-	
 
-	
 	/**
 	 * Modifies an existent {@link Event} if the currently identified user is
 	 * the owner.
-	 * 
+	 *
 	 * @param modified the {@link Event} already modified
 	 * @throws SecurityException  if the currently identified user is not found
      *         in the database or if he is not the owner of the event.
 	 */
 	@RolesAllowed("USER")
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void modifyEvent( final Event modified ) 
+    public void modifyEvent( final Event modified )
     		throws IllegalArgumentException, UserNotAuthorizedException, SecurityException{
-		
+
         final User user   = auth.getCurrentUser();
         final Event event = em.find(Event.class, modified.getId());
-        
+
         if (event == null) {
 			ctx.setRollbackOnly();
 			throw new IllegalArgumentException("The Event does not exist");
-		}else{        
-	        if(event.getOwner().equals(user)){
-		        event.setLocation(modified.getLocation());
-		        event.setDate(modified.getDate());
-		        event.setCategory(modified.getCategory());
-		        event.setSummary(modified.getSummary());
-		        event.setTitle(modified.getTitle());    
-	        }else{
-	        	ctx.setRollbackOnly();
-	        	throw new UserNotAuthorizedException(user,event);
-	        }
-		}
+		} else if(event.getOwner().equals(user)){
+            event.setLocation(modified.getLocation());
+            event.setDate(modified.getDate());
+            event.setCategory(modified.getCategory());
+            event.setSummary(modified.getSummary());
+            event.setTitle(modified.getTitle());
+        }else{
+        	ctx.setRollbackOnly();
+        	throw new UserNotAuthorizedException(user,event);
+        }
         em.merge(event);
     }
 
@@ -407,7 +419,7 @@ public class EventEJB {
      * @throws SecurityException if the currently identified user is not found
      *         in the database (!!!).
      * @throws EventIsCancelledException if the {@link Event} is cancelled
-     * 
+     *
      * @throws IllegalArgumentException if the {@link Event} does not exist
      * @throws IllegalEventOwnerException  if the event does not exist
      */
@@ -424,7 +436,7 @@ public class EventEJB {
 			throw new IllegalArgumentException(
 					"The Event with the ID " + eventId + " does not exist");
 		}
-		
+
 		if (event.getOwner()!=user) {
 			ctx.setRollbackOnly();
 			throw new IllegalEventOwnerException(
@@ -439,18 +451,18 @@ public class EventEJB {
 		event.setCancelled(true);
 		em.merge(event);
 	}
-	
+
 
 	/**
 	 * Retrieves if a event is cancelled.
-	 * 
+	 *
 	 * @param eventId the id of the {@link Event} to check
 	 * @return true if the event is cancelled, false otherwhise
 	 * @throws IllegalArgumentException if the event does not exist
 	 */
 	@PermitAll
 	public boolean isCancelled(final int eventId)
-			throws 
+			throws
 			IllegalArgumentException {
 		final Event event = em.find(Event.class, eventId);
 
@@ -459,7 +471,7 @@ public class EventEJB {
 			throw new IllegalArgumentException(
 					"The Event with the ID " + eventId + " does not exist");
 		}
-		
+
 		return event.isCancelled();
 	}
 

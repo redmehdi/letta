@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 
-import static java.util.Objects.nonNull;
+import static java.util.Objects.isNull;
 import static java.util.Objects.requireNonNull;
 
 import static org.apache.commons.lang3.Validate.inclusiveBetween;
@@ -53,25 +53,26 @@ public class User implements Serializable {
 	private Role role;
 	
 	//optional data
+
 	@Column(length = 30)
 	private String completeName;
-	
+
 	@Column(length = 1000)
 	private String description;
-	
+
 	@Column(length = 50)
 	private String fbUrl;
-	
+
 	@Column(length = 50)
 	private String twUrl;
-	
+
 	@Column(length = 50)
 	private String personalUrl;
 
 	@Lob
 	@Column
 	private byte[] image;
-	
+
 	/**
 	 * Constructs a new instance of {@link User}. This constructor is required
 	 * by the JPA framework.
@@ -118,9 +119,10 @@ public class User implements Serializable {
 		else
 			this.role=Role.USER;
 	}
+
 	/**
 	 * Constructs a new instance of {@link User} with the USER role.
-	 * 
+	 *
 	 * @param login
 	 *            the login of the new user. This login must be unique in the
 	 *            system.
@@ -352,7 +354,7 @@ public class User implements Serializable {
 
 	/**
 	 * Sets the complete name of the user.
-	 * 
+	 *
 	 * @param completeName
 	 *            the complete name of the user. This parameter can be an empty
 	 *            or a {@code null} string and the maximum length is 30 chars.
@@ -360,15 +362,14 @@ public class User implements Serializable {
 	 *             if the length of the string passed is not valid.
 	 */
 	public void setCompleteName(final String completeName) {
-		if (completeName != null) {
-			inclusiveBetween(0, 30, completeName.length(), "complete name must have a length between 0 and 30");
-		}
+		if (completeName != null)
+            inclusiveBetween(0, 30, completeName.length(), "complete name must have a length between 0 and 30");
 		this.completeName = completeName;
 	}
 
 	/**
 	 * Returns the complete name of the user.
-	 * 
+	 *
 	 * @return the complete name of the user.
 	 */
 	public String getCompleteName() {
@@ -377,7 +378,7 @@ public class User implements Serializable {
 
 	/**
 	 * Sets the description of the user.
-	 * 
+	 *
 	 * @param description
 	 *            the description of the user. This parameter can be an empty
 	 *            or a {@code null} string and the maximum length is 1000 chars.
@@ -385,15 +386,14 @@ public class User implements Serializable {
 	 *             if the length of the string passed is not valid.
 	 */
 	public void setDescription(final String description) {
-		if (description != null) {
-			inclusiveBetween(0, 1000, description.length(), "description must have a length between 0 and 1000");
-		}
+		if (description != null)
+            inclusiveBetween(0, 1000, description.length(), "description must have a length between 0 and 1000");
 		this.description = description;
 	}
 
 	/**
 	 * Returns the description of the user.
-	 * 
+	 *
 	 * @return the description of the user.
 	 */
 	public String getDescription() {
@@ -402,22 +402,21 @@ public class User implements Serializable {
 
 	/**
 	 * Sets the url to the facebook profile of the user.
-	 * 
+	 *
 	 * @param fbUrl
 	 *            the url to the facebook profile of the user.
 	 * @throws IllegalArgumentException
 	 *             if the length of the string passed is not valid.
 	 */
 	public void setFbUrl(final String fbUrl) {
-		if (fbUrl != null) {
-			inclusiveBetween(0, 50, fbUrl.length(), "fbUrl must have a length between 1 and 50");
-		}
+		if (fbUrl != null)
+            inclusiveBetween(0, 50, fbUrl.length(), "fbUrl must have a length between 1 and 50");
 		this.fbUrl = fbUrl;
 	}
 
 	/**
 	 * Returns the url to the facebook profile of the user.
-	 * 
+	 *
 	 * @return the url to the facebook profile of the user.
 	 */
 	public String getFbUrl() {
@@ -426,22 +425,21 @@ public class User implements Serializable {
 
 	/**
 	 * Sets the url to the twitter profile of the user.
-	 * 
+	 *
 	 * @param twUrl
 	 *            the url to the twitter profile of the user.
 	 * @throws IllegalArgumentException
 	 *             if the length of the string passed is not valid.
 	 */
 	public void setTwUrl(final String twUrl) {
-		if (twUrl != null) {
-			inclusiveBetween(0, 50, twUrl.length(), "twUrl must have a length between 1 and 50");
-		}
+		if (twUrl != null)
+            inclusiveBetween(0, 50, twUrl.length(), "twUrl must have a length between 1 and 50");
 		this.twUrl = twUrl;
 	}
 
 	/**
 	 * Returns the url to the twitter profile of the user.
-	 * 
+	 *
 	 * @return the url to the twitter profile of the user.
 	 */
 	public String getTwUrl() {
@@ -450,7 +448,7 @@ public class User implements Serializable {
 
 	/**
 	 * Sets the url to the personal page or blog of the user.
-	 * 
+	 *
 	 * @param personalUrl
 	 *            the url to the personal page or blog of the user.
 	 * @throws IllegalArgumentException
@@ -465,16 +463,16 @@ public class User implements Serializable {
 
 	/**
 	 * Returns the url to the personal page or blog of the user.
-	 * 
+	 *
 	 * @return the url to the personal page or blog of the user.
 	 */
 	public String getPersonalUrl() {
 		return personalUrl;
 	}
-	
+
 	/**
 	 * Sets the image of the user's profile.
-	 * 
+	 *
 	 * @param image
 	 *            the image of the user's profile.
 	 */
@@ -484,21 +482,27 @@ public class User implements Serializable {
 
 	/**
 	 * Returns the image of the user's profile.
-	 * 
+	 *
 	 * @return the image of the user's profile.
 	 */
 	public byte[] getImage() {
 		return image;
 	}
 
-	@Override
-	public final int hashCode() {
-		return ((login == null) ? 0 : login.toLowerCase().hashCode());
-	}
+    @Override
+    public final int hashCode() {
+        return isNull(login) ? 0 : login.toLowerCase().hashCode();
+    }
 
-	@Override
-	public final boolean equals(final Object that) {
-		return this == that || nonNull(that) && that instanceof User
-				&& this.login.toLowerCase().equals(((User) that).login.toLowerCase());
-	}
+    @Override
+    public final boolean equals(final Object obj) {
+        if (this == obj) return true;
+        if (isNull(obj) || !(obj instanceof User)) return false;
+
+        final User that = (User) obj;
+        return isNull(this.login)
+             ? isNull(that.login)
+             : this.login.equalsIgnoreCase(that.login);
+    }
+
 }

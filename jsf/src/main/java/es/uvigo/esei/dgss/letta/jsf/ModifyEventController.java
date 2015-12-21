@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -53,17 +54,18 @@ public class ModifyEventController {
 		if(id == null){
 			context.redirect("index.xhtml");			
 		}else{
-			event = eventEJB.getEvent(Integer.parseInt(id));
+			final Optional<Event> event = eventEJB.get(Integer.parseInt(id));
 			
-			if(event == null){
+			if(!event.isPresent()){
 				context.redirect("index.xhtml");	
 				
 			}else{			
-				title = event.getTitle();
-				date = Date.from(event.getDate().atZone(ZoneId.systemDefault()).toInstant());
-				shortDescription = event.getSummary();
-				location = event.getLocation();
-				type = event.getCategory();
+			    final Event e = event.get();
+				title = e.getTitle();
+				date = Date.from(e.getDate().atZone(ZoneId.systemDefault()).toInstant());
+				shortDescription = e.getSummary();
+				location = e.getLocation();
+				type = e.getCategory();
 			}
 		}
 		
