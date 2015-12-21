@@ -186,14 +186,14 @@ public class EventEJBTest {
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testAdvancedSearchTitleBookResults() {
-        assertThat(events.advanced_search(Category.BOOKS, "", false, 0, 25), hasSize(2));
+        assertThat(events.advanced_search( "", "false", "BOOKS",0, 25), hasSize(2));
     }
     
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testAdvancedSearchTitleMoviesResults() {
-        assertThat(events.advanced_search(Category.MOVIES, "", false, 0, 25), hasSize(3));
+        assertThat(events.advanced_search( "", "false","MOVIES", 0, 25), hasSize(3));
     }
     
     
@@ -201,20 +201,20 @@ public class EventEJBTest {
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testAdvancedSearchTitleInternetResults() {
-        assertThat(events.advanced_search(Category.INTERNET, "", false, 0, 25), hasSize(3));
+        assertThat(events.advanced_search( "", "false","INTERNET", 0, 25), hasSize(3));
     }    
     
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testAdvancedSearchTitleTravelsResults() {
-        assertThat(events.advanced_search(Category.TRAVELS, "", false, 0, 25), hasSize(3));
+        assertThat(events.advanced_search( "", "false","TRAVELS", 0, 25), hasSize(3));
     }
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testAdvancedSearchTitleTheatreResults() {
-        assertThat(events.advanced_search(Category.THEATRE, "", false, 0, 25), hasSize(2));
+        assertThat(events.advanced_search( "", "false","THEATRE", 0, 25), hasSize(2));
     
     }
     
@@ -222,20 +222,20 @@ public class EventEJBTest {
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testAdvancedSearchTitleMusicResults() {
-        assertThat(events.advanced_search(Category.MUSIC, "", false, 0, 25), hasSize(2));
+        assertThat(events.advanced_search( "", "false","MUSIC", 0, 25), hasSize(2));
     }
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testAdvancedSearchTitleSportsResults() {
-        assertThat(events.advanced_search(Category.SPORTS, "", false, 0, 25), hasSize(3));
+        assertThat(events.advanced_search( "", "false","SPORTS", 0, 25), hasSize(3));
     }
     
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testAdvancedSearchTelevisionBookResults() {
-        assertThat(events.advanced_search(Category.TELEVISION, "", false, 0, 25), hasSize(2));
+        assertThat(events.advanced_search( "", "false","TELEVISION", 0, 25), hasSize(2));
     }
     
 

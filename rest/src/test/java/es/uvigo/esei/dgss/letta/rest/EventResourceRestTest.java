@@ -250,7 +250,6 @@ public class EventResourceRestTest {
     public void afterTestHighlighted() { }
 
 
-    /*
     
     @Test
     @InSequence(800)
@@ -261,21 +260,47 @@ public class EventResourceRestTest {
     
     @Test
     @RunAsClient
-    @InSequence(801) // test 8, sequence 1
+    @InSequence(801) 
     public void testAdvancedSearchWithDefaultArguments() {
         final Response response = eventTarget().path("advanced_search").request().get();
-
         assertThat(response, hasHttpStatus(OK));
-        assertThat(response.readEntity(asEventList), hasSize(20));
+        assertThat(response.readEntity(asEventList), hasSize(2));
     }
     
     @Test
-    @InSequence(802) // test 8, sequence 2
+    @InSequence(802) 
     @CleanupUsingScript("cleanup.sql")
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void afterTestAdvancedSearchWithDefaultArguments() { }
     
-    */
+    
+    @Test
+    @InSequence(803)
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestAdvancedSearchWithNonDefaultArguments() { }
+
+    
+    
+    @Test
+    @RunAsClient
+    @InSequence(804) 
+    public void testAdvancedSearchWithNonDefaultArguments() {
+       // final Response response = eventTarget().path("advanced_search").request().get();
+        final Response res = eventTarget().path("advanced_search")
+                .queryParam("category", "TELEVISION")
+                .request().get();
+        assertThat(res, hasHttpStatus(OK));
+        assertThat(res.readEntity(asEventList), hasSize(2));
+    }
+    
+    @Test
+    @InSequence(805) // test 8, sequence 2
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void afterTestAdvancedSearchWithNonDefaultArguments() { }
+    
+    
+    
     
     
     

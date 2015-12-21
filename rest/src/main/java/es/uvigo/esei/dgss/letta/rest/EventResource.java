@@ -185,25 +185,17 @@ public class EventResource {
     @GET
     @Path("advanced_search")
     public Response advanced_search(
-        @QueryParam("category") @DefaultValue("")   final String category,
         @QueryParam("query") @DefaultValue("")   final String query,
         @QueryParam("state") @DefaultValue("")   final String state,
+        @QueryParam("category") @DefaultValue("TELEVISION")   final String category,
         @QueryParam("page")  @DefaultValue("1")  final int    page,
         @QueryParam("size")  @DefaultValue("20") final int    size
     ) throws IllegalArgumentException {
         isTrue(page >= 1, "Page number must be greater than zero");
         isTrue(size >= 0, "Page size must be non-negative");
-        boolean aux=false;
-        if(state=="TRUE"){
-        	aux=true;
-        }else{
-        	aux=false;
-        }
-        Category cat= Category.valueOf(category);
+
         final int start = (page - 1) * size;
-        List<Event> rlist= events.advanced_search(cat, query, aux, start, size);
-        System.out.println("O resultado e "+rlist.toString());
-        return status(OK).entity(rlist).build();
+        return status(OK).entity(events.advanced_search(query, state,category,start, size)).build();
     }
 	/**
 	 * 

@@ -1,5 +1,9 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import static java.util.Collections.emptyList;
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.Validate.isTrue;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
@@ -25,11 +30,6 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledExceptio
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
-
-import static java.util.Collections.emptyList;
-import static java.util.Objects.nonNull;
-
-import static org.apache.commons.lang3.Validate.isTrue;
 
 
 /**
@@ -103,36 +103,36 @@ public class EventEJB {
     	return query.getResultList().size();
     }
     
-    /**
-     * 
-     * 
-     * @param category The category of the event
-     * @param query The text of the description or the title
-     * @param State of the event //TODO: Update the state with a third value(Now it only allows two possible states)
-     * @return
-     */
-    @PermitAll
-    public List<Event> advanced_search(Category category,String query, boolean State ,int start,int count){
-    	 isTrue(nonNull(category), "Category cannot be null");
-    	 isTrue(nonNull(query), "Search query cannot be null");
-    	 isTrue(nonNull(State), "State cannot be null");
-         // TODO: Pending sort by number of attendees.
-         if (count == 0) return emptyList();
-    	 final TypedQuery<Event> result = em.createQuery(
-             "SELECT e FROM Event e " +
-             " WHERE ( LOWER(e.title) LIKE :query" +
-             "    OR LOWER(e.summary) LIKE :query" +
-             "	OR LOWER(e.description) LIKE :query) " +
-             "	AND e.cancelled =  :State " +
-             "	AND e.category LIKE :category" +
-             "	ORDER BY e.date ASC",
-             Event.class
-         ).setParameter("query", "%" + query.toLowerCase() + "%");
-         result.setParameter("category",  category);
-         result.setParameter("State",  State);
 
-         return result.setFirstResult(start).setMaxResults(count).getResultList();
-    	
+    @PermitAll
+    public List<Event> advanced_search(String search, String State ,String category,int start,int count){
+        isTrue(nonNull(search), "Search query cannot be null");
+        boolean auxState=false;
+        if (count == 0) return emptyList();
+        
+        if(State=="true"){
+        	auxState=true;
+        }else{
+        	auxState=false;
+        }
+        
+        Category cat= Category.valueOf(category);
+        System.out.println(cat.toString());
+        // TODO: Pending sort by number of attendees.
+        final TypedQuery<Event> query = em.createQuery(
+            "SELECT e FROM Event e " +
+            " WHERE (LOWER(e.title) LIKE :search " +
+            "    OR LOWER(e.summary) LIKE :search " +
+            "OR LOWER(e.description) LIKE :search ) " +
+            "AND e.category = :category_aux "+
+            "AND e.cancelled =  :auxState " +
+            "ORDER BY e.date ASC",
+            Event.class
+        ).setParameter("search", "%" + search.toLowerCase() + "%");
+        query.setParameter("category_aux",cat);
+        query.setParameter("auxState",auxState);
+
+        return query.setFirstResult(start).setMaxResults(count).getResultList();
     	
     }
     
