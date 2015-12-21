@@ -1,6 +1,14 @@
 package es.uvigo.esei.dgss.letta.rest;
 
+import static javax.ws.rs.core.Response.status;
+import static javax.ws.rs.core.Response.Status.CREATED;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.NO_CONTENT;
+import static javax.ws.rs.core.Response.Status.OK;
+import static org.apache.commons.lang3.Validate.isTrue;
+
 import java.net.URI;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -18,18 +26,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
+import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
-
-import static javax.ws.rs.core.Response.status;
-import static javax.ws.rs.core.Response.Status.CREATED;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.NO_CONTENT;
-import static javax.ws.rs.core.Response.Status.OK;
-
-import static org.apache.commons.lang3.Validate.isTrue;
 
 /**
  * Resource that represents the {@link Event Events} in the application.
@@ -181,5 +182,50 @@ public class EventResource {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
+    @GET
+    @Path("advanced_search")
+    public Response advanced_search(
+        @QueryParam("category") @DefaultValue("")   final String category,
+        @QueryParam("query") @DefaultValue("")   final String query,
+        @QueryParam("state") @DefaultValue("")   final String state,
+        @QueryParam("page")  @DefaultValue("1")  final int    page,
+        @QueryParam("size")  @DefaultValue("20") final int    size
+    ) throws IllegalArgumentException {
+        isTrue(page >= 1, "Page number must be greater than zero");
+        isTrue(size >= 0, "Page size must be non-negative");
+        boolean aux=false;
+        if(state=="TRUE"){
+        	aux=true;
+        }else{
+        	aux=false;
+        }
+        Category cat =null;
+        Category nova= cat.valueOf("category");
+        final int start = (page - 1) * size;
+        List<Event> rlist= events.advanced_search(nova, query, aux, start, size);
+        System.out.println("O resultado e "+rlist.toString());
+        return status(OK).entity(rlist).build();
+    }
+	/**
+	 * 
+	 * Returns the {@link Event} information
+	 * 
+	 * @param eventId
+	 *            indicates the Event id
+	 * @return the {@link Event} information
+	 * @throws IllegalArgumentException
+	 *             if the {@link Event} is not found
+	 */
+	@GET
+	@Path("{id}")
+	public Response getEventInfo(@PathParam("id") int eventId)
+			throws IllegalArgumentException {
+		final Event event = events.getEvent(eventId);
+
+		if (event == null)
+			throw new IllegalArgumentException("Event not found: " + eventId);
+		else
+			return Response.ok(event).build();
+	}
 
 }

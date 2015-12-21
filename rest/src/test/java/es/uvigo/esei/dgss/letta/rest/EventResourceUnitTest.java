@@ -67,7 +67,20 @@ public class EventResourceUnitTest extends EasyMockSupport {
             containsEventsListInOrder(expected)
         );
     }
+    
+    /*
+    @Test
+    private void assertThatAdvancedSearchReturnsCorrectNumberOfEvents(
+        final Response response, final List<Event> expected
+    ) {
+        assertThat(response.getEntity(), is(instanceOf(List.class)));
+        assertThat(
+            (List<Event>) response.getEntity(),
+            containsEventsListInOrder(expected)
+        );
+    }
 
+    */
     @Test
     public void testListReturnsAValidListOfEvents() {
         final List<Event> events = asList(events());

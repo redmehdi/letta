@@ -18,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
+import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
@@ -101,7 +102,42 @@ public class EventEJB {
 
     	return query.getResultList().size();
     }
+    
+    /**
+     * 
+     * 
+     * @param category The category of the event
+     * @param query The text of the description or the title
+     * @param State of the event //TODO: Update the state with a third value(Now it only allows two possible states)
+     * @return
+     */
+    @PermitAll
+    public List<Event> advanced_search(Category category,String query, boolean State ,int start,int count){
+    	 isTrue(nonNull(category), "Category cannot be null");
+    	 isTrue(nonNull(query), "Search query cannot be null");
+    	 isTrue(nonNull(State), "State cannot be null");
+         // TODO: Pending sort by number of attendees.
+         if (count == 0) return emptyList();
+    	 final TypedQuery<Event> result = em.createQuery(
+             "SELECT e FROM Event e " +
+             " WHERE ( LOWER(e.title) LIKE :query" +
+             "    OR LOWER(e.summary) LIKE :query" +
+             "	OR LOWER(e.description) LIKE :query) " +
+             "	AND e.cancelled =  :State " +
+             "	AND e.category LIKE :category" +
+             "	ORDER BY e.date ASC",
+             Event.class
+         ).setParameter("query", "%" + query.toLowerCase() + "%");
+         result.setParameter("category",  category);
+         result.setParameter("State",  State);
 
+         return result.setFirstResult(start).setMaxResults(count).getResultList();
+    	
+    	
+    }
+    
+    
+    
     /**
      * Returns a paginated {@link List} of {@link Event Events}, sorted by
      * ascending date (which means that older events will be first on the list).

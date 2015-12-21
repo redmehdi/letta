@@ -250,6 +250,35 @@ public class EventResourceRestTest {
     public void afterTestHighlighted() { }
 
 
+    
+    
+    @Test
+    @InSequence(800)
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestAdvancedSearchWithDefaultArguments() { }
+
+    
+    /*
+    @Test
+    @RunAsClient
+    @InSequence(801) // test 8, sequence 1
+    public void testAdvancedSearchWithDefaultArguments() {
+        final Response response = eventTarget().path("advanced_search").request().get();
+
+        assertThat(response, hasHttpStatus(OK));
+        assertThat(response.readEntity(asEventList), hasSize(20));
+    }
+    
+    @Test
+    @InSequence(802) // test 8, sequence 2
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void afterTestAdvancedSearchWithDefaultArguments() { }
+    
+    */
+    
+    
+    
     @Test
     @InSequence(80) // test 8, sequence 0
     @UsingDataSet({ "users.xml", "events.xml" })

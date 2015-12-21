@@ -1,5 +1,13 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
+import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
+import static java.util.Collections.unmodifiableSet;
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.Validate.inclusiveBetween;
+import static org.apache.commons.lang3.Validate.isTrue;
+
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.LinkedHashSet;
@@ -31,15 +39,6 @@ import es.uvigo.esei.dgss.letta.domain.util.adapters.LocalDateTimeAdapter;
 import es.uvigo.esei.dgss.letta.domain.util.annotations.VisibleForJPA;
 import es.uvigo.esei.dgss.letta.domain.util.annotations.VisibleForTesting;
 import es.uvigo.esei.dgss.letta.domain.util.converters.LocalDateTimeConverter;
-
-import static java.time.format.DateTimeFormatter.RFC_1123_DATE_TIME;
-import static java.util.Collections.unmodifiableSet;
-import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
-import static java.util.Objects.requireNonNull;
-
-import static org.apache.commons.lang3.Validate.inclusiveBetween;
-import static org.apache.commons.lang3.Validate.isTrue;
 
 /**
  * {@linkplain Event} is a JPA entity that represents an event of the
