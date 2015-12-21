@@ -54,18 +54,17 @@ public class ModifyEventController {
 		if(id == null){
 			context.redirect("index.xhtml");			
 		}else{
-			final Optional<Event> event = eventEJB.get(Integer.parseInt(id));
+			event = eventEJB.getEvent(Integer.parseInt(id));
 			
-			if(!event.isPresent()){
+			if(event == null){
 				context.redirect("index.xhtml");	
 				
 			}else{			
-			    final Event e = event.get();
-				title = e.getTitle();
-				date = Date.from(e.getDate().atZone(ZoneId.systemDefault()).toInstant());
-				shortDescription = e.getSummary();
-				location = e.getLocation();
-				type = e.getCategory();
+				title = event.getTitle();
+				date = Date.from(event.getDate().atZone(ZoneId.systemDefault()).toInstant());
+				shortDescription = event.getSummary();
+				location = event.getLocation();
+				type = event.getCategory();
 			}
 		}
 		
