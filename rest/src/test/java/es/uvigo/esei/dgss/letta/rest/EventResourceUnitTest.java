@@ -302,7 +302,7 @@ public class EventResourceUnitTest extends EasyMockSupport {
 
     @Test
     public void testCreateEvent() throws Exception {
-        final Event newEvent     = newEventWithoutCreator();
+        final Event newEvent     = newEventWithoutOwner();
         final Event createdEvent = newEvent();
 
         final URI mockUri = new URI(

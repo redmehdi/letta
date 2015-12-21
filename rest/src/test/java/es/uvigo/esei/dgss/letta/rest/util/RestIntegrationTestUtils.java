@@ -3,6 +3,7 @@ package es.uvigo.esei.dgss.letta.rest.util;
 import java.net.URL;
 import java.util.Base64;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.Path;
@@ -22,6 +23,7 @@ public final class RestIntegrationTestUtils {
     private RestIntegrationTestUtils() { }
 
     public static final GenericType<List<User>>  asUserList  = new GenericType<List<User>>() { };
+    public static final GenericType<Set<User>>   asUserSet   = new GenericType<Set<User>>() { };
     public static final GenericType<List<Event>> asEventList = new GenericType<List<Event>>() { };
 
     public static WebTarget buildResourceTarget(

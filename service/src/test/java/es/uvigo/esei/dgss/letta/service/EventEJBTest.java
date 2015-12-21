@@ -43,7 +43,7 @@ import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEvent;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutCreator;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutOwner;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.nonExistentEvent;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.newUser;
@@ -136,14 +136,14 @@ public class EventEJBTest {
     @ShouldMatchDataSet({ "users.xml", "new-event.xml" })
     public void testCreateEventCorrectlyInsertsValidEventInDatabase() {
         principal.setName(existentUser().getLogin());
-        asUser.run(() -> events.createEvent(newEventWithoutCreator()));
+        asUser.run(() -> events.createEvent(newEventWithoutOwner()));
     }
 
     @Test
     public void testCreateEventCannotBeCalledByUnauthorizedUsers() {
         thrown.expect(EJBAccessException.class);
 
-        events.createEvent(newEventWithoutCreator());
+        events.createEvent(newEventWithoutOwner());
     }
 
     @Test
@@ -152,7 +152,7 @@ public class EventEJBTest {
         thrown.expectCause(is(instanceOf(SecurityException.class)));
 
         principal.setName(nonExistentUser().getLogin());
-        asUser.throwingRun(() -> events.createEvent(newEventWithoutCreator()));
+        asUser.throwingRun(() -> events.createEvent(newEventWithoutOwner()));
     }
 
     @Test
@@ -161,11 +161,11 @@ public class EventEJBTest {
     public void testCreateReturnsTheInsertedEvent() {
         principal.setName(existentUser().getLogin());
 
-        final Event expect = newEventWithoutCreator();
+        final Event expect = newEventWithoutOwner();
         expect.setOwner(existentUser());
 
         final Event actual = asUser.call(
-            () -> events.createEvent(newEventWithoutCreator())
+            () -> events.createEvent(newEventWithoutOwner())
         );
 
         assertThat(actual, is(equalToEventWithOwner(expect)));

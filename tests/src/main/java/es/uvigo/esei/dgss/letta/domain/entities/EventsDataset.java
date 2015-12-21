@@ -237,7 +237,7 @@ public final class EventsDataset {
      *
      * @return An {@link Event} that has be modified.
      */
-    public static Event modifiedEvent() {
+    public static Event updatedEvent() {
         final Event modified = events()[7];
         modified.setTitle("New title");
         return modified;
@@ -322,7 +322,7 @@ public final class EventsDataset {
      * @return An event that should not exist in the database, with it's
      *         {@link Event#setOwner(User) owner} not set.
      */
-    public static Event newEventWithoutCreator() {
+    public static Event newEventWithoutOwner() {
         return new Event(
             BOOKS,
             "New literature event",

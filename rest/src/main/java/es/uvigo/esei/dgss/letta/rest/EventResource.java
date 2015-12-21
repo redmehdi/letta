@@ -146,7 +146,7 @@ public class EventResource {
     }
 
     @PUT
-    @Path("{id \\d+}")
+    @Path("{id: \\d+}")
     public Response update(
         @PathParam("id") final int id, final Event event
     ) throws IllegalArgumentException, SecurityException {
