@@ -131,8 +131,9 @@
 				 	value    = "#{indexController.getDate(cc.attrs.event)}"
 					rendered = "#{indexController.isAfter(cc.attrs.event.date) eq false}">
 				</h:outputText ><br />
+			</span>
 				#{cc.attrs.event.description}<br />
-			</span> <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
+			 <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
