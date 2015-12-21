@@ -22,6 +22,12 @@
 			          	<br/><br/>
 			          	<h1>Sign up</h1>
 			          	<h3>It's free and always will be.</h3><br/>
+					    <ui:fragment rendered="#{registerController.error}">
+							<h:panelGroup id="store-error" class="col-md-12 alert alert-danger" role="alert">
+								Error: #{registerController.errorMessage}
+							</h:panelGroup>
+			            <br/>
+						</ui:fragment>
 		    			<h:form id="register-form" enctype="multipart/form-data">
 		    				<h:message for="login"/>
 					    	<h:inputText id="login" required="true" maxlength="100" class="form-control" value="#{registerController.login}" a:placeholder="Login*" requiredMessage="Login can't be empty"/><br/>
@@ -32,6 +38,7 @@
 					    	<h:message for="password"/>
 					    	<h:inputSecret id="password" required="true" class="form-control" value="#{registerController.password}" a:placeholder="Password*" requiredMessage="Password can't be empty"/><br/>
 					        <h:inputSecret id="repassword" required="true" class="form-control" value="#{registerController.repassword}" a:placeholder="Repeat password*" requiredMessage="Password can't be empty"/><br/>
+					    	<p style="color:#555;">Select profile image</p>
 					    	<h:inputFile id="image" value="#{registerController.image}"></h:inputFile><br/>
 					    	<h:inputText id="completeName" required="false" maxlength="30" class="form-control" value="#{registerController.completeName}" a:placeholder="Complete name"/><br/>
 					    	<h:inputText id="fbUrl" required="false" maxlength="50" class="form-control" value="#{registerController.fbUrl}" a:placeholder="Facebook profile"/><br/>
@@ -42,12 +49,6 @@
 					    </h:form>
 				    	<small>* Obligatory fields</small>
 					    <br/>
-					    <div class="row">
-							<h:panelGroup id="store-error" class="alert alert-danger" role="alert" rendered="#{registerController.error}">
-								Error: #{registerController.errorMessage}
-							</h:panelGroup>
-						</div>
-			            <br/><br/>
 			          </div>
 			          <div class="col-md-3 "></div>
 			        </div>

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Optional;
 
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 
@@ -29,6 +30,8 @@ import es.uvigo.esei.dgss.letta.mail.MailBox;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.mail.TestingMailer;
+import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
+import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
 
 @RunWith(Arquillian.class)
 @CleanupUsingScript({ "cleanup.sql" })
@@ -39,10 +42,16 @@ public class UserEJBTest {
 	@Inject
 	private TestingMailer mailer;
 
+	@Inject
+    private TestPrincipal principal;
+	
+	@EJB(name = "user-caller")
+    private RoleCaller asUser;
+	
     @Deployment
     public static Archive<?> deploy() {
-        return deployment().withTestMailer().withClasses(
-            UserEJB.class, MailBox.class, Email.class
+        return deployment().withTestMailer().withTestPrincipal().withClasses(
+            UserEJB.class, MailBox.class, Email.class, UserAuthorizationEJB.class
         ).build();
     }
 
@@ -129,6 +138,21 @@ public class UserEJBTest {
 
 	}
 
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet("userJohnModified.xml")
+	public void testModifyUser() throws EmailDuplicateException {
+		User user = facade.get("john").get();
+		principal.setName(user.getLogin());
+		user.setEmail("johnModified@email.com");
+		user.setCompleteName("john name Modified");
+		user.setDescription("john description Modified");
+		user.setFbUrl("https://www.facebook.com/johnModified");
+		user.setTwUrl("https://twitter.com/johnModified");
+		user.changePassword("annepass");
+		asUser.throwingRun(() -> facade.modifyProfile(user));
+	}
+		
 //	@Test
 //	@UsingDataSet("registrations-create.xml")
 //	@ShouldMatchDataSet("registrations-register-user.xml")

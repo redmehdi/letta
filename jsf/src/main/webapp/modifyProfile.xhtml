@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui" 
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <f:metadata>
+		<f:event listener="#{loginController.redirectIfAnonymous}" type="preRenderView" />
+	</f:metadata>
+    <h:head>
+    	<title>User registration</title>
+    </h:head>
+    <h:body>
+    	<ui:composition template="/template/templateLayout.xhtml">    		
+		    <ui:define name="content">
+		    	<div class="container ">
+			        <div class="row ">
+			          <div class="col-md-offset-3 col-md-6">
+			          	<br/><br/>
+			          	<h1>Modify Profile</h1><br/>
+						<ui:fragment  rendered="#{modifyProfileController.error}">
+							<h:panelGroup id="store-error" class="col-md-12 alert alert-danger" role="alert">
+								Error: #{modifyProfileController.errorMessage}
+							</h:panelGroup>
+				            <br/>
+			            </ui:fragment>
+		    			<h:form id="modify-form" enctype="multipart/form-data">
+		    				<h:message for="email"/>
+					    	<h:inputText id="email" required="false" renderedType="email" class="form-control" value="#{modifyProfileController.email}" a:placeholder="Email" validatorMessage="This email is not valid">
+					    		<f:validateRegex pattern="([\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z])?" />
+							</h:inputText><br/>  
+					    	<h:inputText id="repEmail" name="repEmail" renderedType="email" class="form-control" value="#{modifyProfileController.repEmail}" a:placeholder="Repeat email">
+							</h:inputText><br/>  
+					    	<h:message for="password"/>
+					    	<h:inputSecret id="password" required="false" class="form-control" value="#{modifyProfileController.password}" a:placeholder="Password" validatorMessage="The password must have 6 character at least ">
+					    	<f:validateRegex pattern="([a-zA-Z0-9_]{6,})?" />
+					    	</h:inputSecret><br/>
+					        <h:inputSecret id="repassword" name="repassword" class="form-control" value="#{modifyProfileController.repassword}" a:placeholder="Repeat password"/><br/>
+					    	<p style="color:#555;">Select profile image</p>
+					    	<h:inputFile id="image" value="#{modifyProfileController.image}"></h:inputFile><br/>
+					    	<h:inputText id="completeName" required="false" maxlength="30" class="form-control" value="#{modifyProfileController.completeName}" a:placeholder="Complete name"/><br/>
+					    	<h:inputText id="fbUrl" required="false" maxlength="50" class="form-control" value="#{modifyProfileController.fbUrl}" a:placeholder="Facebook profile"/><br/>
+					    	<h:inputText id="twUrl" required="false" maxlength="50" class="form-control" value="#{modifyProfileController.twUrl}" a:placeholder="Twitter profile"/><br/>
+					    	<h:inputText id="personalUrl" required="false" maxlength="50" class="form-control" value="#{modifyProfileController.personalUrl}" a:placeholder="Your personal website"/><br/>
+					    	<h:inputTextarea rows="4" id="description" required="false" maxlength="1000" class="form-control" value="#{modifyProfileController.description}" a:placeholder="Your description"/><br/>
+					    	<h:commandButton id="submit-button" class="btn btn-default" value="Register" action="#{modifyProfileController.doModify()}"/>
+					    </h:form>
+					    <br/>
+			          </div>
+			          <div class="col-md-3 "></div>
+			        </div>
+			      </div>
+    		</ui:define>
+    	</ui:composition>
+    </h:body>
+</html>

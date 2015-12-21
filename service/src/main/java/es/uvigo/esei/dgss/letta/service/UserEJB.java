@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -48,6 +50,9 @@ public class UserEJB {
 
     @Resource
     private SessionContext ctx;
+    
+    @EJB
+    private UserAuthorizationEJB auth;
 
     /**
      * Retrieves the {@link User} associated with the received login name,
@@ -267,4 +272,35 @@ public class UserEJB {
     public Registration registrationWithLogin(final String login) {
         return em.find(Registration.class, login);
     }
+    
+	/**
+	 * Modifies the current {@link User} profile data
+	 * 
+	 * @param user
+	 *            {@link User} object that contains the new data.
+	 * @throws EmailDuplicateException
+	 *             if the new email is yet in the system
+	 */
+	@RolesAllowed("USER")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void modifyProfile(final User user) throws EmailDuplicateException {
+		final User currentUser = em.find(User.class, auth.getCurrentUser().getLogin());
+		if (!currentUser.getEmail().equals(user.getEmail()) && checkEmail(user.getEmail())) {
+			ctx.setRollbackOnly();
+			throw new EmailDuplicateException("Email duplicated");
+		} else {
+			currentUser.setEmail(user.getEmail());
+			if (!user.getPassword().equals(currentUser.getPassword())) {
+				currentUser.setPassword(user.getPassword());
+			}
+			currentUser.setCompleteName(user.getCompleteName());
+			currentUser.setDescription(user.getDescription());
+			currentUser.setFbUrl(user.getFbUrl());
+			currentUser.setTwUrl(user.getTwUrl());
+			currentUser.setPersonalUrl(user.getPersonalUrl());
+			currentUser.setImage(user.getImage());
+
+			em.merge(currentUser);
+		}
+	}
 }
