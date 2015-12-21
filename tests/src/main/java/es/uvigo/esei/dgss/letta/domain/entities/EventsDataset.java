@@ -231,7 +231,17 @@ public final class EventsDataset {
     public static Event existentEvent() {
         return events()[0];
     }
-    
+
+    /**
+     * Returns an {@link Event} that should exist in the database and was cancelled.
+     *
+     * @return An {@link Event} that should exist in the database and was cancelled.
+     */
+    public static int cancelledEventId() {
+        Event event = events()[24];
+        return event.getId();
+    }
+        
     /**
      * Returns an {@link Event} that has be modified.
      *

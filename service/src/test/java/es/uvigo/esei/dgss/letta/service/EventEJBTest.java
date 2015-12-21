@@ -29,6 +29,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.UsersDataset;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
@@ -39,12 +40,15 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.cancelledEventId;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEvent;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEventId;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutOwner;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.nonExistentEvent;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.nonExistentEventId;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.newUser;
 import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
@@ -539,5 +543,55 @@ public class EventEJBTest {
     	final Event modified = nonExistentEvent();
         asUser.throwingRun(() -> events.modifyEvent(modified));
     } 
-
+    
+   @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
+   @UsingDataSet({ "users.xml", "events.xml" })
+   public void cancelEventNotExists() 
+   		throws Exception{
+   	principal.setName("anne");
+   	final int cancelled = nonExistentEventId();
+       asUser.throwingRun(() -> events.cancelEvent(cancelled));
+   } 
+   
+   @Test(expected=IllegalEventOwnerException.class)
+   @UsingDataSet({ "users.xml", "events.xml" })
+   public void cancelEventIllegalOwner() 
+   		throws Exception{
+   	principal.setName("anne");
+   	final int cancelled = existentEventId();
+       asUser.throwingRun(() -> events.cancelEvent(cancelled));
+   } 
+   
+   @Test(expected=EventIsCancelledException.class)
+   @UsingDataSet({ "users.xml", "events.xml" })
+   public void cancelEventIsCancelled() 
+   		throws Exception{
+   	principal.setName("mike");
+   	final int cancelled = cancelledEventId();
+       asUser.throwingRun(() -> events.cancelEvent(cancelled));
+   } 
+   
+   @Test
+   @UsingDataSet({ "users.xml", "events.xml" })
+   public void cancelEvent() 
+   		throws Exception{
+   	principal.setName("john");
+   	final int cancelled = es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEventId();
+       asUser.throwingRun(() -> events.cancelEvent(cancelled));
+       assertThat(events.getEvent(existentEventId()).isCancelled(), is(true));
+   } 
+       
+   @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
+   @UsingDataSet({ "users.xml","events.xml" })
+   public void isCancelledEventNotExists() 
+   		throws Exception{
+   	final int cancelled = nonExistentEventId();
+       asUser.throwingRun(() -> events.isCancelled(cancelled));
+   } 
+   
+   @Test
+	@UsingDataSet({ "users.xml","events.xml" })
+	public void isCancelledTest() {
+       assertThat(events.isCancelled(cancelledEventId()), is(true));
+	} 
 }
