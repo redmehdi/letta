@@ -1,0 +1,2163 @@
+City A,City B,Distance (Kms.)
+Albacete,Alicante,171
+Albacete,Almería,369
+Albacete,Ávila,366
+Albacete,Badajoz,525
+Albacete,Barcelona,540
+Albacete,Bilbao,646
+Albacete,Burgos,488
+Albacete,Cáceres,504
+Albacete,Cádiz,617
+Albacete,Castellón,256
+Albacete,Ciudad Real,207
+Albacete,Córdoba,354
+Albacete,A Coruña,860
+Albacete,Cuenca,142
+Albacete,Gerona,640
+Albacete,Granada,363
+Albacete,Guadalajara,309
+Albacete,Huelva,506
+Albacete,Huesca,495
+Albacete,Jaén,264
+Albacete,León,584
+Albacete,Lérida,515
+Albacete,Logroño,578
+Albacete,Lugo,762
+Albacete,Madrid,251
+Albacete,Málaga,473
+Albacete,Murcia,150
+Albacete,Ourense,772
+Albacete,Oviedo,702
+Albacete,Palencia,491
+Albacete,Pamplona,598
+Albacete,Pontevedra,874
+Albacete,Salamanca,463
+Albacete,San Sebastián,691
+Albacete,Santander,644
+Albacete,Segovia,338
+Albacete,Sevilla,492
+Albacete,Soria,473
+Albacete,Tarragona,443
+Albacete,Teruel,242
+Albacete,Toledo,240
+Albacete,Valencia,191
+Albacete,Valladolid,444
+Albacete,Vitoria,602
+Albacete,Zamora,499
+Albacete,Zaragoza,423
+Alicante,Albacete,171
+Alicante,Almería,294
+Alicante,Ávila,537
+Alicante,Badajoz,696
+Alicante,Barcelona,515
+Alicante,Bilbao,817
+Alicante,Burgos,659
+Alicante,Cáceres,675
+Alicante,Cádiz,688
+Alicante,Castellón,231
+Alicante,Ciudad Real,378
+Alicante,Córdoba,525
+Alicante,A Coruña,1031
+Alicante,Cuenca,313
+Alicante,Gerona,615
+Alicante,Granada,353
+Alicante,Guadalajara,480
+Alicante,Huelva,703
+Alicante,Huesca,570
+Alicante,Jaén,415
+Alicante,León,855
+Alicante,Lérida,490
+Alicante,Logroño,653
+Alicante,Lugo,933
+Alicante,Madrid,422
+Alicante,Málaga,482
+Alicante,Murcia,75
+Alicante,Ourense,943
+Alicante,Oviedo,873
+Alicante,Palencia,662
+Alicante,Pamplona,673
+Alicante,Pontevedra,1045
+Alicante,Salamanca,634
+Alicante,San Sebastián,766
+Alicante,Santander,815
+Alicante,Segovia,509
+Alicante,Sevilla,609
+Alicante,Soria,548
+Alicante,Tarragona,417
+Alicante,Teruel,317
+Alicante,Toledo,411
+Alicante,Valencia,166
+Alicante,Valladolid,615
+Alicante,Vitoria,739
+Alicante,Zamora,670
+Alicante,Zaragoza,498
+Almería,Albacete,369
+Almería,Alicante,294
+Almería,Ávila,663
+Almería,Badajoz,604
+Almería,Barcelona,809
+Almería,Bilbao,958
+Almería,Burgos,800
+Almería,Cáceres,651
+Almería,Cádiz,484
+Almería,Castellón,525
+Almería,Ciudad Real,407
+Almería,Córdoba,332
+Almería,A Coruña,1172
+Almería,Cuenca,511
+Almería,Gerona,909
+Almería,Granada,166
+Almería,Guadalajara,621
+Almería,Huelva,516
+Almería,Huesca,830
+Almería,Jaén,228
+Almería,León,896
+Almería,Lérida,802
+Almería,Logroño,899
+Almería,Lugo,1074
+Almería,Madrid,563
+Almería,Málaga,219
+Almería,Murcia,219
+Almería,Ourense,1084
+Almería,Oviedo,1014
+Almería,Palencia,803
+Almería,Pamplona,970
+Almería,Pontevedra,1186
+Almería,Salamanca,763
+Almería,San Sebastián,1032
+Almería,Santander,956
+Almería,Segovia,650
+Almería,Sevilla,422
+Almería,Soria,794
+Almería,Tarragona,711
+Almería,Teruel,577
+Almería,Toledo,526
+Almería,Valencia,460
+Almería,Valladolid,756
+Almería,Vitoria,914
+Almería,Zamora,811
+Almería,Zaragoza,758
+Ávila,Albacete,366
+Ávila,Alicante,537
+Ávila,Almería,663
+Ávila,Badajoz,318
+Ávila,Barcelona,717
+Ávila,Bilbao,401
+Ávila,Burgos,243
+Ávila,Cáceres,229
+Ávila,Cádiz,618
+Ávila,Castellón,532
+Ávila,Ciudad Real,256
+Ávila,Córdoba,457
+Ávila,A Coruña,538
+Ávila,Cuenca,282
+Ávila,Gerona,817
+Ávila,Granada,534
+Ávila,Guadalajara,173
+Ávila,Huelva,552
+Ávila,Huesca,490
+Ávila,Jaén,435
+Ávila,León,255
+Ávila,Lérida,558
+Ávila,Logroño,358
+Ávila,Lugo,440
+Ávila,Madrid,115
+Ávila,Málaga,644
+Ávila,Murcia,516
+Ávila,Ourense,443
+Ávila,Oviedo,373
+Ávila,Palencia,168
+Ávila,Pamplona,437
+Ávila,Pontevedra,545
+Ávila,Salamanca,97
+Ávila,San Sebastián,475
+Ávila,Santander,369
+Ávila,Segovia,67
+Ávila,Sevilla,493
+Ávila,Soria,261
+Ávila,Tarragona,649
+Ávila,Teruel,417
+Ávila,Toledo,137
+Ávila,Valencia,467
+Ávila,Valladolid,121
+Ávila,Vitoria,357
+Ávila,Zamora,159
+Ávila,Zaragoza,418
+Badajoz,Albacete,525
+Badajoz,Alicante,696
+Badajoz,Almería,604
+Badajoz,Ávila,318
+Badajoz,Barcelona,1022
+Badajoz,Bilbao,694
+Badajoz,Burgos,536
+Badajoz,Cáceres,89
+Badajoz,Cádiz,342
+Badajoz,Castellón,805
+Badajoz,Ciudad Real,318
+Badajoz,Córdoba,272
+Badajoz,A Coruña,772
+Badajoz,Cuenca,555
+Badajoz,Gerona,1122
+Badajoz,Granada,438
+Badajoz,Guadalajara,459
+Badajoz,Huelva,251
+Badajoz,Huesca,798
+Badajoz,Jaén,376
+Badajoz,León,496
+Badajoz,Lérida,866
+Badajoz,Logroño,676
+Badajoz,Lugo,674
+Badajoz,Madrid,401
+Badajoz,Málaga,436
+Badajoz,Murcia,675
+Badajoz,Ourense,645
+Badajoz,Oviedo,614
+Badajoz,Palencia,461
+Badajoz,Pamplona,755
+Badajoz,Pontevedra,747
+Badajoz,Salamanca,299
+Badajoz,San Sebastián,768
+Badajoz,Santander,662
+Badajoz,Segovia,385
+Badajoz,Sevilla,217
+Badajoz,Soria,579
+Badajoz,Tarragona,935
+Badajoz,Teruel,703
+Badajoz,Toledo,368
+Badajoz,Valencia,716
+Badajoz,Valladolid,414
+Badajoz,Vitoria,650
+Badajoz,Zamora,361
+Badajoz,Zaragoza,726
+Barcelona,Albacete,540
+Barcelona,Alicante,515
+Barcelona,Almería,809
+Barcelona,Ávila,717
+Barcelona,Badajoz,1022
+Barcelona,Bilbao,620
+Barcelona,Burgos,583
+Barcelona,Cáceres,918
+Barcelona,Cádiz,1284
+Barcelona,Castellón,284
+Barcelona,Ciudad Real,811
+Barcelona,Córdoba,908
+Barcelona,A Coruña,1118
+Barcelona,Cuenca,562
+Barcelona,Gerona,100
+Barcelona,Granada,868
+Barcelona,Guadalajara,563
+Barcelona,Huelva,1140
+Barcelona,Huesca,274
+Barcelona,Jaén,804
+Barcelona,León,784
+Barcelona,Lérida,156
+Barcelona,Logroño,468
+Barcelona,Lugo,1020
+Barcelona,Madrid,621
+Barcelona,Málaga,997
+Barcelona,Murcia,590
+Barcelona,Ourense,1027
+Barcelona,Oviedo,902
+Barcelona,Palencia,669
+Barcelona,Pamplona,437
+Barcelona,Pontevedra,1129
+Barcelona,Salamanca,778
+Barcelona,San Sebastián,529
+Barcelona,Santander,693
+Barcelona,Segovia,650
+Barcelona,Sevilla,1046
+Barcelona,Soria,453
+Barcelona,Tarragona,98
+Barcelona,Teruel,409
+Barcelona,Toledo,692
+Barcelona,Valencia,349
+Barcelona,Valladolid,663
+Barcelona,Vitoria,530
+Barcelona,Zamora,759
+Barcelona,Zaragoza,296
+Bilbao,Albacete,646
+Bilbao,Alicante,817
+Bilbao,Almería,958
+Bilbao,Ávila,401
+Bilbao,Badajoz,694
+Bilbao,Barcelona,620
+Bilbao,Burgos,158
+Bilbao,Cáceres,605
+Bilbao,Cádiz,1058
+Bilbao,Castellón,607
+Bilbao,Ciudad Real,585
+Bilbao,Córdoba,795
+Bilbao,A Coruña,644
+Bilbao,Cuenca,562
+Bilbao,Gerona,720
+Bilbao,Granada,829
+Bilbao,Guadalajara,396
+Bilbao,Huelva,939
+Bilbao,Huesca,322
+Bilbao,Jaén,730
+Bilbao,León,359
+Bilbao,Lérida,464
+Bilbao,Logroño,152
+Bilbao,Lugo,546
+Bilbao,Madrid,395
+Bilbao,Málaga,939
+Bilbao,Murcia,796
+Bilbao,Ourense,605
+Bilbao,Oviedo,304
+Bilbao,Palencia,244
+Bilbao,Pamplona,159
+Bilbao,Pontevedra,707
+Bilbao,Salamanca,395
+Bilbao,San Sebastián,119
+Bilbao,Santander,108
+Bilbao,Segovia,355
+Bilbao,Sevilla,993
+Bilbao,Soria,257
+Bilbao,Tarragona,555
+Bilbao,Teruel,488
+Bilbao,Toledo,466
+Bilbao,Valencia,633
+Bilbao,Valladolid,280
+Bilbao,Vitoria,66
+Bilbao,Zamora,376
+Bilbao,Zaragoza,324
+Burgos,Albacete,488
+Burgos,Alicante,659
+Burgos,Almería,800
+Burgos,Ávila,243
+Burgos,Badajoz,536
+Burgos,Barcelona,583
+Burgos,Bilbao,158
+Burgos,Cáceres,447
+Burgos,Cádiz,900
+Burgos,Castellón,524
+Burgos,Ciudad Real,427
+Burgos,Córdoba,637
+Burgos,A Coruña,535
+Burgos,Cuenca,404
+Burgos,Gerona,683
+Burgos,Granada,671
+Burgos,Guadalajara,238
+Burgos,Huelva,781
+Burgos,Huesca,359
+Burgos,Jaén,572
+Burgos,León,201
+Burgos,Lérida,427
+Burgos,Logroño,115
+Burgos,Lugo,437
+Burgos,Madrid,237
+Burgos,Málaga,781
+Burgos,Murcia,638
+Burgos,Ourense,447
+Burgos,Oviedo,322
+Burgos,Palencia,86
+Burgos,Pamplona,203
+Burgos,Pontevedra,549
+Burgos,Salamanca,237
+Burgos,San Sebastián,232
+Burgos,Santander,156
+Burgos,Segovia,197
+Burgos,Sevilla,775
+Burgos,Soria,141
+Burgos,Tarragona,518
+Burgos,Teruel,372
+Burgos,Toledo,308
+Burgos,Valencia,517
+Burgos,Valladolid,122
+Burgos,Vitoria,114
+Burgos,Zamora,218
+Burgos,Zaragoza,287
+Cáceres,Albacete,504
+Cáceres,Alicante,675
+Cáceres,Almería,651
+Cáceres,Ávila,229
+Cáceres,Badajoz,89
+Cáceres,Barcelona,918
+Cáceres,Bilbao,605
+Cáceres,Burgos,447
+Cáceres,Cádiz,369
+Cáceres,Castellón,701
+Cáceres,Ciudad Real,324
+Cáceres,Córdoba,319
+Cáceres,A Coruña,683
+Cáceres,Cuenca,451
+Cáceres,Gerona,1018
+Cáceres,Granada,485
+Cáceres,Guadalajara,355
+Cáceres,Huelva,323
+Cáceres,Huesca,694
+Cáceres,Jaén,423
+Cáceres,León,407
+Cáceres,Lérida,762
+Cáceres,Logroño,595
+Cáceres,Lugo,585
+Cáceres,Madrid,297
+Cáceres,Málaga,506
+Cáceres,Murcia,654
+Cáceres,Ourense,556
+Cáceres,Oviedo,525
+Cáceres,Palencia,372
+Cáceres,Pamplona,650
+Cáceres,Pontevedra,658
+Cáceres,Salamanca,210
+Cáceres,San Sebastián,679
+Cáceres,Santander,573
+Cáceres,Segovia,296
+Cáceres,Sevilla,264
+Cáceres,Soria,490
+Cáceres,Tarragona,831
+Cáceres,Teruel,599
+Cáceres,Toledo,264
+Cáceres,Valencia,636
+Cáceres,Valladolid,325
+Cáceres,Vitoria,561
+Cáceres,Zamora,272
+Cáceres,Zaragoza,622
+Cádiz,Albacete,617
+Cádiz,Alicante,688
+Cádiz,Almería,484
+Cádiz,Ávila,618
+Cádiz,Badajoz,342
+Cádiz,Barcelona,1284
+Cádiz,Bilbao,1058
+Cádiz,Burgos,900
+Cádiz,Cáceres,369
+Cádiz,Castellón,873
+Cádiz,Ciudad Real,464
+Cádiz,Córdoba,263
+Cádiz,A Coruña,1072
+Cádiz,Cuenca,708
+Cádiz,Gerona,1384
+Cádiz,Granada,335
+Cádiz,Guadalajara,721
+Cádiz,Huelva,219
+Cádiz,Huesca,1060
+Cádiz,Jaén,367
+Cádiz,León,796
+Cádiz,Lérida,1128
+Cádiz,Logroño,999
+Cádiz,Lugo,974
+Cádiz,Madrid,663
+Cádiz,Málaga,265
+Cádiz,Murcia,613
+Cádiz,Ourense,945
+Cádiz,Oviedo,914
+Cádiz,Palencia,761
+Cádiz,Pamplona,1070
+Cádiz,Pontevedra,1047
+Cádiz,Salamanca,599
+Cádiz,San Sebastián,1132
+Cádiz,Santander,1056
+Cádiz,Segovia,750
+Cádiz,Sevilla,125
+Cádiz,Soria,894
+Cádiz,Tarragona,1059
+Cádiz,Teruel,873
+Cádiz,Toledo,583
+Cádiz,Valencia,808
+Cádiz,Valladolid,714
+Cádiz,Vitoria,1014
+Cádiz,Zamora,661
+Cádiz,Zaragoza,988
+Castellón,Albacete,256
+Castellón,Alicante,231
+Castellón,Almería,525
+Castellón,Ávila,532
+Castellón,Badajoz,805
+Castellón,Barcelona,284
+Castellón,Bilbao,607
+Castellón,Burgos,524
+Castellón,Cáceres,701
+Castellón,Cádiz,873
+Castellón,Ciudad Real,463
+Castellón,Córdoba,610
+Castellón,A Coruña,1026
+Castellón,Cuenca,305
+Castellón,Gerona,384
+Castellón,Granada,584
+Castellón,Guadalajara,396
+Castellón,Huelva,856
+Castellón,Huesca,355
+Castellón,Jaén,520
+Castellón,León,725
+Castellón,Lérida,259
+Castellón,Logroño,455
+Castellón,Lugo,928
+Castellón,Madrid,417
+Castellón,Málaga,713
+Castellón,Murcia,306
+Castellón,Ourense,938
+Castellón,Oviedo,868
+Castellón,Palencia,596
+Castellón,Pamplona,458
+Castellón,Pontevedra,1040
+Castellón,Salamanca,629
+Castellón,San Sebastián,551
+Castellón,Santander,680
+Castellón,Segovia,504
+Castellón,Sevilla,762
+Castellón,Soria,383
+Castellón,Tarragona,186
+Castellón,Teruel,152
+Castellón,Toledo,437
+Castellón,Valencia,65
+Castellón,Valladolid,563
+Castellón,Vitoria,574
+Castellón,Zamora,665
+Castellón,Zaragoza,283
+Ciudad Real,Albacete,207
+Ciudad Real,Alicante,378
+Ciudad Real,Almería,407
+Ciudad Real,Ávila,256
+Ciudad Real,Badajoz,318
+Ciudad Real,Barcelona,811
+Ciudad Real,Bilbao,585
+Ciudad Real,Burgos,427
+Ciudad Real,Cáceres,324
+Ciudad Real,Cádiz,464
+Ciudad Real,Castellón,463
+Ciudad Real,Córdoba,201
+Ciudad Real,A Coruña,799
+Ciudad Real,Cuenca,244
+Ciudad Real,Gerona,911
+Ciudad Real,Granada,278
+Ciudad Real,Guadalajara,248
+Ciudad Real,Huelva,433
+Ciudad Real,Huesca,587
+Ciudad Real,Jaén,179
+Ciudad Real,León,511
+Ciudad Real,Lérida,655
+Ciudad Real,Logroño,526
+Ciudad Real,Lugo,696
+Ciudad Real,Madrid,190
+Ciudad Real,Málaga,388
+Ciudad Real,Murcia,357
+Ciudad Real,Ourense,699
+Ciudad Real,Oviedo,641
+Ciudad Real,Palencia,424
+Ciudad Real,Pamplona,597
+Ciudad Real,Pontevedra,701
+Ciudad Real,Salamanca,353
+Ciudad Real,San Sebastián,659
+Ciudad Real,Santander,583
+Ciudad Real,Segovia,277
+Ciudad Real,Sevilla,339
+Ciudad Real,Soria,421
+Ciudad Real,Tarragona,649
+Ciudad Real,Teruel,397
+Ciudad Real,Toledo,119
+Ciudad Real,Valencia,398
+Ciudad Real,Valladolid,377
+Ciudad Real,Vitoria,541
+Ciudad Real,Zamora,415
+Ciudad Real,Zaragoza,515
+Córdoba,Albacete,354
+Córdoba,Alicante,525
+Córdoba,Almería,332
+Córdoba,Ávila,457
+Córdoba,Badajoz,272
+Córdoba,Barcelona,908
+Córdoba,Bilbao,795
+Córdoba,Burgos,637
+Córdoba,Cáceres,319
+Córdoba,Cádiz,263
+Córdoba,Castellón,610
+Córdoba,Ciudad Real,201
+Córdoba,A Coruña,995
+Córdoba,Cuenca,445
+Córdoba,Gerona,1008
+Córdoba,Granada,166
+Córdoba,Guadalajara,458
+Córdoba,Huelva,232
+Córdoba,Huesca,797
+Córdoba,Jaén,104
+Córdoba,León,733
+Córdoba,Lérida,865
+Córdoba,Logroño,736
+Córdoba,Lugo,897
+Córdoba,Madrid,400
+Córdoba,Málaga,187
+Córdoba,Murcia,444
+Córdoba,Ourense,921
+Córdoba,Oviedo,851
+Córdoba,Palencia,640
+Córdoba,Pamplona,807
+Córdoba,Pontevedra,977
+Córdoba,Salamanca,529
+Córdoba,San Sebastián,869
+Córdoba,Santander,793
+Córdoba,Segovia,497
+Córdoba,Sevilla,138
+Córdoba,Soria,631
+Córdoba,Tarragona,796
+Córdoba,Teruel,596
+Córdoba,Toledo,320
+Córdoba,Valencia,545
+Córdoba,Valladolid,578
+Córdoba,Vitoria,751
+Córdoba,Zamora,616
+Córdoba,Zaragoza,725
+A Coruña,Albacete,860
+A Coruña,Alicante,1031
+A Coruña,Almería,1172
+A Coruña,Ávila,538
+A Coruña,Badajoz,772
+A Coruña,Barcelona,1118
+A Coruña,Bilbao,644
+A Coruña,Burgos,535
+A Coruña,Cáceres,683
+A Coruña,Cádiz,1072
+A Coruña,Castellón,1026
+A Coruña,Ciudad Real,799
+A Coruña,Córdoba,995
+A Coruña,Cuenca,776
+A Coruña,Gerona,1218
+A Coruña,Granada,1043
+A Coruña,Guadalajara,667
+A Coruña,Huelva,1006
+A Coruña,Huesca,905
+A Coruña,Jaén,944
+A Coruña,León,334
+A Coruña,Lérida,973
+A Coruña,Logroño,650
+A Coruña,Lugo,98
+A Coruña,Madrid,609
+A Coruña,Málaga,1153
+A Coruña,Murcia,1010
+A Coruña,Ourense,175
+A Coruña,Oviedo,340
+A Coruña,Palencia,450
+A Coruña,Pamplona,738
+A Coruña,Pontevedra,121
+A Coruña,Salamanca,473
+A Coruña,San Sebastián,763
+A Coruña,Santander,547
+A Coruña,Segovia,560
+A Coruña,Sevilla,947
+A Coruña,Soria,676
+A Coruña,Tarragona,1064
+A Coruña,Teruel,907
+A Coruña,Toledo,675
+A Coruña,Valencia,961
+A Coruña,Valladolid,455
+A Coruña,Vitoria,549
+A Coruña,Zamora,411
+A Coruña,Zaragoza,833
+Cuenca,Albacete,142
+Cuenca,Alicante,313
+Cuenca,Almería,511
+Cuenca,Ávila,282
+Cuenca,Badajoz,555
+Cuenca,Barcelona,562
+Cuenca,Bilbao,562
+Cuenca,Burgos,404
+Cuenca,Cáceres,451
+Cuenca,Cádiz,708
+Cuenca,Castellón,305
+Cuenca,Ciudad Real,244
+Cuenca,Córdoba,445
+Cuenca,A Coruña,776
+Cuenca,Gerona,662
+Cuenca,Granada,479
+Cuenca,Guadalajara,486
+Cuenca,Huelva,677
+Cuenca,Huesca,406
+Cuenca,Jaén,380
+Cuenca,León,500
+Cuenca,Lérida,472
+Cuenca,Logroño,464
+Cuenca,Lugo,678
+Cuenca,Madrid,167
+Cuenca,Málaga,615
+Cuenca,Murcia,292
+Cuenca,Ourense,689
+Cuenca,Oviedo,618
+Cuenca,Palencia,407
+Cuenca,Pamplona,535
+Cuenca,Pontevedra,791
+Cuenca,Salamanca,379
+Cuenca,San Sebastián,636
+Cuenca,Santander,560
+Cuenca,Segovia,254
+Cuenca,Sevilla,583
+Cuenca,Soria,359
+Cuenca,Tarragona,464
+Cuenca,Teruel,153
+Cuenca,Toledo,187
+Cuenca,Valencia,220
+Cuenca,Valladolid,360
+Cuenca,Vitoria,518
+Cuenca,Zamora,415
+Cuenca,Zaragoza,334
+Gerona,Albacete,640
+Gerona,Alicante,615
+Gerona,Almería,909
+Gerona,Ávila,817
+Gerona,Badajoz,1122
+Gerona,Barcelona,100
+Gerona,Bilbao,720
+Gerona,Burgos,683
+Gerona,Cáceres,1018
+Gerona,Cádiz,1384
+Gerona,Castellón,384
+Gerona,Ciudad Real,911
+Gerona,Córdoba,1008
+Gerona,A Coruña,1218
+Gerona,Cuenca,662
+Gerona,Granada,968
+Gerona,Guadalajara,663
+Gerona,Huelva,1240
+Gerona,Huesca,374
+Gerona,Jaén,904
+Gerona,León,884
+Gerona,Lérida,256
+Gerona,Logroño,568
+Gerona,Lugo,1120
+Gerona,Madrid,721
+Gerona,Málaga,1097
+Gerona,Murcia,690
+Gerona,Ourense,1127
+Gerona,Oviedo,1002
+Gerona,Palencia,769
+Gerona,Pamplona,537
+Gerona,Pontevedra,1229
+Gerona,Salamanca,878
+Gerona,San Sebastián,629
+Gerona,Santander,793
+Gerona,Segovia,750
+Gerona,Sevilla,1146
+Gerona,Soria,553
+Gerona,Tarragona,198
+Gerona,Teruel,509
+Gerona,Toledo,792
+Gerona,Valencia,449
+Gerona,Valladolid,763
+Gerona,Vitoria,630
+Gerona,Zamora,859
+Gerona,Zaragoza,396
+Granada,Albacete,363
+Granada,Alicante,353
+Granada,Almería,166
+Granada,Ávila,534
+Granada,Badajoz,438
+Granada,Barcelona,868
+Granada,Bilbao,829
+Granada,Burgos,671
+Granada,Cáceres,485
+Granada,Cádiz,335
+Granada,Castellón,584
+Granada,Ciudad Real,278
+Granada,Córdoba,166
+Granada,A Coruña,1043
+Granada,Cuenca,479
+Granada,Gerona,968
+Granada,Guadalajara,492
+Granada,Huelva,350
+Granada,Huesca,831
+Granada,Jaén,99
+Granada,León,761
+Granada,Lérida,861
+Granada,Logroño,770
+Granada,Lugo,945
+Granada,Madrid,434
+Granada,Málaga,129
+Granada,Murcia,278
+Granada,Ourense,955
+Granada,Oviedo,885
+Granada,Palencia,674
+Granada,Pamplona,841
+Granada,Pontevedra,1058
+Granada,Salamanca,631
+Granada,San Sebastián,903
+Granada,Santander,827
+Granada,Segovia,521
+Granada,Sevilla,256
+Granada,Soria,665
+Granada,Tarragona,770
+Granada,Teruel,605
+Granada,Toledo,397
+Granada,Valencia,519
+Granada,Valladolid,627
+Granada,Vitoria,785
+Granada,Zamora,682
+Granada,Zaragoza,759
+Guadalajara,Albacete,309
+Guadalajara,Alicante,480
+Guadalajara,Almería,621
+Guadalajara,Ávila,173
+Guadalajara,Badajoz,459
+Guadalajara,Barcelona,563
+Guadalajara,Bilbao,396
+Guadalajara,Burgos,238
+Guadalajara,Cáceres,355
+Guadalajara,Cádiz,721
+Guadalajara,Castellón,396
+Guadalajara,Ciudad Real,248
+Guadalajara,Córdoba,458
+Guadalajara,A Coruña,667
+Guadalajara,Cuenca,486
+Guadalajara,Gerona,663
+Guadalajara,Granada,492
+Guadalajara,Huelva,690
+Guadalajara,Huesca,339
+Guadalajara,Jaén,393
+Guadalajara,León,391
+Guadalajara,Lérida,407
+Guadalajara,Logroño,278
+Guadalajara,Lugo,569
+Guadalajara,Madrid,58
+Guadalajara,Málaga,602
+Guadalajara,Murcia,459
+Guadalajara,Ourense,579
+Guadalajara,Oviedo,509
+Guadalajara,Palencia,298
+Guadalajara,Pamplona,349
+Guadalajara,Pontevedra,681
+Guadalajara,Salamanca,270
+Guadalajara,San Sebastián,441
+Guadalajara,Santander,394
+Guadalajara,Segovia,145
+Guadalajara,Sevilla,596
+Guadalajara,Soria,173
+Guadalajara,Tarragona,476
+Guadalajara,Teruel,244
+Guadalajara,Toledo,129
+Guadalajara,Valencia,410
+Guadalajara,Valladolid,251
+Guadalajara,Vitoria,352
+Guadalajara,Zamora,306
+Guadalajara,Zaragoza,267
+Huelva,Albacete,506
+Huelva,Alicante,703
+Huelva,Almería,516
+Huelva,Ávila,552
+Huelva,Badajoz,251
+Huelva,Barcelona,1140
+Huelva,Bilbao,939
+Huelva,Burgos,781
+Huelva,Cáceres,323
+Huelva,Cádiz,219
+Huelva,Castellón,856
+Huelva,Ciudad Real,433
+Huelva,Córdoba,232
+Huelva,A Coruña,1006
+Huelva,Cuenca,677
+Huelva,Gerona,1240
+Huelva,Granada,350
+Huelva,Guadalajara,690
+Huelva,Huesca,1029
+Huelva,Jaén,336
+Huelva,León,730
+Huelva,Lérida,1097
+Huelva,Logroño,968
+Huelva,Lugo,908
+Huelva,Madrid,632
+Huelva,Málaga,313
+Huelva,Murcia,628
+Huelva,Ourense,879
+Huelva,Oviedo,821
+Huelva,Palencia,695
+Huelva,Pamplona,1039
+Huelva,Pontevedra,981
+Huelva,Salamanca,533
+Huelva,San Sebastián,1101
+Huelva,Santander,962
+Huelva,Segovia,619
+Huelva,Sevilla,94
+Huelva,Soria,863
+Huelva,Tarragona,1029
+Huelva,Teruel,842
+Huelva,Toledo,552
+Huelva,Valencia,791
+Huelva,Valladolid,648
+Huelva,Vitoria,919
+Huelva,Zamora,595
+Huelva,Zaragoza,957
+Huesca,Albacete,495
+Huesca,Alicante,570
+Huesca,Almería,830
+Huesca,Ávila,490
+Huesca,Badajoz,798
+Huesca,Barcelona,274
+Huesca,Bilbao,322
+Huesca,Burgos,359
+Huesca,Cáceres,694
+Huesca,Cádiz,1060
+Huesca,Castellón,355
+Huesca,Ciudad Real,587
+Huesca,Córdoba,797
+Huesca,A Coruña,905
+Huesca,Cuenca,406
+Huesca,Gerona,374
+Huesca,Granada,831
+Huesca,Guadalajara,339
+Huesca,Huelva,1029
+Huesca,Jaén,732
+Huesca,León,560
+Huesca,Lérida,118
+Huesca,Logroño,244
+Huesca,Lugo,807
+Huesca,Madrid,397
+Huesca,Málaga,941
+Huesca,Murcia,611
+Huesca,Ourense,803
+Huesca,Oviedo,626
+Huesca,Palencia,442
+Huesca,Pamplona,163
+Huesca,Pontevedra,905
+Huesca,Salamanca,554
+Huesca,San Sebastián,255
+Huesca,Santander,430
+Huesca,Segovia,426
+Huesca,Sevilla,935
+Huesca,Soria,229
+Huesca,Tarragona,209
+Huesca,Teruel,253
+Huesca,Toledo,468
+Huesca,Valencia,398
+Huesca,Valladolid,439
+Huesca,Vitoria,256
+Huesca,Zamora,535
+Huesca,Zaragoza,72
+Jaén,Albacete,264
+Jaén,Alicante,415
+Jaén,Almería,228
+Jaén,Ávila,435
+Jaén,Badajoz,376
+Jaén,Barcelona,804
+Jaén,Bilbao,730
+Jaén,Burgos,572
+Jaén,Cáceres,423
+Jaén,Cádiz,367
+Jaén,Castellón,520
+Jaén,Ciudad Real,179
+Jaén,Córdoba,104
+Jaén,A Coruña,944
+Jaén,Cuenca,380
+Jaén,Gerona,904
+Jaén,Granada,99
+Jaén,Guadalajara,393
+Jaén,Huelva,336
+Jaén,Huesca,732
+Jaén,León,668
+Jaén,Lérida,779
+Jaén,Logroño,671
+Jaén,Lugo,846
+Jaén,Madrid,335
+Jaén,Málaga,209
+Jaén,Murcia,340
+Jaén,Ourense,856
+Jaén,Oviedo,786
+Jaén,Palencia,575
+Jaén,Pamplona,742
+Jaén,Pontevedra,957
+Jaén,Salamanca,532
+Jaén,San Sebastián,804
+Jaén,Santander,728
+Jaén,Segovia,422
+Jaén,Sevilla,242
+Jaén,Soria,566
+Jaén,Tarragona,707
+Jaén,Teruel,506
+Jaén,Toledo,298
+Jaén,Valencia,455
+Jaén,Valladolid,528
+Jaén,Vitoria,686
+Jaén,Zamora,583
+Jaén,Zaragoza,660
+León,Albacete,584
+León,Alicante,855
+León,Almería,896
+León,Ávila,255
+León,Badajoz,496
+León,Barcelona,784
+León,Bilbao,359
+León,Burgos,201
+León,Cáceres,407
+León,Cádiz,796
+León,Castellón,725
+León,Ciudad Real,511
+León,Córdoba,733
+León,A Coruña,334
+León,Cuenca,500
+León,Gerona,884
+León,Granada,761
+León,Guadalajara,391
+León,Huelva,730
+León,Huesca,560
+León,Jaén,668
+León,Lérida,628
+León,Logroño,316
+León,Lugo,236
+León,Madrid,333
+León,Málaga,877
+León,Murcia,734
+León,Ourense,271
+León,Oviedo,118
+León,Palencia,130
+León,Pamplona,404
+León,Pontevedra,373
+León,Salamanca,197
+León,San Sebastián,433
+León,Santander,293
+León,Segovia,245
+León,Sevilla,671
+León,Soria,342
+León,Tarragona,719
+León,Teruel,573
+León,Toledo,392
+León,Valencia,685
+León,Valladolid,134
+León,Vitoria,315
+León,Zamora,135
+León,Zaragoza,488
+Lérida,Albacete,515
+Lérida,Alicante,490
+Lérida,Almería,802
+Lérida,Ávila,558
+Lérida,Badajoz,866
+Lérida,Barcelona,156
+Lérida,Bilbao,464
+Lérida,Burgos,427
+Lérida,Cáceres,762
+Lérida,Cádiz,1128
+Lérida,Castellón,259
+Lérida,Ciudad Real,655
+Lérida,Córdoba,865
+Lérida,A Coruña,973
+Lérida,Cuenca,472
+Lérida,Gerona,256
+Lérida,Granada,861
+Lérida,Guadalajara,407
+Lérida,Huelva,1097
+Lérida,Huesca,118
+Lérida,Jaén,779
+Lérida,León,628
+Lérida,Logroño,312
+Lérida,Lugo,875
+Lérida,Madrid,465
+Lérida,Málaga,1009
+Lérida,Murcia,583
+Lérida,Ourense,871
+Lérida,Oviedo,703
+Lérida,Palencia,513
+Lérida,Pamplona,281
+Lérida,Pontevedra,973
+Lérida,Salamanca,622
+Lérida,San Sebastián,373
+Lérida,Santander,537
+Lérida,Segovia,494
+Lérida,Sevilla,1003
+Lérida,Soria,297
+Lérida,Tarragona,91
+Lérida,Teruel,319
+Lérida,Toledo,536
+Lérida,Valencia,324
+Lérida,Valladolid,507
+Lérida,Vitoria,374
+Lérida,Zamora,603
+Lérida,Zaragoza,140
+Logroño,Albacete,578
+Logroño,Alicante,653
+Logroño,Almería,899
+Logroño,Ávila,358
+Logroño,Badajoz,676
+Logroño,Barcelona,468
+Logroño,Bilbao,152
+Logroño,Burgos,115
+Logroño,Cáceres,595
+Logroño,Cádiz,999
+Logroño,Castellón,455
+Logroño,Ciudad Real,526
+Logroño,Córdoba,736
+Logroño,A Coruña,650
+Logroño,Cuenca,464
+Logroño,Gerona,568
+Logroño,Granada,770
+Logroño,Guadalajara,278
+Logroño,Huelva,968
+Logroño,Huesca,244
+Logroño,Jaén,671
+Logroño,León,316
+Logroño,Lérida,312
+Logroño,Lugo,352
+Logroño,Madrid,336
+Logroño,Málaga,880
+Logroño,Murcia,694
+Logroño,Ourense,562
+Logroño,Oviedo,391
+Logroño,Palencia,201
+Logroño,Pamplona,88
+Logroño,Pontevedra,664
+Logroño,Salamanca,352
+Logroño,San Sebastián,169
+Logroño,Santander,225
+Logroño,Segovia,299
+Logroño,Sevilla,874
+Logroño,Soria,105
+Logroño,Tarragona,403
+Logroño,Teruel,336
+Logroño,Toledo,407
+Logroño,Valencia,481
+Logroño,Valladolid,237
+Logroño,Vitoria,86
+Logroño,Zamora,333
+Logroño,Zaragoza,172
+Lugo,Albacete,762
+Lugo,Alicante,933
+Lugo,Almería,1074
+Lugo,Ávila,440
+Lugo,Badajoz,674
+Lugo,Barcelona,1020
+Lugo,Bilbao,546
+Lugo,Burgos,437
+Lugo,Cáceres,585
+Lugo,Cádiz,974
+Lugo,Castellón,928
+Lugo,Ciudad Real,696
+Lugo,Córdoba,897
+Lugo,A Coruña,98
+Lugo,Cuenca,678
+Lugo,Gerona,1120
+Lugo,Granada,945
+Lugo,Guadalajara,569
+Lugo,Huelva,908
+Lugo,Huesca,807
+Lugo,Jaén,846
+Lugo,León,236
+Lugo,Lérida,875
+Lugo,Logroño,352
+Lugo,Madrid,511
+Lugo,Málaga,1055
+Lugo,Murcia,912
+Lugo,Ourense,95
+Lugo,Oviedo,242
+Lugo,Palencia,352
+Lugo,Pamplona,640
+Lugo,Pontevedra,148
+Lugo,Salamanca,375
+Lugo,San Sebastián,665
+Lugo,Santander,449
+Lugo,Segovia,462
+Lugo,Sevilla,849
+Lugo,Soria,578
+Lugo,Tarragona,966
+Lugo,Teruel,809
+Lugo,Toledo,577
+Lugo,Valencia,863
+Lugo,Valladolid,357
+Lugo,Vitoria,451
+Lugo,Zamora,313
+Lugo,Zaragoza,735
+Madrid,Albacete,251
+Madrid,Alicante,422
+Madrid,Almería,563
+Madrid,Ávila,115
+Madrid,Badajoz,401
+Madrid,Barcelona,621
+Madrid,Bilbao,395
+Madrid,Burgos,237
+Madrid,Cáceres,297
+Madrid,Cádiz,663
+Madrid,Castellón,417
+Madrid,Ciudad Real,190
+Madrid,Córdoba,400
+Madrid,A Coruña,609
+Madrid,Cuenca,167
+Madrid,Gerona,721
+Madrid,Granada,434
+Madrid,Guadalajara,58
+Madrid,Huelva,632
+Madrid,Huesca,397
+Madrid,Jaén,335
+Madrid,León,333
+Madrid,Lérida,465
+Madrid,Logroño,336
+Madrid,Lugo,511
+Madrid,Málaga,544
+Madrid,Murcia,401
+Madrid,Ourense,521
+Madrid,Oviedo,451
+Madrid,Palencia,240
+Madrid,Pamplona,407
+Madrid,Pontevedra,623
+Madrid,Salamanca,212
+Madrid,San Sebastián,469
+Madrid,Santander,393
+Madrid,Segovia,87
+Madrid,Sevilla,538
+Madrid,Soria,231
+Madrid,Tarragona,534
+Madrid,Teruel,302
+Madrid,Toledo,71
+Madrid,Valencia,352
+Madrid,Valladolid,193
+Madrid,Vitoria,351
+Madrid,Zamora,248
+Madrid,Zaragoza,325
+Málaga,Albacete,473
+Málaga,Alicante,482
+Málaga,Almería,219
+Málaga,Ávila,644
+Málaga,Badajoz,436
+Málaga,Barcelona,997
+Málaga,Bilbao,939
+Málaga,Burgos,781
+Málaga,Cáceres,506
+Málaga,Cádiz,265
+Málaga,Castellón,713
+Málaga,Ciudad Real,388
+Málaga,Córdoba,187
+Málaga,A Coruña,1153
+Málaga,Cuenca,615
+Málaga,Gerona,1097
+Málaga,Granada,129
+Málaga,Guadalajara,602
+Málaga,Huelva,313
+Málaga,Huesca,941
+Málaga,Jaén,209
+Málaga,León,877
+Málaga,Lérida,1009
+Málaga,Logroño,880
+Málaga,Lugo,1055
+Málaga,Madrid,544
+Málaga,Murcia,407
+Málaga,Ourense,1065
+Málaga,Oviedo,995
+Málaga,Palencia,784
+Málaga,Pamplona,951
+Málaga,Pontevedra,1153
+Málaga,Salamanca,756
+Málaga,San Sebastián,1013
+Málaga,Santander,937
+Málaga,Segovia,631
+Málaga,Sevilla,219
+Málaga,Soria,775
+Málaga,Tarragona,899
+Málaga,Teruel,715
+Málaga,Toledo,507
+Málaga,Valencia,648
+Málaga,Valladolid,737
+Málaga,Vitoria,895
+Málaga,Zamora,792
+Málaga,Zaragoza,869
+Murcia,Albacete,150
+Murcia,Alicante,75
+Murcia,Almería,219
+Murcia,Ávila,516
+Murcia,Badajoz,675
+Murcia,Barcelona,590
+Murcia,Bilbao,796
+Murcia,Burgos,638
+Murcia,Cáceres,654
+Murcia,Cádiz,613
+Murcia,Castellón,306
+Murcia,Ciudad Real,357
+Murcia,Córdoba,444
+Murcia,A Coruña,1010
+Murcia,Cuenca,292
+Murcia,Gerona,690
+Murcia,Granada,278
+Murcia,Guadalajara,459
+Murcia,Huelva,628
+Murcia,Huesca,611
+Murcia,Jaén,340
+Murcia,León,734
+Murcia,Lérida,583
+Murcia,Logroño,694
+Murcia,Lugo,912
+Murcia,Madrid,401
+Murcia,Málaga,407
+Murcia,Ourense,922
+Murcia,Oviedo,852
+Murcia,Palencia,641
+Murcia,Pamplona,714
+Murcia,Pontevedra,1024
+Murcia,Salamanca,613
+Murcia,San Sebastián,807
+Murcia,Santander,794
+Murcia,Segovia,488
+Murcia,Sevilla,534
+Murcia,Soria,589
+Murcia,Tarragona,492
+Murcia,Teruel,385
+Murcia,Toledo,390
+Murcia,Valencia,241
+Murcia,Valladolid,594
+Murcia,Vitoria,752
+Murcia,Zamora,649
+Murcia,Zaragoza,539
+Ourense,Albacete,772
+Ourense,Alicante,943
+Ourense,Almería,1084
+Ourense,Ávila,443
+Ourense,Badajoz,645
+Ourense,Barcelona,1027
+Ourense,Bilbao,605
+Ourense,Burgos,447
+Ourense,Cáceres,556
+Ourense,Cádiz,945
+Ourense,Castellón,938
+Ourense,Ciudad Real,699
+Ourense,Córdoba,921
+Ourense,A Coruña,175
+Ourense,Cuenca,689
+Ourense,Gerona,1127
+Ourense,Granada,955
+Ourense,Guadalajara,579
+Ourense,Huelva,879
+Ourense,Huesca,803
+Ourense,Jaén,856
+Ourense,León,271
+Ourense,Lérida,871
+Ourense,Logroño,562
+Ourense,Lugo,95
+Ourense,Madrid,521
+Ourense,Málaga,1065
+Ourense,Murcia,922
+Ourense,Oviedo,337
+Ourense,Palencia,361
+Ourense,Pamplona,650
+Ourense,Pontevedra,102
+Ourense,Salamanca,346
+Ourense,San Sebastián,679
+Ourense,Santander,544
+Ourense,Segovia,467
+Ourense,Sevilla,820
+Ourense,Soria,574
+Ourense,Tarragona,962
+Ourense,Teruel,805
+Ourense,Toledo,580
+Ourense,Valencia,873
+Ourense,Valladolid,356
+Ourense,Vitoria,561
+Ourense,Zamora,284
+Ourense,Zaragoza,731
+Oviedo,Albacete,702
+Oviedo,Alicante,873
+Oviedo,Almería,1014
+Oviedo,Ávila,373
+Oviedo,Badajoz,614
+Oviedo,Barcelona,902
+Oviedo,Bilbao,304
+Oviedo,Burgos,322
+Oviedo,Cáceres,525
+Oviedo,Cádiz,914
+Oviedo,Castellón,868
+Oviedo,Ciudad Real,641
+Oviedo,Córdoba,851
+Oviedo,A Coruña,340
+Oviedo,Cuenca,618
+Oviedo,Gerona,1002
+Oviedo,Granada,885
+Oviedo,Guadalajara,509
+Oviedo,Huelva,821
+Oviedo,Huesca,626
+Oviedo,Jaén,786
+Oviedo,León,118
+Oviedo,Lérida,703
+Oviedo,Logroño,391
+Oviedo,Lugo,242
+Oviedo,Madrid,451
+Oviedo,Málaga,995
+Oviedo,Murcia,852
+Oviedo,Ourense,337
+Oviedo,Palencia,248
+Oviedo,Pamplona,463
+Oviedo,Pontevedra,390
+Oviedo,Salamanca,315
+Oviedo,San Sebastián,423
+Oviedo,Santander,207
+Oviedo,Segovia,363
+Oviedo,Sevilla,789
+Oviedo,Soria,463
+Oviedo,Tarragona,835
+Oviedo,Teruel,694
+Oviedo,Toledo,510
+Oviedo,Valencia,803
+Oviedo,Valladolid,252
+Oviedo,Vitoria,340
+Oviedo,Zamora,253
+Oviedo,Zaragoza,604
+Palencia,Albacete,491
+Palencia,Alicante,662
+Palencia,Almería,803
+Palencia,Ávila,168
+Palencia,Badajoz,461
+Palencia,Barcelona,669
+Palencia,Bilbao,244
+Palencia,Burgos,86
+Palencia,Cáceres,372
+Palencia,Cádiz,761
+Palencia,Castellón,596
+Palencia,Ciudad Real,424
+Palencia,Córdoba,640
+Palencia,A Coruña,450
+Palencia,Cuenca,407
+Palencia,Gerona,769
+Palencia,Granada,674
+Palencia,Guadalajara,298
+Palencia,Huelva,695
+Palencia,Huesca,442
+Palencia,Jaén,575
+Palencia,León,130
+Palencia,Lérida,513
+Palencia,Logroño,201
+Palencia,Lugo,352
+Palencia,Madrid,240
+Palencia,Málaga,784
+Palencia,Murcia,641
+Palencia,Ourense,361
+Palencia,Oviedo,248
+Palencia,Pamplona,289
+Palencia,Pontevedra,463
+Palencia,Salamanca,162
+Palencia,San Sebastián,318
+Palencia,Santander,201
+Palencia,Segovia,158
+Palencia,Sevilla,636
+Palencia,Soria,213
+Palencia,Tarragona,604
+Palencia,Teruel,444
+Palencia,Toledo,305
+Palencia,Valencia,592
+Palencia,Valladolid,47
+Palencia,Vitoria,200
+Palencia,Zamora,143
+Palencia,Zaragoza,373
+Pamplona,Albacete,598
+Pamplona,Alicante,673
+Pamplona,Almería,970
+Pamplona,Ávila,437
+Pamplona,Badajoz,755
+Pamplona,Barcelona,437
+Pamplona,Bilbao,159
+Pamplona,Burgos,203
+Pamplona,Cáceres,650
+Pamplona,Cádiz,1070
+Pamplona,Castellón,458
+Pamplona,Ciudad Real,597
+Pamplona,Córdoba,807
+Pamplona,A Coruña,738
+Pamplona,Cuenca,535
+Pamplona,Gerona,537
+Pamplona,Granada,841
+Pamplona,Guadalajara,349
+Pamplona,Huelva,1039
+Pamplona,Huesca,163
+Pamplona,Jaén,742
+Pamplona,León,404
+Pamplona,Lérida,281
+Pamplona,Logroño,88
+Pamplona,Lugo,640
+Pamplona,Madrid,407
+Pamplona,Málaga,951
+Pamplona,Murcia,714
+Pamplona,Ourense,650
+Pamplona,Oviedo,463
+Pamplona,Palencia,289
+Pamplona,Pontevedra,752
+Pamplona,Salamanca,440
+Pamplona,San Sebastián,92
+Pamplona,Santander,267
+Pamplona,Segovia,370
+Pamplona,Sevilla,945
+Pamplona,Soria,176
+Pamplona,Tarragona,372
+Pamplona,Teruel,356
+Pamplona,Toledo,478
+Pamplona,Valencia,501
+Pamplona,Valladolid,325
+Pamplona,Vitoria,93
+Pamplona,Zamora,421
+Pamplona,Zaragoza,175
+Pontevedra,Albacete,874
+Pontevedra,Alicante,1045
+Pontevedra,Almería,1186
+Pontevedra,Ávila,545
+Pontevedra,Badajoz,747
+Pontevedra,Barcelona,1129
+Pontevedra,Bilbao,707
+Pontevedra,Burgos,549
+Pontevedra,Cáceres,658
+Pontevedra,Cádiz,1047
+Pontevedra,Castellón,1040
+Pontevedra,Ciudad Real,701
+Pontevedra,Córdoba,977
+Pontevedra,A Coruña,121
+Pontevedra,Cuenca,791
+Pontevedra,Gerona,1229
+Pontevedra,Granada,1058
+Pontevedra,Guadalajara,681
+Pontevedra,Huelva,981
+Pontevedra,Huesca,905
+Pontevedra,Jaén,957
+Pontevedra,León,373
+Pontevedra,Lérida,973
+Pontevedra,Logroño,664
+Pontevedra,Lugo,148
+Pontevedra,Madrid,623
+Pontevedra,Málaga,1153
+Pontevedra,Murcia,1024
+Pontevedra,Ourense,102
+Pontevedra,Oviedo,390
+Pontevedra,Palencia,463
+Pontevedra,Pamplona,752
+Pontevedra,Salamanca,448
+Pontevedra,San Sebastián,781
+Pontevedra,Santander,666
+Pontevedra,Segovia,569
+Pontevedra,Sevilla,922
+Pontevedra,Soria,676
+Pontevedra,Tarragona,1064
+Pontevedra,Teruel,907
+Pontevedra,Toledo,682
+Pontevedra,Valencia,975
+Pontevedra,Valladolid,458
+Pontevedra,Vitoria,663
+Pontevedra,Zamora,386
+Pontevedra,Zaragoza,833
+Salamanca,Albacete,463
+Salamanca,Alicante,634
+Salamanca,Almería,763
+Salamanca,Ávila,97
+Salamanca,Badajoz,299
+Salamanca,Barcelona,778
+Salamanca,Bilbao,395
+Salamanca,Burgos,237
+Salamanca,Cáceres,210
+Salamanca,Cádiz,599
+Salamanca,Castellón,629
+Salamanca,Ciudad Real,353
+Salamanca,Córdoba,529
+Salamanca,A Coruña,473
+Salamanca,Cuenca,379
+Salamanca,Gerona,878
+Salamanca,Granada,631
+Salamanca,Guadalajara,270
+Salamanca,Huelva,533
+Salamanca,Huesca,554
+Salamanca,Jaén,532
+Salamanca,León,197
+Salamanca,Lérida,622
+Salamanca,Logroño,352
+Salamanca,Lugo,375
+Salamanca,Madrid,212
+Salamanca,Málaga,756
+Salamanca,Murcia,613
+Salamanca,Ourense,346
+Salamanca,Oviedo,315
+Salamanca,Palencia,162
+Salamanca,Pamplona,440
+Salamanca,Pontevedra,448
+Salamanca,San Sebastián,469
+Salamanca,Santander,363
+Salamanca,Segovia,164
+Salamanca,Sevilla,474
+Salamanca,Soria,325
+Salamanca,Tarragona,713
+Salamanca,Teruel,514
+Salamanca,Toledo,234
+Salamanca,Valencia,564
+Salamanca,Valladolid,115
+Salamanca,Vitoria,351
+Salamanca,Zamora,62
+Salamanca,Zaragoza,482
+San Sebastián,Albacete,691
+San Sebastián,Alicante,766
+San Sebastián,Almería,1032
+San Sebastián,Ávila,475
+San Sebastián,Badajoz,768
+San Sebastián,Barcelona,529
+San Sebastián,Bilbao,119
+San Sebastián,Burgos,232
+San Sebastián,Cáceres,679
+San Sebastián,Cádiz,1132
+San Sebastián,Castellón,551
+San Sebastián,Ciudad Real,659
+San Sebastián,Córdoba,869
+San Sebastián,A Coruña,763
+San Sebastián,Cuenca,636
+San Sebastián,Gerona,629
+San Sebastián,Granada,903
+San Sebastián,Guadalajara,441
+San Sebastián,Huelva,1101
+San Sebastián,Huesca,255
+San Sebastián,Jaén,804
+San Sebastián,León,433
+San Sebastián,Lérida,373
+San Sebastián,Logroño,169
+San Sebastián,Lugo,665
+San Sebastián,Madrid,469
+San Sebastián,Málaga,1013
+San Sebastián,Murcia,807
+San Sebastián,Ourense,679
+San Sebastián,Oviedo,423
+San Sebastián,Palencia,318
+San Sebastián,Pamplona,92
+San Sebastián,Pontevedra,781
+San Sebastián,Salamanca,469
+San Sebastián,Santander,227
+San Sebastián,Segovia,429
+San Sebastián,Sevilla,1007
+San Sebastián,Soria,268
+San Sebastián,Tarragona,464
+San Sebastián,Teruel,449
+San Sebastián,Toledo,540
+San Sebastián,Valencia,594
+San Sebastián,Valladolid,354
+San Sebastián,Vitoria,118
+San Sebastián,Zamora,450
+San Sebastián,Zaragoza,268
+Santander,Albacete,644
+Santander,Alicante,815
+Santander,Almería,956
+Santander,Ávila,369
+Santander,Badajoz,662
+Santander,Barcelona,693
+Santander,Bilbao,108
+Santander,Burgos,156
+Santander,Cáceres,573
+Santander,Cádiz,1056
+Santander,Castellón,680
+Santander,Ciudad Real,583
+Santander,Córdoba,793
+Santander,A Coruña,547
+Santander,Cuenca,560
+Santander,Gerona,793
+Santander,Granada,827
+Santander,Guadalajara,394
+Santander,Huelva,962
+Santander,Huesca,430
+Santander,Jaén,728
+Santander,León,293
+Santander,Lérida,537
+Santander,Logroño,225
+Santander,Lugo,449
+Santander,Madrid,393
+Santander,Málaga,937
+Santander,Murcia,794
+Santander,Ourense,544
+Santander,Oviedo,207
+Santander,Palencia,201
+Santander,Pamplona,267
+Santander,Pontevedra,666
+Santander,Salamanca,363
+Santander,San Sebastián,227
+Santander,Segovia,359
+Santander,Sevilla,837
+Santander,Soria,297
+Santander,Tarragona,628
+Santander,Teruel,528
+Santander,Toledo,464
+Santander,Valencia,673
+Santander,Valladolid,248
+Santander,Vitoria,174
+Santander,Zamora,344
+Santander,Zaragoza,397
+Segovia,Albacete,338
+Segovia,Alicante,509
+Segovia,Almería,650
+Segovia,Ávila,67
+Segovia,Badajoz,385
+Segovia,Barcelona,650
+Segovia,Bilbao,355
+Segovia,Burgos,197
+Segovia,Cáceres,296
+Segovia,Cádiz,750
+Segovia,Castellón,504
+Segovia,Ciudad Real,277
+Segovia,Córdoba,497
+Segovia,A Coruña,560
+Segovia,Cuenca,254
+Segovia,Gerona,750
+Segovia,Granada,521
+Segovia,Guadalajara,145
+Segovia,Huelva,619
+Segovia,Huesca,426
+Segovia,Jaén,422
+Segovia,León,245
+Segovia,Lérida,494
+Segovia,Logroño,299
+Segovia,Lugo,462
+Segovia,Madrid,87
+Segovia,Málaga,631
+Segovia,Murcia,488
+Segovia,Ourense,467
+Segovia,Oviedo,363
+Segovia,Palencia,158
+Segovia,Pamplona,370
+Segovia,Pontevedra,569
+Segovia,Salamanca,164
+Segovia,San Sebastián,429
+Segovia,Santander,359
+Segovia,Sevilla,560
+Segovia,Soria,194
+Segovia,Tarragona,585
+Segovia,Teruel,389
+Segovia,Toledo,158
+Segovia,Valencia,439
+Segovia,Valladolid,111
+Segovia,Vitoria,311
+Segovia,Zamora,182
+Segovia,Zaragoza,354
+Sevilla,Albacete,492
+Sevilla,Alicante,609
+Sevilla,Almería,422
+Sevilla,Ávila,493
+Sevilla,Badajoz,217
+Sevilla,Barcelona,1046
+Sevilla,Bilbao,993
+Sevilla,Burgos,775
+Sevilla,Cáceres,264
+Sevilla,Cádiz,125
+Sevilla,Castellón,762
+Sevilla,Ciudad Real,339
+Sevilla,Córdoba,138
+Sevilla,A Coruña,947
+Sevilla,Cuenca,583
+Sevilla,Gerona,1146
+Sevilla,Granada,256
+Sevilla,Guadalajara,596
+Sevilla,Huelva,94
+Sevilla,Huesca,935
+Sevilla,Jaén,242
+Sevilla,León,671
+Sevilla,Lérida,1003
+Sevilla,Logroño,874
+Sevilla,Lugo,849
+Sevilla,Madrid,538
+Sevilla,Málaga,219
+Sevilla,Murcia,534
+Sevilla,Ourense,820
+Sevilla,Oviedo,789
+Sevilla,Palencia,636
+Sevilla,Pamplona,945
+Sevilla,Pontevedra,922
+Sevilla,Salamanca,474
+Sevilla,San Sebastián,1007
+Sevilla,Santander,837
+Sevilla,Segovia,560
+Sevilla,Soria,769
+Sevilla,Tarragona,949
+Sevilla,Teruel,748
+Sevilla,Toledo,458
+Sevilla,Valencia,697
+Sevilla,Valladolid,589
+Sevilla,Vitoria,825
+Sevilla,Zamora,536
+Sevilla,Zaragoza,863
+Soria,Albacete,473
+Soria,Alicante,548
+Soria,Almería,794
+Soria,Ávila,261
+Soria,Badajoz,579
+Soria,Barcelona,453
+Soria,Bilbao,257
+Soria,Burgos,141
+Soria,Cáceres,490
+Soria,Cádiz,894
+Soria,Castellón,383
+Soria,Ciudad Real,421
+Soria,Córdoba,631
+Soria,A Coruña,676
+Soria,Cuenca,359
+Soria,Gerona,553
+Soria,Granada,665
+Soria,Guadalajara,173
+Soria,Huelva,863
+Soria,Huesca,229
+Soria,Jaén,566
+Soria,León,342
+Soria,Lérida,297
+Soria,Logroño,105
+Soria,Lugo,578
+Soria,Madrid,231
+Soria,Málaga,775
+Soria,Murcia,589
+Soria,Ourense,574
+Soria,Oviedo,463
+Soria,Palencia,213
+Soria,Pamplona,176
+Soria,Pontevedra,676
+Soria,Salamanca,325
+Soria,San Sebastián,268
+Soria,Santander,297
+Soria,Segovia,194
+Soria,Sevilla,769
+Soria,Tarragona,388
+Soria,Teruel,231
+Soria,Toledo,302
+Soria,Valencia,376
+Soria,Valladolid,210
+Soria,Vitoria,191
+Soria,Zamora,306
+Soria,Zaragoza,157
+Tarragona,Albacete,443
+Tarragona,Alicante,417
+Tarragona,Almería,711
+Tarragona,Ávila,649
+Tarragona,Badajoz,935
+Tarragona,Barcelona,98
+Tarragona,Bilbao,555
+Tarragona,Burgos,518
+Tarragona,Cáceres,831
+Tarragona,Cádiz,1059
+Tarragona,Castellón,186
+Tarragona,Ciudad Real,649
+Tarragona,Córdoba,796
+Tarragona,A Coruña,1064
+Tarragona,Cuenca,464
+Tarragona,Gerona,198
+Tarragona,Granada,770
+Tarragona,Guadalajara,476
+Tarragona,Huelva,1029
+Tarragona,Huesca,209
+Tarragona,Jaén,707
+Tarragona,León,719
+Tarragona,Lérida,91
+Tarragona,Logroño,403
+Tarragona,Lugo,966
+Tarragona,Madrid,534
+Tarragona,Málaga,899
+Tarragona,Murcia,492
+Tarragona,Ourense,962
+Tarragona,Oviedo,835
+Tarragona,Palencia,604
+Tarragona,Pamplona,372
+Tarragona,Pontevedra,1064
+Tarragona,Salamanca,713
+Tarragona,San Sebastián,464
+Tarragona,Santander,628
+Tarragona,Segovia,585
+Tarragona,Sevilla,949
+Tarragona,Soria,388
+Tarragona,Teruel,311
+Tarragona,Toledo,605
+Tarragona,Valencia,251
+Tarragona,Valladolid,598
+Tarragona,Vitoria,489
+Tarragona,Zamora,694
+Tarragona,Zaragoza,231
+Teruel,Albacete,242
+Teruel,Alicante,317
+Teruel,Almería,577
+Teruel,Ávila,417
+Teruel,Badajoz,703
+Teruel,Barcelona,409
+Teruel,Bilbao,488
+Teruel,Burgos,372
+Teruel,Cáceres,599
+Teruel,Cádiz,873
+Teruel,Castellón,152
+Teruel,Ciudad Real,397
+Teruel,Córdoba,596
+Teruel,A Coruña,907
+Teruel,Cuenca,153
+Teruel,Gerona,509
+Teruel,Granada,605
+Teruel,Guadalajara,244
+Teruel,Huelva,842
+Teruel,Huesca,253
+Teruel,Jaén,506
+Teruel,León,573
+Teruel,Lérida,319
+Teruel,Logroño,336
+Teruel,Lugo,809
+Teruel,Madrid,302
+Teruel,Málaga,715
+Teruel,Murcia,385
+Teruel,Ourense,805
+Teruel,Oviedo,694
+Teruel,Palencia,444
+Teruel,Pamplona,356
+Teruel,Pontevedra,907
+Teruel,Salamanca,514
+Teruel,San Sebastián,449
+Teruel,Santander,528
+Teruel,Segovia,389
+Teruel,Sevilla,748
+Teruel,Soria,231
+Teruel,Tarragona,311
+Teruel,Toledo,340
+Teruel,Valencia,145
+Teruel,Valladolid,441
+Teruel,Vitoria,422
+Teruel,Zamora,537
+Teruel,Zaragoza,181
+Toledo,Albacete,240
+Toledo,Alicante,411
+Toledo,Almería,526
+Toledo,Ávila,137
+Toledo,Badajoz,368
+Toledo,Barcelona,692
+Toledo,Bilbao,466
+Toledo,Burgos,308
+Toledo,Cáceres,264
+Toledo,Cádiz,583
+Toledo,Castellón,437
+Toledo,Ciudad Real,119
+Toledo,Córdoba,320
+Toledo,A Coruña,675
+Toledo,Cuenca,187
+Toledo,Gerona,792
+Toledo,Granada,397
+Toledo,Guadalajara,129
+Toledo,Huelva,552
+Toledo,Huesca,468
+Toledo,Jaén,298
+Toledo,León,392
+Toledo,Lérida,536
+Toledo,Logroño,407
+Toledo,Lugo,577
+Toledo,Madrid,71
+Toledo,Málaga,507
+Toledo,Murcia,390
+Toledo,Ourense,580
+Toledo,Oviedo,510
+Toledo,Palencia,305
+Toledo,Pamplona,478
+Toledo,Pontevedra,682
+Toledo,Salamanca,234
+Toledo,San Sebastián,540
+Toledo,Santander,464
+Toledo,Segovia,158
+Toledo,Sevilla,458
+Toledo,Soria,302
+Toledo,Tarragona,605
+Toledo,Teruel,340
+Toledo,Valencia,372
+Toledo,Valladolid,258
+Toledo,Vitoria,422
+Toledo,Zamora,296
+Toledo,Zaragoza,396
+Valencia,Albacete,191
+Valencia,Alicante,166
+Valencia,Almería,460
+Valencia,Ávila,467
+Valencia,Badajoz,716
+Valencia,Barcelona,349
+Valencia,Bilbao,633
+Valencia,Burgos,517
+Valencia,Cáceres,636
+Valencia,Cádiz,808
+Valencia,Castellón,65
+Valencia,Ciudad Real,398
+Valencia,Córdoba,545
+Valencia,A Coruña,961
+Valencia,Cuenca,220
+Valencia,Gerona,449
+Valencia,Granada,519
+Valencia,Guadalajara,410
+Valencia,Huelva,791
+Valencia,Huesca,398
+Valencia,Jaén,455
+Valencia,León,685
+Valencia,Lérida,324
+Valencia,Logroño,481
+Valencia,Lugo,863
+Valencia,Madrid,352
+Valencia,Málaga,648
+Valencia,Murcia,241
+Valencia,Ourense,873
+Valencia,Oviedo,803
+Valencia,Palencia,592
+Valencia,Pamplona,501
+Valencia,Pontevedra,975
+Valencia,Salamanca,564
+Valencia,San Sebastián,594
+Valencia,Santander,673
+Valencia,Segovia,439
+Valencia,Sevilla,697
+Valencia,Soria,376
+Valencia,Tarragona,251
+Valencia,Teruel,145
+Valencia,Toledo,372
+Valencia,Valladolid,545
+Valencia,Vitoria,576
+Valencia,Zamora,600
+Valencia,Zaragoza,326
+Valladolid,Albacete,444
+Valladolid,Alicante,615
+Valladolid,Almería,756
+Valladolid,Ávila,121
+Valladolid,Badajoz,414
+Valladolid,Barcelona,663
+Valladolid,Bilbao,280
+Valladolid,Burgos,122
+Valladolid,Cáceres,325
+Valladolid,Cádiz,714
+Valladolid,Castellón,563
+Valladolid,Ciudad Real,377
+Valladolid,Córdoba,578
+Valladolid,A Coruña,455
+Valladolid,Cuenca,360
+Valladolid,Gerona,763
+Valladolid,Granada,627
+Valladolid,Guadalajara,251
+Valladolid,Huelva,648
+Valladolid,Huesca,439
+Valladolid,Jaén,528
+Valladolid,León,134
+Valladolid,Lérida,507
+Valladolid,Logroño,237
+Valladolid,Lugo,357
+Valladolid,Madrid,193
+Valladolid,Málaga,737
+Valladolid,Murcia,594
+Valladolid,Ourense,356
+Valladolid,Oviedo,252
+Valladolid,Palencia,47
+Valladolid,Pamplona,325
+Valladolid,Pontevedra,458
+Valladolid,Salamanca,115
+Valladolid,San Sebastián,354
+Valladolid,Santander,248
+Valladolid,Segovia,111
+Valladolid,Sevilla,589
+Valladolid,Soria,210
+Valladolid,Tarragona,598
+Valladolid,Teruel,441
+Valladolid,Toledo,258
+Valladolid,Valencia,545
+Valladolid,Vitoria,236
+Valladolid,Zamora,96
+Valladolid,Zaragoza,367
+Vitoria,Albacete,602
+Vitoria,Alicante,739
+Vitoria,Almería,914
+Vitoria,Ávila,357
+Vitoria,Badajoz,650
+Vitoria,Barcelona,530
+Vitoria,Bilbao,66
+Vitoria,Burgos,114
+Vitoria,Cáceres,561
+Vitoria,Cádiz,1014
+Vitoria,Castellón,574
+Vitoria,Ciudad Real,541
+Vitoria,Córdoba,751
+Vitoria,A Coruña,549
+Vitoria,Cuenca,518
+Vitoria,Gerona,630
+Vitoria,Granada,785
+Vitoria,Guadalajara,352
+Vitoria,Huelva,919
+Vitoria,Huesca,256
+Vitoria,Jaén,686
+Vitoria,León,315
+Vitoria,Lérida,374
+Vitoria,Logroño,86
+Vitoria,Lugo,451
+Vitoria,Madrid,351
+Vitoria,Málaga,895
+Vitoria,Murcia,752
+Vitoria,Ourense,561
+Vitoria,Oviedo,340
+Vitoria,Palencia,200
+Vitoria,Pamplona,93
+Vitoria,Pontevedra,663
+Vitoria,Salamanca,351
+Vitoria,San Sebastián,118
+Vitoria,Santander,174
+Vitoria,Segovia,311
+Vitoria,Sevilla,825
+Vitoria,Soria,191
+Vitoria,Tarragona,489
+Vitoria,Teruel,422
+Vitoria,Toledo,422
+Vitoria,Valencia,576
+Vitoria,Valladolid,236
+Vitoria,Zamora,332
+Vitoria,Zaragoza,258
+Zamora,Albacete,499
+Zamora,Alicante,670
+Zamora,Almería,811
+Zamora,Ávila,159
+Zamora,Badajoz,361
+Zamora,Barcelona,759
+Zamora,Bilbao,376
+Zamora,Burgos,218
+Zamora,Cáceres,272
+Zamora,Cádiz,661
+Zamora,Castellón,665
+Zamora,Ciudad Real,415
+Zamora,Córdoba,616
+Zamora,A Coruña,411
+Zamora,Cuenca,415
+Zamora,Gerona,859
+Zamora,Granada,682
+Zamora,Guadalajara,306
+Zamora,Huelva,595
+Zamora,Huesca,535
+Zamora,Jaén,583
+Zamora,León,135
+Zamora,Lérida,603
+Zamora,Logroño,333
+Zamora,Lugo,313
+Zamora,Madrid,248
+Zamora,Málaga,792
+Zamora,Murcia,649
+Zamora,Ourense,284
+Zamora,Oviedo,253
+Zamora,Palencia,143
+Zamora,Pamplona,421
+Zamora,Pontevedra,386
+Zamora,Salamanca,62
+Zamora,San Sebastián,450
+Zamora,Santander,344
+Zamora,Segovia,182
+Zamora,Sevilla,536
+Zamora,Soria,306
+Zamora,Tarragona,694
+Zamora,Teruel,537
+Zamora,Toledo,296
+Zamora,Valencia,600
+Zamora,Valladolid,96
+Zamora,Vitoria,332
+Zamora,Zaragoza,463
+Zaragoza,Albacete,423
+Zaragoza,Alicante,498
+Zaragoza,Almería,758
+Zaragoza,Ávila,418
+Zaragoza,Badajoz,726
+Zaragoza,Barcelona,296
+Zaragoza,Bilbao,324
+Zaragoza,Burgos,287
+Zaragoza,Cáceres,622
+Zaragoza,Cádiz,988
+Zaragoza,Castellón,283
+Zaragoza,Ciudad Real,515
+Zaragoza,Córdoba,725
+Zaragoza,A Coruña,833
+Zaragoza,Cuenca,334
+Zaragoza,Gerona,396
+Zaragoza,Granada,759
+Zaragoza,Guadalajara,267
+Zaragoza,Huelva,957
+Zaragoza,Huesca,72
+Zaragoza,Jaén,660
+Zaragoza,León,488
+Zaragoza,Lérida,140
+Zaragoza,Logroño,172
+Zaragoza,Lugo,735
+Zaragoza,Madrid,325
+Zaragoza,Málaga,869
+Zaragoza,Murcia,539
+Zaragoza,Ourense,731
+Zaragoza,Oviedo,604
+Zaragoza,Palencia,373
+Zaragoza,Pamplona,175
+Zaragoza,Pontevedra,833
+Zaragoza,Salamanca,482
+Zaragoza,San Sebastián,268
+Zaragoza,Santander,397
+Zaragoza,Segovia,354
+Zaragoza,Sevilla,863
+Zaragoza,Soria,157
+Zaragoza,Tarragona,231
+Zaragoza,Teruel,181
+Zaragoza,Toledo,396
+Zaragoza,Valencia,326
+Zaragoza,Valladolid,367
+Zaragoza,Vitoria,258
+Zaragoza,Zamora,463
