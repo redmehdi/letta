@@ -1,5 +1,10 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
+import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.Validate.inclusiveBetween;
+import static org.apache.commons.lang3.Validate.matchesPattern;
+
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -14,12 +19,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
-
-import static java.util.Objects.isNull;
-import static java.util.Objects.requireNonNull;
-
-import static org.apache.commons.lang3.Validate.inclusiveBetween;
-import static org.apache.commons.lang3.Validate.matchesPattern;
 
 /**
  * An entity that represents an user of the application. User's represented by
@@ -68,6 +67,9 @@ public class User implements Serializable {
 
 	@Column(length = 50)
 	private String personalUrl;
+	
+	@Column(nullable = false)
+	private boolean notifications;
 
 	@Lob
 	@Column
@@ -101,6 +103,7 @@ public class User implements Serializable {
 		this.twUrl = null;
 		this.personalUrl = null;
 		this.image = null;
+		this.notifications = false;
 
 		this.role = Role.USER;
 	}
@@ -114,6 +117,7 @@ public class User implements Serializable {
 		this.twUrl = null;
 		this.personalUrl = null;
 		this.image = null;
+		this.notifications = false;
 		if(isAdmin)
 			this.role = Role.ADMIN;
 		else
@@ -140,12 +144,14 @@ public class User implements Serializable {
 	 *            the link to the user's Twitter page.
 	 * @param personalUrl
 	 *            the link to the user's personal web or blog.
+	 * @param notifications
+	 *            if the {@link User} wants {@link Notification}
 	 * @param image
 	 *            the image of the user's profile.
 	 */
 	public User(final String login, final String password, final String email, final String completeName,
 			final String description, final String fbUrl, final String twUrl, final String personalUrl,
-			final byte[] image) {
+			final boolean notifications, final byte[] image) {
 		this.setLogin(login);
 		this.changePassword(password);
 		this.setEmail(email);
@@ -154,6 +160,7 @@ public class User implements Serializable {
 		this.fbUrl = fbUrl;
 		this.twUrl = twUrl;
 		this.personalUrl = personalUrl;
+		this.notifications = notifications;
 		this.image = image;
 
 		this.role = Role.USER;
@@ -174,7 +181,8 @@ public class User implements Serializable {
 	 * @param role
 	 *            the role of the user.
 	 */
-	User(final String login, final String password, final String email, final Role role) {
+	User(final String login, final String password, final String email,
+			final Role role) {
 		this.login = login;
 		this.password = password;
 		this.email = email;
@@ -183,6 +191,7 @@ public class User implements Serializable {
 		this.fbUrl = null;
 		this.twUrl = null;
 		this.personalUrl = null;
+		this.notifications = false;
 		this.image = null;
 		this.role = role;
 	}
@@ -211,12 +220,14 @@ public class User implements Serializable {
 	 *            the link to the user's Twitter page.
 	 * @param personalUrl
 	 *            the link to the user's personal web or blog.
+	 * @param notifications
+	 *            if the {@link User} wants {@link Notification}
 	 * @param image
 	 *            the image of the user's profile.
 	 */
 	User(final String login, final String password, final String email, final Role role, final String completeName,
 			final String description, final String fbUrl, final String twUrl, final String personalUrl,
-			final byte[] image) {
+			final boolean notifications, final byte[] image) {
 		this.login = login;
 		this.password = password;
 		this.email = email;
@@ -225,6 +236,7 @@ public class User implements Serializable {
 		this.fbUrl = fbUrl;
 		this.twUrl = twUrl;
 		this.personalUrl = personalUrl;
+		this.notifications = notifications;
 		this.image = image;
 		this.role = role;
 	}
@@ -488,8 +500,29 @@ public class User implements Serializable {
 	public byte[] getImage() {
 		return image;
 	}
+	
+	/**
+	 * Returns {@code true} if the {@link User} wants to recieve
+	 * {@link Notification} {@code null} otherwise
+	 * 
+	 * @return {@code true} if the {@link User} wants to recieve
+	 *         {@link Notification} {@code null} otherwise
+	 */
+	public boolean isNotifications() {
+		return notifications;
+	}
 
-    @Override
+	/**
+	 * Sets the value of the variable notifications
+	 * 
+	 * @param notifications
+	 *            the value of the variable
+	 */
+	public void setNotifications(boolean notifications) {
+		this.notifications = notifications;
+	}
+
+	@Override
     public final int hashCode() {
         return isNull(login) ? 0 : login.toLowerCase().hashCode();
     }

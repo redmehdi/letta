@@ -34,6 +34,7 @@ CREATE TABLE `User` (
   `fbUrl`    varchar(50) DEFAULT NULL,
   `twURL`    varchar(50) DEFAULT NULL,
   `personalUrl` varchar(50) DEFAULT NULL,
+  `notifications`   tinyint  	 NOT NULL,
   `image`    longblob DEFAULT NULL,
 
   PRIMARY KEY (`login`),
@@ -71,19 +72,20 @@ CREATE TABLE `EventAttendees` (
 
 
 -- Data Insertion
-INSERT INTO User (login, password, email, role, completeName, description, fbUrl, twUrl, personalUrl) VALUES
-  ("john","3bffe7a2bc163d273184e8902afe66b7", "john@email.com", "USER", "john name", "john description", "https://www.facebook.com/john", "https://twitter.com/john", "https://johnpersonal.com/"),
-  ("anne","1afee8bef2d82a3bef6f52b2614f16ab", "anne@email.com", "USER", "anne name", "anne description", "https://www.facebook.com/anne", "https://twitter.com/anne", "https://annepersonal.com/"),
-  ("mary","a5446c2cfe2b8a015caa8a7e825bb8af", "mary@email.com", "USER", "mary name", "mary description", "https://www.facebook.com/mary", "https://twitter.com/mary", "https://marypersonal.com/"),
-  ("joan","ce8a660555a5701617403c77f6654d65", "joan@email.com", "USER", "joan name", "joan description", "https://www.facebook.com/joan", "https://twitter.com/joan", "https://joanpersonal.com/"),
-  ("mike","b1b668f82813956ef1fe9688e6c05011", "mike@email.com", "USER", "mike name", "mike description", "https://www.facebook.com/mike", "https://twitter.com/kurt", "https://mikepersonal.com/"),
-  ("kurt","81252633317d5b5bc1ab9feb1bd3af69", "kurt@email.com", "ADMIN", "kurt name", "kurt description", "https://www.facebook.com/kurt", "https://twitter.com/kurt", "https://mikepersonal.com/");
+INSERT INTO User (login, password, email, role, completeName, description, fbUrl, twUrl, personalUrl, notifications) VALUES
+  ("john","3bffe7a2bc163d273184e8902afe66b7", "john@email.com", "USER", "john name", "john description", "https://www.facebook.com/john", "https://twitter.com/john", "https://johnpersonal.com/", 0),
+  ("anne","1afee8bef2d82a3bef6f52b2614f16ab", "anne@email.com", "USER", "anne name", "anne description", "https://www.facebook.com/anne", "https://twitter.com/anne", "https://annepersonal.com/", 0),
+  ("mary","a5446c2cfe2b8a015caa8a7e825bb8af", "mary@email.com", "USER", "mary name", "mary description", "https://www.facebook.com/mary", "https://twitter.com/mary", "https://marypersonal.com/", 0),
+  ("joan","ce8a660555a5701617403c77f6654d65", "joan@email.com", "USER", "joan name", "joan description", "https://www.facebook.com/joan", "https://twitter.com/joan", "https://joanpersonal.com/", 0),
+  ("mike","b1b668f82813956ef1fe9688e6c05011", "mike@email.com", "USER", "mike name", "mike description", "https://www.facebook.com/mike", "https://twitter.com/kurt", "https://mikepersonal.com/", 1),
+  ("kurt","81252633317d5b5bc1ab9feb1bd3af69", "kurt@email.com", "ADMIN", "kurt name", "kurt description", "https://www.facebook.com/kurt", "https://twitter.com/kurt", "https://mikepersonal.com/", 0);
+  
 INSERT INTO Event (id, category, title, summary, date, location, owner, cancelled, description) VALUES
-  ( 1, "BOOKS",      "Example1 Literature", "This is a summary of literature 1", "2000-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of literature 1"),
-  ( 2, "BOOKS",      "Example2 Literature", "This is a summary of literature 2", "2000-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of literature 2"),
-  ( 3, "MUSIC",      "Example1 Music",      "This is a summary of music 1",      "2000-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of music 1"     ),
-  ( 4, "MUSIC",      "Example2 Music",      "This is a summary of music 2",      "2000-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of music 2"     ),
-  ( 5, "MOVIES",     "Example1 Cinema",     "This is a summary of cinema 1",     "2000-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of cinema 1"    ),
+  ( 1, "BOOKS",      "Example1 Literature", "This is a summary of literature 1", "2020-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of literature 1"),
+  ( 2, "BOOKS",      "Example2 Literature", "This is a summary of literature 2", "2020-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of literature 2"),
+  ( 3, "MUSIC",      "Example1 Music",      "This is a summary of music 1",      "2020-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of music 1"     ),
+  ( 4, "MUSIC",      "Example2 Music",      "This is a summary of music 2",      "2020-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of music 2"     ),
+  ( 5, "MOVIES",     "Example1 Cinema",     "This is a summary of cinema 1",     "2020-01-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of cinema 1"    ),
   ( 6, "MOVIES",     "Example2 Cinema",     "This is a summary of cinema 2",     "2000-01-01 01:01:01", "Location X", "anne", 0, "This is a long description, with a max. size one thousand, of cinema 2"    ),
   ( 7, "TELEVISION", "Example1 Tv",         "This is a summary of tv 1",         "2000-01-01 01:01:01", "Location X", "anne", 0, "This is a long description, with a max. size one thousand, of tv 1"        ),
   ( 8, "TELEVISION", "Example2 Tv",         "This is a summary of tv 2",         "2000-01-01 01:01:01", "Location X", "anne", 0, "This is a long description, with a max. size one thousand, of tv 2"        ),

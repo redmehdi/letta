@@ -70,7 +70,7 @@ public class RegisterUserController {
 				imageRaw =IOUtils.toByteArray(imageInputStream);
 			}
 	        final Registration registration = new Registration(
-					new User(login, password, email, completeName, description, fbUrl, twUrl, personalUrl,imageRaw));
+					new User(login, password, email, completeName, description, fbUrl, twUrl, personalUrl, false, imageRaw));
 
 			try {
 				userEJB.registerUser(registration);

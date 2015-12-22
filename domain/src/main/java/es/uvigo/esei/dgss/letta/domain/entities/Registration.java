@@ -4,7 +4,6 @@ import static java.util.Objects.nonNull;
 
 import java.util.UUID;
 
-import javax.jws.soap.SOAPBinding.Use;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -53,6 +52,7 @@ public class Registration {
 	
 	@Column(length = 50)
 	private String personalUrl;
+	
 	
 	@Lob
 	@Column
@@ -214,7 +214,7 @@ public class Registration {
 	 * @return the registered user.
 	 */
 	public User getUser() {
-		return new User(this.login, this.password, this.email, this.role, this.completeName, this.description, this.fbUrl, this.twUrl, this.personalUrl, this.image);
+		return new User(this.login, this.password, this.email, this.role, this.completeName, this.description, this.fbUrl, this.twUrl, this.personalUrl, false, this.image);
 	}
 
 	@Override

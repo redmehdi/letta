@@ -48,13 +48,14 @@ public final class EventsDataset {
         final User[] users = users();
 
         final LocalDateTime date = LocalDateTime.of(2000, 1, 1, 1, 1, 1);
+        final LocalDateTime futureDate = LocalDateTime.of(2020, 1, 1, 1, 1, 1);
 
         return new Event[] {
-            new Event( 1, BOOKS,      "Example1 literature", "This is a summary of literature 1", date, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 1"),
-            new Event( 2, BOOKS,      "Example2 literature", "This is a summary of literature 2", date, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 2"),
-            new Event( 3, MUSIC,      "Example1 music",      "This is a summary of music 1",      date, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 1"     ),
-            new Event( 4, MUSIC,      "Example2 music",      "This is a summary of music 2",      date, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 2"     ),
-            new Event( 5, MOVIES,     "Example1 cinema",     "This is a summary of cinema 1",     date, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 1"    ),
+            new Event( 1, BOOKS,      "Example1 literature", "This is a summary of literature 1", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 1"),
+            new Event( 2, BOOKS,      "Example2 literature", "This is a summary of literature 2", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 2"),
+            new Event( 3, MUSIC,      "Example1 music",      "This is a summary of music 1",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 1"     ),
+            new Event( 4, MUSIC,      "Example2 music",      "This is a summary of music 2",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 2"     ),
+            new Event( 5, MOVIES,     "Example1 cinema",     "This is a summary of cinema 1",     futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 1"    ),
             new Event( 6, MOVIES,     "Example2 cinema",     "This is a summary of cinema 2",     date, "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 2"    ),
             new Event( 7, TELEVISION, "Example1 tv",         "This is a summary of tv 1",         date, "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of tv 1"        ),
             new Event( 8, TELEVISION, "Example2 tv",         "This is a summary of tv 2",         date, "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of tv 2"        ),
