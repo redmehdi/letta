@@ -300,6 +300,7 @@ public class UserEJB {
 			currentUser.setTwUrl(user.getTwUrl());
 			currentUser.setPersonalUrl(user.getPersonalUrl());
 			currentUser.setImage(user.getImage());
+			currentUser.setNotifications(user.isNotifications());
 
 			em.merge(currentUser);
 		}

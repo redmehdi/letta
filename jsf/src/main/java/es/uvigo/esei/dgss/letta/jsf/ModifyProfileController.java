@@ -30,8 +30,6 @@ public class ModifyProfileController {
 	@Inject
 	private UserEJB userEJB;
 
-	private ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-
 	@Inject
 	private UserAuthorizationEJB auth;
 
@@ -48,6 +46,7 @@ public class ModifyProfileController {
 	private String fbUrl;
 	private String twUrl;
 	private String personalUrl;
+	private boolean notifications;
 	private User user;
 
 	@PostConstruct
@@ -58,6 +57,7 @@ public class ModifyProfileController {
 		description = user.getDescription();
 		fbUrl = user.getFbUrl();
 		twUrl = user.getTwUrl();
+		notifications = user.isNotifications();
 		personalUrl = user.getPersonalUrl();
 	}
 
@@ -89,6 +89,7 @@ public class ModifyProfileController {
 				}
 				user.setCompleteName(completeName);
 				user.setDescription(description);
+				user.setNotifications(notifications);
 
 				try {
 					userEJB.modifyProfile(user);
@@ -313,5 +314,25 @@ public class ModifyProfileController {
 	public void setPersonalUrl(String personalUrl) {
 		this.personalUrl = personalUrl;
 	}
+
+	/**
+	 * Getter method of notifications global variable
+	 * 
+	 * @return notifications global variable
+	 */
+	public boolean isNotifications() {
+		return notifications;
+	}
+
+	/**
+	 * Setter method of notifications global variable
+	 * 
+	 * @param notifications
+	 *            global variable
+	 */
+	public void setNotifications(boolean notifications) {
+		this.notifications = notifications;
+	}
+	
 
 }
