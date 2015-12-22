@@ -35,9 +35,18 @@
 								<h:inputText id="shortDescription-field" required="true" maxlength="50"
 									class="form-control"
 									value="#{modifyEventController.shortDescription}"
-									a:placeholder="Description"
-									requiredMessage="Description can't be empty">
+									a:placeholder="Summary"
+									requiredMessage="Summary can't be empty">
 								</h:inputText>
+								<br />
+								
+								<h:message for="longDescription-field" />
+								<h:inputTextarea id="longDescription-field"  maxlength="1000"
+									class="form-control"
+									value="#{modifyEventController.description}"
+									a:placeholder="Long description (optional)"
+									rows="5">
+								</h:inputTextarea>
 								<br />
 	
 								<h:message for="date-field" />

@@ -585,11 +585,11 @@ public class EventEJBTest {
    @UsingDataSet({ "users.xml","events.xml" })
    public void isCancelledEventNotExists() 
    		throws Exception{
-   	final int cancelled = nonExistentEventId();
+   		final int cancelled = nonExistentEventId();
        asUser.throwingRun(() -> events.isCancelled(cancelled));
    } 
    
-   @Test
+    @Test
 	@UsingDataSet({ "users.xml","events.xml" })
 	public void isCancelledTest() {
        assertThat(events.isCancelled(cancelledEventId()), is(true));

@@ -39,6 +39,7 @@ public class ModifyEventController {
 	private Event event;
 	private String title;
 	private String shortDescription;
+	private String description;
 	private String location;
 	private Date date;
 	private Category type;
@@ -65,6 +66,7 @@ public class ModifyEventController {
 				shortDescription = event.getSummary();
 				location = event.getLocation();
 				type = event.getCategory();
+				description = event.getDescription();
 			}
 		}
 		
@@ -96,7 +98,7 @@ public class ModifyEventController {
 			event.setLocation(location);
 			event.setDate(date);
 			event.setCategory(type);
-
+			event.setDescription(description);
 			eventEJB.modifyEvent(event);
 			this.error = false;
 			context.redirect("eventModified.xhtml");
@@ -252,6 +254,25 @@ public class ModifyEventController {
 	 */
 	public void setErrorMessage(final String errorMessage) {
 		this.errorMessage = errorMessage;
+	}
+		
+	/**
+	 * Getter method of description variable
+	 *
+	 * @return description global variable
+	 */
+	public String getDescription() {
+		return description;
+	}
+	
+	/**
+	 * Setter method of description variable
+	 *
+	 * @param description
+	 *            global variable
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

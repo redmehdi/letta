@@ -497,6 +497,7 @@ public class EventEJB {
 	 * @throws IllegalArgumentException if the event does not exist
 	 */
 	@PermitAll
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public boolean isCancelled(final int eventId)
 			throws
 			IllegalArgumentException {
