@@ -594,4 +594,11 @@ public class EventEJBTest {
 	public void isCancelledTest() {
        assertThat(events.isCancelled(cancelledEventId()), is(true));
 	} 
+   
+   @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
+   @UsingDataSet({ "users.xml","events.xml" })
+   public void attendNonExistentEvent() 
+   		throws Exception{
+       asUser.throwingRun(() -> events.attendToEvent(nonExistentEventId()));
+   } 
 }
