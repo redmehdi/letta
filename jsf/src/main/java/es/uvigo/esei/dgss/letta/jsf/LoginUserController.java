@@ -11,6 +11,10 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import es.uvigo.esei.dgss.letta.domain.entities.Role;
+import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
+
 /**
  * {@linkplain LoginUserController} is a JSF controller to perform login
  * actions.
@@ -25,6 +29,9 @@ public class LoginUserController {
 
 	@Inject
 	private Principal currentUserPrincipal;
+	
+	@Inject
+	private UserAuthorizationEJB auth;
 
 	private ExternalContext context = FacesContext.getCurrentInstance()
 			.getExternalContext();
@@ -165,6 +172,21 @@ public class LoginUserController {
 	 */
 	public void redirectIfNotAnonymous() throws IOException {
 		if (!this.isAnonymous()) {
+			redirectToIndex();
+		}
+	}
+	
+	/**
+	 * Forces a page redirect to the index if the current user is not an
+	 * admin user.
+	 * 
+	 * @throws IOException
+	 *             if an error happens while redirecting.
+	 */
+	public void redirectIfNotAdmin() throws IOException {
+		User user = auth.getCurrentUser();
+		
+		if (user.getRole() != Role.ADMIN) {
 			redirectToIndex();
 		}
 	}

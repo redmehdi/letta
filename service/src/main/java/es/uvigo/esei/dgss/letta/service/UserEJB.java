@@ -1,5 +1,6 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.Resource;
@@ -303,4 +304,16 @@ public class UserEJB {
 			em.merge(currentUser);
 		}
 	}
+	
+    /**
+     * Gets all the {@link User} in the database.
+     *
+     * @return The {@link List} with all the {@link User} sorted alphabetically.
+     */
+	@RolesAllowed("ADMIN")
+    public List<User> getUsers() {
+		return em.createQuery(
+				"SELECT u FROM User u ORDER BY u.completeName ASC, u.login ASC", User.class)
+				.getResultList();    
+    }
 }

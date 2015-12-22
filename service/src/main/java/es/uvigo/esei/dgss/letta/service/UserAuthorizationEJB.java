@@ -40,7 +40,7 @@ public class UserAuthorizationEJB {
      * @throws SecurityException if the login provided by the principal is not
      *         found in the database (!!!).
      */
-    @RolesAllowed("USER")
+    @RolesAllowed({"USER", "ADMIN"})
     public User getCurrentUser() throws SecurityException {
         return ofNullable(em.find(User.class, principal.getName()))
               .orElseThrow(SecurityException::new);
