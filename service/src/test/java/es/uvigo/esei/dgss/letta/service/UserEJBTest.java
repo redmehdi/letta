@@ -142,14 +142,27 @@ public class UserEJBTest {
 	@UsingDataSet("users.xml")
 	@ShouldMatchDataSet("userJohnModified.xml")
 	public void testModifyUser() throws EmailDuplicateException {
-		User user = facade.get("john").get();
+		User user = UsersDataset.modifiedUser();
 		principal.setName(user.getLogin());
-		user.setEmail("johnModified@email.com");
-		user.setCompleteName("john name Modified");
-		user.setDescription("john description Modified");
-		user.setFbUrl("https://www.facebook.com/johnModified");
-		user.setTwUrl("https://twitter.com/johnModified");
-		user.changePassword("annepass");
+		asUser.throwingRun(() -> facade.modifyProfile(user));
+	}
+	
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet("users.xml")
+	public void testModifyUserPasswordNotChange() throws EmailDuplicateException {
+		User user = UsersDataset.existentUser();
+		principal.setName(user.getLogin());
+		user.changePassword(UsersDataset.passwordFor(user.getLogin()));
+		asUser.throwingRun(() -> facade.modifyProfile(user));
+	}
+
+	@Test(expected=EmailDuplicateException.class)
+	@UsingDataSet({"users.xml", "registrations.xml"})
+	public void testModifyUserDuplicatedEmail() throws EmailDuplicateException {
+		User user = UsersDataset.existentUser();
+		principal.setName(user.getLogin());
+		user.setEmail("anne@email.com");
 		asUser.throwingRun(() -> facade.modifyProfile(user));
 	}
 		

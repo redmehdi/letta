@@ -3,7 +3,7 @@
 	<User login="john" password="1afee8bef2d82a3bef6f52b2614f16ab"
 		email="johnModified@email.com" role="USER" completeName="john name Modified"
 		description="john description Modified" fbUrl="https://www.facebook.com/johnModified"
-		twUrl="https://twitter.com/johnModified" personalUrl="https://johnpersonal.com/" />
+		personalUrl="https://johnpersonal.com/" />
 	<User login="anne" password="1afee8bef2d82a3bef6f52b2614f16ab"
 		email="anne@email.com" role="USER" completeName="anne name"
 		description="anne description" fbUrl="https://www.facebook.com/anne"

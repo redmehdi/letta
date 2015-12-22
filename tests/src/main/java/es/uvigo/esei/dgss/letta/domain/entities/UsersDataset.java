@@ -196,4 +196,15 @@ public final class UsersDataset {
 		return new User("bart", "bartpass", "bart@email.com", "bart name", "bart description",
 				"https://www.facebook.com/bart", "https://twitter.com/bart", "https://bartpersonal.com/", null);
 	}
+	
+	/**
+	 * Returns an user that should not exist in the database and that may be
+	 * used to create a new user.
+	 * 
+	 * @return an user that should not exist in the database.
+	 */
+	public static User modifiedUser() {
+		return new User("john", "annepass", "johnModified@email.com", "john name Modified", "john description Modified",
+				"https://www.facebook.com/johnModified", null, "https://johnpersonal.com/", null);
+	}
 }
