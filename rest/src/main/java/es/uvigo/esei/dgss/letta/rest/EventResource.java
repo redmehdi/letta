@@ -8,7 +8,6 @@ import static javax.ws.rs.core.Response.Status.OK;
 import static org.apache.commons.lang3.Validate.isTrue;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
@@ -26,7 +25,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
-import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
+import es.uvigo.esei.dgss.letta.domain.entities.State;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
@@ -182,11 +181,21 @@ public class EventResource {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
+    /**
+     * REST aplication of the EJB advanced_search method
+     * @param query
+     * @param state
+     * @param category
+     * @param page
+     * @param size
+     * @return
+     * @throws IllegalArgumentException
+     */
     @GET
     @Path("advanced_search")
-    public Response advanced_search(
+    public Response advancedSearch(
         @QueryParam("query") @DefaultValue("")   final String query,
-        @QueryParam("state") @DefaultValue("")   final String state,
+        @QueryParam("state") @DefaultValue("AVAILABLE")   final String state,
         @QueryParam("category") @DefaultValue("TELEVISION")   final String category,
         @QueryParam("page")  @DefaultValue("1")  final int    page,
         @QueryParam("size")  @DefaultValue("20") final int    size
@@ -195,7 +204,17 @@ public class EventResource {
         isTrue(size >= 0, "Page size must be non-negative");
 
         final int start = (page - 1) * size;
-        return status(OK).entity(events.advanced_search(query, state,category,start, size)).build();
+        State sta= State.AVAILABLE;
+        switch(state){
+        case "CANCELLED":
+        	sta=State.CANCELLED;
+        	break;
+        case "EXPIRED":
+        	sta=State.EXPIRED;
+        	break;
+        }
+        
+        return status(OK).entity(events.advancedSearch(query, sta,category,start, size)).build();
     }
 	/**
 	 * 

@@ -104,37 +104,52 @@ public class EventEJB {
     }
     
 
+    /**
+     * Search for an event with advanced criteria 
+     * @param search Search term of the query(short description or title)
+     * @param state State of the event(cancelled or open)
+     * @param category Category of the event
+     * @param start Start page of the query
+     * @param count Number of elements per page
+     * @return result list of events
+     */
     @PermitAll
-    public List<Event> advanced_search(String search, String State ,String category,int start,int count){
-        isTrue(nonNull(search), "Search query cannot be null");
-        boolean auxState=false;
+    public List<Event> advancedSearch(String search, Enum state, String category, int start, int count){
+    	System.out.println("ENTREI DENTRO");
+    	isTrue(nonNull(search), "Search query cannot be null");
         if (count == 0) return emptyList();
-        
-        if(State=="true"){
-        	auxState=true;
-        }else{
-        	auxState=false;
-        }
-        
         Category cat= Category.valueOf(category);
-        System.out.println(cat.toString());
-        // TODO: Pending sort by number of attendees.
-        final TypedQuery<Event> query = em.createQuery(
-            "SELECT e FROM Event e " +
-            " WHERE (LOWER(e.title) LIKE :search " +
-            "    OR LOWER(e.summary) LIKE :search " +
-            "OR LOWER(e.description) LIKE :search ) " +
-            "AND e.category = :category_aux "+
-            "AND e.cancelled =  :auxState " +
-            "ORDER BY e.date ASC",
-            Event.class
-        ).setParameter("search", "%" + search.toLowerCase() + "%");
+        
+        String query_string=
+                "SELECT e FROM Event e " +
+                " WHERE (LOWER(e.title) LIKE :search " +
+                "    OR LOWER(e.summary) LIKE :search " +
+                "OR LOWER(e.description) LIKE :search ) " +
+                "AND e.category = :category_aux "+
+                "AND e.cancelled =  :auxState " ;
+               
+        boolean aux=false;
+        if(state.name().equals("EXPIRED")){
+        	aux=true;
+        	query_string+= "AND e.date<CURRENT_TIMESTAMP ";
+        }
+        query_string+= "ORDER BY e.date ASC";
+        final TypedQuery<Event> query = em.createQuery(query_string,
+                Event.class
+            ).setParameter("search", "%" + search.toLowerCase() + "%");
         query.setParameter("category_aux",cat);
-        query.setParameter("auxState",auxState);
-
+        
+        if(state.name().equals("CANCELLED")){
+        	query.setParameter("auxState",true);
+        }else if(state.name().equals("AVAILABLE")){
+        	query.setParameter("auxState",false);
+        }
+        	
         return query.setFirstResult(start).setMaxResults(count).getResultList();
-    	
+   
+
     }
+    
     
     
     
