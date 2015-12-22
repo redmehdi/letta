@@ -95,7 +95,7 @@ public class EventEJBTest {
     public void testListByDateReturnsTheSpecifiedNumberOfEvents() {
         assertThat(events.listByDate(0, 1), hasSize(1));
         assertThat(events.listByDate(0, 5), hasSize(5));
-        assertThat(events.listByDate(0, 10), hasSize(10));
+        assertThat(events.listByDate(0, 10), hasSize(5));
     }
 
     @Test
@@ -120,7 +120,7 @@ public class EventEJBTest {
     public void testListByDateReturnsValidEvents() {
         assertThat(
             events.listByDate(0, 100),
-            containsEventsInAnyOrder(events())
+            containsEventsInAnyOrder(EventsDataset.futureEvents())
         );
     }
 
@@ -260,7 +260,7 @@ public class EventEJBTest {
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testSearchTitleMultipleResult() {
-        assertThat(events.search("Example", 0, 25), hasSize(20));
+        assertThat(events.search("Example", 0, 25), hasSize(5));
     }
 
     @Test
@@ -274,7 +274,7 @@ public class EventEJBTest {
     @UsingDataSet({ "users.xml", "events.xml" })
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void testSearchDescriptionMultipleResult() {
-        assertThat(events.search("This is a summary", 0, 25), hasSize(20));
+        assertThat(events.search("This is a summary", 0, 25), hasSize(5));
     }
 
     @Test
@@ -288,7 +288,7 @@ public class EventEJBTest {
     @UsingDataSet({ "users.xml", "events-less-than-twenty.xml" })
     @ShouldMatchDataSet({ "users.xml", "events-less-than-twenty.xml" })
     public void testSearchOnLongDescription() {
-        assertThat(events.search("long", 0, 25), hasSize(16));
+        assertThat(events.search("long", 0, 25), hasSize(5));
     }
 
     @Test

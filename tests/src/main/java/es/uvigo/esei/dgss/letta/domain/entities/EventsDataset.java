@@ -35,8 +35,27 @@ import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.users;
  */
 public final class EventsDataset {
 
+	
     // Disallow construction
     private EventsDataset() { }
+    
+    /**
+     * An array of five events that should exist in the database. This
+     * data is replicated in the {@code events.xml} file.
+     * 
+     * @return An array of five events
+     */
+    public static Event[] futureEvents() {
+    	final User[] users = users();
+    	final LocalDateTime futureDate = LocalDateTime.of(2020, 1, 1, 1, 1, 1);
+    	return new Event[] {
+    			 new Event( 1, BOOKS,      "Example1 literature", "This is a summary of literature 1", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 1"),
+    	            new Event( 2, BOOKS,      "Example2 literature", "This is a summary of literature 2", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 2"),
+    	            new Event( 3, MUSIC,      "Example1 music",      "This is a summary of music 1",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 1"     ),
+    	            new Event( 4, MUSIC,      "Example2 music",      "This is a summary of music 2",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 2"     ),
+    	            new Event( 5, MOVIES,     "Example1 cinema",     "This is a summary of cinema 1",     futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 1"    ),
+    	         };
+    }
 
     /**
      * An array of twenty-five events that should exist in the database. This

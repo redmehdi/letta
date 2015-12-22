@@ -131,7 +131,7 @@ public class EventResourceRestTest {
         //     IsEqualToEvent.containsEventsInOrder(events)
         // );
 
-        assertThat(res.readEntity(asEventList), hasSize(20));
+        assertThat(res.readEntity(asEventList), hasSize(5));
     }
 
     @Test
@@ -157,7 +157,11 @@ public class EventResourceRestTest {
                 .request().get();
 
             assertThat(res, hasHttpStatus(OK));
-            assertThat(res.readEntity(asEventList), hasSize(5));
+			if (page == 1) {
+				assertThat(res.readEntity(asEventList), hasSize(5));
+			} else {
+				assertThat(res.readEntity(asEventList), hasSize(0));
+			}
         }
 
         // valid page sizes
@@ -167,7 +171,11 @@ public class EventResourceRestTest {
                 .request().get();
 
             assertThat(res, hasHttpStatus(OK));
-            assertThat(res.readEntity(asEventList), hasSize(size));
+			if (size == 0) {
+				assertThat(res.readEntity(asEventList), hasSize(0));
+			} else {
+				assertThat(res.readEntity(asEventList), hasSize(5));
+			}
         }
     }
 
@@ -316,7 +324,7 @@ public class EventResourceRestTest {
         final Response response = eventTarget().path("search").request().get();
 
         assertThat(response, hasHttpStatus(OK));
-        assertThat(response.readEntity(asEventList), hasSize(20));
+        assertThat(response.readEntity(asEventList), hasSize(5));
     }
 
     @Test
@@ -342,7 +350,11 @@ public class EventResourceRestTest {
                 .request().get();
 
             assertThat(res, hasHttpStatus(OK));
-            assertThat(res.readEntity(asEventList), hasSize(5));
+			if (page == 1) {
+				assertThat(res.readEntity(asEventList), hasSize(5));
+			} else {
+				assertThat(res.readEntity(asEventList), hasSize(0));
+			}
         }
 
         // valid page sizes
@@ -352,7 +364,11 @@ public class EventResourceRestTest {
                 .request().get();
 
             assertThat(res, hasHttpStatus(OK));
-            assertThat(res.readEntity(asEventList), hasSize(size));
+			if (size == 0) {
+				assertThat(res.readEntity(asEventList), hasSize(0));
+			} else {
+				assertThat(res.readEntity(asEventList), hasSize(5));
+			}
         }
     }
 

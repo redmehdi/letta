@@ -263,5 +263,20 @@ public class UserTest {
 		final User user = validUser();
 		user.setPersonalUrl(longUrl());
 	}
+	
+	@Test
+	public void testSetNotification() {
+		final User user = validUser();
+		user.setNotifications(true);
+		assertThat(user.isNotifications(), is(true));
+		user.setNotifications(false);
+		assertThat(user.isNotifications(), is(false));
+	}
+
+	@Test
+	public void testGetNotification() {
+		final User user = validUser();
+		assertThat(user.isNotifications(), is(false));
+	}
 
 }

@@ -19,7 +19,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
@@ -175,7 +174,7 @@ public class EventEJB {
 
         // TODO: Pending sort by number of attendees.
         return em.createQuery(
-            "SELECT e from Event e ORDER BY e.date ASC",
+            "SELECT e from Event e where e.date > now() ORDER BY e.date ASC",
             Event.class
         ).setFirstResult(start).setMaxResults(count).getResultList();
     }
@@ -258,6 +257,7 @@ public class EventEJB {
             " WHERE ( LOWER(e.title) LIKE :search " +
             "    OR LOWER(e.summary) LIKE :search " +
             "OR LOWER(e.description) LIKE :search ) " +
+            "AND e.date > now()"+
             "AND e.cancelled =  FALSE " +
             "ORDER BY e.date ASC",
             Event.class
