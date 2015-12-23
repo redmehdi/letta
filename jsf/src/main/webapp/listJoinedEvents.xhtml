@@ -26,18 +26,61 @@ color: red;
 						<h1>Attending events</h1>
 						<div>
 						<center>
-									<h:commandButton value="&lt; prev"
-										class="btn btn-default"
-										action="#{listJoinedEventsController.listJoinedEventsPrev()}"
-										rendered="#{listJoinedEventsController.pages ne 0}" />
-									<h:outputText
-										value=" #{listJoinedEventsController.pageIndex} / #{listJoinedEventsController.pages} "
-										rendered="#{listJoinedEventsController.pages ne 0}" />
-									<h:commandButton value="next &gt;"
-										class="btn btn-default"
-										action="#{listJoinedEventsController.listJoinedEventsNext()}"
-										rendered="#{listJoinedEventsController.pages ne 0}" />
-									<h:inputHidden value="#{listJoinedEventsController.pageIndex}"/>
+						<h:panelGroup 
+							rendered="#{0 lt listJoinedEventsController.pages}">
+						<nav>
+							<ul class="pagination">
+								<h:panelGroup 
+									rendered="#{1 eq listJoinedEventsController.pageIndex}">
+									<li class="disabled">
+										<span label="Previous">&lt;</span>
+									</li>
+								</h:panelGroup>
+								<h:panelGroup 
+									rendered="#{1 lt listJoinedEventsController.pageIndex}">
+									<li>
+									<h:commandLink 
+										aria-label="Previous"
+										value="&lt;"
+										action="#{listJoinedEventsController.listJoinedEventsPrev()}" />
+									</li>
+								</h:panelGroup>
+						<ui:repeat 
+							value="#{listJoinedEventsController.pagesLinks}"
+							var="page">
+							<h:panelGroup 
+								rendered="#{page != listJoinedEventsController.pageIndex}">
+								<li>
+						    	<h:commandLink 
+						    		value="#{page}"
+									action="#{listJoinedEventsController.jumpToPage(page)}" />
+								</li>
+							</h:panelGroup>
+							<h:panelGroup 
+								rendered="#{page == listJoinedEventsController.pageIndex}" >
+								<li class="active">
+								<span>#{page}<span class="sr-only">(current)</span></span>
+								</li>
+							</h:panelGroup>
+						</ui:repeat>
+								<h:panelGroup 
+							rendered="#{listJoinedEventsController.pages eq listJoinedEventsController.pageIndex}">
+									<li class="disabled">
+								<span>&gt;</span>
+									</li>
+								</h:panelGroup>
+								<h:panelGroup 
+							rendered="#{listJoinedEventsController.pages gt listJoinedEventsController.pageIndex}">
+									<li>
+								<h:commandLink 
+									aria-label="Previous"
+									value="&gt;"
+									action="#{listJoinedEventsController.listJoinedEventsNext()}" />
+									</li>
+								</h:panelGroup>
+						</ul>
+						</nav>
+						</h:panelGroup>
 									<h:outputText
 										value="Welcome! Join to some events to start."
 										rendered="#{listJoinedEventsController.pages eq 0}" />
@@ -51,22 +94,70 @@ color: red;
                             </div>
                         </ui:repeat>		
 					</div>
-					<div>&nbsp;</div>
-					<div>&nbsp;</div>
-					<div class="row">
-						<center>
-							<ui:repeat value="#{listJoinedEventsController.pagesLinks}"
+					<h:panelGroup rendered="#{listJoinedEventsController.pages ne 0}">
+						<div>&nbsp;</div>
+						<div>&nbsp;</div>
+						<div class="row">
+							<center>
+							<h:panelGroup 
+										rendered="#{0 lt listJoinedEventsController.pages}">
+							<nav>
+								<ul class="pagination">
+									<h:panelGroup 
+										rendered="#{1 eq listJoinedEventsController.pageIndex}">
+										<li class="disabled">
+											<span label="Previous">&lt;</span>
+										</li>
+									</h:panelGroup>
+									<h:panelGroup 
+										rendered="#{1 lt listJoinedEventsController.pageIndex}">
+										<li>
+										<h:commandLink 
+											aria-label="Previous"
+											value="&lt;"
+											action="#{listJoinedEventsController.listJoinedEventsPrev()}" />
+										</li>
+									</h:panelGroup>
+							<ui:repeat 
+								value="#{listJoinedEventsController.pagesLinks}"
 								var="page">
-								<h:commandLink value="#{page}"
-									action="#{listJoinedEventsController.jumpToPage(page)}"
-									rendered="#{page != listJoinedEventsController.pageIndex}" />
-
-								<h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
-									rendered="#{page == listJoinedEventsController.pageIndex}" />
+								<h:panelGroup 
+									rendered="#{page != listJoinedEventsController.pageIndex}">
+									<li>
+							    	<h:commandLink 
+							    		value="#{page}"
+										action="#{listJoinedEventsController.jumpToPage(page)}" />
+									</li>
+								</h:panelGroup>
+								<h:panelGroup 
+									rendered="#{page == listJoinedEventsController.pageIndex}" >
+									<li class="active">
+									<span>#{page}<span class="sr-only">(current)</span></span>
+									</li>
+								</h:panelGroup>
 							</ui:repeat>
-						</center>
-						<br/><br/><br/>
-					</div>			        
+									<h:panelGroup 
+								rendered="#{listJoinedEventsController.pages eq listJoinedEventsController.pageIndex}">
+										<li class="disabled">
+									<span>&gt;</span>
+										</li>
+									</h:panelGroup>
+									<h:panelGroup 
+								rendered="#{listJoinedEventsController.pages gt listJoinedEventsController.pageIndex}">
+										<li>
+									<h:commandLink 
+										aria-label="Previous"
+										value="&gt;"
+										action="#{listJoinedEventsController.listJoinedEventsNext()}" />
+										</li>
+									</h:panelGroup>
+							</ul>
+							</nav>
+							</h:panelGroup>
+							</center>
+							<br/><br/><br/>
+						</div>	
+					</h:panelGroup>		        
 					</h:form>
 				</div>
 		<h:panelGroup rendered="#{!loginController.anonymous 
