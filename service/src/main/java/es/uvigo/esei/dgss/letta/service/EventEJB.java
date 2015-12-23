@@ -103,6 +103,7 @@ public class EventEJB {
     }
     
 
+
     /**
      * Search for an event with advanced criteria 
      * @param search Search term of the query(short description or title)
@@ -130,9 +131,9 @@ public class EventEJB {
         boolean aux=false;
         if(state.name().equals("EXPIRED")){
         	aux=true;
-        	query_string+= "AND e.date<CURRENT_TIMESTAMP ";
+        	query_string+= "AND CURRENT_TIMESTAMP<e.date";
         }
-        query_string+= "ORDER BY e.date ASC";
+        query_string+= " ORDER BY e.date ASC";
         final TypedQuery<Event> query = em.createQuery(query_string,
                 Event.class
             ).setParameter("search", "%" + search.toLowerCase() + "%");
@@ -140,7 +141,7 @@ public class EventEJB {
         
         if(state.name().equals("CANCELLED")){
         	query.setParameter("auxState",true);
-        }else if(state.name().equals("AVAILABLE")){
+        }else {
         	query.setParameter("auxState",false);
         }
         	
@@ -148,6 +149,7 @@ public class EventEJB {
    
 
     }
+    
     
     
     

@@ -258,6 +258,7 @@ public class EventResourceRestTest {
     public void afterTestHighlighted() { }
 
 
+
     
     @Test
     @InSequence(800)
@@ -306,6 +307,121 @@ public class EventResourceRestTest {
     @CleanupUsingScript("cleanup.sql")
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void afterTestAdvancedSearchWithNonDefaultArguments() { }
+    
+    
+    
+    
+    @Test
+    @InSequence(806)
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestAdvancedSearchFailingPage() { }
+
+    
+    
+    @Test
+    @RunAsClient
+    @InSequence(807) 
+    public void testAdvancedSearchFailingPage() {
+       // final Response response = eventTarget().path("advanced_search").request().get();
+        final Response res = eventTarget().path("advanced_search")
+                .queryParam("category", "TELEVISION")
+                .queryParam("page", 0)
+                .request().get();
+        assertThat(res, hasHttpStatus(BAD_REQUEST));
+    }
+    
+    @Test
+    @InSequence(808) // test 8, sequence 2
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void afterTestAdvancedSearchFailingPage() { }    
+    
+
+    @Test
+    @InSequence(809)
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestAdvancedSearchFailingSize() { }
+
+    
+    
+    @Test
+    @RunAsClient
+    @InSequence(810) 
+    public void testAdvancedSearchFailingSize() {
+       // final Response response = eventTarget().path("advanced_search").request().get();
+        final Response res = eventTarget().path("advanced_search")
+                .queryParam("category", "TELEVISION")
+                .queryParam("size", -1)
+                .request().get();
+        assertThat(res, hasHttpStatus(BAD_REQUEST));
+    }
+    
+    @Test
+    @InSequence(811) 
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void afterTestAdvancedSearchFailingSize() { }    
+   
+    
+    
+
+    @Test
+    @InSequence(812)
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestAdvancedSearchCancelledState() { }
+
+    
+    
+    @Test
+    @RunAsClient
+    @InSequence(813) 
+    public void testAdvancedSearchCancelledState() {
+       // final Response response = eventTarget().path("advanced_search").request().get();
+        final Response res = eventTarget().path("advanced_search")
+                .queryParam("category", "BOOKS")
+                .queryParam("state", "CANCELLED")
+                .request().get();
+        assertThat(res, hasHttpStatus(OK));
+        assertThat(res.readEntity(asEventList), hasSize(3));
+
+    }
+    
+    @Test
+    @InSequence(814) 
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void afterTestAdvancedSearchCancelledState() { }    
+       
+    
+    
+    
+
+    @Test
+    @InSequence(815)
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void beforeTestAdvancedSearchExpiredState() { }
+
+    
+    
+    @Test
+    @RunAsClient
+    @InSequence(816) 
+    public void testAdvancedSearchExpiredState() {
+       // final Response response = eventTarget().path("advanced_search").request().get();
+        final Response res = eventTarget().path("advanced_search")
+                .queryParam("category", "BOOKS")
+                .queryParam("state", "EXPIRED")
+                .request().get();
+        assertThat(res, hasHttpStatus(OK));
+        assertThat(res.readEntity(asEventList), hasSize(2));
+
+    }
+    
+    @Test
+    @InSequence(817) 
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void afterTestAdvancedSearchExpiredState() { }    
     
     
     

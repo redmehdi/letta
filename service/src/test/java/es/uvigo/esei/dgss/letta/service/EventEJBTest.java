@@ -197,6 +197,19 @@ public class EventEJBTest {
 	public void testAdvancedSearchNoResults() {
 		assertThat(events.advancedSearch(EventsDataset.nonExistentTitle(),  State.AVAILABLE, "TELEVISION", 0, 25), is(empty()));
 	}
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml" })
+	@ShouldMatchDataSet({ "users.xml", "events.xml" })
+	public void testAdvancedSearchExpiredDate() {
+		assertThat(events.advancedSearch("",  State.EXPIRED, "BOOKS", 0, 25), hasSize(2));
+	}	
+	
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml" })
+	@ShouldMatchDataSet({ "users.xml", "events.xml" })
+	public void testAdvancedSearchCancelledEvent() {
+		assertThat(events.advancedSearch("",  State.CANCELLED, "BOOKS", 0, 25), hasSize(3));
+	}	
 	
 	@Test
 	@UsingDataSet({ "users.xml", "events.xml" })

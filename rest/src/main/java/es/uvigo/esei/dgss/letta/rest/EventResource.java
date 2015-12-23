@@ -181,6 +181,7 @@ public class EventResource {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
+    
     /**
      * REST aplication of the EJB advanced_search method
      * @param query
@@ -204,19 +205,21 @@ public class EventResource {
         isTrue(size >= 0, "Page size must be non-negative");
 
         final int start = (page - 1) * size;
-        State sta= State.AVAILABLE;
-        switch(state){
-        case "CANCELLED":
-        	sta=State.CANCELLED;
-        	break;
-        case "EXPIRED":
+        State sta;
+       if(state.equals("CANCELLED"))
+       		sta=State.CANCELLED;
+       else if(state.equals("EXPIRED"))
         	sta=State.EXPIRED;
-        	break;
-        }
+       else
+        	sta=State.AVAILABLE;
+        	
+
+        
         
         return status(OK).entity(events.advancedSearch(query, sta,category,start, size)).build();
     }
-	/**
+	
+    /**
 	 * 
 	 * Returns the {@link Event} information
 	 * 
