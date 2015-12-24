@@ -20,8 +20,10 @@ import es.uvigo.esei.dgss.letta.domain.util.annotations.VisibleForJPA;
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CapitalDistances implements Serializable  {
-	
-    @Id
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @JoinColumn(name = "capital_A", referencedColumnName = "capital")
 	private String capital_A;
 	
@@ -33,26 +35,62 @@ public class CapitalDistances implements Serializable  {
 	@Column( nullable = false)
 	private int distance;
 
+	/**
+	 * Returns the name of the {@link Capital}
+	 * 
+	 * @return the name of the {@link Capital}
+	 */
 	public String getCapital_A() {
 		return capital_A;
 	}
 
+	/**
+	 * Sets the name of the {@link Capital}
+	 * 
+	 * @param capital_A
+	 *      name of the {@link Capital}
+	 */
 	public void setCapital_A(String capital_A) {
 		this.capital_A = capital_A;
 	}
 
+	/**
+	 * Returns the name of the {@link Capital}
+	 * 
+	 * @return the name of the {@link Capital}
+	 */
 	public String getCapital_B() {
 		return capital_B;
 	}
 
+	/**
+	 * Sets the name of the {@link Capital}
+	 * 
+	 * @param capital_B
+	 *      name of the {@link Capital}
+	 */
 	public void setCapital_B(String capital_B) {
 		this.capital_B = capital_B;
 	}
 
+	/**
+	 * Returns the distance between {@link Capital capital_A} 
+	 *  and {@link Capital capital_B}
+	 * 
+	 * @return the distance between {@link Capital capital_A}
+	 *  and {@link Capital capital_B}
+	 */
 	public int getDistance() {
 		return distance;
 	}
 
+	/**
+	 * Sets the distance between {@link Capital capital_A}
+	 *  and {@link Capital capital_B}
+	 * 
+	 * @param distance between {@link Capital capital_A}
+	 *  and {@link Capital capital_B}
+	 */
 	public void setDistance(int distance) {
 		this.distance = distance;
 	}
@@ -75,14 +113,12 @@ public class CapitalDistances implements Serializable  {
      *         {@code null}.
      */
     public CapitalDistances(
-            final int           distance,
-            final String        capital_A,
-            final String        capital_B
-        ) throws NullPointerException {
+            final String capital_A,
+            final String capital_B,
+            final int    distance
+        )  {
             setCapital_A(capital_A);
             setCapital_B(capital_B);
             setDistance(distance);
-        }
-
-
+    }
 }

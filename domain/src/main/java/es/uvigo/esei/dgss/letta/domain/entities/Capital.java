@@ -22,6 +22,15 @@ public class Capital {
      * directly</strong>.
      */
     @VisibleForJPA Capital() { }
+    
+    /**
+     * Capital
+     * 
+     * @param c a neme of a Capital
+     */
+	public Capital(String c) {
+		setCapital(c);
+	}
 
 	/**
 	 * Returns the name of the {@link Capital}
@@ -41,6 +50,8 @@ public class Capital {
 	public void setCapital(String capital) {
 		this.capital = capital;
 	}
+	
+
 
 	
 }
