@@ -47,6 +47,7 @@ public class CreateEventController {
 	private Category type;
 	private Map<String, Category> types = new HashMap<String, Category>();
 	private String   description;
+	private String   place;
 
 	@PostConstruct
 	public void init() {
@@ -72,7 +73,7 @@ public class CreateEventController {
 			final LocalDateTime date = LocalDateTime
 					.ofInstant(this.date.toInstant(), ZoneId.systemDefault());
 			eventEJB.createEvent(
-					new Event(type, title, shortDescription, date, location, description));
+					new Event(type, title, shortDescription, date, location, description, place));
 			this.error = false;
 			context.redirect("eventCreated.xhtml");
 		} catch (NullPointerException e) {

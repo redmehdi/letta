@@ -81,6 +81,15 @@ final class EventParameters {
     public static String aDescription() {
         return "This is an event description";
     }
+    
+    /**
+     * Returns a valid place.
+     *
+     * @return a valid event place.
+     */
+    public static String aPlace() {
+        return "Segovia";
+    }
 
     /**
      * Returns a valid summary.
@@ -279,7 +288,7 @@ final class EventParameters {
      *         parameters.
      */
     public static Event validEvent() {
-        return new Event(aCategory(), aTitle(), aSummary(), aDate(), aLocation(), aDescription());
+        return new Event(aCategory(), aTitle(), aSummary(), aDate(), aLocation(), aDescription(), aPlace());
     }
 
 }

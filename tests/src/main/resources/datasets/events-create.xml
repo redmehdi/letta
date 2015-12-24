@@ -3,5 +3,6 @@
 	<Event id="26" category="BOOKS" title="New Literature Event"
 		summary="This is a summary" date="2000-01-01 01:01:01" location="Location X"
 		owner="john" cancelled="0" 
-		description="This is a long description, with a max. size one thousand" />
+		description="This is a long description, with a max. size one thousand" 
+		place="Segovia" />
 </dataset>

@@ -48,6 +48,7 @@ import es.uvigo.esei.dgss.letta.domain.util.converters.LocalDateTimeConverter;
  * @author Alberto Pardellas Soto
  * @author Aitor Blanco Míguez
  * @author Alberto Gutiérrez Jácome
+ * @author Borja Cordeiro González
  */
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -100,6 +101,9 @@ public class Event {
 
 	@Column(length = 1000, nullable = true)
 	private String description;
+	
+    @Column(length = 20, nullable = true)
+    private String place;
 
 
     /**
@@ -124,7 +128,8 @@ public class Event {
         final User          owner,
         final Set<User>     attendees,
         final boolean		cancelled,
-        final String        description
+        final String        description,
+        final String        place
     ) throws NullPointerException {
         this.id          = id;
         this.category    = requireNonNull(category);
@@ -136,6 +141,7 @@ public class Event {
         this.attendees   = requireNonNull(attendees);
         this.cancelled   = requireNonNull(cancelled);
         this.description = requireNonNull(description);
+        this.place       = requireNonNull(place);
     }
 
     /**
@@ -161,7 +167,8 @@ public class Event {
         final String        summary,
         final LocalDateTime date,
         final String        location,
-        final String		description
+        final String		description,
+        final String 	    place
     ) throws IllegalArgumentException, NullPointerException {
         setCategory(category);
         setTitle(title);
@@ -169,7 +176,7 @@ public class Event {
         setDate(date);
         setLocation(location);
         setDescription(description);
-
+        setPlace(place);
         this.owner     = null;
         this.attendees = new LinkedHashSet<>();
         this.cancelled = false;
@@ -370,6 +377,25 @@ public class Event {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	/**
+	 * Retrieves the place of a event
+	 * 
+	 * @return the place of a event
+	 */
+	public String getPlace() {
+		return place;
+	}
+	
+	/**
+	 * Changes if the event place is modified
+	 * 
+	 * @param place
+	 *            global variable
+	 */
+	public void setPlace(String place) {
+		this.place = place;
 	}
 
 	/**

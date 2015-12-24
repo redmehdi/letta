@@ -32,6 +32,7 @@ import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.users;
  * @author Jesús Álvarez Casanova
  * @author Adrián Rodríguez Fariña
  * @author Alberto Gutiérrez Jácome
+ * @author Borja Cordeiro González
  */
 public final class EventsDataset {
 
@@ -49,11 +50,11 @@ public final class EventsDataset {
     	final User[] users = users();
     	final LocalDateTime futureDate = LocalDateTime.of(2020, 1, 1, 1, 1, 1);
     	return new Event[] {
-    			 new Event( 1, BOOKS,      "Example1 literature", "This is a summary of literature 1", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 1"),
-    	            new Event( 2, BOOKS,      "Example2 literature", "This is a summary of literature 2", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 2"),
-    	            new Event( 3, MUSIC,      "Example1 music",      "This is a summary of music 1",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 1"     ),
-    	            new Event( 4, MUSIC,      "Example2 music",      "This is a summary of music 2",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 2"     ),
-    	            new Event( 5, MOVIES,     "Example1 cinema",     "This is a summary of cinema 1",     futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 1"    ),
+    			    new Event( 1, BOOKS,      "Example1 literature", "This is a summary of literature 1", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 1", "Segovia"),
+    	            new Event( 2, BOOKS,      "Example2 literature", "This is a summary of literature 2", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 2", "Segovia"),
+    	            new Event( 3, MUSIC,      "Example1 music",      "This is a summary of music 1",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 1"     , "Segovia"),
+    	            new Event( 4, MUSIC,      "Example2 music",      "This is a summary of music 2",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 2"     , "Segovia"),
+    	            new Event( 5, MOVIES,     "Example1 cinema",     "This is a summary of cinema 1",     futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 1"    , "Segovia"),
     	         };
     }
 
@@ -70,31 +71,31 @@ public final class EventsDataset {
         final LocalDateTime futureDate = LocalDateTime.of(2020, 1, 1, 1, 1, 1);
 
         return new Event[] {
-            new Event( 1, BOOKS,      "Example1 literature", "This is a summary of literature 1", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 1"),
-            new Event( 2, BOOKS,      "Example2 literature", "This is a summary of literature 2", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 2"),
-            new Event( 3, MUSIC,      "Example1 music",      "This is a summary of music 1",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 1"     ),
-            new Event( 4, MUSIC,      "Example2 music",      "This is a summary of music 2",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 2"     ),
-            new Event( 5, MOVIES,     "Example1 cinema",     "This is a summary of cinema 1",     futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 1"    ),
-            new Event( 6, MOVIES,     "Example2 cinema",     "This is a summary of cinema 2",     date, "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 2"    ),
-            new Event( 7, TELEVISION, "Example1 tv",         "This is a summary of tv 1",         date, "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of tv 1"        ),
-            new Event( 8, TELEVISION, "Example2 tv",         "This is a summary of tv 2",         date, "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of tv 2"        ),
-            new Event( 9, SPORTS,     "Example1 sports",     "This is a summary of sports 1",     date, "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of sports 1"    ),
-            new Event(10, SPORTS,     "Example2 sports",     "This is a summary of sports 2",     date, "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of sports 2"    ),
-            new Event(11, INTERNET,   "Example1 internet",   "This is a summary of internet 1",   date, "Location X", users[2], emptySet(), false, "This is a long description, with a max. size one thousand, of internet 1"  ),
-            new Event(12, INTERNET,   "Example2 internet",   "This is a summary of internet 2",   date, "Location X", users[2], emptySet(), false, "This is a long description, with a max. size one thousand, of internet 2"  ),
-            new Event(13, TRAVELS,    "Example1 travels",    "This is a summary of travels 1",    date, "Location X", users[2], emptySet(), false, "This is a long description, with a max. size one thousand, of travels 1"   ),
-            new Event(14, TRAVELS,    "Example2 travels",    "This is a summary of travels 2",    date, "Location X", users[2], emptySet(), false, "This is a long description, with a max. size one thousand, of travels 2"   ),
-            new Event(15, THEATRE,    "Example1 theatre",    "This is a summary of theatre 1",    date, "Location X", users[2], emptySet(), false, "This is a long description, with a max. size one thousand, of theatre 1"   ),
-            new Event(16, THEATRE,    "Example2 theatre",    "This is a summary of theatre 2",    date, "Location X", users[3], emptySet(), false, "This is a long description, with a max. size one thousand, of theatre 2"   ),
-            new Event(17, SPORTS,     "Example3 sports",     "This is a summary of sports 3",     date, "Location X", users[3], emptySet(), false, "This is a long description, with a max. size one thousand, of sports 3"    ),
-            new Event(18, INTERNET,   "Example3 internet",   "This is a summary of internet 3",   date, "Location X", users[3], emptySet(), false, "This is a long description, with a max. size one thousand, of internet 3"  ),
-            new Event(19, TRAVELS,    "Example3 travels",    "This is a summary of travels 3",    date, "Location X", users[3], emptySet(), false, "This is a long description, with a max. size one thousand, of travels 3"   ),
-            new Event(20, MOVIES,     "Example3 cinema",     "This is a summary of cinema 3",     date, "Location X", users[3], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 3"    ),
-            new Event(21, TELEVISION, "Example3 tv",         "This is a summary of tv 3",         date, "Location X", users[4], emptySet(), true , "This is a long description, with a max. size one thousand, of tv 3"        ),
-            new Event(22, MUSIC,      "Example3 music",      "This is a summary of music 3",      date, "Location X", users[4], emptySet(), true , "This is a long description, with a max. size one thousand, of music 3"     ),
-            new Event(23, BOOKS,      "Example3 literature", "This is a summary of literature 3", date, "Location X", users[4], emptySet(), true , "This is a long description, with a max. size one thousand, of literature 3"),
-            new Event(24, BOOKS,      "Example4 literature", "This is a summary of literature 4", date, "Location X", users[4], emptySet(), true , "This is a long description, with a max. size one thousand, of literature 4"),
-            new Event(25, BOOKS,      "Example5 literature", "This is a summary of literature 5", date, "Location X", users[4], emptySet(), true , "This is a long description, with a max. size one thousand, of literature 5")
+            new Event( 1, BOOKS,      "Example1 literature", "This is a summary of literature 1", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 1", "Segovia"),
+            new Event( 2, BOOKS,      "Example2 literature", "This is a summary of literature 2", futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of literature 2", "Segovia"),
+            new Event( 3, MUSIC,      "Example1 music",      "This is a summary of music 1",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 1"     , "Segovia"),
+            new Event( 4, MUSIC,      "Example2 music",      "This is a summary of music 2",      futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of music 2"     , "Segovia"),
+            new Event( 5, MOVIES,     "Example1 cinema",     "This is a summary of cinema 1",     futureDate, "Location X", users[0], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 1"    , "Segovia"),
+            new Event( 6, MOVIES,     "Example2 cinema",     "This is a summary of cinema 2",     date,       "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 2"    , "Segovia"),
+            new Event( 7, TELEVISION, "Example1 tv",         "This is a summary of tv 1",         date,       "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of tv 1"        , "Segovia"),
+            new Event( 8, TELEVISION, "Example2 tv",         "This is a summary of tv 2",         date,       "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of tv 2"        , "Segovia"),
+            new Event( 9, SPORTS,     "Example1 sports",     "This is a summary of sports 1",     date,       "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of sports 1"    , "Segovia"),
+            new Event(10, SPORTS,     "Example2 sports",     "This is a summary of sports 2",     date,       "Location X", users[1], emptySet(), false, "This is a long description, with a max. size one thousand, of sports 2"    , "Segovia"),
+            new Event(11, INTERNET,   "Example1 internet",   "This is a summary of internet 1",   date,       "Location X", users[2], emptySet(), false, "This is a long description, with a max. size one thousand, of internet 1"  , "Segovia"),
+            new Event(12, INTERNET,   "Example2 internet",   "This is a summary of internet 2",   date,       "Location X", users[2], emptySet(), false, "This is a long description, with a max. size one thousand, of internet 2"  , "Segovia"),
+            new Event(13, TRAVELS,    "Example1 travels",    "This is a summary of travels 1",    date,       "Location X", users[2], emptySet(), false, "This is a long description, with a max. size one thousand, of travels 1"   , "Segovia"),
+            new Event(14, TRAVELS,    "Example2 travels",    "This is a summary of travels 2",    date,       "Location X", users[2], emptySet(), false, "This is a long description, with a max. size one thousand, of travels 2"   , "Segovia"),
+            new Event(15, THEATRE,    "Example1 theatre",    "This is a summary of theatre 1",    date,       "Location X", users[2], emptySet(), false, "This is a long description, with a max. size one thousand, of theatre 1"   , "Segovia"),
+            new Event(16, THEATRE,    "Example2 theatre",    "This is a summary of theatre 2",    date,       "Location X", users[3], emptySet(), false, "This is a long description, with a max. size one thousand, of theatre 2"   , "Segovia"),
+            new Event(17, SPORTS,     "Example3 sports",     "This is a summary of sports 3",     date,       "Location X", users[3], emptySet(), false, "This is a long description, with a max. size one thousand, of sports 3"    , "Segovia"),
+            new Event(18, INTERNET,   "Example3 internet",   "This is a summary of internet 3",   date,       "Location X", users[3], emptySet(), false, "This is a long description, with a max. size one thousand, of internet 3"  , "Segovia"),
+            new Event(19, TRAVELS,    "Example3 travels",    "This is a summary of travels 3",    date,       "Location X", users[3], emptySet(), false, "This is a long description, with a max. size one thousand, of travels 3"   , "Segovia"),
+            new Event(20, MOVIES,     "Example3 cinema",     "This is a summary of cinema 3",     date,       "Location X", users[3], emptySet(), false, "This is a long description, with a max. size one thousand, of cinema 3"    , "Segovia"),
+            new Event(21, TELEVISION, "Example3 tv",         "This is a summary of tv 3",         date,       "Location X", users[4], emptySet(), true , "This is a long description, with a max. size one thousand, of tv 3"        , "Segovia"),
+            new Event(22, MUSIC,      "Example3 music",      "This is a summary of music 3",      date,       "Location X", users[4], emptySet(), true , "This is a long description, with a max. size one thousand, of music 3"     , "Segovia"),
+            new Event(23, BOOKS,      "Example3 literature", "This is a summary of literature 3", date,       "Location X", users[4], emptySet(), true , "This is a long description, with a max. size one thousand, of literature 3", "Segovia"),
+            new Event(24, BOOKS,      "Example4 literature", "This is a summary of literature 4", date,       "Location X", users[4], emptySet(), true , "This is a long description, with a max. size one thousand, of literature 4", "Segovia"),
+            new Event(25, BOOKS,      "Example5 literature", "This is a summary of literature 5", date,       "Location X", users[4], emptySet(), true , "This is a long description, with a max. size one thousand, of literature 5", "Segovia")
         };
     }
 
@@ -284,7 +285,8 @@ public final class EventsDataset {
     		users()[1],
     		emptySet(),
     		false, 
-    		"This is a long description, with a max. size one thousand, of literature 1"
+    		"This is a long description, with a max. size one thousand, of literature 1",
+    		"Segovia"
         );        
     }
 
@@ -340,7 +342,8 @@ public final class EventsDataset {
             "This is a summary",
             LocalDateTime.of(2000, 1, 1, 1, 1, 1),
             "Location X",
-            "This is a long description, with a max. size one thousand"
+            "This is a long description, with a max. size one thousand",
+            "Segovia"
         );
     }
 
@@ -359,7 +362,8 @@ public final class EventsDataset {
             "This is a summary",
             LocalDateTime.of(2000, 1, 1, 1, 1, 1),
             "Location X",
-            "This is a long description, with a max. size one thousand"
+            "This is a long description, with a max. size one thousand",
+            "Segovia"
         );
     } 
 
@@ -396,7 +400,8 @@ public final class EventsDataset {
                 event.getOwner(),
                 groups[index],
                 event.isCancelled(),
-                event.getDescription()
+                event.getDescription(),
+                event.getPlace()
             );
         }).toArray(Event[]::new);
     }
