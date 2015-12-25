@@ -37,14 +37,15 @@
 									var a=document.getElementById('searchForm:srch-term').value;
 									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{searchController.pageIndex-1}'+'&amp;count=4';
 									return false;"
-								 rendered="#{not empty searchController.searchResults}" />
+								 	rendered="#{(not empty searchController.searchResults) and (searchController.pageIndex!=0)}"/>
 								<h:outputText id="number_of_pages"
 									value="#{searchController.pageIndex+1} / #{searchController.pages}" rendered="#{not empty searchController.searchResults}"  />
 								<h:commandButton value="next &gt;"
 									onclick="
 									var a=document.getElementById('searchForm:srch-term').value;
 									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{searchController.pageIndex+1}'+'&amp;count=4';
-									return false;" rendered="#{not empty searchController.searchResults}" />
+									return false;" 
+									rendered="#{(not empty searchController.searchResults) and ((searchController.pageIndex+1)!=searchController.pages)}" />
 								<h:inputHidden value="#{searchController.pageIndex}" />
 								<h:inputHidden value="#{searchController.terms}" />
 							</center>
