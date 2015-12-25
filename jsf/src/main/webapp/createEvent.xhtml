@@ -72,6 +72,14 @@
 									<f:selectItems value="#{createEventController.types}" />
 								</h:selectOneMenu>
 								<br />
+								
+								<h:message for="place-field" />
+								<h:selectOneMenu id="place-field" value="#{createEventController.place}"
+									class="form-control">
+									<f:selectItem itemLabel="Select one place" itemValue="" />
+									<f:selectItems value="#{createEventController.places}" />
+								</h:selectOneMenu>
+								<br />
 	
 								<h:commandButton id="submit-button" class="
 									btn btn-default" value="Create"

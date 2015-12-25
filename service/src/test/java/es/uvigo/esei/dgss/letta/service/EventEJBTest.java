@@ -438,14 +438,14 @@ public class EventEJBTest {
     public void testCountNotEmpty() {
 
         final int count = events.count("");
-        assertThat(count, is(20));
+        assertThat(count, is(5));
     }
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     public void testCountExampleTerm() {
 
         final int count = events.count("example");
-        assertThat(count, is(20));
+        assertThat(count, is(5));
     }
     @Test
     @UsingDataSet({ "users.xml", "new-user.xml", "events.xml", "event-attendees.xml" })

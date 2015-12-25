@@ -40,9 +40,8 @@ public class EventSearchController implements Serializable {
 	@PostConstruct
 	public void init() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		System.out.println("Request parameter map "+ facesContext.getExternalContext().getRequestParameterMap().toString());
-		if (facesContext.getExternalContext().getRequestParameterMap().get("term")
-				!= null) {
+		if (facesContext.getExternalContext().getRequestParameterMap()
+				.get("term") != null) {
 			String srch_terms = (String) facesContext.getExternalContext()
 					.getRequestParameterMap().get("term");
 
@@ -58,25 +57,20 @@ public class EventSearchController implements Serializable {
 
 			int count = searchEJB.count(srch_terms);
 			this.pageIndex = page;
-			
-			if (count> 0) {
+
+			if (count > 0) {
 				int num_pages = count / 4;
 				if (count % 4 != 0)
 					num_pages++;
-				
+
 				this.pages = num_pages;
-				System.out.println("PAGES VALE " + this.pages);
-				if(pagesLinks.isEmpty()){
-					System.out.println("entrei");
+				if (pagesLinks.isEmpty()) {
 					for (int i = 0; i < pages; i++)
 						pagesLinks.add(String.valueOf(i + 1));
 				}
-				System.out.println("Pages links vale "+pagesLinks.toString());
-					searchResults = searchEJB.search(this.terms,
-							this.pageIndex * 4, 4);
-				
+				searchResults = searchEJB.search(this.terms, this.pageIndex * 4,
+						4);
 			}
-
 		}
 	}
 

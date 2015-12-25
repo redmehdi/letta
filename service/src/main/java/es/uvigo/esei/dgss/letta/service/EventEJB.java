@@ -21,6 +21,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
@@ -94,6 +95,7 @@ public class EventEJB {
                 " WHERE ( LOWER(e.title) LIKE :search " +
                 "    OR LOWER(e.summary) LIKE :search " +
                 "OR LOWER(e.description) LIKE :search )" +
+                "AND e.date > now()"+
                 "AND e.cancelled =  FALSE " +
                 "ORDER BY e.date ASC",
                 Event.class
@@ -192,7 +194,7 @@ public class EventEJB {
     @PermitAll
     public List<Event> listHighlighted() {
         return em.createQuery(
-            "SELECT e from Event e ORDER BY RAND()",
+            "SELECT e from Event e where e.date > now() ORDER BY RAND()",
             Event.class
         ).setMaxResults(5).getResultList();
     }
@@ -453,6 +455,7 @@ public class EventEJB {
             event.setCategory(modified.getCategory());
             event.setSummary(modified.getSummary());
             event.setTitle(modified.getTitle());
+            event.setPlace(modified.getPlace());
         }else{
         	ctx.setRollbackOnly();
         	throw new UserNotAuthorizedException(user,event);
@@ -527,6 +530,17 @@ public class EventEJB {
 		}
 
 		return event.isCancelled();
+	}
+	
+	/**
+	 * Gets all the {@link Capital} in the database.
+	 *
+	 * @return The {@link List} with all the {@link Capital}
+	 */
+	@PermitAll
+	public List<Capital> getCapitals() {
+		return em.createQuery("SELECT c FROM Capital c",
+				Capital.class).getResultList();
 	}
 
 }

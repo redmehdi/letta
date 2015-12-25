@@ -393,9 +393,12 @@ public class Event {
 	 * 
 	 * @param place
 	 *            global variable
+	 * @throws NullPointerException
+	 *             If a {@code null} category is received.
 	 */
-	public void setPlace(String place) {
-		this.place = place;
+	public void setPlace(String place) throws NullPointerException {
+		this.place = requireNonNull(place,
+				"Event's place cannot be null.");
 	}
 
 	/**

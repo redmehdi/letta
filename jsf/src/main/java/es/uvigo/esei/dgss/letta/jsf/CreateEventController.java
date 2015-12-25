@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -12,9 +14,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.validation.constraints.Size;
 
+import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
@@ -34,7 +38,7 @@ public class CreateEventController {
 
 	@Inject
 	EventEJB eventEJB;
-
+	
 	private ExternalContext context = FacesContext.getCurrentInstance()
 			.getExternalContext();
 
@@ -46,6 +50,7 @@ public class CreateEventController {
 	private Date     date;
 	private Category type;
 	private Map<String, Category> types = new HashMap<String, Category>();
+	private List<SelectItem> places = new LinkedList<SelectItem>();
 	private String   description;
 	private String   place;
 
@@ -60,6 +65,10 @@ public class CreateEventController {
 		types.put("Internet", Category.INTERNET);
 		types.put("Travels", Category.TRAVELS);
 		types.put("Theatre", Category.THEATRE);
+		places = new LinkedList<SelectItem>();
+		for(Capital capital : eventEJB.getCapitals()){
+			places.add(new SelectItem(capital.getCapital(),capital.getCapital()));
+		}
 	}
 
 	/**
@@ -245,7 +254,41 @@ public class CreateEventController {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+
+	/**
+	 * Getter method of places variable
+	 * 
+	 * @return places global variable
+	 */
+	public List<SelectItem> getPlaces() {
+		return places;
+	}
+
+	/**
+	 * Setter method of places variable
+	 * 
+	 * @param places global variable
+	 */
+	public void setPlaces(List<SelectItem> places) {
+		this.places = places;
+	}
+
+	/**
+	 * Getter method of place variable
+	 * 
+	 * @return place global variable
+	 */
+	public String getPlace() {
+		return place;
+	}
+
+	/**
+	 * Setter method of place variable
+	 * 
+	 * @param place global variable
+	 */
+	public void setPlace(String place) {
+		this.place = place;
+	}
 
 }
