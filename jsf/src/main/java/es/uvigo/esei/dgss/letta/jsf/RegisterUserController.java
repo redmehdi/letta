@@ -2,11 +2,15 @@ package es.uvigo.esei.dgss.letta.jsf;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 import javax.servlet.http.Part;
@@ -14,8 +18,10 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.io.IOUtils;
 
+import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
@@ -45,12 +51,38 @@ public class RegisterUserController {
 	private String email;
 	private String password;
 	private String repassword;
-	private Part image;
+	private Part   image;
 	private String completeName;
 	private String description;
 	private String fbUrl;
 	private String twUrl;
 	private String personalUrl;
+	private String place;
+	private List<SelectItem> places = new LinkedList<SelectItem>();
+	@Inject
+	private EventEJB eventEJB;
+
+	
+	
+	
+	public List<SelectItem> getPlaces() {
+		return places;
+	}
+
+
+	public void setPlaces(List<SelectItem> places) {
+		this.places = places;
+	}
+
+
+	@PostConstruct
+	public void init(){
+		places = new LinkedList<SelectItem>();
+		for(Capital capital : eventEJB.getCapitals()){
+			places.add(new SelectItem(capital.getCapital(),capital.getCapital()));
+		}
+	}
+	
 
 	/**
 	 * Register a user. If login or email are duplicated, shows a message.
@@ -70,8 +102,7 @@ public class RegisterUserController {
 				imageRaw =IOUtils.toByteArray(imageInputStream);
 			}
 	        final Registration registration = new Registration(
-					new User(login, password, email, completeName, description, fbUrl, twUrl, personalUrl, false, imageRaw));
-
+					new User(login, password, email, completeName, description, fbUrl, twUrl, personalUrl, false, imageRaw,place));
 			try {
 				userEJB.registerUser(registration);
 				error = false;
@@ -90,6 +121,16 @@ public class RegisterUserController {
 		}
 	}
 	
+	public String getPlace() {
+		return place;
+	}
+
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+
+
 	/**
 	 * Getter method of login variable.
 	 *

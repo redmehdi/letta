@@ -52,7 +52,8 @@ public class Registration {
 	
 	@Column(length = 50)
 	private String personalUrl;
-	
+	@Column(length = 20)
+	private String city;
 	
 	@Lob
 	@Column
@@ -97,7 +98,8 @@ public class Registration {
 		this.twUrl = user.getTwUrl();
 		this.personalUrl = user.getPersonalUrl();
 		this.image = user.getImage();
-	}
+		this.city=user.getCity();
+		}
 
 	/**
 	 * Returns the unique identifiers of this registration.
@@ -214,7 +216,7 @@ public class Registration {
 	 * @return the registered user.
 	 */
 	public User getUser() {
-		return new User(this.login, this.password, this.email, this.role, this.completeName, this.description, this.fbUrl, this.twUrl, this.personalUrl, false, this.image);
+		return new User(this.login, this.password, this.email, this.role, this.completeName, this.description, this.fbUrl, this.twUrl, this.personalUrl, false, this.image,this.city);
 	}
 
 	@Override

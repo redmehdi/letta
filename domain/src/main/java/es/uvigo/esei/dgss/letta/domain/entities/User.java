@@ -75,6 +75,21 @@ public class User implements Serializable {
 	@Column
 	private byte[] image;
 
+	
+	@Column(length = 20)
+	private String city;
+	
+	
+	
+	
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
 	/**
 	 * Constructs a new instance of {@link User}. This constructor is required
 	 * by the JPA framework.
@@ -107,6 +122,26 @@ public class User implements Serializable {
 
 		this.role = Role.USER;
 	}
+	
+	public User(final String login, final String password, final String email,String city) {
+		this.setLogin(login);
+		this.changePassword(password);
+		this.setEmail(email);
+		this.completeName = null;
+		this.description = null;
+		this.fbUrl = null;
+		this.twUrl = null;
+		this.personalUrl = null;
+		this.image = null;
+		this.notifications = false;
+
+		this.role = Role.USER;
+	}
+	
+	
+	
+	
+	
 	public User(final String login, final String password, final String email,boolean isAdmin) {
 		this.setLogin(login);
 		this.changePassword(password);
@@ -151,7 +186,7 @@ public class User implements Serializable {
 	 */
 	public User(final String login, final String password, final String email, final String completeName,
 			final String description, final String fbUrl, final String twUrl, final String personalUrl,
-			final boolean notifications, final byte[] image) {
+			final boolean notifications, final byte[] image,final String city) {
 		this.setLogin(login);
 		this.changePassword(password);
 		this.setEmail(email);
@@ -162,7 +197,7 @@ public class User implements Serializable {
 		this.personalUrl = personalUrl;
 		this.notifications = notifications;
 		this.image = image;
-
+		this.city=city;
 		this.role = Role.USER;
 	}
 
@@ -227,7 +262,7 @@ public class User implements Serializable {
 	 */
 	User(final String login, final String password, final String email, final Role role, final String completeName,
 			final String description, final String fbUrl, final String twUrl, final String personalUrl,
-			final boolean notifications, final byte[] image) {
+			final boolean notifications, final byte[] image,String city) {
 		this.login = login;
 		this.password = password;
 		this.email = email;
@@ -239,6 +274,7 @@ public class User implements Serializable {
 		this.notifications = notifications;
 		this.image = image;
 		this.role = role;
+		this.city=city;
 	}
 
 	/**

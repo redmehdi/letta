@@ -183,7 +183,7 @@ public final class UserParameters {
 	 */
 	public static User validUserWitOptinalData() {
 		return new User(aLogin(), aPassword(), anEmail(), aCompleteName(), aDescription(), aFbUrl(), aTwUrl(),
-				aPersonalUrl(), false, null);
+				aPersonalUrl(), false, null, null);
 	}
 	
 	/**

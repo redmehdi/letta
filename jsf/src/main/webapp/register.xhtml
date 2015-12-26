@@ -45,6 +45,11 @@
 					    	<h:inputText id="twUrl" required="false" maxlength="50" class="form-control" value="#{registerController.twUrl}" a:placeholder="Twitter profile"/><br/>
 					    	<h:inputText id="personalUrl" required="false" maxlength="50" class="form-control" value="#{registerController.personalUrl}" a:placeholder="Your personal website"/><br/>
 					    	<h:inputTextarea rows="4" id="description" required="false" maxlength="1000" class="form-control" value="#{registerController.description}" a:placeholder="Your description"/><br/>
+							<h:selectOneMenu id="place-field" value="#{registerController.place}"
+									class="form-control">
+									<f:selectItem itemLabel="Select one place" itemValue="" />
+									<f:selectItems value="#{registerController.places}" />
+							</h:selectOneMenu>
 					    	<h:commandButton id="submit-button" class="btn btn-default" value="Register" action="#{registerController.doRegister()}"/>
 					    </h:form>
 				    	<small>* Obligatory fields</small>

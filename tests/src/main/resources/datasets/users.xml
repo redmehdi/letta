@@ -3,26 +3,26 @@
 	<User login="john" password="3bffe7a2bc163d273184e8902afe66b7"
 		email="john@email.com" role="USER" completeName="john name"
 		description="john description" fbUrl="https://www.facebook.com/john"
-		twUrl="https://twitter.com/john" personalUrl="https://johnpersonal.com/" notifications="0" />
+		twUrl="https://twitter.com/john" personalUrl="https://johnpersonal.com/" notifications="0" city="Cuenca" />
 	<User login="anne" password="1afee8bef2d82a3bef6f52b2614f16ab"
 		email="anne@email.com" role="USER" completeName="anne name"
 		description="anne description" fbUrl="https://www.facebook.com/anne"
-		twUrl="https://twitter.com/anne" personalUrl="https://annepersonal.com/" notifications="0" />
+		twUrl="https://twitter.com/anne" personalUrl="https://annepersonal.com/" notifications="0" city="Alicante" />
 	<User login="mary" password="a5446c2cfe2b8a015caa8a7e825bb8af"
 		email="mary@email.com" role="USER" completeName="mary name"
 		description="mary description" fbUrl="https://www.facebook.com/mary"
-		twUrl="https://twitter.com/mary" personalUrl="https://marypersonal.com/" notifications="0" />
+		twUrl="https://twitter.com/mary" personalUrl="https://marypersonal.com/" notifications="0" city="Ourense" />
 	<User login="joan" password="ce8a660555a5701617403c77f6654d65"
 		email="joan@email.com" role="USER" completeName="joan name"
 		description="joan description" fbUrl="https://www.facebook.com/joan"
-		twUrl="https://twitter.com/joan" personalUrl="https://joanpersonal.com/" notifications="0" />
+		twUrl="https://twitter.com/joan" personalUrl="https://joanpersonal.com/" notifications="0" city="Cáceres" />
 	<User login="mike" password="b1b668f82813956ef1fe9688e6c05011"
 		email="mike@email.com" role="USER" completeName="mike name"
 		description="mike description" fbUrl="https://www.facebook.com/mike"
-		twUrl="https://twitter.com/mike" personalUrl="https://mikepersonal.com/" notifications="1" />
+		twUrl="https://twitter.com/mike" personalUrl="https://mikepersonal.com/" notifications="1" city="Granada" />
 	<User login="kurt" password="81252633317d5b5bc1ab9feb1bd3af69"
 		email="kurt@email.com" role="ADMIN" completeName="kurt name"
 		description="kurt description" fbUrl="https://www.facebook.com/kurt"
-		twUrl="https://twitter.com/kurt" personalUrl="https://kurtpersonal.com/" notifications="0" />
+		twUrl="https://twitter.com/kurt" personalUrl="https://kurtpersonal.com/" notifications="0" city="Gerona" />
 	
 </dataset>

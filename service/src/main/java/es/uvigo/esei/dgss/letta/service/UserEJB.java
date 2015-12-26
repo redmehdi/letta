@@ -1,5 +1,9 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import static java.util.Objects.nonNull;
+import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.Validate.isTrue;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -18,16 +22,12 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
-
-import static java.util.Objects.nonNull;
-import static java.util.Optional.ofNullable;
-
-import static org.apache.commons.lang3.Validate.isTrue;
 
 /**
  * {@linkplain UserEJB} is a service bean providing all the required
@@ -76,6 +76,14 @@ public class UserEJB {
         return ofNullable(em.find(User.class, login));
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
     /**
      * Retrieves the {@link User} associated with the received email, returned
      * as an {@link Optional} value that will be empty if the user is not found.
@@ -294,6 +302,7 @@ public class UserEJB {
 			if (!user.getPassword().equals(currentUser.getPassword())) {
 				currentUser.setPassword(user.getPassword());
 			}
+			System.out.println("USER "+currentUser.getCity());
 			currentUser.setCompleteName(user.getCompleteName());
 			currentUser.setDescription(user.getDescription());
 			currentUser.setFbUrl(user.getFbUrl());
@@ -301,6 +310,8 @@ public class UserEJB {
 			currentUser.setPersonalUrl(user.getPersonalUrl());
 			currentUser.setImage(user.getImage());
 			currentUser.setNotifications(user.isNotifications());
+			currentUser.setCity(user.getCity());
+			
 
 			em.merge(currentUser);
 		}

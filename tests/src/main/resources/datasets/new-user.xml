@@ -4,5 +4,5 @@
 		email="bart@email.com" role="USER" completeName="bart name"
 		description="bart description" fbUrl="https://www.facebook.com/bart"
 		twUrl="https://twitter.com/bart" personalUrl="https://bartpersonal.com/"
-		notifications="0" image="null" />
+		notifications="0" image="null" city="Badajoz"/>
 </dataset>

@@ -2,6 +2,8 @@ package es.uvigo.esei.dgss.letta.jsf;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -13,7 +15,9 @@ import javax.servlet.http.Part;
 
 import org.apache.commons.io.IOUtils;
 
+import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
@@ -47,7 +51,28 @@ public class ModifyProfileController {
 	private String twUrl;
 	private String personalUrl;
 	private boolean notifications;
+	private String   place;
+
+	private List<String> places = new LinkedList<String>();
+	@Inject
+	private EventEJB eventEJB;
 	private User user;
+
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+
+	public List<String> getPlaces() {
+		return places;
+	}
+
+	public void setPlaces(List<String> places) {
+		this.places = places;
+	}
 
 	@PostConstruct
 	public void init() throws IOException {
@@ -59,6 +84,12 @@ public class ModifyProfileController {
 		twUrl = user.getTwUrl();
 		notifications = user.isNotifications();
 		personalUrl = user.getPersonalUrl();
+		place = user.getCity();
+		
+		places = new LinkedList<String>();
+		for(Capital capital : eventEJB.getCapitals()){
+			places.add(capital.getCapital());
+		}
 	}
 
 	/**
@@ -90,7 +121,9 @@ public class ModifyProfileController {
 				user.setCompleteName(completeName);
 				user.setDescription(description);
 				user.setNotifications(notifications);
-
+				
+				user.setCity(place);
+				
 				try {
 					userEJB.modifyProfile(user);
 					context.redirect("userModified.xhtml");
