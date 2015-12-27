@@ -189,6 +189,7 @@ public class EventEJB {
      * will be first on the list).
      *
      * @param location The location of the logged {@link User}.
+     * @param start The first {@link Event} position to return, numbered from 0.
      * @param count The number of {@link Event Events} to return.
      *
      * @return A sorted {@link List} with the specified number of {@link Event
@@ -200,23 +201,15 @@ public class EventEJB {
      */
     @RolesAllowed("USER")
     public List<Event> listByLocation(
-        final String location, final int count
+        final String location, final int start, final int count
     ) throws IllegalArgumentException {
         if (count == 0) return emptyList();
-        final List<Event> atLocation = em.createQuery(
-                "SELECT e from Event e where e.place=:location and e.date > now() ORDER BY e.date ASC",
-                Event.class
-            ).setParameter("location", location).setMaxResults(count).getResultList();
          
-        final List<Event> otherLocation = em.createQuery(
-               "SELECT e from Event e, CapitalDistances cd where cd.capital_A='Pontevedra' and"
+        return em.createQuery(
+               "SELECT e from Event e, CapitalDistances cd where cd.capital_A=:location and"
                + " cd.capital_B=e.place and e.date > now() ORDER BY cd.distance ASC, e.date ASC",
                Event.class
-    	    ).setMaxResults(count-atLocation.size()).getResultList();
-        
-        otherLocation.forEach(e -> atLocation.add(e));
-       
-        return atLocation;
+    	    ).setParameter("location", location).setFirstResult(start).setMaxResults(count).getResultList();
     }
 
     /**
@@ -368,6 +361,29 @@ public class EventEJB {
             "ORDER BY date DESC, title ASC",
             Event.class
         ).setParameter("user", auth.getCurrentUser());
+        if (count < 0)
+            return query.setFirstResult(0).setMaxResults(Integer.MAX_VALUE).getResultList();
+        else
+        	return query.setFirstResult(start).setMaxResults(count).getResultList();
+    }
+    
+    /**
+     * Return a {@link List} of {@link Event Events} that authenticated
+     * {@link User} is joined ordered by location.
+     *
+     * @return A {@link List} of {@link Event Events} that authenticated
+     *         {@link User} is joined ordered by location.
+     */
+    @RolesAllowed("USER")
+    public List<Event> getAttendingEventsOrderLocation(final String location, final int start, final int count) {
+        if (count == 0) return emptyList();        
+        
+        final TypedQuery<Event> query = em.createQuery(
+            "SELECT e FROM Event e JOIN FETCH e.attendees, CapitalDistances cd " +
+            "WHERE :user MEMBER OF e.attendees and cd.capital_A=:location and "+
+            "cd.capital_B=e.place ORDER BY date DESC, cd.distance ASC, title ASC",
+            Event.class
+        ).setParameter("location", location).setParameter("user", auth.getCurrentUser());
         if (count < 0)
             return query.setFirstResult(0).setMaxResults(Integer.MAX_VALUE).getResultList();
         else

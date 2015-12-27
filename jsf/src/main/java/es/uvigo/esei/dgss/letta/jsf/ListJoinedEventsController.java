@@ -1,5 +1,6 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.jsf.util.EventMappings;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
+import es.uvigo.esei.dgss.letta.service.UserEJB;
 
 /**
  * {@linkplain ListJoinedEventsController} is a JSF controller to list events
@@ -20,6 +22,7 @@ import es.uvigo.esei.dgss.letta.service.EventEJB;
  *
  * @author Borja Cordeiro González
  * @author Adrian Rodriguez Fariña
+ * @author Aitor Blanco Míguez
  *
  */
 @ViewScoped
@@ -28,6 +31,12 @@ public class ListJoinedEventsController{
 
 	@Inject
 	private EventEJB eventEJB;
+    
+    @Inject
+	private Principal currentUserPrincipal;
+    
+    @Inject
+    private UserEJB userEJB;
 
 	private int pageIndex=1;
     private int pages=0;
@@ -72,10 +81,17 @@ public class ListJoinedEventsController{
      *
      * @return an ordered List of twenty events.
      */
-    public List<Event> getEventList() {
-		return eventEJB.getAttendingEvents(
-				(this.pageIndex - 1) * CTE_NUM_EVENTS_PAGE,
-				CTE_NUM_EVENTS_PAGE);
+    public List<Event> getEventList() {		
+    	final String location = userEJB.get(currentUserPrincipal.getName()).get().getCity();   	
+		if(location == null)
+    		return eventEJB.getAttendingEvents(
+    				(this.pageIndex - 1) * CTE_NUM_EVENTS_PAGE,
+    				CTE_NUM_EVENTS_PAGE);
+		else
+			return eventEJB.getAttendingEventsOrderLocation(
+					location,
+    				(this.pageIndex - 1) * CTE_NUM_EVENTS_PAGE,
+    				CTE_NUM_EVENTS_PAGE);
 	}
 
 

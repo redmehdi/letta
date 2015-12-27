@@ -55,7 +55,7 @@ public class IndexPageController {
     		if(location == null)
         		return eventEJB.listByDate(0, 20);
     		else
-    			return eventEJB.listByLocation(location, 20);
+    			return eventEJB.listByLocation(location,0, 20);
     	}
     }
 
