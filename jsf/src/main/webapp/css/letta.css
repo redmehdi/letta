@@ -6944,6 +6944,14 @@ body {
   z-index  : 1;
 }
 
+.location-img {
+  top      : 125px;
+  left     : 170px;
+  width    : 60px;
+  position : absolute !important;
+  z-index  : 1;
+}
+
 
 .cancelled-img {
   width    : 100%;

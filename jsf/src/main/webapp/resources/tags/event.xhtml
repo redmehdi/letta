@@ -18,6 +18,11 @@
 		<h:graphicImage class="joined-img" value="img/joined.png"
 			rendered="#{!loginController.anonymous 
 					and privateController.attendingEvents.contains(cc.attrs.event)}" />
+		<h:graphicImage
+			class    = "location-img" 
+			value    = "img/location.png"
+			rendered = "#{!loginController.anonymous 
+					    and privateController.isOnUserLocation(cc.attrs.event)}" />
  		<h:graphicImage 
  				class    = "cancelled-img" 
  				value    = "img/cancelled.png" 

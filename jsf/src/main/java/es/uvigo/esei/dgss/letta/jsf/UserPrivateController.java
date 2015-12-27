@@ -1,5 +1,8 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
+import static java.time.LocalDateTime.now;
+
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -12,8 +15,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.jsf.util.EventMappings;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
-
-import static java.time.LocalDateTime.now;
+import es.uvigo.esei.dgss.letta.service.UserEJB;
 
 /**
  * {@linkplain UserPrivateController} is a JSF controller to list the events
@@ -28,6 +30,12 @@ public class UserPrivateController {
 
 	@Inject
 	private EventEJB eventEJB;
+	
+	@Inject
+	private UserEJB userEJB;
+    
+    @Inject
+	private Principal currentUserPrincipal;
 
 	/**
 	 * Returns a {@link List} of {@link Event} that were created by the current
@@ -72,6 +80,18 @@ public class UserPrivateController {
 	 */
 	public boolean isPassed(final Event event) {
 	    return event.getDate().isBefore(now());
+	}
+	
+	public boolean isOnUserLocation(final Event event){
+		final String location = userEJB.get(currentUserPrincipal.getName()).get().getCity();
+		if(location == null){
+			return false;
+		}else{
+			if(location.equals(event.getLocation()))
+				return true;
+			else
+				return false;
+		}			
 	}
 
 }
