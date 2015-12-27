@@ -624,6 +624,12 @@ public class EventEJBTest {
 	public void isCancelledTest() {
        assertThat(events.isCancelled(cancelledEventId()), is(true));
 	} 
+    
+    @Test
+	@UsingDataSet({ "users.xml","capitals.xml" })
+	public void testgetCapitals() {
+       assertThat(events.getCapitals(), hasSize(47));
+	} 
    
    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
    @UsingDataSet({ "users.xml","events.xml" })

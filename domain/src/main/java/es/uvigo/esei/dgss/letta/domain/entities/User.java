@@ -8,6 +8,8 @@ import static org.apache.commons.lang3.Validate.matchesPattern;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +17,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
@@ -80,16 +84,6 @@ public class User implements Serializable {
 	private String city;
 	
 	
-	
-	
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
 	/**
 	 * Constructs a new instance of {@link User}. This constructor is required
 	 * by the JPA framework.
@@ -556,6 +550,25 @@ public class User implements Serializable {
 	 */
 	public void setNotifications(boolean notifications) {
 		this.notifications = notifications;
+	}
+	
+	/**
+	 * Gets the value of the variable city
+	 * 
+	 * @return the value of the variable city
+	 */
+	public String getCity() {
+		return city;
+	}
+
+	/**
+	 * Sets the value of the variable city
+	 * 
+	 * @param city
+	 *            the value of the variable
+	 */
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	@Override

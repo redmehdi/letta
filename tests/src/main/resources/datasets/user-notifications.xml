@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+  <UserNotifications userId="anne" notificationId="1" readed="0" />
+  <UserNotifications userId="anne" notificationId="2" readed="0" />
+  <UserNotifications userId="john" notificationId="3" readed="0" />
+  <UserNotifications userId="joan" notificationId="5" readed="0" />
+  <UserNotifications userId="mike" notificationId="3" readed="1" />
+  <UserNotifications userId="john" notificationId="2" readed="1" />
+  <UserNotifications userId="joan" notificationId="4" readed="1" />
+  <UserNotifications userId="mary" notificationId="4" readed="1" />
+</dataset>

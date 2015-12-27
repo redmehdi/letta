@@ -48,7 +48,7 @@ CREATE TABLE `User` (
   UNIQUE KEY `UK_User_email` (`email`)
 );
 
--- Table creation
+
 CREATE TABLE `Event` (
   `id`          int(11)      NOT NULL AUTO_INCREMENT,
   `date`        timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -90,6 +90,26 @@ CREATE TABLE `CapitalDistances` (
 
   CONSTRAINT `FK_CapitalDistances_capital_A` FOREIGN KEY (`capital_A`) REFERENCES `Capital` (`capital`),
   CONSTRAINT `FK_CapitalDistances_capital_B` FOREIGN KEY (`capital_B`) REFERENCES `Capital` (`capital`)
+);
+
+CREATE TABLE `Notification` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  `body` varchar(1000) NOT NULL,
+
+  PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `UserNotifications` (
+  `userId` varchar(20) NOT NULL,
+  `notificationId` int NOT NULL,
+  `readed` tinyint NOT NULL,
+
+  KEY `K_UserNotifications_userId`(`userId`),
+  KEY `K_UserNotifications_notificationId`	(`notificationId`),
+
+  CONSTRAINT `fk_UserNotifications_1`  FOREIGN KEY (`userId`)  REFERENCES `User` (`login`),
+  CONSTRAINT `fk_UserNotifications_2`   FOREIGN KEY (`notificationId`) REFERENCES `Notification` (`id`)
 );
 
 -- Data Insertion
@@ -143,6 +163,7 @@ CREATE TABLE `CapitalDistances` (
 	("Zamora"),
 	("Zaragoza");
 	
+
 INSERT INTO User (login, password, email, role, completeName, description, fbUrl, twUrl, personalUrl, notifications, city) VALUES
   ("john","3bffe7a2bc163d273184e8902afe66b7", "john@email.com", "USER", "john name", "john description", "https://www.facebook.com/john", "https://twitter.com/john", "https://johnpersonal.com/", 0, NULL),
   ("anne","1afee8bef2d82a3bef6f52b2614f16ab", "anne@email.com", "USER", "anne name", "anne description", "https://www.facebook.com/anne", "https://twitter.com/anne", "https://annepersonal.com/", 0, "Pontevedra"),
@@ -150,7 +171,14 @@ INSERT INTO User (login, password, email, role, completeName, description, fbUrl
   ("joan","ce8a660555a5701617403c77f6654d65", "joan@email.com", "USER", "joan name", "joan description", "https://www.facebook.com/joan", "https://twitter.com/joan", "https://joanpersonal.com/", 0, "Madrid"),
   ("mike","b1b668f82813956ef1fe9688e6c05011", "mike@email.com", "USER", "mike name", "mike description", "https://www.facebook.com/mike", "https://twitter.com/kurt", "https://mikepersonal.com/", 1, NULL),
   ("kurt","81252633317d5b5bc1ab9feb1bd3af69", "kurt@email.com", "ADMIN", "kurt name", "kurt description", "https://www.facebook.com/kurt", "https://twitter.com/kurt", "https://mikepersonal.com/", 0, NULL);
-  
+
+INSERT INTO Notification (id, title, body) VALUES
+  (1, "Notification Title 1", "Notification body example"),
+  (2, "Notification Title 2", "Notification body example"),
+  (3, "Notification Title 3", "Notification body example"),
+  (4, "Notification Title 4", "Notification body example"),
+  (5, "Notification Title 5", "Notification body example");
+	
 INSERT INTO Event (id, category, title, summary, date, location, owner, cancelled, description, place) VALUES
   ( 1, "BOOKS",      "Example1 Literature", "This is a summary of literature 1", "2020-03-01 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of literature 1", "Segovia"),
   ( 2, "BOOKS",      "Example2 Literature", "This is a summary of literature 2", "2020-01-02 01:01:01", "Location X", "john", 0, "This is a long description, with a max. size one thousand, of literature 2", "Toledo"),
@@ -178,6 +206,16 @@ INSERT INTO Event (id, category, title, summary, date, location, owner, cancelle
   (24, "BOOKS",      "Example4 Literature", "This is a summary of literature 4", "2003-01-09 01:01:01", "Location X", "mike", 1, "This is a long description, with a max. size one thousand, of literature 4", "Toledo"),
   (25, "BOOKS",      "Example5 Literature", "This is a summary of literature 5", "2006-06-01 01:01:01", "Location X", "mike", 1, "This is a long description, with a max. size one thousand, of literature 5", "Oviedo");
 
+INSERT INTO UserNotifications (userId, notificationId, readed) VALUES
+  ("anne", 1, 0),
+  ("anne", 2, 0),
+  ("john", 3, 0),
+  ("joan", 5, 0),
+  ("mike", 3, 1),
+  ("john", 2, 1),
+  ("joan", 4, 1),
+  ("mary", 4, 1);
+  
 INSERT INTO EventAttendees (event_id, user_login) VALUES
   ( 1, "anne"),
   ( 1, "mary"),
