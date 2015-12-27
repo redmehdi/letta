@@ -1,5 +1,6 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
+import java.security.Principal;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.jsf.util.EventMappings;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
-
+import es.uvigo.esei.dgss.letta.service.UserEJB;
 import static java.time.format.FormatStyle.MEDIUM;
 
 import java.time.LocalDateTime;
@@ -32,6 +33,12 @@ public class IndexPageController {
 
     @Inject
     private EventEJB eventEJB;
+    
+    @Inject
+	private Principal currentUserPrincipal;
+    
+    @Inject
+    private UserEJB userEJB;
 
     /**
      * Retrieves a {@link List} of {@link Event}s from
@@ -41,7 +48,15 @@ public class IndexPageController {
      * @return an ordered List of twenty events.
      */
     public List<Event> getEventList() {
-        return eventEJB.listByDate(0, 20);
+    	if("anonymous".equals(this.currentUserPrincipal.getName())){
+    		return eventEJB.listByDate(0, 20);
+    	}else{
+        	final String location = userEJB.get(currentUserPrincipal.getName()).get().getCity();   	
+    		if(location == null)
+        		return eventEJB.listByDate(0, 20);
+    		else
+    			return eventEJB.listByLocation(location, 20);
+    	}
     }
 
     /**
@@ -51,7 +66,7 @@ public class IndexPageController {
      * @return a List of the highlighted events.
      */
     public List<Event> getHighlights() {
-        return eventEJB.listHighlighted();
+    	return eventEJB.listHighlighted(); 
     }
 
     /**

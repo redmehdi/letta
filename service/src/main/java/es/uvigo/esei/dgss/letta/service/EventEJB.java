@@ -182,6 +182,42 @@ public class EventEJB {
             Event.class
         ).setFirstResult(start).setMaxResults(count).getResultList();
     }
+    
+    /**
+     * Returns a paginated {@link List} of {@link Event Events}, sorted by
+     * nearest locations and ascending date (which means that older events
+     * will be first on the list).
+     *
+     * @param location The location of the logged {@link User}.
+     * @param count The number of {@link Event Events} to return.
+     *
+     * @return A sorted {@link List} with the specified number of {@link Event
+     *         Events}, sorted by ascending date and counting from the received
+     *         start point.
+     *
+     * @throws IllegalArgumentException if the start or count parameters are
+     *         negative.
+     */
+    @RolesAllowed("USER")
+    public List<Event> listByLocation(
+        final String location, final int count
+    ) throws IllegalArgumentException {
+        if (count == 0) return emptyList();
+        final List<Event> atLocation = em.createQuery(
+                "SELECT e from Event e where e.place=:location and e.date > now() ORDER BY e.date ASC",
+                Event.class
+            ).setParameter("location", location).setMaxResults(count).getResultList();
+         
+        final List<Event> otherLocation = em.createQuery(
+               "SELECT e from Event e, CapitalDistances cd where cd.capital_A='Pontevedra' and"
+               + " cd.capital_B=e.place and e.date > now() ORDER BY cd.distance ASC, e.date ASC",
+               Event.class
+    	    ).setMaxResults(count-atLocation.size()).getResultList();
+        
+        otherLocation.forEach(e -> atLocation.add(e));
+       
+        return atLocation;
+    }
 
     /**
      * Returns a paginated {@link List} of {@link Event Events} with all the

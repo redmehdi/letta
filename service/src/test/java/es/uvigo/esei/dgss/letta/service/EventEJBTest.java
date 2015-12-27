@@ -1,5 +1,28 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.cancelledEventId;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEvent;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEventId;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutOwner;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.nonExistentEvent;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.nonExistentEventId;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.newUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogin;
+import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.containsEventsInAnyOrder;
+import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.equalToEventWithOwner;
+import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
+import static java.time.LocalDateTime.ofInstant;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.lessThan;
+import static org.junit.Assert.assertThat;
+
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -34,29 +57,6 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerExcepti
 import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
-import static java.time.LocalDateTime.ofInstant;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertThat;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.cancelledEventId;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEvent;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEventId;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.newEventWithoutOwner;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.nonExistentEvent;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.nonExistentEventId;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.newUser;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogin;
-import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.containsEventsInAnyOrder;
-import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.equalToEventWithOwner;
-import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
 
 @RunWith(Arquillian.class)
 @CleanupUsingScript("cleanup.sql")
@@ -631,4 +631,81 @@ public class EventEJBTest {
    		throws Exception{
        asUser.throwingRun(() -> events.attendToEvent(nonExistentEventId()));
    } 
+   
+   
+   @Test
+   public void testListByLocationReturnsEmptyListIfNoEventsInDatabase() {
+	   asUser.throwingRun(() -> assertThat(
+		   events.listByLocation("Segovia", 1), 
+		   is(empty())) 
+	   );
+	   asUser.throwingRun(() -> assertThat(
+		   events.listByLocation("Segovia", 50), 
+		   is(empty())) 
+	   );
+	   asUser.throwingRun(() -> assertThat(
+		   events.listByLocation("Segovia", 100),
+		   is(empty())) 
+	   );
+   }
+
+   @Test
+   @UsingDataSet({ "users.xml", "events-less-than-twenty.xml" })
+   @ShouldMatchDataSet({ "users.xml", "events-less-than-twenty.xml" })
+   public void testListByLocationReturnsTheSpecifiedNumberOfEvents() {
+	   asUser.throwingRun(() -> assertThat(
+		   events.listByLocation("Segovia", 1),
+		   hasSize(1)) 
+	   );
+	   asUser.throwingRun(() ->  assertThat(
+		   events.listByLocation("Segovia", 5),
+		   hasSize(5)) 
+	   );
+	   asUser.throwingRun(() -> assertThat(
+		   events.listByLocation("Segovia", 10),
+		   hasSize(5)) 
+	   );
+   }
+
+   @Test
+   @UsingDataSet({ "users.xml", "events-less-than-five.xml" })
+   @ShouldMatchDataSet({ "users.xml", "events-less-than-five.xml" })
+   public void testListByLocationReturnsAllEventsIfCountIsGreaterThanDatabaseSize() {
+	   asUser.throwingRun(() ->  assertThat(
+		   events.listByLocation("Segovia", 6), 
+		   hasSize(lessThan(5))) 
+	   );
+	   asUser.throwingRun(() -> assertThat(
+		   events.listByLocation("Segovia", 10), 
+		   hasSize(lessThan(5))) 
+	   );
+	   asUser.throwingRun(() -> assertThat(
+		   events.listByLocation("Segovia", 50), 
+		   hasSize(lessThan(5))) 
+	   );
+   }
+
+   @Test
+   @UsingDataSet({ "users.xml", "events-less-than-five.xml" })
+   @ShouldMatchDataSet({ "users.xml", "events-less-than-five.xml" })
+   public void testListByLocationReturnsEmptyListIfCountIsZero() {
+       asUser.throwingRun(() -> assertThat(
+		   events.listByLocation("Segovia", 0),
+		   is(empty()))
+       );
+   }
+
+   @Test
+   @UsingDataSet({ "users.xml", "events.xml" })
+   @ShouldMatchDataSet({ "users.xml", "events.xml" })
+   public void testListByLocationReturnsValidEvents() {
+	   asUser.throwingRun(() -> assertThat(
+           events.listByLocation("Segovia", 100),
+           containsEventsInAnyOrder(EventsDataset.futureEvents())
+       ));
+	   
+   }
+   
+   
+   
 }

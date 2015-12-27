@@ -82,12 +82,12 @@ public class UserPrivateController {
 	    return event.getDate().isBefore(now());
 	}
 	
-	public boolean isOnUserLocation(final Event event){
+	public boolean isAtUserLocation(final Event event){
 		final String location = userEJB.get(currentUserPrincipal.getName()).get().getCity();
 		if(location == null){
 			return false;
 		}else{
-			if(location.equals(event.getLocation()))
+			if(location.equals(event.getPlace()))
 				return true;
 			else
 				return false;
