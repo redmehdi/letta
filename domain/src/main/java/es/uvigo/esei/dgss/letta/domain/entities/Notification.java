@@ -1,5 +1,8 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
+import static java.util.Objects.requireNonNull;
+import static org.apache.commons.lang3.Validate.inclusiveBetween;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +11,13 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+import org.apache.commons.lang3.StringUtils;
+
+/**
+ * 
+ * @author Jesús Álvarez Casanova
+ *
+ */
 @Entity
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Notification {
@@ -20,11 +30,12 @@ public class Notification {
 
 	@Column(length = 1000, nullable = false)
 	private String body;
-	
+
 	/**
-     * Default constructor
-     */
-	public Notification(){}
+	 * Default constructor
+	 */
+	public Notification() {
+	}
 
 	/**
 	 * Constructor of {@link Notification}
@@ -35,8 +46,8 @@ public class Notification {
 	 *            of the {@link Notification}
 	 */
 	public Notification(String title, String body) {
-		this.title = title;
-		this.body = body;
+		setTitle(title);
+		setBody(body);
 	}
 
 	/**
@@ -55,7 +66,10 @@ public class Notification {
 	 *            of the {@link Notification}
 	 */
 	public void setTitle(String title) {
-		this.title = title;
+		requireNonNull(title, "Notification's title cannot be null.");
+		inclusiveBetween(1, 100, title.length(),
+				"Notification's title length must be in the range [1, 100].");
+		this.title = StringUtils.capitalize(title);
 	}
 
 	/**
@@ -74,15 +88,35 @@ public class Notification {
 	 *            of the {@link Notification}
 	 */
 	public void setBody(String body) {
-		this.body = body;
+		requireNonNull(body, "Notification's body cannot be null.");
+		inclusiveBetween(1, 1000, body.length(),
+				"Notification's body length must be in the range [1, 1000].");
+		this.body = StringUtils.capitalize(body);
 	}
 
+	/**
+	 * Returns the id of the {@link Notification}
+	 * 
+	 * @return the id of the {@link Notification}
+	 */
 	public int getId() {
 		return id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	/**
+	 * Adds an {@link UserNotifications} with an {@link User} and an
+	 * {@link Notification}
+	 * 
+	 * @param user
+	 *            indicates the {@link User}
+	 */
+	public UserNotifications addUserNotifications(User user) {
+		UserNotifications userNotifications = new UserNotifications();
+		userNotifications.setUser(user);
+		userNotifications.setUserId(user.getLogin());
+		userNotifications.setNotification(this);
+		userNotifications.setNotificationId(this.getId());
+		return userNotifications;
 	}
 
 }

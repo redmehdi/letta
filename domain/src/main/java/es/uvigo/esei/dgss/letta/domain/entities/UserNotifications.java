@@ -1,5 +1,7 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
+import static java.util.Objects.requireNonNull;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,7 +19,7 @@ public class UserNotifications {
 	@Id
 	private int notificationId;
 	@Column(name = "readed")
-	private boolean readed = false;
+	private boolean readed;
 	@ManyToOne
 	@JoinColumn(name = "userid", updatable = false, insertable = false, referencedColumnName = "login")
 	private User user;
@@ -32,16 +34,14 @@ public class UserNotifications {
 	 * Constructor of {@link UserNotifications}
 	 * 
 	 * @param userId
-	 *            {@link User} global variable
+	 *            global variable
 	 * @param notificationId
-	 *            {@link Notification} global variable
-	 * @param readed
-	 *            indicates if the notification is readed or not
+	 *            global variable
 	 */
 	public UserNotifications(String userId, int notificationId,
 			boolean readed) {
-		this.userId = userId;
-		this.notificationId = notificationId;
+		setUserId(userId);
+		setNotificationId(notificationId);
 		this.readed = readed;
 	}
 
@@ -74,13 +74,14 @@ public class UserNotifications {
 	}
 
 	/**
-	 * Setter method of user global variable
+	 * Setter method of user global variable and userId global variable
 	 * 
 	 * @param user
 	 *            global variable
 	 */
 	public void setUser(User user) {
-		this.user = user;
+		this.user = requireNonNull(user,
+				"UserNotification's user cannot be null.");
 	}
 
 	/**
@@ -99,7 +100,8 @@ public class UserNotifications {
 	 *            global variable
 	 */
 	public void setNotification(Notification notification) {
-		this.notification = notification;
+		this.notification = requireNonNull(notification,
+				"UserNotification's notification cannot be null.");
 	}
 
 	/**
@@ -112,13 +114,14 @@ public class UserNotifications {
 	}
 
 	/**
-	 * Setter method of userId global variable
+	 * Setter method of notificationId global variable
 	 * 
 	 * @param userId
 	 *            global variable
 	 */
 	public void setUserId(String userId) {
-		this.userId = userId;
+		this.userId = requireNonNull(userId,
+				"UserNotification's user login cannot be null.");
 	}
 
 	/**
@@ -137,7 +140,8 @@ public class UserNotifications {
 	 *            global variable
 	 */
 	public void setNotificationId(int notificationId) {
-		this.notificationId = notificationId;
+		this.notificationId = requireNonNull(notificationId,
+				"UserNotification's notificationId cannot be null");
 	}
 
 }
