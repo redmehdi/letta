@@ -3,13 +3,16 @@ package es.uvigo.esei.dgss.letta.rest;
 import static javax.ws.rs.core.Response.status;
 import static javax.ws.rs.core.Response.Status.CREATED;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.NOT_MODIFIED;
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 import static javax.ws.rs.core.Response.Status.OK;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.apache.commons.lang3.Validate.isTrue;
 
 import java.net.URI;
 
 import javax.ejb.EJB;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -22,13 +25,16 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.State;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
+import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
 
 /**
@@ -240,5 +246,25 @@ public class EventResource {
 		else
 			return Response.ok(event).build();
 	}
+	
+
+    @POST
+    @Path("{id: \\d+}/cancel")
+    public Response cancelEvent(@PathParam("id") int eventId) {
+			try{
+				events.cancelEvent(eventId);
+	            return Response.status(OK).build();
+			} 
+			catch ( SecurityException |  IllegalEventOwnerException e)
+			{ 
+				return Response.status(UNAUTHORIZED).build(); 
+			}
+			catch ( EventIsCancelledException | IllegalArgumentException  e)
+			{
+				return Response.status(NOT_MODIFIED).build(); 
+			}
+
+
+    }
 
 }

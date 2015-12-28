@@ -904,4 +904,120 @@ public class EventResourceRestTest {
     @ShouldMatchDataSet({ "users.xml", "events.xml" })
     public void afterTestAttendToEventReturnsUnauthorizedWithNonExistentUser() { }
 
+    @Test
+    @InSequence(260) // test 26, sequence 0
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void beforeTestCancelEvent() { }
+
+    @Test
+    @RunAsClient
+    @InSequence(261) // test 26, sequence 1
+    public void testCancelEvent() {
+    	final String login = existentLogin();
+        final String token = getAuthHeaderContent(login, passwordFor(login));
+        final Builder  req = eventTarget(existentEvent().getId()).path("cancel").request().header(AUTHORIZATION, token);
+        final Response res = req.post(null);
+
+        assertThat(res, hasHttpStatus(OK));
+    }
+
+    @Test
+    @InSequence(262) // test 27, sequence 2
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events-cancelled.xml", "event-attendees.xml" })
+    public void afterTestCancelEvent2() { }
+    
+    @Test
+    @InSequence(270) // test 27, sequence 0
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void beforeTestCancelEventSecurityExeption() { }
+
+    @Test
+    @RunAsClient
+    @InSequence(271) // test 27, sequence 1
+    public void testCancelEventSecurityExeption() {
+    	final String login = nonExistentUser().getLogin();
+        final String token = getAuthHeaderContent(login, passwordFor(login));
+        final Builder  req = eventTarget(existentEvent().getId()).path("cancel").request().header(AUTHORIZATION, token);
+        final Response res = req.post(null);
+
+        assertThat(res, hasHttpStatus(UNAUTHORIZED));
+    }
+
+    @Test
+    @InSequence(272) // test 27, sequence 2
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void afterTestCancelEventSecurityExeption() { }
+    
+    @Test
+    @InSequence(280) // test 28, sequence 0
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void beforeTestCancelIllegalEventOwnerException() { }
+
+    @Test
+    @RunAsClient
+    @InSequence(281) // test 28, sequence 1
+    public void testCancelEventIllegalEventOwnerException() {
+    	final String login = "mike";
+        final String token = getAuthHeaderContent(login, passwordFor(login));
+        final Builder  req = eventTarget(existentEvent().getId()).path("cancel").request().header(AUTHORIZATION, token);
+        final Response res = req.post(null);
+
+        assertThat(res, hasHttpStatus(UNAUTHORIZED));
+    }
+
+    @Test
+    @InSequence(282) // test 29, sequence 2
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void afterTestCancelEventEventIllegalEventOwnerException() { }
+
+    @Test
+    @InSequence(290) // test 28, sequence 0
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void beforeTestCancelEventIsCancelledException() { }
+
+    @Test
+    @RunAsClient
+    @InSequence(291) // test 29, sequence 1
+    public void testCancelEventEventIsCancelledException() {
+    	final String login = "mike";
+        final String token = getAuthHeaderContent(login, passwordFor(login));
+        final Builder  req = eventTarget(cancelledEventId()).path("cancel").request().header(AUTHORIZATION, token);
+        final Response res = req.post(null);
+
+        assertThat(res, hasHttpStatus(NOT_MODIFIED));
+    }
+
+    @Test
+    @InSequence(292) // test 29, sequence 2
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void afterTestCancelEventEventIsCancelledException() { }
+    
+    
+    @Test
+    @InSequence(300) // test 30, sequence 0
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void beforeTestCancelEventIllegalArgumentException() { }
+
+    @Test
+    @RunAsClient
+    @InSequence(301) // test 30, sequence 1
+    public void testCancelEventIllegalArgumentException() {
+    	final String login = "mike";
+        final String token = getAuthHeaderContent(login, passwordFor(login));
+        final Builder  req = eventTarget(nonExistentEventId()).path("cancel").request().header(AUTHORIZATION, token);
+        final Response res = req.post(null);
+
+        assertThat(res, hasHttpStatus(NOT_MODIFIED));
+    }
+
+    @Test
+    @InSequence(302) // test 30, sequence 2
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    public void afterTestCancelEventIllegalArgumentException() { }
+    
 }
