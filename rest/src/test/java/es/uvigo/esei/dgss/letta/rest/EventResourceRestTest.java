@@ -995,6 +995,7 @@ public class EventResourceRestTest {
     @CleanupUsingScript("cleanup.sql")
     @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void afterTestCancelEventEventIsCancelledException() { }
+<<<<<<< Updated upstream
     
     
     @Test
@@ -1020,4 +1021,7 @@ public class EventResourceRestTest {
     @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void afterTestCancelEventIllegalArgumentException() { }
     
+=======
+      
+>>>>>>> Stashed changes
 }
