@@ -2,6 +2,7 @@ package es.uvigo.esei.dgss.letta.service;
 
 import java.security.Principal;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;

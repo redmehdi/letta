@@ -299,6 +299,44 @@ public class EventEJB {
         return query.setFirstResult(start).setMaxResults(count).getResultList();
     }
 
+    
+    
+    
+    /**
+     * Modification of the search method that orders by distance from the residence place
+     * @param search The search term
+     * @param start The start page
+     * @param count The number of elements per page
+     * @return a list with the results
+     * @throws IllegalArgumentException
+     */
+    @PermitAll
+    public List<Event> searchWhileLoggedIn(
+        final String search, final String location, final int start, final int count
+    ) throws IllegalArgumentException {
+        isTrue(nonNull(search), "Search query cannot be null");
+		final User user = auth.getCurrentUser();
+		
+        if (count == 0) return emptyList();
+        //FIXME: Sort by number of attendees
+        final TypedQuery<Event> query = em.createQuery(
+            "SELECT e FROM Event e JOIN FETCH e.attendees,CapitalDistances cd " +
+            " WHERE ( LOWER(e.title) LIKE :search " +
+            "    OR LOWER(e.summary) LIKE :search " +
+            " OR LOWER(e.description) LIKE :search ) " +
+            " AND e.date > now()"+
+            " AND e.cancelled =  FALSE " +
+            " AND :user MEMBER OF e.attendees and cd.capital_A=:location AND cd.capital_B=e.place " +
+            " ORDER BY cd.distance ASC, date DESC",
+            Event.class
+        ).setParameter("search", "%" + search.toLowerCase() + "%").setParameter("location", location).setParameter("user", auth.getCurrentUser());
+
+        return query.setFirstResult(start).setMaxResults(count).getResultList();
+    }
+
+    
+    
+    
     /**
      * Register the current identified {@link User} into a {@link Event}. It the
      * the current {@link User} is already registered for the event the method

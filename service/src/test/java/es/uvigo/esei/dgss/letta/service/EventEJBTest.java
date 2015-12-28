@@ -26,6 +26,7 @@ import static org.junit.Assert.assertThat;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.EJB;
 import javax.ejb.EJBAccessException;
@@ -183,7 +184,29 @@ public class EventEJBTest {
     public void testSearchTitleSingleResult() {
         assertThat(events.search("Example1 literature", 0, 25), hasSize(1));
     }
+    
 
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void testSearchWhileLoggedIn() {
+    	List<Event>l=asUser.call(
+                () -> events.searchWhileLoggedIn("example","Cuenca",  0, 10)
+    	        );
+        assertThat(l, hasSize(0));
+    }
+    
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void testSearchWhileLoggedInZeroCount() {
+    	List<Event>l=asUser.call(
+                () -> events.searchWhileLoggedIn("example","Cuenca",  0, 0)
+    	        );
+        assertThat(l, is(empty()));
+    }
 	@Test
 	@UsingDataSet({ "users.xml", "events.xml" })
 	@ShouldMatchDataSet({ "users.xml", "events.xml" })
@@ -782,5 +805,25 @@ public class EventEJBTest {
        //assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));
        assert(true);
    }   
+   
+   
+   @Test
+   @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+   public void testGetWithAttendees(){
+	   Optional<Event>o =asUser.call(
+	           () ->   	events.getWithAttendees(1)
+	       );
+	   assertThat(o.get(), instanceOf(Event.class));
+   }
+   @Test
+   @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+   public void testGetWithAttendeesEmptyOptional(){
+	   Optional<Event>o =asUser.call(
+	           () ->   	events.getWithAttendees(999)
+	       );
+       assertThat(o, is(Optional.empty()));
+   }   
+   
+   
    
 }

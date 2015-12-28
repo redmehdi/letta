@@ -1,6 +1,7 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
 import java.io.Serializable;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
+import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
+import es.uvigo.esei.dgss.letta.service.UserEJB;
 
 /**
  * {@linkplain EventSearchController} is a JSF controller to perform event
@@ -36,7 +39,13 @@ public class EventSearchController implements Serializable {
 	private List<String> pagesLinks = new ArrayList<>();
 	private String terms = null;
 	private List<Event> searchResults;
-
+	@Inject
+	private Principal currentUserPrincipal;
+	@Inject 
+	private UserEJB userEJB;
+	@Inject
+	private UserAuthorizationEJB auth;
+	
 	@PostConstruct
 	public void init() {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -68,8 +77,16 @@ public class EventSearchController implements Serializable {
 					for (int i = 0; i < pages; i++)
 						pagesLinks.add(String.valueOf(i + 1));
 				}
-				searchResults = searchEJB.search(this.terms, this.pageIndex * 4,
-						4);
+				if( "anonymous".equals(this.currentUserPrincipal.getName())){
+					searchResults = searchEJB.search(this.terms, this.pageIndex * 4,
+							4);	
+				}else{
+					final String location = userEJB.get(currentUserPrincipal.getName()).get().getCity();
+
+					searchResults = searchEJB.searchWhileLoggedIn(this.terms, location,this.pageIndex * 4,
+							4);	
+			
+				}
 			}
 		}
 	}
