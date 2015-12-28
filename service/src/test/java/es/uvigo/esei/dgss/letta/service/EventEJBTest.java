@@ -663,7 +663,12 @@ public class EventEJBTest {
    
    
    @Test
+   @UsingDataSet({ "users.xml" })
+   @ShouldMatchDataSet({ "users.xml" })
    public void testListByLocationReturnsEmptyListIfNoEventsInDatabase() {
+	   final User user = userWithLogin("anne");	   
+       principal.setName(user.getLogin());
+	   
 	   asUser.throwingRun(() -> assertThat(
 		   events.listByLocation("Segovia", 0, 1), 
 		   is(empty())) 
@@ -678,30 +683,34 @@ public class EventEJBTest {
 	   );
    }
 
- //FIXME
    @Test
-   @UsingDataSet({ "users.xml", "events-less-than-twenty.xml" })
-   @ShouldMatchDataSet({ "users.xml", "events-less-than-twenty.xml" })
+   @UsingDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events-less-than-twenty.xml" })
+   @ShouldMatchDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events-less-than-twenty.xml" })
    public void testListByLocationReturnsTheSpecifiedNumberOfEvents() {
-//	   asUser.throwingRun(() -> assertThat(
-//		   events.listByLocation("Segovia", 0, 1),
-//		   hasSize(1)) 
-//	   );
-//	   asUser.throwingRun(() ->  assertThat(
-//		   events.listByLocation("Segovia", 0, 5),
-//		   hasSize(5)) 
-//	   );
-//	   asUser.throwingRun(() -> assertThat(
-//		   events.listByLocation("Segovia", 0, 10),
-//		   hasSize(5)) 
-//	   );
-       assert(true);
+	   final User user = userWithLogin("anne");	   
+       principal.setName(user.getLogin());
+       
+	   asUser.throwingRun(() -> assertThat(
+		   events.listByLocation("Segovia", 0, 1),
+		   hasSize(1)) 
+	   );
+	   asUser.throwingRun(() ->  assertThat(
+		   events.listByLocation("Segovia", 0, 5),
+		   hasSize(5)) 
+	   );
+	   asUser.throwingRun(() -> assertThat(
+		   events.listByLocation("Segovia", 0, 10),
+		   hasSize(5)) 
+	   );
    }
 
    @Test
-   @UsingDataSet({ "users.xml", "events-less-than-five.xml" })
-   @ShouldMatchDataSet({ "users.xml", "events-less-than-five.xml" })
+   @UsingDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events-less-than-five.xml" })
+   @ShouldMatchDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events-less-than-five.xml" })
    public void testListByLocationReturnsAllEventsIfCountIsGreaterThanDatabaseSize() {
+	   final User user = userWithLogin("anne");	   
+       principal.setName(user.getLogin());
+       
 	   asUser.throwingRun(() ->  assertThat(
 		   events.listByLocation("Segovia", 0, 6), 
 		   hasSize(lessThan(5))) 
@@ -717,30 +726,35 @@ public class EventEJBTest {
    }
 
    @Test
-   @UsingDataSet({ "users.xml", "events-less-than-five.xml" })
-   @ShouldMatchDataSet({ "users.xml", "events-less-than-five.xml" })
-   public void testListByLocationReturnsEmptyListIfCountIsZero() {	   
+   @UsingDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events-less-than-five.xml" })
+   @ShouldMatchDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events-less-than-five.xml" })
+   public void testListByLocationReturnsEmptyListIfCountIsZero() {
+	   final User user = userWithLogin("anne");	   
+       principal.setName(user.getLogin());	
+       
        asUser.throwingRun(() -> assertThat(
 		   events.listByLocation("Segovia", 0, 0),
 		   is(empty()))
        );
    }
 
-   //FIXME
    @Test
-   @UsingDataSet({ "users.xml", "events.xml" })
-   @ShouldMatchDataSet({ "users.xml", "events.xml" })
+   @UsingDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events.xml" })
+   @ShouldMatchDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events.xml" })
    public void testListByLocationReturnsValidEvents() {
-//	   asUser.throwingRun(() -> assertThat(
-//           events.listByLocation("Segovia", 0, 100),
-//           containsEventsInAnyOrder(EventsDataset.futureEvents())
-//       ));
+	   final User user = userWithLogin("anne");	   
+       principal.setName(user.getLogin());
+       
+	   asUser.throwingRun(() -> assertThat(
+           events.listByLocation("Segovia", 0, 100),
+           containsEventsInAnyOrder(EventsDataset.futureEvents())
+       ));
        assert(true);
 	   
    }
    
    @Test
-   @UsingDataSet({ "users.xml", "new-user.xml", "events.xml", "event-attendees.xml" })
+   @UsingDataSet({ "users.xml", "new-user.xml", "capitals.xml", "capital-distances.xml", "events.xml", "event-attendees.xml" })
    public void testGetEventsJoinedByUserOrdLocationEmpty(){
        final User user = newUser();
        principal.setName(user.getLogin());
@@ -753,7 +767,7 @@ public class EventEJBTest {
    }
 
    @Test
-   @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+   @UsingDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events.xml", "event-attendees.xml" })
    public void testGetEventsJoinedByUserOrdLocationCountZero(){
    	final User user = userWithLogin("anne");
 
@@ -767,10 +781,8 @@ public class EventEJBTest {
    }
    
 
-   //FIXME
-   @SuppressWarnings("unused")
    @Test
-   @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+   @UsingDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events.xml", "event-attendees.xml" })
    public void testGetEventsJoinedByUserOrdLocationCountNegative(){
        final User user = userWithLogin("anne");
        principal.setName(user.getLogin());
@@ -782,15 +794,12 @@ public class EventEJBTest {
        final List<Event> joinedEvents = asUser.call(
            () -> events.getAttendingEventsOrderLocation("Segovia", 0, -1)
        );
-       //assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));
-       assert(true);
+       assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));
    }
 
 
-   //FIXME
-   @SuppressWarnings("unused")
    @Test
-   @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+   @UsingDataSet({ "users.xml", "capitals.xml", "capital-distances.xml", "events.xml", "event-attendees.xml" })
    public void testGetEventsJoinedByUserOrdLocationNotEmpty(){
        final User user = userWithLogin("anne");
        principal.setName(user.getLogin());
@@ -802,8 +811,7 @@ public class EventEJBTest {
        final List<Event> joinedEvents = asUser.call(
            () -> events.getAttendingEventsOrderLocation("Segovia", 0, 100)
        );
-       //assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));
-       assert(true);
+       assertThat(joinedEvents, containsEventsInAnyOrder(expectedEvents));
    }   
    
    

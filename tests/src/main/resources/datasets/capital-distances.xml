@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
+<CapitalDistances capital_A="Albacete"        capital_B="Albacete"        distance="0"      />
 <CapitalDistances capital_A="Albacete"        capital_B="Alicante"        distance="171"    />
 <CapitalDistances capital_A="Albacete"        capital_B="Almería"         distance="369"    />
 <CapitalDistances capital_A="Albacete"        capital_B="Ávila"           distance="366"    />
@@ -46,6 +47,7 @@
 <CapitalDistances capital_A="Albacete"        capital_B="Vitoria"         distance="602"    />
 <CapitalDistances capital_A="Albacete"        capital_B="Zamora"          distance="499"    />
 <CapitalDistances capital_A="Albacete"        capital_B="Zaragoza"        distance="423"    />
+<CapitalDistances capital_A="Alicante"        capital_B="Alicante"        distance="0"      />
 <CapitalDistances capital_A="Alicante"        capital_B="Albacete"        distance="171"    />
 <CapitalDistances capital_A="Alicante"        capital_B="Almería"         distance="294"    />
 <CapitalDistances capital_A="Alicante"        capital_B="Ávila"           distance="537"    />
@@ -92,6 +94,7 @@
 <CapitalDistances capital_A="Alicante"        capital_B="Vitoria"         distance="739"    />
 <CapitalDistances capital_A="Alicante"        capital_B="Zamora"          distance="670"    />
 <CapitalDistances capital_A="Alicante"        capital_B="Zaragoza"        distance="498"    />
+<CapitalDistances capital_A="Almería"         capital_B="Almería"         distance="0"      />
 <CapitalDistances capital_A="Almería"         capital_B="Albacete"        distance="369"    />
 <CapitalDistances capital_A="Almería"         capital_B="Alicante"        distance="294"    />
 <CapitalDistances capital_A="Almería"         capital_B="Ávila"           distance="663"    />
@@ -138,6 +141,7 @@
 <CapitalDistances capital_A="Almería"         capital_B="Vitoria"         distance="914"    />
 <CapitalDistances capital_A="Almería"         capital_B="Zamora"          distance="811"    />
 <CapitalDistances capital_A="Almería"         capital_B="Zaragoza"        distance="758"    />
+<CapitalDistances capital_A="Ávila"           capital_B="Ávila"           distance="0"      />
 <CapitalDistances capital_A="Ávila"           capital_B="Albacete"        distance="366"    />
 <CapitalDistances capital_A="Ávila"           capital_B="Alicante"        distance="537"    />
 <CapitalDistances capital_A="Ávila"           capital_B="Almería"         distance="663"    />
@@ -184,6 +188,7 @@
 <CapitalDistances capital_A="Ávila"           capital_B="Vitoria"         distance="357"    />
 <CapitalDistances capital_A="Ávila"           capital_B="Zamora"          distance="159"    />
 <CapitalDistances capital_A="Ávila"           capital_B="Zaragoza"        distance="418"    />
+<CapitalDistances capital_A="Badajoz"         capital_B="Badajoz"         distance="0"      />
 <CapitalDistances capital_A="Badajoz"         capital_B="Albacete"        distance="525"    />
 <CapitalDistances capital_A="Badajoz"         capital_B="Alicante"        distance="696"    />
 <CapitalDistances capital_A="Badajoz"         capital_B="Almería"         distance="604"    />
@@ -230,6 +235,7 @@
 <CapitalDistances capital_A="Badajoz"         capital_B="Vitoria"         distance="650"    />
 <CapitalDistances capital_A="Badajoz"         capital_B="Zamora"          distance="361"    />
 <CapitalDistances capital_A="Badajoz"         capital_B="Zaragoza"        distance="726"    />
+<CapitalDistances capital_A="Barcelona"       capital_B="Barcelona"       distance="0"      />
 <CapitalDistances capital_A="Barcelona"       capital_B="Albacete"        distance="540"    />
 <CapitalDistances capital_A="Barcelona"       capital_B="Alicante"        distance="515"    />
 <CapitalDistances capital_A="Barcelona"       capital_B="Almería"         distance="809"    />
@@ -276,6 +282,7 @@
 <CapitalDistances capital_A="Barcelona"       capital_B="Vitoria"         distance="530"    />
 <CapitalDistances capital_A="Barcelona"       capital_B="Zamora"          distance="759"    />
 <CapitalDistances capital_A="Barcelona"       capital_B="Zaragoza"        distance="296"    />
+<CapitalDistances capital_A="Bilbao"          capital_B="Bilbao"          distance="0"      />
 <CapitalDistances capital_A="Bilbao"          capital_B="Albacete"        distance="646"    />
 <CapitalDistances capital_A="Bilbao"          capital_B="Alicante"        distance="817"    />
 <CapitalDistances capital_A="Bilbao"          capital_B="Almería"         distance="958"    />
@@ -322,6 +329,7 @@
 <CapitalDistances capital_A="Bilbao"          capital_B="Vitoria"         distance="66"     />
 <CapitalDistances capital_A="Bilbao"          capital_B="Zamora"          distance="376"    />
 <CapitalDistances capital_A="Bilbao"          capital_B="Zaragoza"        distance="324"    />
+<CapitalDistances capital_A="Burgos"          capital_B="Burgos"          distance="0"      />
 <CapitalDistances capital_A="Burgos"          capital_B="Albacete"        distance="488"    />
 <CapitalDistances capital_A="Burgos"          capital_B="Alicante"        distance="659"    />
 <CapitalDistances capital_A="Burgos"          capital_B="Almería"         distance="800"    />
@@ -368,6 +376,7 @@
 <CapitalDistances capital_A="Burgos"          capital_B="Vitoria"         distance="114"    />
 <CapitalDistances capital_A="Burgos"          capital_B="Zamora"          distance="218"    />
 <CapitalDistances capital_A="Burgos"          capital_B="Zaragoza"        distance="287"    />
+<CapitalDistances capital_A="Cáceres"         capital_B="Cáceres"         distance="0"      />
 <CapitalDistances capital_A="Cáceres"         capital_B="Albacete"        distance="504"    />
 <CapitalDistances capital_A="Cáceres"         capital_B="Alicante"        distance="675"    />
 <CapitalDistances capital_A="Cáceres"         capital_B="Almería"         distance="651"    />
@@ -414,6 +423,7 @@
 <CapitalDistances capital_A="Cáceres"         capital_B="Vitoria"         distance="561"    />
 <CapitalDistances capital_A="Cáceres"         capital_B="Zamora"          distance="272"    />
 <CapitalDistances capital_A="Cáceres"         capital_B="Zaragoza"        distance="622"    />
+<CapitalDistances capital_A="Cádiz"           capital_B="Cádiz"           distance="0"      />
 <CapitalDistances capital_A="Cádiz"           capital_B="Albacete"        distance="617"    />
 <CapitalDistances capital_A="Cádiz"           capital_B="Alicante"        distance="688"    />
 <CapitalDistances capital_A="Cádiz"           capital_B="Almería"         distance="484"    />
@@ -460,6 +470,7 @@
 <CapitalDistances capital_A="Cádiz"           capital_B="Vitoria"         distance="1014"   />
 <CapitalDistances capital_A="Cádiz"           capital_B="Zamora"          distance="661"    />
 <CapitalDistances capital_A="Cádiz"           capital_B="Zaragoza"        distance="988"    />
+<CapitalDistances capital_A="Castellón"       capital_B="Castellón"       distance="0"      />
 <CapitalDistances capital_A="Castellón"       capital_B="Albacete"        distance="256"    />
 <CapitalDistances capital_A="Castellón"       capital_B="Alicante"        distance="231"    />
 <CapitalDistances capital_A="Castellón"       capital_B="Almería"         distance="525"    />
@@ -506,6 +517,7 @@
 <CapitalDistances capital_A="Castellón"       capital_B="Vitoria"         distance="574"    />
 <CapitalDistances capital_A="Castellón"       capital_B="Zamora"          distance="665"    />
 <CapitalDistances capital_A="Castellón"       capital_B="Zaragoza"        distance="283"    />
+<CapitalDistances capital_A="Ciudad Real"     capital_B="Ciudad Real"     distance="0"      />
 <CapitalDistances capital_A="Ciudad Real"     capital_B="Albacete"        distance="207"    />
 <CapitalDistances capital_A="Ciudad Real"     capital_B="Alicante"        distance="378"    />
 <CapitalDistances capital_A="Ciudad Real"     capital_B="Almería"         distance="407"    />
@@ -552,6 +564,7 @@
 <CapitalDistances capital_A="Ciudad Real"     capital_B="Vitoria"         distance="541"    />
 <CapitalDistances capital_A="Ciudad Real"     capital_B="Zamora"          distance="415"    />
 <CapitalDistances capital_A="Ciudad Real"     capital_B="Zaragoza"        distance="515"    />
+<CapitalDistances capital_A="Córdoba"         capital_B="Córdoba"         distance="0"      />
 <CapitalDistances capital_A="Córdoba"         capital_B="Albacete"        distance="354"    />
 <CapitalDistances capital_A="Córdoba"         capital_B="Alicante"        distance="525"    />
 <CapitalDistances capital_A="Córdoba"         capital_B="Almería"         distance="332"    />
@@ -598,6 +611,7 @@
 <CapitalDistances capital_A="Córdoba"         capital_B="Vitoria"         distance="751"    />
 <CapitalDistances capital_A="Córdoba"         capital_B="Zamora"          distance="616"    />
 <CapitalDistances capital_A="Córdoba"         capital_B="Zaragoza"        distance="725"    />
+<CapitalDistances capital_A="A Coruña"        capital_B="A Coruña"        distance="0"      />
 <CapitalDistances capital_A="A Coruña"        capital_B="Albacete"        distance="860"    />
 <CapitalDistances capital_A="A Coruña"        capital_B="Alicante"        distance="1031"   />
 <CapitalDistances capital_A="A Coruña"        capital_B="Almería"         distance="1172"   />
@@ -644,6 +658,7 @@
 <CapitalDistances capital_A="A Coruña"        capital_B="Vitoria"         distance="549"    />
 <CapitalDistances capital_A="A Coruña"        capital_B="Zamora"          distance="411"    />
 <CapitalDistances capital_A="A Coruña"        capital_B="Zaragoza"        distance="833"    />
+<CapitalDistances capital_A="Cuenca"          capital_B="Cuenca"          distance="0"      />
 <CapitalDistances capital_A="Cuenca"          capital_B="Albacete"        distance="142"    />
 <CapitalDistances capital_A="Cuenca"          capital_B="Alicante"        distance="313"    />
 <CapitalDistances capital_A="Cuenca"          capital_B="Almería"         distance="511"    />
@@ -690,6 +705,7 @@
 <CapitalDistances capital_A="Cuenca"          capital_B="Vitoria"         distance="518"    />
 <CapitalDistances capital_A="Cuenca"          capital_B="Zamora"          distance="415"    />
 <CapitalDistances capital_A="Cuenca"          capital_B="Zaragoza"        distance="334"    />
+<CapitalDistances capital_A="Gerona"          capital_B="Gerona"          distance="0"      />
 <CapitalDistances capital_A="Gerona"          capital_B="Albacete"        distance="640"    />
 <CapitalDistances capital_A="Gerona"          capital_B="Alicante"        distance="615"    />
 <CapitalDistances capital_A="Gerona"          capital_B="Almería"         distance="909"    />
@@ -736,6 +752,7 @@
 <CapitalDistances capital_A="Gerona"          capital_B="Vitoria"         distance="630"    />
 <CapitalDistances capital_A="Gerona"          capital_B="Zamora"          distance="859"    />
 <CapitalDistances capital_A="Gerona"          capital_B="Zaragoza"        distance="396"    />
+<CapitalDistances capital_A="Granada"         capital_B="Granada"         distance="0"      />
 <CapitalDistances capital_A="Granada"         capital_B="Albacete"        distance="363"    />
 <CapitalDistances capital_A="Granada"         capital_B="Alicante"        distance="353"    />
 <CapitalDistances capital_A="Granada"         capital_B="Almería"         distance="166"    />
@@ -782,6 +799,7 @@
 <CapitalDistances capital_A="Granada"         capital_B="Vitoria"         distance="785"    />
 <CapitalDistances capital_A="Granada"         capital_B="Zamora"          distance="682"    />
 <CapitalDistances capital_A="Granada"         capital_B="Zaragoza"        distance="759"    />
+<CapitalDistances capital_A="Guadalajara"     capital_B="Guadalajara"     distance="0"      />
 <CapitalDistances capital_A="Guadalajara"     capital_B="Albacete"        distance="309"    />
 <CapitalDistances capital_A="Guadalajara"     capital_B="Alicante"        distance="480"    />
 <CapitalDistances capital_A="Guadalajara"     capital_B="Almería"         distance="621"    />
@@ -828,6 +846,7 @@
 <CapitalDistances capital_A="Guadalajara"     capital_B="Vitoria"         distance="352"    />
 <CapitalDistances capital_A="Guadalajara"     capital_B="Zamora"          distance="306"    />
 <CapitalDistances capital_A="Guadalajara"     capital_B="Zaragoza"        distance="267"    />
+<CapitalDistances capital_A="Huelva"          capital_B="Huelva"          distance="0"      />
 <CapitalDistances capital_A="Huelva"          capital_B="Albacete"        distance="506"    />
 <CapitalDistances capital_A="Huelva"          capital_B="Alicante"        distance="703"    />
 <CapitalDistances capital_A="Huelva"          capital_B="Almería"         distance="516"    />
@@ -874,6 +893,7 @@
 <CapitalDistances capital_A="Huelva"          capital_B="Vitoria"         distance="919"    />
 <CapitalDistances capital_A="Huelva"          capital_B="Zamora"          distance="595"    />
 <CapitalDistances capital_A="Huelva"          capital_B="Zaragoza"        distance="957"    />
+<CapitalDistances capital_A="Huesca"          capital_B="Huesca"          distance="0"      />
 <CapitalDistances capital_A="Huesca"          capital_B="Albacete"        distance="495"    />
 <CapitalDistances capital_A="Huesca"          capital_B="Alicante"        distance="570"    />
 <CapitalDistances capital_A="Huesca"          capital_B="Almería"         distance="830"    />
@@ -920,6 +940,7 @@
 <CapitalDistances capital_A="Huesca"          capital_B="Vitoria"         distance="256"    />
 <CapitalDistances capital_A="Huesca"          capital_B="Zamora"          distance="535"    />
 <CapitalDistances capital_A="Huesca"          capital_B="Zaragoza"        distance="72"     />
+<CapitalDistances capital_A="Jaén"            capital_B="Jaén"            distance="0"      />
 <CapitalDistances capital_A="Jaén"            capital_B="Albacete"        distance="264"    />
 <CapitalDistances capital_A="Jaén"            capital_B="Alicante"        distance="415"    />
 <CapitalDistances capital_A="Jaén"            capital_B="Almería"         distance="228"    />
@@ -966,6 +987,7 @@
 <CapitalDistances capital_A="Jaén"            capital_B="Vitoria"         distance="686"    />
 <CapitalDistances capital_A="Jaén"            capital_B="Zamora"          distance="583"    />
 <CapitalDistances capital_A="Jaén"            capital_B="Zaragoza"        distance="660"    />
+<CapitalDistances capital_A="León"            capital_B="León"            distance="0"      />
 <CapitalDistances capital_A="León"            capital_B="Albacete"        distance="584"    />
 <CapitalDistances capital_A="León"            capital_B="Alicante"        distance="855"    />
 <CapitalDistances capital_A="León"            capital_B="Almería"         distance="896"    />
@@ -1012,6 +1034,7 @@
 <CapitalDistances capital_A="León"            capital_B="Vitoria"         distance="315"    />
 <CapitalDistances capital_A="León"            capital_B="Zamora"          distance="135"    />
 <CapitalDistances capital_A="León"            capital_B="Zaragoza"        distance="488"    />
+<CapitalDistances capital_A="Lérida"          capital_B="Lérida"          distance="0"      />
 <CapitalDistances capital_A="Lérida"          capital_B="Albacete"        distance="515"    />
 <CapitalDistances capital_A="Lérida"          capital_B="Alicante"        distance="490"    />
 <CapitalDistances capital_A="Lérida"          capital_B="Almería"         distance="802"    />
@@ -1058,6 +1081,7 @@
 <CapitalDistances capital_A="Lérida"          capital_B="Vitoria"         distance="374"    />
 <CapitalDistances capital_A="Lérida"          capital_B="Zamora"          distance="603"    />
 <CapitalDistances capital_A="Lérida"          capital_B="Zaragoza"        distance="140"    />
+<CapitalDistances capital_A="Logroño"         capital_B="Logroño"         distance="0"      />
 <CapitalDistances capital_A="Logroño"         capital_B="Albacete"        distance="578"    />
 <CapitalDistances capital_A="Logroño"         capital_B="Alicante"        distance="653"    />
 <CapitalDistances capital_A="Logroño"         capital_B="Almería"         distance="899"    />
@@ -1104,6 +1128,7 @@
 <CapitalDistances capital_A="Logroño"         capital_B="Vitoria"         distance="86"     />
 <CapitalDistances capital_A="Logroño"         capital_B="Zamora"          distance="333"    />
 <CapitalDistances capital_A="Logroño"         capital_B="Zaragoza"        distance="172"    />
+<CapitalDistances capital_A="Lugo"            capital_B="Lugo"            distance="0"      />
 <CapitalDistances capital_A="Lugo"            capital_B="Albacete"        distance="762"    />
 <CapitalDistances capital_A="Lugo"            capital_B="Alicante"        distance="933"    />
 <CapitalDistances capital_A="Lugo"            capital_B="Almería"         distance="1074"   />
@@ -1150,6 +1175,7 @@
 <CapitalDistances capital_A="Lugo"            capital_B="Vitoria"         distance="451"    />
 <CapitalDistances capital_A="Lugo"            capital_B="Zamora"          distance="313"    />
 <CapitalDistances capital_A="Lugo"            capital_B="Zaragoza"        distance="735"    />
+<CapitalDistances capital_A="Madrid"          capital_B="Madrid"          distance="0"      />
 <CapitalDistances capital_A="Madrid"          capital_B="Albacete"        distance="251"    />
 <CapitalDistances capital_A="Madrid"          capital_B="Alicante"        distance="422"    />
 <CapitalDistances capital_A="Madrid"          capital_B="Almería"         distance="563"    />
@@ -1196,6 +1222,7 @@
 <CapitalDistances capital_A="Madrid"          capital_B="Vitoria"         distance="351"    />
 <CapitalDistances capital_A="Madrid"          capital_B="Zamora"          distance="248"    />
 <CapitalDistances capital_A="Madrid"          capital_B="Zaragoza"        distance="325"    />
+<CapitalDistances capital_A="Málaga"          capital_B="Málaga"          distance="0"      />
 <CapitalDistances capital_A="Málaga"          capital_B="Albacete"        distance="473"    />
 <CapitalDistances capital_A="Málaga"          capital_B="Alicante"        distance="482"    />
 <CapitalDistances capital_A="Málaga"          capital_B="Almería"         distance="219"    />
@@ -1242,6 +1269,7 @@
 <CapitalDistances capital_A="Málaga"          capital_B="Vitoria"         distance="895"    />
 <CapitalDistances capital_A="Málaga"          capital_B="Zamora"          distance="792"    />
 <CapitalDistances capital_A="Málaga"          capital_B="Zaragoza"        distance="869"    />
+<CapitalDistances capital_A="Murcia"          capital_B="Murcia"          distance="0"      />
 <CapitalDistances capital_A="Murcia"          capital_B="Albacete"        distance="150"    />
 <CapitalDistances capital_A="Murcia"          capital_B="Alicante"        distance="75"     />
 <CapitalDistances capital_A="Murcia"          capital_B="Almería"         distance="219"    />
@@ -1288,6 +1316,7 @@
 <CapitalDistances capital_A="Murcia"          capital_B="Vitoria"         distance="752"    />
 <CapitalDistances capital_A="Murcia"          capital_B="Zamora"          distance="649"    />
 <CapitalDistances capital_A="Murcia"          capital_B="Zaragoza"        distance="539"    />
+<CapitalDistances capital_A="Ourense"         capital_B="Ourense"         distance="0"      />
 <CapitalDistances capital_A="Ourense"         capital_B="Albacete"        distance="772"    />
 <CapitalDistances capital_A="Ourense"         capital_B="Alicante"        distance="943"    />
 <CapitalDistances capital_A="Ourense"         capital_B="Almería"         distance="1084"   />
@@ -1334,6 +1363,7 @@
 <CapitalDistances capital_A="Ourense"         capital_B="Vitoria"         distance="561"    />
 <CapitalDistances capital_A="Ourense"         capital_B="Zamora"          distance="284"    />
 <CapitalDistances capital_A="Ourense"         capital_B="Zaragoza"        distance="731"    />
+<CapitalDistances capital_A="Oviedo"          capital_B="Oviedo"          distance="0"      />
 <CapitalDistances capital_A="Oviedo"          capital_B="Albacete"        distance="702"    />
 <CapitalDistances capital_A="Oviedo"          capital_B="Alicante"        distance="873"    />
 <CapitalDistances capital_A="Oviedo"          capital_B="Almería"         distance="1014"   />
@@ -1380,6 +1410,7 @@
 <CapitalDistances capital_A="Oviedo"          capital_B="Vitoria"         distance="340"    />
 <CapitalDistances capital_A="Oviedo"          capital_B="Zamora"          distance="253"    />
 <CapitalDistances capital_A="Oviedo"          capital_B="Zaragoza"        distance="604"    />
+<CapitalDistances capital_A="Palencia"        capital_B="Palencia"        distance="0"      />
 <CapitalDistances capital_A="Palencia"        capital_B="Albacete"        distance="491"    />
 <CapitalDistances capital_A="Palencia"        capital_B="Alicante"        distance="662"    />
 <CapitalDistances capital_A="Palencia"        capital_B="Almería"         distance="803"    />
@@ -1426,6 +1457,7 @@
 <CapitalDistances capital_A="Palencia"        capital_B="Vitoria"         distance="200"    />
 <CapitalDistances capital_A="Palencia"        capital_B="Zamora"          distance="143"    />
 <CapitalDistances capital_A="Palencia"        capital_B="Zaragoza"        distance="373"    />
+<CapitalDistances capital_A="Pamplona"        capital_B="Pamplona"        distance="0"      />
 <CapitalDistances capital_A="Pamplona"        capital_B="Albacete"        distance="598"    />
 <CapitalDistances capital_A="Pamplona"        capital_B="Alicante"        distance="673"    />
 <CapitalDistances capital_A="Pamplona"        capital_B="Almería"         distance="970"    />
@@ -1472,6 +1504,7 @@
 <CapitalDistances capital_A="Pamplona"        capital_B="Vitoria"         distance="93"     />
 <CapitalDistances capital_A="Pamplona"        capital_B="Zamora"          distance="421"    />
 <CapitalDistances capital_A="Pamplona"        capital_B="Zaragoza"        distance="175"    />
+<CapitalDistances capital_A="Pontevedra"      capital_B="Pontevedra"      distance="0"      />
 <CapitalDistances capital_A="Pontevedra"      capital_B="Albacete"        distance="874"    />
 <CapitalDistances capital_A="Pontevedra"      capital_B="Alicante"        distance="1045"   />
 <CapitalDistances capital_A="Pontevedra"      capital_B="Almería"         distance="1186"   />
@@ -1518,6 +1551,7 @@
 <CapitalDistances capital_A="Pontevedra"      capital_B="Vitoria"         distance="663"    />
 <CapitalDistances capital_A="Pontevedra"      capital_B="Zamora"          distance="386"    />
 <CapitalDistances capital_A="Pontevedra"      capital_B="Zaragoza"        distance="833"    />
+<CapitalDistances capital_A="Salamanca"       capital_B="Salamanca"       distance="0"      />
 <CapitalDistances capital_A="Salamanca"       capital_B="Albacete"        distance="463"    />
 <CapitalDistances capital_A="Salamanca"       capital_B="Alicante"        distance="634"    />
 <CapitalDistances capital_A="Salamanca"       capital_B="Almería"         distance="763"    />
@@ -1564,6 +1598,7 @@
 <CapitalDistances capital_A="Salamanca"       capital_B="Vitoria"         distance="351"    />
 <CapitalDistances capital_A="Salamanca"       capital_B="Zamora"          distance="62"     />
 <CapitalDistances capital_A="Salamanca"       capital_B="Zaragoza"        distance="482"    />
+<CapitalDistances capital_A="San Sebastián"   capital_B="San Sebastián"   distance="0"      />
 <CapitalDistances capital_A="San Sebastián"   capital_B="Albacete"        distance="691"    />
 <CapitalDistances capital_A="San Sebastián"   capital_B="Alicante"        distance="766"    />
 <CapitalDistances capital_A="San Sebastián"   capital_B="Almería"         distance="1032"   />
@@ -1610,6 +1645,7 @@
 <CapitalDistances capital_A="San Sebastián"   capital_B="Vitoria"         distance="118"    />
 <CapitalDistances capital_A="San Sebastián"   capital_B="Zamora"          distance="450"    />
 <CapitalDistances capital_A="San Sebastián"   capital_B="Zaragoza"        distance="268"    />
+<CapitalDistances capital_A="Santander"       capital_B="Santander"       distance="0"      />
 <CapitalDistances capital_A="Santander"       capital_B="Albacete"        distance="644"    />
 <CapitalDistances capital_A="Santander"       capital_B="Alicante"        distance="815"    />
 <CapitalDistances capital_A="Santander"       capital_B="Almería"         distance="956"    />
@@ -1656,6 +1692,7 @@
 <CapitalDistances capital_A="Santander"       capital_B="Vitoria"         distance="174"    />
 <CapitalDistances capital_A="Santander"       capital_B="Zamora"          distance="344"    />
 <CapitalDistances capital_A="Santander"       capital_B="Zaragoza"        distance="397"    />
+<CapitalDistances capital_A="Segovia"         capital_B="Segovia"         distance="0"      />
 <CapitalDistances capital_A="Segovia"         capital_B="Albacete"        distance="338"    />
 <CapitalDistances capital_A="Segovia"         capital_B="Alicante"        distance="509"    />
 <CapitalDistances capital_A="Segovia"         capital_B="Almería"         distance="650"    />
@@ -1702,6 +1739,7 @@
 <CapitalDistances capital_A="Segovia"         capital_B="Vitoria"         distance="311"    />
 <CapitalDistances capital_A="Segovia"         capital_B="Zamora"          distance="182"    />
 <CapitalDistances capital_A="Segovia"         capital_B="Zaragoza"        distance="354"    />
+<CapitalDistances capital_A="Sevilla"         capital_B="Sevilla"         distance="0"      />
 <CapitalDistances capital_A="Sevilla"         capital_B="Albacete"        distance="492"    />
 <CapitalDistances capital_A="Sevilla"         capital_B="Alicante"        distance="609"    />
 <CapitalDistances capital_A="Sevilla"         capital_B="Almería"         distance="422"    />
@@ -1748,6 +1786,7 @@
 <CapitalDistances capital_A="Sevilla"         capital_B="Vitoria"         distance="825"    />
 <CapitalDistances capital_A="Sevilla"         capital_B="Zamora"          distance="536"    />
 <CapitalDistances capital_A="Sevilla"         capital_B="Zaragoza"        distance="863"    />
+<CapitalDistances capital_A="Soria"           capital_B="Soria"           distance="0"      />
 <CapitalDistances capital_A="Soria"           capital_B="Albacete"        distance="473"    />
 <CapitalDistances capital_A="Soria"           capital_B="Alicante"        distance="548"    />
 <CapitalDistances capital_A="Soria"           capital_B="Almería"         distance="794"    />
@@ -1794,6 +1833,7 @@
 <CapitalDistances capital_A="Soria"           capital_B="Vitoria"         distance="191"    />
 <CapitalDistances capital_A="Soria"           capital_B="Zamora"          distance="306"    />
 <CapitalDistances capital_A="Soria"           capital_B="Zaragoza"        distance="157"    />
+<CapitalDistances capital_A="Tarragona"       capital_B="Tarragona"       distance="0"      />
 <CapitalDistances capital_A="Tarragona"       capital_B="Albacete"        distance="443"    />
 <CapitalDistances capital_A="Tarragona"       capital_B="Alicante"        distance="417"    />
 <CapitalDistances capital_A="Tarragona"       capital_B="Almería"         distance="711"    />
@@ -1840,6 +1880,7 @@
 <CapitalDistances capital_A="Tarragona"       capital_B="Vitoria"         distance="489"    />
 <CapitalDistances capital_A="Tarragona"       capital_B="Zamora"          distance="694"    />
 <CapitalDistances capital_A="Tarragona"       capital_B="Zaragoza"        distance="231"    />
+<CapitalDistances capital_A="Teruel"          capital_B="Teruel"          distance="0"      />
 <CapitalDistances capital_A="Teruel"          capital_B="Albacete"        distance="242"    />
 <CapitalDistances capital_A="Teruel"          capital_B="Alicante"        distance="317"    />
 <CapitalDistances capital_A="Teruel"          capital_B="Almería"         distance="577"    />
@@ -1886,6 +1927,7 @@
 <CapitalDistances capital_A="Teruel"          capital_B="Vitoria"         distance="422"    />
 <CapitalDistances capital_A="Teruel"          capital_B="Zamora"          distance="537"    />
 <CapitalDistances capital_A="Teruel"          capital_B="Zaragoza"        distance="181"    />
+<CapitalDistances capital_A="Toledo"          capital_B="Toledo"          distance="0"      />
 <CapitalDistances capital_A="Toledo"          capital_B="Albacete"        distance="240"    />
 <CapitalDistances capital_A="Toledo"          capital_B="Alicante"        distance="411"    />
 <CapitalDistances capital_A="Toledo"          capital_B="Almería"         distance="526"    />
@@ -1932,6 +1974,7 @@
 <CapitalDistances capital_A="Toledo"          capital_B="Vitoria"         distance="422"    />
 <CapitalDistances capital_A="Toledo"          capital_B="Zamora"          distance="296"    />
 <CapitalDistances capital_A="Toledo"          capital_B="Zaragoza"        distance="396"    />
+<CapitalDistances capital_A="Valencia"        capital_B="Valencia"        distance="0"      />
 <CapitalDistances capital_A="Valencia"        capital_B="Albacete"        distance="191"    />
 <CapitalDistances capital_A="Valencia"        capital_B="Alicante"        distance="166"    />
 <CapitalDistances capital_A="Valencia"        capital_B="Almería"         distance="460"    />
@@ -1978,6 +2021,7 @@
 <CapitalDistances capital_A="Valencia"        capital_B="Vitoria"         distance="576"    />
 <CapitalDistances capital_A="Valencia"        capital_B="Zamora"          distance="600"    />
 <CapitalDistances capital_A="Valencia"        capital_B="Zaragoza"        distance="326"    />
+<CapitalDistances capital_A="Valladolid"      capital_B="Valladolid"      distance="0"      />
 <CapitalDistances capital_A="Valladolid"      capital_B="Albacete"        distance="444"    />
 <CapitalDistances capital_A="Valladolid"      capital_B="Alicante"        distance="615"    />
 <CapitalDistances capital_A="Valladolid"      capital_B="Almería"         distance="756"    />
@@ -2024,6 +2068,7 @@
 <CapitalDistances capital_A="Valladolid"      capital_B="Vitoria"         distance="236"    />
 <CapitalDistances capital_A="Valladolid"      capital_B="Zamora"          distance="96"     />
 <CapitalDistances capital_A="Valladolid"      capital_B="Zaragoza"        distance="367"    />
+<CapitalDistances capital_A="Vitoria"         capital_B="Vitoria"         distance="0"      />
 <CapitalDistances capital_A="Vitoria"         capital_B="Albacete"        distance="602"    />
 <CapitalDistances capital_A="Vitoria"         capital_B="Alicante"        distance="739"    />
 <CapitalDistances capital_A="Vitoria"         capital_B="Almería"         distance="914"    />
@@ -2070,6 +2115,7 @@
 <CapitalDistances capital_A="Vitoria"         capital_B="Valladolid"      distance="236"    />
 <CapitalDistances capital_A="Vitoria"         capital_B="Zamora"          distance="332"    />
 <CapitalDistances capital_A="Vitoria"         capital_B="Zaragoza"        distance="258"    />
+<CapitalDistances capital_A="Zamora"          capital_B="Zamora"          distance="0"      />
 <CapitalDistances capital_A="Zamora"          capital_B="Albacete"        distance="499"    />
 <CapitalDistances capital_A="Zamora"          capital_B="Alicante"        distance="670"    />
 <CapitalDistances capital_A="Zamora"          capital_B="Almería"         distance="811"    />
@@ -2116,6 +2162,7 @@
 <CapitalDistances capital_A="Zamora"          capital_B="Valladolid"      distance="96"     />
 <CapitalDistances capital_A="Zamora"          capital_B="Vitoria"         distance="332"    />
 <CapitalDistances capital_A="Zamora"          capital_B="Zaragoza"        distance="463"    />
+<CapitalDistances capital_A="Zaragoza"        capital_B="Zaragoza"        distance="0"      />
 <CapitalDistances capital_A="Zaragoza"        capital_B="Albacete"        distance="423"    />
 <CapitalDistances capital_A="Zaragoza"        capital_B="Alicante"        distance="498"    />
 <CapitalDistances capital_A="Zaragoza"        capital_B="Almería"         distance="758"    />
