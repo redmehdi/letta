@@ -995,33 +995,5 @@ public class EventResourceRestTest {
     @CleanupUsingScript("cleanup.sql")
     @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void afterTestCancelEventEventIsCancelledException() { }
-<<<<<<< Updated upstream
-    
-    
-    @Test
-    @InSequence(300) // test 30, sequence 0
-    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-    public void beforeTestCancelEventIllegalArgumentException() { }
 
-    @Test
-    @RunAsClient
-    @InSequence(301) // test 30, sequence 1
-    public void testCancelEventIllegalArgumentException() {
-    	final String login = "mike";
-        final String token = getAuthHeaderContent(login, passwordFor(login));
-        final Builder  req = eventTarget(nonExistentEventId()).path("cancel").request().header(AUTHORIZATION, token);
-        final Response res = req.post(null);
-
-        assertThat(res, hasHttpStatus(NOT_MODIFIED));
-    }
-
-    @Test
-    @InSequence(302) // test 30, sequence 2
-    @CleanupUsingScript("cleanup.sql")
-    @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
-    public void afterTestCancelEventIllegalArgumentException() { }
-    
-=======
-      
->>>>>>> Stashed changes
 }
