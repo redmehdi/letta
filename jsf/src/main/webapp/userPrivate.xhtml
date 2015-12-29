@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:h="http://xmlns.jcp.org/jsf/html"
-	  xmlns:f="http://xmlns.jcp.org/jsf/core"
-	  xmlns:p="http://primefaces.org/ui"
-	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	  xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:letta="http://java.sun.com/jsf/composite/tags">
 <h:head>
 	<title>Private zone</title>
@@ -14,61 +14,156 @@
 
 	<ui:composition template="/template/templateLayout.xhtml">
 		<ui:define name="content">
-			<div class="section ">
-				<div class="container ">
+			<div class="container ">
+				<h:form>
 					<div class="row ">
 						<div class="col-md-12 ">
 							<h1>Your events</h1>
+							<div>
+								<center>
+									<h:panelGroup rendered="#{0 lt privateController.pages}">
+										<nav>
+										<ul class="pagination">
+											<h:panelGroup rendered="#{1 eq privateController.pageIndex}">
+												<li class="disabled"><span label="Previous">&lt;</span>
+												</li>
+											</h:panelGroup>
+											<h:panelGroup rendered="#{1 lt privateController.pageIndex}">
+												<li><h:commandLink aria-label="Previous" value="&lt;"
+														action="#{privateController.listCreatedEventsPrev()}" />
+												</li>
+											</h:panelGroup>
+											<ui:repeat value="#{privateController.pagesLinks}" var="page">
+												<h:panelGroup
+													rendered="#{page != privateController.pageIndex}">
+													<li><h:commandLink value="#{page}"
+															action="#{privateController.jumpToPage(page)}" /></li>
+												</h:panelGroup>
+												<h:panelGroup
+													rendered="#{page == privateController.pageIndex}">
+													<li class="active"><span>#{page}<span
+															class="sr-only">(current)</span></span></li>
+												</h:panelGroup>
+											</ui:repeat>
+											<h:panelGroup
+												rendered="#{privateController.pages eq privateController.pageIndex}">
+												<li class="disabled"><span>&gt;</span></li>
+											</h:panelGroup>
+											<h:panelGroup
+												rendered="#{privateController.pages gt privateController.pageIndex}">
+												<li><h:commandLink aria-label="Previous" value="&gt;"
+														action="#{privateController.listCreatedEventsNext()}" />
+												</li>
+											</h:panelGroup>
+										</ul>
+										</nav>
+									</h:panelGroup>
+									<h:outputText value="Welcome! Join to some events to start."
+										rendered="#{privateController.pages eq 0}" />
+								</center>
+								<div>&nbsp;</div>
+								<div>&nbsp;</div>
+							</div>
+							<c:if test="#{!empty privateController.ownEvents}">
+								<ui:repeat id="indexRepeat" var="event"
+									value="#{privateController.ownEvents}" varStatus="status">
+									<div class="col-xs-12 col-sm-6 col-md-3">
+										<letta:event event="#{event}" />
+									</div>
+								</ui:repeat>
+							</c:if>
+							<c:if test="#{empty privateController.ownEvents}">
+								<h1>
+									<h:link value="Create your first post"
+										outcome="faces/createEvent.xhtml" />
+								</h1>
+							</c:if>
+						</div>
+					</div>
+					<h:panelGroup rendered="#{privateController.pages ne 0}">
+						<div>&nbsp;</div>
+						<div>&nbsp;</div>
+						<div class="row">
+							<center>
+								<h:panelGroup
+									rendered="#{0 lt privateController.pages}">
+									<nav>
+									<ul class="pagination">
+										<h:panelGroup
+											rendered="#{1 eq privateController.pageIndex}">
+											<li class="disabled"><span label="Previous">&lt;</span>
+											</li>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{1 lt privateController.pageIndex}">
+											<li><h:commandLink aria-label="Previous" value="&lt;"
+													action="#{privateController.listCreatedEventsPrev()}" />
+											</li>
+										</h:panelGroup>
+										<ui:repeat value="#{privateController.pagesLinks}"
+											var="page">
+											<h:panelGroup
+												rendered="#{page != privateController.pageIndex}">
+												<li><h:commandLink value="#{page}"
+														action="#{privateController.jumpToPage(page)}" />
+												</li>
+											</h:panelGroup>
+											<h:panelGroup
+												rendered="#{page == privateController.pageIndex}">
+												<li class="active"><span>#{page}<span
+														class="sr-only">(current)</span></span></li>
+											</h:panelGroup>
+										</ui:repeat>
+										<h:panelGroup
+											rendered="#{privateController.pages eq privateController.pageIndex}">
+											<li class="disabled"><span>&gt;</span></li>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{privateController.pages gt privateController.pageIndex}">
+											<li><h:commandLink aria-label="Previous" value="&gt;"
+													action="#{privateController.listCreatedEventsNext()}" />
+											</li>
+										</h:panelGroup>
+									</ul>
+									</nav>
+								</h:panelGroup>
+							</center>
+							<br /> <br /> <br />
+						</div>
+					</h:panelGroup>
+					
+				</h:form>
+			</div>
+			<h:panelGroup
+				rendered="#{!loginController.anonymous 
+		              		    and param['cancelled']}">
+				<script type="text/javascript">
+					jQuery(function($) {
+						$('#successCancelModal').modal('show');
+					});
+				</script>
+				<div class="modal fade" id="successCancelModal" tabindex="-1"
+					role="dialog" aria-labelledby="successCancelModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="successCancelModalLabel">Event
+									cancelled.</h4>
+							</div>
+							<div class="modal-body">The event was successfully
+								cancelled.</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="section">
-				<div class="container">
-					<div id="events-list" class="row">
-						<c:if test="#{!empty privateController.ownEvents}">
-							<ui:repeat id="indexRepeat" var="event"
-								value="#{privateController.ownEvents}" varStatus="status">
-								<div class="col-xs-12 col-sm-6 col-md-3">
-									<letta:event event="#{event}"/>
-								</div>
-							</ui:repeat>
-						</c:if>
-						<c:if test="#{empty privateController.ownEvents}">
-							<h1>
-								<h:link value="Create your first post"
-									outcome="faces/createEvent.xhtml" />
-							</h1>
-						</c:if>
-					</div>
-				</div>
-			</div>
-		<h:panelGroup rendered="#{!loginController.anonymous 
-		              		    and param['cancelled']}" >
-			 <script type="text/javascript">
-			 jQuery(function ($) { 
-	             $('#successCancelModal').modal('show');
-	         });
-			</script>
-			<div class="modal fade" id="successCancelModal" tabindex="-1" role="dialog" aria-labelledby="successCancelModalLabel">
-			  <div class="modal-dialog" role="document">
-			    <div class="modal-content">
-				  <div class="modal-header">
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			        	<span aria-hidden="true">&times;</span>
-			        </button>
-			        <h4 class="modal-title" id="successCancelModalLabel">Event cancelled.</h4>
-			      </div>
-			      <div class="modal-body">
-				      The event was successfully cancelled.
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			      </div>
-			    </div>
-			  </div>
-			</div>
-		</h:panelGroup>
+			</h:panelGroup>
 		</ui:define>
 
 	</ui:composition>

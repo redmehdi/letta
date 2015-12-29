@@ -450,6 +450,50 @@ public class EventEJBTest {
         assertThat(eventsCreatedByUser, containsEventsInAnyOrder(userEvents));
     }
 
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void testGetEventsCreatedByUserPaginated() {
+		principal.setName(existentUser().getLogin());
+
+		final Event[] userEvents = filterEvents(event -> event.getOwner().equals(existentUser()));
+
+		final List<Event> eventsCreatedByUser = asUser.call(() -> events.getEventsOwnedByCurrentUser(0, -1));
+
+		assertThat(eventsCreatedByUser, containsEventsInAnyOrder(userEvents));
+	}
+
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void testGetEventsCreatedByUserPaginatedNotZeroCount() {
+		principal.setName(existentUser().getLogin());
+		
+		final Event[] userEvents = filterEvents(event -> event.getOwner().equals(existentUser()));
+		
+		final List<Event> eventsCreatedByUser = asUser.call(() -> events.getEventsOwnedByCurrentUser(0, 2));
+		
+		assertThat(eventsCreatedByUser.size(), is(2));
+	}
+
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml" })
+	public void testGetEventsCreatedByUserPaginatedCountZero() {
+		principal.setName(existentUser().getLogin());
+		
+		final Event[] userEvents = filterEvents(event -> event.getOwner().equals(existentUser()));
+		
+		final List<Event> eventsCreatedByUser = asUser.call(() -> events.getEventsOwnedByCurrentUser(0, 0));
+		
+		assertThat(eventsCreatedByUser.size(), is(0));
+	}
+
+	@Test
+	@UsingDataSet({"users.xml", "events.xml", "new-user.xml"})
+	public void testCountEventsOwnedByCurrentUser(){
+		principal.setName(newUser().getLogin());
+		final int count = asUser.call(events::countEventsOwnedByCurrentUser);
+		assertThat(count, is(0));
+	}
+	
     @Test
     public void testCountEmpty() {
         final int count = events.count("");
@@ -463,6 +507,7 @@ public class EventEJBTest {
         final int count = events.count("");
         assertThat(count, is(5));
     }
+    
     @Test
     @UsingDataSet({ "users.xml", "events.xml" })
     public void testCountExampleTerm() {
@@ -470,6 +515,7 @@ public class EventEJBTest {
         final int count = events.count("example");
         assertThat(count, is(5));
     }
+    
     @Test
     @UsingDataSet({ "users.xml", "new-user.xml", "events.xml", "event-attendees.xml" })
     public void testGetCountEventsJoinedByUserEmpty(){
@@ -511,9 +557,7 @@ public class EventEJBTest {
     public void testGetAttendees(){        
         assertThat(events.getAttendees(existentEvent()), is(2));
     }
-    
-
-    
+        
     @Test  
     @UsingDataSet({ "users.xml", "events.xml" })
     public void testModifyEventTittle() 

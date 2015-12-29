@@ -449,15 +449,22 @@ public class EventEJB {
         return query.getSingleResult().intValue();
     }
 
-    /**
-     * Get events created by a specific user.
-     *
-     * @param user the owner of the events.
-     *
-     * @return a list of {@link Event} that contains the owner`s events.
-     *
-     * @throws IllegalArgumentException if the user is null.
-     */
+	/**
+	 * Get events created by a specific user.
+	 *
+	 * @param user
+	 *            the owner of the events.
+	 *
+	 * @return a list of {@link Event} that contains the owner`s events.
+	 *
+	 * @throws IllegalArgumentException
+	 *             if the user is null.
+	 * 
+	 * @deprecated Consider using
+	 *             {@link EventEJB#getEventsOwnedBy(User, int, int)} instead.
+	 *             The new method returns the same list but paginated
+	 */
+    @Deprecated
     @RolesAllowed("USER")
     private List<Event> getEventsOwnedBy(
         final User user
@@ -475,14 +482,93 @@ public class EventEJB {
         return query.setParameter("owner", user).getResultList();
     }
 
-    /**
-     * Get events created by the active user.
-     *
-     * @return a list of {@link Event} that contains events of the current user.
-     */
+	/**
+	 * Returns a list of {@link Event} that are created by the given {@link User}.
+	 * 
+	 * @param user
+	 *            {@link User} owner of the {@link Event}.
+	 * @param start
+	 *            index of the first event for retrieve.
+	 * @param count
+	 *            number of events to retrieve.
+	 * @return a list of {@link Event} that contains the given number of events
+	 *         from the given position owned by the given {@link User}.
+	 * @throws IllegalArgumentException
+	 *             if the user is null.
+	 */
+	@RolesAllowed("USER")
+	private List<Event> getEventsOwnedBy(final User user, final int start, final int count)
+			throws IllegalArgumentException {
+		isTrue(nonNull(user), "User cannot be null");
+		if (count == 0)
+			return emptyList();
+
+		final TypedQuery<Event> query = em
+				.createQuery("SELECT e FROM Event e WHERE e.owner = :owner ORDER BY e.date DESC", Event.class)
+				.setParameter("owner", user);
+
+		if (count < 0) {
+			return query.setFirstResult(0).setMaxResults(Integer.MAX_VALUE).getResultList();
+		} else {
+			return query.setFirstResult(start).setMaxResults(count).getResultList();
+		}
+	}
+
+	/**
+	 * Returns the number of {@link Event} created by the given {@link User}
+	 * 
+	 * @param user
+	 *            {@link User} for count his created {@link Event}
+	 * @return The number of {@link Event} created by the given {@link User}
+	 */
+	@RolesAllowed("USER")
+	public int countEventsOwnedBy(final User user) {
+		final TypedQuery<Long> query = em
+				.createQuery("SELECT COUNT(DISTINCT e.id) FROM Event e WHERE e.owner = :owner", Long.class)
+				.setParameter("owner", user);
+
+		return query.getSingleResult().intValue();
+	}
+	
+	/**
+	 * Get events created by the active user.
+	 *
+	 * @return a list of {@link Event} that contains events of the current user.
+	 * 
+	 * @deprecated Consider using
+	 *             {@link EventEJB#getEventsOwnedByCurrentUser(int, int)}
+	 *             instead, that calls to
+	 *             {@link EventEJB#getEventsOwnedBy(User, int, int)}
+	 */
+	@Deprecated
     @RolesAllowed("USER")
     public List<Event> getEventsOwnedByCurrentUser() {
         return getEventsOwnedBy(auth.getCurrentUser());
+    }
+
+	/**
+	 * Get the {@link Event} created by the active {@link User}.
+	 * 
+	 * @param start
+	 *            index of the first {@link Event} to retrieve.
+	 * @param count
+	 *            number of {@link Event} to retrieve.
+	 * @return a list of {@link Event} that contains the given number of events
+	 *         from the given position owned by the current {@link User}.
+	 */
+    @RolesAllowed("USER")
+    public List<Event> getEventsOwnedByCurrentUser(final int start, final int count) {
+    	return getEventsOwnedBy(auth.getCurrentUser(), start, count);
+    }
+    
+    /**
+     * Returns the number of {@link Event} created by the current {@link User}
+     * 
+     * @return the number of {@link Event} created by the current {@link User}
+     */
+    @RolesAllowed("USER")
+    public int countEventsOwnedByCurrentUser(){
+    	return countEventsOwnedBy(auth.getCurrentUser());
     }
 
     @RolesAllowed("USER")
