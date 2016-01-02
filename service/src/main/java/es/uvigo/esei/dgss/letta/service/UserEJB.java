@@ -290,7 +290,7 @@ public class UserEJB {
 	 * @throws EmailDuplicateException
 	 *             if the new email is yet in the system
 	 */
-	@RolesAllowed("USER")
+	@RolesAllowed({ "USER", "ADMIN" })
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void modifyProfile(final User user) throws EmailDuplicateException {
 		final User currentUser = em.find(User.class, auth.getCurrentUser().getLogin());

@@ -1,9 +1,5 @@
 package es.uvigo.esei.dgss.letta.service;
 
-import static java.util.Collections.emptyList;
-import static java.util.Objects.nonNull;
-import static org.apache.commons.lang3.Validate.isTrue;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +26,11 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledExceptio
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
+
+import static java.util.Collections.emptyList;
+import static java.util.Objects.nonNull;
+
+import static org.apache.commons.lang3.Validate.isTrue;
 
 
 /**
@@ -103,11 +104,11 @@ public class EventEJB {
 
     	return query.getResultList().size();
     }
-    
+
 
 
     /**
-     * Search for an event with advanced criteria 
+     * Search for an event with advanced criteria
      * @param search Search term of the query(short description or title)
      * @param state State of the event(cancelled or open)
      * @param category Category of the event
@@ -116,12 +117,12 @@ public class EventEJB {
      * @return result list of events
      */
     @PermitAll
-    public List<Event> advancedSearch(String search, Enum state, String category, int start, int count){
+    public List<Event> advancedSearch(final String search, final Enum state, final String category, final int start, final int count){
     	System.out.println("ENTREI DENTRO");
     	isTrue(nonNull(search), "Search query cannot be null");
         if (count == 0) return emptyList();
         Category cat= Category.valueOf(category);
-        
+
         String query_string=
                 "SELECT e FROM Event e " +
                 " WHERE (LOWER(e.title) LIKE :search " +
@@ -129,7 +130,7 @@ public class EventEJB {
                 "OR LOWER(e.description) LIKE :search ) " +
                 "AND e.category = :category_aux "+
                 "AND e.cancelled =  :auxState " ;
-               
+
         boolean aux=false;
         if(state.name().equals("EXPIRED")){
         	aux=true;
@@ -140,22 +141,21 @@ public class EventEJB {
                 Event.class
             ).setParameter("search", "%" + search.toLowerCase() + "%");
         query.setParameter("category_aux",cat);
-        
-        if(state.name().equals("CANCELLED")){
-        	query.setParameter("auxState",true);
-        }else {
-        	query.setParameter("auxState",false);
-        }
-        	
+
+        if(state.name().equals("CANCELLED"))
+            query.setParameter("auxState",true);
+        else
+            query.setParameter("auxState",false);
+
         return query.setFirstResult(start).setMaxResults(count).getResultList();
-   
+
 
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     /**
      * Returns a paginated {@link List} of {@link Event Events}, sorted by
      * ascending date (which means that older events will be first on the list).
@@ -182,7 +182,7 @@ public class EventEJB {
             Event.class
         ).setFirstResult(start).setMaxResults(count).getResultList();
     }
-    
+
     /**
      * Returns a paginated {@link List} of {@link Event Events}, sorted by
      * nearest locations and ascending date (which means that older events
@@ -199,12 +199,12 @@ public class EventEJB {
      * @throws IllegalArgumentException if the start or count parameters are
      *         negative.
      */
-    @RolesAllowed("USER")
+    @RolesAllowed({ "USER", "ADMIN" })
     public List<Event> listByLocation(
         final String location, final int start, final int count
     ) throws IllegalArgumentException {
         if (count == 0) return emptyList();
-         
+
         return em.createQuery(
                "SELECT e from Event e, CapitalDistances cd where cd.capital_A=:location and"
                + " cd.capital_B=e.place and e.date > now() ORDER BY cd.distance ASC, e.date ASC",
@@ -241,7 +241,7 @@ public class EventEJB {
      * @throws SecurityException if the currently identified user is not found
      *         in the database (!!!).
      */
-    @RolesAllowed("USER")
+    @RolesAllowed({ "USER", "ADMIN" })
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Event createEvent(
         final Event event
@@ -299,9 +299,9 @@ public class EventEJB {
         return query.setFirstResult(start).setMaxResults(count).getResultList();
     }
 
-    
-    
-    
+
+
+
     /**
      * Modification of the search method that orders by distance from the residence place
      * @param search The search term
@@ -316,7 +316,7 @@ public class EventEJB {
     ) throws IllegalArgumentException {
         isTrue(nonNull(search), "Search query cannot be null");
 		final User user = auth.getCurrentUser();
-		
+
         if (count == 0) return emptyList();
         //FIXME: Sort by number of attendees
         final TypedQuery<Event> query = em.createQuery(
@@ -334,9 +334,9 @@ public class EventEJB {
         return query.setFirstResult(start).setMaxResults(count).getResultList();
     }
 
-    
-    
-    
+
+
+
     /**
      * Register the current identified {@link User} into a {@link Event}. It the
      * the current {@link User} is already registered for the event the method
@@ -354,7 +354,7 @@ public class EventEJB {
      *
      * @throws IllegalArgumentException if the {@link Event} does not exist
      */
-	@RolesAllowed("USER")
+	@RolesAllowed({ "USER", "ADMIN" })
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void attendToEvent(final int eventId)
 			throws EventAlredyJoinedException, SecurityException,
@@ -389,7 +389,7 @@ public class EventEJB {
      * @return A {@link List} of {@link Event Events} that authenticated
      *         {@link User} is joined.
      */
-    @RolesAllowed("USER")
+    @RolesAllowed({ "USER", "ADMIN" })
     public List<Event> getAttendingEvents(final int start, final int count) {
         if (count == 0) return emptyList();
 
@@ -404,7 +404,7 @@ public class EventEJB {
         else
         	return query.setFirstResult(start).setMaxResults(count).getResultList();
     }
-    
+
     /**
      * Return a {@link List} of {@link Event Events} that authenticated
      * {@link User} is joined ordered by location.
@@ -412,10 +412,10 @@ public class EventEJB {
      * @return A {@link List} of {@link Event Events} that authenticated
      *         {@link User} is joined ordered by location.
      */
-    @RolesAllowed("USER")
+    @RolesAllowed({ "USER", "ADMIN" })
     public List<Event> getAttendingEventsOrderLocation(final String location, final int start, final int count) {
-        if (count == 0) return emptyList();        
-        
+        if (count == 0) return emptyList();
+
         final TypedQuery<Event> query = em.createQuery(
             "SELECT e FROM Event e JOIN FETCH e.attendees, CapitalDistances cd " +
             "WHERE :user MEMBER OF e.attendees and cd.capital_A=:location and "+
@@ -436,7 +436,7 @@ public class EventEJB {
      * @return A number (int) of {@link Event Events} that authenticated
      *         {@link User} is joined.
      */
-    @RolesAllowed("USER")
+    @RolesAllowed({ "USER", "ADMIN" })
     public int countAttendingEvents() throws SecurityException {
         final User currentUser = auth.getCurrentUser();
 
@@ -459,13 +459,13 @@ public class EventEJB {
 	 *
 	 * @throws IllegalArgumentException
 	 *             if the user is null.
-	 * 
+	 *
 	 * @deprecated Consider using
 	 *             {@link EventEJB#getEventsOwnedBy(User, int, int)} instead.
 	 *             The new method returns the same list but paginated
 	 */
     @Deprecated
-    @RolesAllowed("USER")
+    @RolesAllowed({ "USER", "ADMIN" })
     private List<Event> getEventsOwnedBy(
         final User user
     ) throws IllegalArgumentException {
@@ -484,7 +484,7 @@ public class EventEJB {
 
 	/**
 	 * Returns a list of {@link Event} that are created by the given {@link User}.
-	 * 
+	 *
 	 * @param user
 	 *            {@link User} owner of the {@link Event}.
 	 * @param start
@@ -496,7 +496,7 @@ public class EventEJB {
 	 * @throws IllegalArgumentException
 	 *             if the user is null.
 	 */
-	@RolesAllowed("USER")
+	@RolesAllowed({ "USER", "ADMIN" })
 	private List<Event> getEventsOwnedBy(final User user, final int start, final int count)
 			throws IllegalArgumentException {
 		isTrue(nonNull(user), "User cannot be null");
@@ -507,21 +507,20 @@ public class EventEJB {
 				.createQuery("SELECT e FROM Event e WHERE e.owner = :owner ORDER BY e.date DESC", Event.class)
 				.setParameter("owner", user);
 
-		if (count < 0) {
-			return query.setFirstResult(0).setMaxResults(Integer.MAX_VALUE).getResultList();
-		} else {
-			return query.setFirstResult(start).setMaxResults(count).getResultList();
-		}
+		if (count < 0)
+            return query.setFirstResult(0).setMaxResults(Integer.MAX_VALUE).getResultList();
+        else
+            return query.setFirstResult(start).setMaxResults(count).getResultList();
 	}
 
 	/**
 	 * Returns the number of {@link Event} created by the given {@link User}
-	 * 
+	 *
 	 * @param user
 	 *            {@link User} for count his created {@link Event}
 	 * @return The number of {@link Event} created by the given {@link User}
 	 */
-	@RolesAllowed("USER")
+	@RolesAllowed({ "USER", "ADMIN" })
 	public int countEventsOwnedBy(final User user) {
 		final TypedQuery<Long> query = em
 				.createQuery("SELECT COUNT(DISTINCT e.id) FROM Event e WHERE e.owner = :owner", Long.class)
@@ -529,26 +528,26 @@ public class EventEJB {
 
 		return query.getSingleResult().intValue();
 	}
-	
+
 	/**
 	 * Get events created by the active user.
 	 *
 	 * @return a list of {@link Event} that contains events of the current user.
-	 * 
+	 *
 	 * @deprecated Consider using
 	 *             {@link EventEJB#getEventsOwnedByCurrentUser(int, int)}
 	 *             instead, that calls to
 	 *             {@link EventEJB#getEventsOwnedBy(User, int, int)}
 	 */
 	@Deprecated
-    @RolesAllowed("USER")
+    @RolesAllowed({ "USER", "ADMIN" })
     public List<Event> getEventsOwnedByCurrentUser() {
         return getEventsOwnedBy(auth.getCurrentUser());
     }
 
 	/**
 	 * Get the {@link Event} created by the active {@link User}.
-	 * 
+	 *
 	 * @param start
 	 *            index of the first {@link Event} to retrieve.
 	 * @param count
@@ -556,22 +555,22 @@ public class EventEJB {
 	 * @return a list of {@link Event} that contains the given number of events
 	 *         from the given position owned by the current {@link User}.
 	 */
-    @RolesAllowed("USER")
+    @RolesAllowed({ "USER", "ADMIN" })
     public List<Event> getEventsOwnedByCurrentUser(final int start, final int count) {
     	return getEventsOwnedBy(auth.getCurrentUser(), start, count);
     }
-    
+
     /**
      * Returns the number of {@link Event} created by the current {@link User}
-     * 
+     *
      * @return the number of {@link Event} created by the current {@link User}
      */
-    @RolesAllowed("USER")
+    @RolesAllowed({ "USER", "ADMIN" })
     public int countEventsOwnedByCurrentUser(){
     	return countEventsOwnedBy(auth.getCurrentUser());
     }
 
-    @RolesAllowed("USER")
+    @RolesAllowed({ "USER", "ADMIN" })
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void unattendToEvent(
         final int eventId
@@ -614,7 +613,7 @@ public class EventEJB {
 	 * @throws SecurityException  if the currently identified user is not found
      *         in the database or if he is not the owner of the event.
 	 */
-	@RolesAllowed("USER")
+	@RolesAllowed({ "USER", "ADMIN" })
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void modifyEvent( final Event modified )
     		throws IllegalArgumentException, UserNotAuthorizedException, SecurityException{
@@ -655,7 +654,7 @@ public class EventEJB {
      * @throws IllegalArgumentException if the {@link Event} does not exist
      * @throws IllegalEventOwnerException  if the event does not exist
      */
-	@RolesAllowed("USER")
+	@RolesAllowed({ "USER", "ADMIN" })
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void cancelEvent(final int eventId)
 			throws SecurityException,
@@ -707,7 +706,7 @@ public class EventEJB {
 
 		return event.isCancelled();
 	}
-	
+
 	/**
 	 * Gets all the {@link Capital} in the database.
 	 *

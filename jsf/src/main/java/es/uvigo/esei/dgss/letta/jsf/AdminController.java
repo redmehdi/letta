@@ -10,23 +10,27 @@ import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
 
 /**
- * {@linkplain AdminController} is a JSF controller to manage {@link User}s.
+ * {@linkplain AdminController} is a JSF controller to manage {@link User Users}
+ * and perform any other admin-level operation.
  *
  * @author Alberto Pardellas Soto
- *
+ * @author Alberto Gutiérrez Jácome
  */
 @RequestScoped
 @ManagedBean(name = "adminController")
 public class AdminController {
-	@Inject
-	private UserEJB userEJB;
-	
+
+    @Inject
+    private UserEJB userEJB;
+
     /**
-     * Retrieves a {@link List} of {@link User}s that they exist in the database.
+     * Retrieves a {@link List} of {@link User Users} that they exist in the
+     * database.
      *
-     * @return an ordered List of {@link User}s.
+     * @return an ordered List of {@link User Users}.
      */
-	public List<User> getUsers() {
-		return userEJB.getUsers();
-	}
+    public List<User> getUsers() {
+        return userEJB.getUsers();
+    }
+
 }

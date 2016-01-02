@@ -29,7 +29,7 @@ public class LoginUserController {
 
 	@Inject
 	private Principal currentUserPrincipal;
-	
+
 	@Inject
 	private UserAuthorizationEJB auth;
 
@@ -54,7 +54,11 @@ public class LoginUserController {
 					.getRequest();
 			request.login(this.getLogin(), this.getPassword());
 			this.error = false;
-			context.redirect("index.xhtml?login=true");
+
+			if (auth.getCurrentUser().getRole().equals(Role.ADMIN))
+			    context.redirect("adminPrivate.xhtml");
+			else
+			    context.redirect("index.xhtml?login=true");
 		} catch (ServletException e) {
 			this.error = true;
 			this.errorMessage = "Login or password don't match";
@@ -142,7 +146,7 @@ public class LoginUserController {
 
 	/**
 	 * Checks if the current user is the "anonymous" user.
-	 * 
+	 *
 	 * @return {@code true} if the current user is the "anonymous" user.
 	 *         {@code false} otherwise.
 	 */
@@ -151,44 +155,52 @@ public class LoginUserController {
 	}
 
 	/**
+	 * Checks if the current user is an {@link Role#ADMIN admin}.
+	 *
+	 * @return {@code true} if the current identified user is an administrator,
+	 *         {@code false} otherwise.
+	 */
+	public boolean isAdmin() {
+	    return !isAnonymous()
+	        && auth.getCurrentUser().getRole().equals(Role.ADMIN);
+	}
+
+	/**
 	 * Forces a page redirect to the index if the current user is the anonymous
 	 * user.
-	 * 
+	 *
 	 * @throws IOException
 	 *             if an error happens while redirecting.
 	 */
 	public void redirectIfAnonymous() throws IOException {
-		if (this.isAnonymous()) {
-			redirectToIndex();
-		}
+		if (this.isAnonymous())
+            redirectToIndex();
 	}
 
 	/**
 	 * Forces a page redirect to the index if the current user is not an
 	 * anonymous user.
-	 * 
+	 *
 	 * @throws IOException
 	 *             if an error happens while redirecting.
 	 */
 	public void redirectIfNotAnonymous() throws IOException {
-		if (!this.isAnonymous()) {
-			redirectToIndex();
-		}
+		if (!this.isAnonymous())
+            redirectToIndex();
 	}
-	
+
 	/**
 	 * Forces a page redirect to the index if the current user is not an
 	 * admin user.
-	 * 
+	 *
 	 * @throws IOException
 	 *             if an error happens while redirecting.
 	 */
 	public void redirectIfNotAdmin() throws IOException {
 		User user = auth.getCurrentUser();
-		
-		if (user.getRole() != Role.ADMIN) {
-			redirectToIndex();
-		}
+
+		if (user.getRole() != Role.ADMIN)
+            redirectToIndex();
 	}
 
 	private void redirectToIndex() throws IOException {

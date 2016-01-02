@@ -47,28 +47,26 @@
 		        <li>
 		            <h:link value="Sign up" rendered="#{loginController.anonymous}" outcome="faces/register.xhtml" />
 		        </li>
-	          		<h:panelGroup rendered="#{!loginController.anonymous}">
-						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown" role="button" aria-expanded="false">
-							#{loginController.currentUser.name}&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
-						</a>
-
-							<ul class="dropdown-menu" role="menu">
-								<li><h:link value="Create Event"
-										outcome="faces/createEvent.xhtml" /></li>
-								<li class="divider"></li>
-								<li><h:link value="My joined Events"
-										outcome="faces/listJoinedEvents.xhtml" /></li>
-								<li><h:link value="My created Events"
-										outcome="faces/userPrivate.xhtml" /></li>
-								<li class="divider"></li>
-								<li><h:link value="Modify profile"
-										outcome="faces/modifyProfile.xhtml" /></li>
-								<li class="divider"></li>
-								<li><h:link value="Logout"
-										outcome="faces/logout.xhtml" /></li>
-							</ul></li>
-					</h:panelGroup>
+		        <li>
+		            <h:link value="Administration" rendered="#{loginController.admin}" outcome="faces/adminPrivate.xhtml" />
+		        </li>
+                <h:panelGroup rendered="#{!loginController.anonymous}">
+				<li class="dropdown">
+				    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+				        #{loginController.currentUser.name}&nbsp;&nbsp;<i class="fa fa-caret-down"></i>
+				     </a>
+					<ul class="dropdown-menu" role="menu">
+						<li><h:link value="Create Event" outcome="faces/createEvent.xhtml" /></li>
+						<li class="divider"></li>
+						<li><h:link value="My joined Events" outcome="faces/listJoinedEvents.xhtml" /></li>
+						<li><h:link value="My created Events" outcome="faces/userPrivate.xhtml" /></li>
+						<li class="divider"></li>
+						<li><h:link value="Modify profile" outcome="faces/modifyProfile.xhtml" /></li>
+						<li class="divider"></li>
+						<li><h:link value="Logout" outcome="faces/logout.xhtml" /></li>
+					</ul>
+				</li>
+				</h:panelGroup>
 	          </ul>
 	        </div>
 	      </div>
