@@ -1,12 +1,5 @@
 package es.uvigo.esei.dgss.letta.service;
 
-import static es.uvigo.esei.dgss.letta.domain.entities.RegistrationsDataset.newRegistration;
-import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertThat;
-
 import java.util.Optional;
 
 import javax.ejb.EJB;
@@ -33,6 +26,14 @@ import es.uvigo.esei.dgss.letta.service.util.mail.TestingMailer;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.Assert.assertThat;
+
+import static es.uvigo.esei.dgss.letta.domain.entities.RegistrationsDataset.newRegistration;
+import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
+
 @RunWith(Arquillian.class)
 @CleanupUsingScript({ "cleanup.sql" })
 public class UserEJBTest {
@@ -44,10 +45,10 @@ public class UserEJBTest {
 
 	@Inject
     private TestPrincipal principal;
-	
+
 	@EJB(name = "user-caller")
     private RoleCaller asUser;
-	
+
     @Deployment
     public static Archive<?> deploy() {
         return deployment().withTestMailer().withTestPrincipal().withClasses(
@@ -64,14 +65,14 @@ public class UserEJBTest {
     public void getNullEmail(){
     	facade.getByEmail(null);
     }
-    
+
     @Test
     public void getEmptyEmail(){
     	Optional<User> test =facade.getByEmail("jasdsa@adasd.com");
         assertThat(test, is(Optional.empty()));
 
     }
-    
+
     @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
     public void get(){
     	facade.get(null);
@@ -89,8 +90,8 @@ public class UserEJBTest {
     	assertThat(u.getLogin(),is(equalTo(test.get().getLogin()))
     			);
     }
-    
-    
+
+
     @Test
 	@UsingDataSet("registrations.xml")
 	@ShouldMatchDataSet("registrations-create.xml")
@@ -112,7 +113,7 @@ public class UserEJBTest {
 		facade.registerUser(registration);
 		facade.registerUser(registration);
 	}
-	
+
 	@Test(expected = EmailDuplicateException.class)
 	@UsingDataSet("registrations.xml")
 	@ShouldMatchDataSet("registrations-create.xml")
@@ -144,9 +145,9 @@ public class UserEJBTest {
 	public void testModifyUser() throws EmailDuplicateException {
 		User user = UsersDataset.modifiedUser();
 		principal.setName(user.getLogin());
-		asUser.throwingRun(() -> facade.modifyProfile(user));
+		asUser.throwingRun(() -> facade.update(user.getLogin(), user));
 	}
-	
+
 	@Test
 	@UsingDataSet("users.xml")
 	@ShouldMatchDataSet("users.xml")
@@ -154,7 +155,7 @@ public class UserEJBTest {
 		User user = UsersDataset.existentUser();
 		principal.setName(user.getLogin());
 		user.changePassword(UsersDataset.passwordFor(user.getLogin()));
-		asUser.throwingRun(() -> facade.modifyProfile(user));
+		asUser.throwingRun(() -> facade.update(user.getLogin(), user));
 	}
 
 	@Test(expected=EmailDuplicateException.class)
@@ -163,9 +164,9 @@ public class UserEJBTest {
 		User user = UsersDataset.existentUser();
 		principal.setName(user.getLogin());
 		user.setEmail("anne@email.com");
-		asUser.throwingRun(() -> facade.modifyProfile(user));
+		asUser.throwingRun(() -> facade.update(user.getLogin(), user));
 	}
-		
+
 //	@Test
 //	@UsingDataSet("registrations-create.xml")
 //	@ShouldMatchDataSet("registrations-register-user.xml")

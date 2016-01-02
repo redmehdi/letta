@@ -1,9 +1,11 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.letta.domain.entities.User;
@@ -31,6 +33,12 @@ public class AdminController {
      */
     public List<User> getUsers() {
         return userEJB.getUsers();
+    }
+
+    public void editUser(final String login) throws IOException {
+        FacesContext.getCurrentInstance().getExternalContext().redirect(
+            "modifyProfile.xhtml?login=" + login
+        );
     }
 
 }

@@ -30,8 +30,8 @@
                     </p:column>
                     
                      <p:column headerText="Options"> 
-                        <p:commandButton icon="ui-icon-pencil" title="Edit"/>
-                        <p:commandButton icon="ui-icon-trash" title="Delete"/>
+                        <p:commandButton icon="ui-icon-pencil" title="Edit" action="#{adminController.editUser(user.login)}" />
+                        <p:commandButton icon="ui-icon-trash"  title="Delete"/>
                     </p:column>    
                 </p:dataTable>
                 <br />

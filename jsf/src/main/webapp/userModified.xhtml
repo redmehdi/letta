@@ -7,8 +7,14 @@
 <h:body>
     <ui:composition template="/template/templateLayout.xhtml">
         <ui:define name="content">
-	        <h4>Your profile has been modified correctly. You can ...</h4>
-			<a href="index.xhtml">Go back to index</a><br/>
+            <h:panelGroup rendered="#{loginController.isAdmin()}">
+                <h4>The user has been updated correctly. You can...</h4>
+                <a href="adminPrivate.xhtml">Go back to the Admin Panel</a><br/>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{!loginController.isAdmin()}">
+                <h4>Your profile has been modified correctly. You can ...</h4>
+                <a href="index.xhtml">Go back to index</a><br/>
+            </h:panelGroup>
         </ui:define>
     </ui:composition>
 </h:body>

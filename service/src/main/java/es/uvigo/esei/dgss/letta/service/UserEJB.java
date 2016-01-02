@@ -1,9 +1,5 @@
 package es.uvigo.esei.dgss.letta.service;
 
-import static java.util.Objects.nonNull;
-import static java.util.Optional.ofNullable;
-import static org.apache.commons.lang3.Validate.isTrue;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +18,18 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
+
+import static java.util.Objects.nonNull;
+import static java.util.Optional.ofNullable;
+
+import static org.apache.commons.lang3.Validate.isTrue;
+
+import static es.uvigo.esei.dgss.letta.domain.entities.Role.USER;
 
 /**
  * {@linkplain UserEJB} is a service bean providing all the required
@@ -51,7 +53,7 @@ public class UserEJB {
 
     @Resource
     private SessionContext ctx;
-    
+
     @EJB
     private UserAuthorizationEJB auth;
 
@@ -76,14 +78,14 @@ public class UserEJB {
         return ofNullable(em.find(User.class, login));
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
     /**
      * Retrieves the {@link User} associated with the received email, returned
      * as an {@link Optional} value that will be empty if the user is not found.
@@ -281,42 +283,32 @@ public class UserEJB {
     public Registration registrationWithLogin(final String login) {
         return em.find(Registration.class, login);
     }
-    
-	/**
-	 * Modifies the current {@link User} profile data
-	 * 
-	 * @param user
-	 *            {@link User} object that contains the new data.
-	 * @throws EmailDuplicateException
-	 *             if the new email is yet in the system
-	 */
-	@RolesAllowed({ "USER", "ADMIN" })
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public void modifyProfile(final User user) throws EmailDuplicateException {
-		final User currentUser = em.find(User.class, auth.getCurrentUser().getLogin());
-		if (!currentUser.getEmail().equals(user.getEmail()) && checkEmail(user.getEmail())) {
-			ctx.setRollbackOnly();
-			throw new EmailDuplicateException("Email duplicated");
-		} else {
-			currentUser.setEmail(user.getEmail());
-			if (!user.getPassword().equals(currentUser.getPassword())) {
-				currentUser.setPassword(user.getPassword());
-			}
-			System.out.println("USER "+currentUser.getCity());
-			currentUser.setCompleteName(user.getCompleteName());
-			currentUser.setDescription(user.getDescription());
-			currentUser.setFbUrl(user.getFbUrl());
-			currentUser.setTwUrl(user.getTwUrl());
-			currentUser.setPersonalUrl(user.getPersonalUrl());
-			currentUser.setImage(user.getImage());
-			currentUser.setNotifications(user.isNotifications());
-			currentUser.setCity(user.getCity());
-			
 
-			em.merge(currentUser);
-		}
-	}
-	
+    @RolesAllowed({ "ADMIN", "USER" })
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public User update(
+        final String login, final User user
+    ) throws IllegalArgumentException, SecurityException, EmailDuplicateException {
+        isTrue(nonNull(login) && nonNull(user));
+
+        final User current   = auth.getCurrentUser();
+        final User persisted = get(login).orElseThrow(IllegalArgumentException::new);
+
+        if (current.getRole().equals(USER) && !current.equals(persisted))
+            throw new SecurityException("You are not allowed to perform the requested action.");
+
+        if (!persisted.getEmail().equals(user.getEmail()) && checkEmail(user.getEmail()))
+            throw new EmailDuplicateException("Email already present in database");
+
+        try {
+            persisted.setFieldsFrom(user);
+            return em.merge(persisted);
+        } catch (final NullPointerException | IllegalArgumentException e) {
+            ctx.setRollbackOnly();
+            throw e;
+        }
+    }
+
     /**
      * Gets all the {@link User} in the database.
      *
@@ -326,6 +318,6 @@ public class UserEJB {
     public List<User> getUsers() {
 		return em.createQuery(
 				"SELECT u FROM User u ORDER BY u.completeName ASC, u.login ASC", User.class)
-				.getResultList();    
+				.getResultList();
     }
 }

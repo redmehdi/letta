@@ -1,15 +1,8 @@
 package es.uvigo.esei.dgss.letta.domain.entities;
 
-import static java.util.Objects.isNull;
-import static java.util.Objects.requireNonNull;
-import static org.apache.commons.lang3.Validate.inclusiveBetween;
-import static org.apache.commons.lang3.Validate.matchesPattern;
-
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,12 +10,16 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.requireNonNull;
+
+import static org.apache.commons.lang3.Validate.inclusiveBetween;
+import static org.apache.commons.lang3.Validate.matchesPattern;
 
 /**
  * An entity that represents an user of the application. User's represented by
@@ -54,7 +51,7 @@ public class User implements Serializable {
 	@Column(length = 10, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Role role;
-	
+
 	//optional data
 
 	@Column(length = 30)
@@ -71,7 +68,7 @@ public class User implements Serializable {
 
 	@Column(length = 50)
 	private String personalUrl;
-	
+
 	@Column(nullable = false)
 	private boolean notifications;
 
@@ -79,11 +76,11 @@ public class User implements Serializable {
 	@Column
 	private byte[] image;
 
-	
+
 	@Column(length = 20)
 	private String city;
-	
-	
+
+
 	/**
 	 * Constructs a new instance of {@link User}. This constructor is required
 	 * by the JPA framework.
@@ -116,8 +113,8 @@ public class User implements Serializable {
 
 		this.role = Role.USER;
 	}
-	
-	public User(final String login, final String password, final String email,String city) {
+
+	public User(final String login, final String password, final String email,final String city) {
 		this.setLogin(login);
 		this.changePassword(password);
 		this.setEmail(email);
@@ -131,12 +128,12 @@ public class User implements Serializable {
 
 		this.role = Role.USER;
 	}
-	
-	
-	
-	
-	
-	public User(final String login, final String password, final String email,boolean isAdmin) {
+
+
+
+
+
+	public User(final String login, final String password, final String email,final boolean isAdmin) {
 		this.setLogin(login);
 		this.changePassword(password);
 		this.setEmail(email);
@@ -256,7 +253,7 @@ public class User implements Serializable {
 	 */
 	User(final String login, final String password, final String email, final Role role, final String completeName,
 			final String description, final String fbUrl, final String twUrl, final String personalUrl,
-			final boolean notifications, final byte[] image,String city) {
+			final boolean notifications, final byte[] image,final String city) {
 		this.login = login;
 		this.password = password;
 		this.email = email;
@@ -497,9 +494,8 @@ public class User implements Serializable {
 	 *             if the length of the string passed is not valid.
 	 */
 	public void setPersonalUrl(final String personalUrl) {
-		if (personalUrl != null) {
-			inclusiveBetween(0, 50, personalUrl.length(), "personalUrl must have a length between 1 and 50");
-		}
+		if (personalUrl != null)
+            inclusiveBetween(0, 50, personalUrl.length(), "personalUrl must have a length between 1 and 50");
 		this.personalUrl = personalUrl;
 	}
 
@@ -530,11 +526,11 @@ public class User implements Serializable {
 	public byte[] getImage() {
 		return image;
 	}
-	
+
 	/**
 	 * Returns {@code true} if the {@link User} wants to recieve
 	 * {@link Notification} {@code null} otherwise
-	 * 
+	 *
 	 * @return {@code true} if the {@link User} wants to recieve
 	 *         {@link Notification} {@code null} otherwise
 	 */
@@ -544,17 +540,17 @@ public class User implements Serializable {
 
 	/**
 	 * Sets the value of the variable notifications
-	 * 
+	 *
 	 * @param notifications
 	 *            the value of the variable
 	 */
-	public void setNotifications(boolean notifications) {
+	public void setNotifications(final boolean notifications) {
 		this.notifications = notifications;
 	}
-	
+
 	/**
 	 * Gets the value of the variable city
-	 * 
+	 *
 	 * @return the value of the variable city
 	 */
 	public String getCity() {
@@ -563,13 +559,30 @@ public class User implements Serializable {
 
 	/**
 	 * Sets the value of the variable city
-	 * 
+	 *
 	 * @param city
 	 *            the value of the variable
 	 */
-	public void setCity(String city) {
+	public void setCity(final String city) {
 		this.city = city;
 	}
+
+    public void setFieldsFrom(
+        final User user
+    ) throws NullPointerException, IllegalArgumentException {
+        requireNonNull(user, "User to copy from cannot be null.");
+
+        setEmail(user.email);
+        setPassword(user.password);
+        setCompleteName(user.completeName);
+        setDescription(user.description);
+        setFbUrl(user.fbUrl);
+        setTwUrl(user.twUrl);
+        setPersonalUrl(user.personalUrl);
+        setImage(user.image);
+        setCity(user.city);
+        setNotifications(user.notifications);
+    }
 
 	@Override
     public final int hashCode() {

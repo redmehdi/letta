@@ -2,7 +2,6 @@ package es.uvigo.esei.dgss.letta.service;
 
 import java.security.Principal;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -41,7 +40,7 @@ public class UserAuthorizationEJB {
      * @throws SecurityException if the login provided by the principal is not
      *         found in the database (!!!).
      */
-    @RolesAllowed({"USER", "ADMIN"})
+    @RolesAllowed({ "USER", "ADMIN" })
     public User getCurrentUser() throws SecurityException {
         return ofNullable(em.find(User.class, principal.getName()))
               .orElseThrow(SecurityException::new);
