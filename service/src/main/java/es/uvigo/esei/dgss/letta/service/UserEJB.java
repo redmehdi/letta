@@ -22,6 +22,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
+import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
 import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 
 import static java.util.Objects.nonNull;
@@ -77,14 +78,6 @@ public class UserEJB {
         isTrue(nonNull(login), "Login string cannot be null");
         return ofNullable(em.find(User.class, login));
     }
-
-
-
-
-
-
-
-
 
     /**
      * Retrieves the {@link User} associated with the received email, returned
@@ -319,5 +312,34 @@ public class UserEJB {
 		return em.createQuery(
 				"SELECT u FROM User u ORDER BY u.completeName ASC, u.login ASC", User.class)
 				.getResultList();
+    }
+	
+    /**
+     * Remove the {@link User} in the database.
+     *
+     * @param login the {@link User} login.
+     * @throws IllegalArgumentException if the {@link User} is null.
+     * @throws SecurityException if the currently identified {@link User} is not found
+     *         in the database.
+     */
+	@RolesAllowed("ADMIN")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public void removeUser(String login) 
+    	throws IllegalArgumentException, SecurityException {
+		
+		User user = em.find(User.class, login);
+		isTrue(nonNull(user), "User cannot be null");
+		
+		em.createNativeQuery("DELETE FROM EventAttendees WHERE user_login = ?")
+        .setParameter(1, user.getLogin())
+        .executeUpdate();
+		
+		em.createQuery("DELETE FROM UserNotifications WHERE user = :user")
+        .setParameter("user", user)
+        .executeUpdate();
+			
+		em.createQuery("DELETE FROM User u WHERE u.login = :login")
+        .setParameter("login", login)
+        .executeUpdate();
     }
 }

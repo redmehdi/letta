@@ -148,13 +148,7 @@ public class EventEJB {
             query.setParameter("auxState",false);
 
         return query.setFirstResult(start).setMaxResults(count).getResultList();
-
-
     }
-
-
-
-
 
     /**
      * Returns a paginated {@link List} of {@link Event Events}, sorted by
@@ -299,9 +293,6 @@ public class EventEJB {
         return query.setFirstResult(start).setMaxResults(count).getResultList();
     }
 
-
-
-
     /**
      * Modification of the search method that orders by distance from the residence place
      * @param search The search term
@@ -333,9 +324,6 @@ public class EventEJB {
 
         return query.setFirstResult(start).setMaxResults(count).getResultList();
     }
-
-
-
 
     /**
      * Register the current identified {@link User} into a {@link Event}. It the
@@ -381,6 +369,23 @@ public class EventEJB {
 		event.addAttendee(user);
 		em.merge(event);
 	}
+	
+    /**
+     * Return a {@link List} of {@link Event Events} that
+     * {@link User} is joined.
+     *
+     * @return A {@link List} of {@link Event Events} that
+     *         {@link User} is joined.
+     */
+    @RolesAllowed("ADMIN")
+    public List<Event> getAttendingEventsBy(final User user) {
+    	return em.createQuery(
+            "SELECT e FROM Event e JOIN FETCH e.attendees " +
+            "WHERE :user MEMBER OF e.attendees",
+            Event.class
+        ).setParameter("user", user)
+        .getResultList();
+    }
 
     /**
      * Return a {@link List} of {@link Event Events} that authenticated
@@ -449,24 +454,17 @@ public class EventEJB {
         return query.getSingleResult().intValue();
     }
 
-	/**
-	 * Get events created by a specific user.
-	 *
-	 * @param user
-	 *            the owner of the events.
-	 *
-	 * @return a list of {@link Event} that contains the owner`s events.
-	 *
-	 * @throws IllegalArgumentException
-	 *             if the user is null.
-	 *
-	 * @deprecated Consider using
-	 *             {@link EventEJB#getEventsOwnedBy(User, int, int)} instead.
-	 *             The new method returns the same list but paginated
-	 */
-    @Deprecated
-    @RolesAllowed({ "USER", "ADMIN" })
-    private List<Event> getEventsOwnedBy(
+    /**
+     * Get events created by a specific user.
+     *
+     * @param user the owner of the events.
+     *
+     * @return a list of {@link Event} that contains the owner`s events.
+     *
+     * @throws IllegalArgumentException if the user is null.
+     */
+    @RolesAllowed({"USER","ADMIN"})
+	public List<Event> getEventsOwnedBy(
         final User user
     ) throws IllegalArgumentException {
         isTrue(nonNull(user), "User cannot be null");
@@ -613,8 +611,8 @@ public class EventEJB {
 	 * @throws SecurityException  if the currently identified user is not found
      *         in the database or if he is not the owner of the event.
 	 */
-	@RolesAllowed({ "USER", "ADMIN" })
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+	@RolesAllowed({"USER","ADMIN"})
+    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void modifyEvent( final Event modified )
     		throws IllegalArgumentException, UserNotAuthorizedException, SecurityException{
 
@@ -624,14 +622,15 @@ public class EventEJB {
         if (event == null) {
 			ctx.setRollbackOnly();
 			throw new IllegalArgumentException("The Event does not exist");
-		} else if(event.getOwner().equals(user)){
-            event.setLocation(modified.getLocation());
+		} else if (event.getOwner().equals(user) || (ctx.isCallerInRole("ADMIN"))) {
+			event.setOwner(modified.getOwner());
+			event.setLocation(modified.getLocation());
             event.setDate(modified.getDate());
             event.setCategory(modified.getCategory());
             event.setSummary(modified.getSummary());
             event.setTitle(modified.getTitle());
             event.setPlace(modified.getPlace());
-        }else{
+        } else {
         	ctx.setRollbackOnly();
         	throw new UserNotAuthorizedException(user,event);
         }
@@ -654,7 +653,7 @@ public class EventEJB {
      * @throws IllegalArgumentException if the {@link Event} does not exist
      * @throws IllegalEventOwnerException  if the event does not exist
      */
-	@RolesAllowed({ "USER", "ADMIN" })
+	@RolesAllowed({"USER","ADMIN"})
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void cancelEvent(final int eventId)
 			throws SecurityException,
@@ -668,7 +667,7 @@ public class EventEJB {
 					"The Event with the ID " + eventId + " does not exist");
 		}
 
-		if (event.getOwner()!=user) {
+		if ((event.getOwner()!=user) && (!ctx.isCallerInRole("ADMIN"))) {
 			ctx.setRollbackOnly();
 			throw new IllegalEventOwnerException(
 					"The User " + user + " is not the owner of the event" + eventId);
