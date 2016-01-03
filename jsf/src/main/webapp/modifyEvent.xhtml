@@ -84,6 +84,9 @@
 								<h:commandButton id="submit-button" class="
 									btn btn-default" value="Modify"
 									action="#{modifyEventController.doModify()}" />
+								<h:panelGroup rendered="#{loginController.admin}">
+									&nbsp;&nbsp;<a href="adminEventsPrivate.xhtml">Go back to event list</a>
+								</h:panelGroup>
 							</h:form>
 							<br />
 							<div class="row">

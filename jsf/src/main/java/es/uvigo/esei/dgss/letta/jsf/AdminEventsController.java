@@ -1,5 +1,6 @@
 package es.uvigo.esei.dgss.letta.jsf;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
+import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerException;
@@ -48,24 +50,58 @@ public class AdminEventsController {
 		events.setRowCount(eventEJB.countAll());
 	}
 
-	public void cancelEvent(Event event) throws SecurityException, IllegalArgumentException, EventIsCancelledException, IllegalEventOwnerException{
+	/**
+	 * Cancels the selected {@link Event}.
+	 * 
+	 * @param event
+	 *            The {@link Event} to cancel.
+	 * @throws SecurityException
+	 *             If the currently identified {@link User} is not found in the
+	 *             database.
+	 * @throws IllegalArgumentException
+	 *             if the {@link Event} does not exist.
+	 * @throws EventIsCancelledException
+	 *             if the {@link Event} is still cancelled.
+	 * @throws IllegalEventOwnerException
+	 *             if the {@link Event} does not exist.
+	 */
+	public void cancelEvent(Event event)
+			throws SecurityException, IllegalArgumentException, EventIsCancelledException, IllegalEventOwnerException {
 		String title = event.getTitle();
 		eventEJB.cancelEvent(event.getId());
-        addMessage("Event Cancelled", "The event " + title + " has been cancelled.");
+		addMessage("Event Cancelled", "The event " + title + " has been cancelled.");
 	}
+	
+	/**
+	 * Removes the selected {@link Event}.
+	 * 
+	 * @param event The {@link Event} to remove.
+	 */
+	public void removeEvent(Event event){
+		String title = event.getTitle();
+		eventEJB.removeEvent(event.getId());
+        addMessage("Event removed", "The event " + title + " has been cancelled.");
+	}
+	
+	
+	/**
+	 * Redirects to the form for edit the selected {@link Event}
+	 * 
+	 * @param event The {@link Event} selected for edit.
+	 * @throws IOException
+	 */
+	public void editEvent(final Event event) throws IOException{
+        FacesContext.getCurrentInstance().getExternalContext().redirect(
+            "modifyEvent.xhtml?id=" + event.getId()
+        );
+    }
 	
 	public LazyDataModel<Event> getEvents() {
 		return this.events;
 	}
-
+	
 	public void setEvents(LazyDataModel<Event> events) {
 		this.events = events;
-	}
-	
-	public void removeEvent(Event event) throws SecurityException, IllegalArgumentException, EventIsCancelledException, IllegalEventOwnerException{
-		String title = event.getTitle();
-		eventEJB.removeEvent(event.getId());
-        addMessage("Event removed", "The event " + title + " has been cancelled.");
 	}
 	
 	public void addMessage(String summary, String detail) {

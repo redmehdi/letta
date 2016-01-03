@@ -44,7 +44,7 @@
 					<p:column headerText="Options">
 						<h:form>
 							<p:growl id="message" showDetail="true" />
-							<p:commandButton icon="ui-icon-pencil" title="Edit" />
+							<p:commandButton icon="ui-icon-pencil" title="Edit" action="#{adminEventsController.editEvent(event)}" />
 							<p:commandButton icon="ui-icon-cancel" title="Cancel"
 								disabled="#{event.cancelled}"
 								actionListener="#{adminEventsController.cancelEvent(event)}"
