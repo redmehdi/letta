@@ -71,6 +71,9 @@
 						<li class="divider"></li>
 						<li><h:link value="Modify profile" outcome="faces/modifyProfile.xhtml" /></li>
 						<li class="divider"></li>
+						<li><h:link value="Messages" outcome="faces/messages.xhtml" rendered="#{userNotifications.countUnreadNotifications() == 0}" /></li>
+						<li><h:link value="Messages (#{userNotifications.countUnreadNotifications()})" outcome="faces/messages.xhtml" rendered="#{userNotifications.countUnreadNotifications() != 0}" /></li>
+						<li class="divider"></li>
 						<li><h:link value="Logout" outcome="faces/logout.xhtml" /></li>
 					</ul>
 				</li>

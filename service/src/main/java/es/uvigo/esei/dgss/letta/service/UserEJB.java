@@ -20,6 +20,7 @@ import javax.persistence.TypedQuery;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.domain.entities.UserNotifications;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
@@ -336,5 +337,63 @@ public class UserEJB {
 		em.createQuery("DELETE FROM User u WHERE u.login = :login")
         .setParameter("login", login)
         .executeUpdate();
+    }
+	
+	/**
+	 * Get all the {@link UserNotifications} by the current {@link User}.
+	 * @return a list with {@link UserNotifications}.
+	 */
+    @RolesAllowed({ "ADMIN", "USER" })
+    public List<UserNotifications> getNotifications() {
+    	User user = auth.getCurrentUser();
+    	
+		return em.createQuery(
+			"SELECT un FROM UserNotifications un WHERE  un.userId = :login", UserNotifications.class)
+			.setParameter("login", user.getLogin())
+			.getResultList();
+    }
+    
+	/**
+	 * Count the unread {@link UserNotifications} by the current {@link User}.
+	 * @return a number of unread {@link UserNotifications}
+	 */
+    @RolesAllowed({ "ADMIN", "USER" })
+    public Long countUnreadNotifications() {
+    	User user = auth.getCurrentUser();
+    	
+		return em.createQuery(
+			"SELECT COUNT (un) FROM UserNotifications un WHERE un.userId = :login "
+			+ "AND un.readed = false", Long.class)
+			.setParameter("login", user.getLogin())
+			.getSingleResult();
+    }
+    
+    /**
+     * Find a {@link UserNotifications} in the database.
+     * @param notificationId the id of the {@link UserNotifications}.
+     * @return the {@link UserNotifications}.
+     */
+    @RolesAllowed({ "ADMIN", "USER" })
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public UserNotifications getNotification(int notificationId) {
+    	User user = auth.getCurrentUser();
+    	UserNotifications userNotifications = null;
+
+		try {
+			userNotifications = em.createQuery(
+				"SELECT un FROM UserNotifications un WHERE un.userId = :userId "
+				+ "AND un.notificationId = :notificationId", UserNotifications.class)
+				.setParameter("userId", user.getLogin())
+				.setParameter("notificationId", notificationId)
+				.getSingleResult();
+
+		} catch (NoResultException nre) {
+			return null;
+		}
+		
+		userNotifications.setReaded(true);
+		em.persist(userNotifications);
+		
+		return userNotifications;
     }
 }

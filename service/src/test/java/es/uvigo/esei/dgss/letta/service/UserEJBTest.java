@@ -56,11 +56,11 @@ public class UserEJBTest {
         ).build();
     }
 
-
     @Test
     public void getRegistrationWithLoginNull(){
     	assertThat(facade.registrationWithLogin("jake"),is(equalTo(null)));
     }
+    
     @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
     public void getNullEmail(){
     	facade.getByEmail(null);
@@ -78,10 +78,11 @@ public class UserEJBTest {
     	facade.get(null);
     }
 
-        @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
+    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
     public void getNull(){
     	facade.get(null);
     }
+    
     @Test
 	@UsingDataSet("users.xml")
     public void getReal(){
@@ -90,7 +91,6 @@ public class UserEJBTest {
     	assertThat(u.getLogin(),is(equalTo(test.get().getLogin()))
     			);
     }
-
 
     @Test
 	@UsingDataSet("registrations.xml")
