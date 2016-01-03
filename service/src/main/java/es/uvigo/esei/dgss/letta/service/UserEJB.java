@@ -22,7 +22,6 @@ import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
-import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
 import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 
 import static java.util.Objects.nonNull;
@@ -280,26 +279,22 @@ public class UserEJB {
     @RolesAllowed({ "ADMIN", "USER" })
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public User update(
-        final String login, final User user
+        final User user
     ) throws IllegalArgumentException, SecurityException, EmailDuplicateException {
-        isTrue(nonNull(login) && nonNull(user));
+        isTrue(nonNull(user), "User cannot be null");
 
         final User current   = auth.getCurrentUser();
-        final User persisted = get(login).orElseThrow(IllegalArgumentException::new);
+        final User persisted = get(user.getLogin()).orElseThrow(IllegalArgumentException::new);
 
-        if (current.getRole().equals(USER) && !current.equals(persisted))
-            throw new SecurityException("You are not allowed to perform the requested action.");
+        if (current.getRole().equals(USER)) {
+            if (!current.equals(user))        throw new SecurityException("You are not allowed to update other users.");
+            if (!user.getRole().equals(USER)) throw new SecurityException("You are not allowed to change your Role");
+        }
 
         if (!persisted.getEmail().equals(user.getEmail()) && checkEmail(user.getEmail()))
             throw new EmailDuplicateException("Email already present in database");
 
-        try {
-            persisted.setFieldsFrom(user);
-            return em.merge(persisted);
-        } catch (final NullPointerException | IllegalArgumentException e) {
-            ctx.setRollbackOnly();
-            throw e;
-        }
+        return em.merge(user);
     }
 
     /**
@@ -313,7 +308,7 @@ public class UserEJB {
 				"SELECT u FROM User u ORDER BY u.completeName ASC, u.login ASC", User.class)
 				.getResultList();
     }
-	
+
     /**
      * Remove the {@link User} in the database.
      *
@@ -324,20 +319,20 @@ public class UserEJB {
      */
 	@RolesAllowed("ADMIN")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void removeUser(String login) 
+    public void removeUser(final String login)
     	throws IllegalArgumentException, SecurityException {
-		
+
 		User user = em.find(User.class, login);
 		isTrue(nonNull(user), "User cannot be null");
-		
+
 		em.createNativeQuery("DELETE FROM EventAttendees WHERE user_login = ?")
         .setParameter(1, user.getLogin())
         .executeUpdate();
-		
+
 		em.createQuery("DELETE FROM UserNotifications WHERE user = :user")
         .setParameter("user", user)
         .executeUpdate();
-			
+
 		em.createQuery("DELETE FROM User u WHERE u.login = :login")
         .setParameter("login", login)
         .executeUpdate();

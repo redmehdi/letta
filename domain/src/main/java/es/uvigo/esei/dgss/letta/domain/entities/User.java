@@ -392,6 +392,17 @@ public class User implements Serializable {
 	}
 
 	/**
+	 * Updates the role of the user.
+	 *
+	 * @param role Thew new {@link Role} to be set to this user.
+	 *
+	 * @throws NullPointerException If the given role is null.
+	 */
+	public void setRole(final Role role) throws NullPointerException {
+        this.role = requireNonNull(role);
+    }
+
+	/**
 	 * Sets the complete name of the user.
 	 *
 	 * @param completeName
@@ -566,23 +577,6 @@ public class User implements Serializable {
 	public void setCity(final String city) {
 		this.city = city;
 	}
-
-    public void setFieldsFrom(
-        final User user
-    ) throws NullPointerException, IllegalArgumentException {
-        requireNonNull(user, "User to copy from cannot be null.");
-
-        setEmail(user.email);
-        setPassword(user.password);
-        setCompleteName(user.completeName);
-        setDescription(user.description);
-        setFbUrl(user.fbUrl);
-        setTwUrl(user.twUrl);
-        setPersonalUrl(user.personalUrl);
-        setImage(user.image);
-        setCity(user.city);
-        setNotifications(user.notifications);
-    }
 
 	@Override
     public final int hashCode() {

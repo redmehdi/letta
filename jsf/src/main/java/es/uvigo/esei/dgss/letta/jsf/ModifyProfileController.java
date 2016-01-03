@@ -2,6 +2,7 @@ package es.uvigo.esei.dgss.letta.jsf;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +18,14 @@ import javax.servlet.http.Part;
 import org.apache.commons.io.IOUtils;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Capital;
+import es.uvigo.esei.dgss.letta.domain.entities.Role;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 
+import static es.uvigo.esei.dgss.letta.domain.entities.Role.ADMIN;
 import static es.uvigo.esei.dgss.letta.domain.entities.Role.USER;
 
 /**
@@ -48,6 +51,8 @@ public class ModifyProfileController {
     private boolean error = false;
     private String errorMessage;
 
+    private String login;
+    private Role   role;
     private String email;
     private String repEmail;
     private String password;
@@ -62,12 +67,16 @@ public class ModifyProfileController {
     private String place;
 
     private List<String> places = new LinkedList<String>();
+    private List<Role>   roles  = Arrays.asList(Role.values());
 
     private User user;
 
     @PostConstruct
     public void init() throws IOException {
-        user = loadUser();
+        user  = loadUser();
+        login = user.getLogin();
+        role  = user.getRole();
+
         email = user.getEmail();
         completeName = user.getCompleteName();
         description = user.getDescription();
@@ -107,6 +116,17 @@ public class ModifyProfileController {
         return getContext().getRequestParameterMap().get(key);
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(final Role role) {
+        this.role = role;
+    }
 
     public String getPlace() {
         return place;
@@ -124,46 +144,54 @@ public class ModifyProfileController {
         this.places = places;
     }
 
-    /**
-     * Modify an {@link User}
-     *
-     * @throws IOException
-     *             if an input/output error occurs
-     */
+    public List<Role> getRoles() {
+        return roles;
+    }
+
     public void doModify() throws IOException {
         final ExternalContext context = getContext();
 
         if (!password.equals(repassword)) {
             error = true;
             errorMessage = "Passwords do not match.";
-        } else if (!email.equals(user.getEmail()) && !email.equals(repEmail)) {
-            error = true;
-            errorMessage = "Emails do not match";
-        } else {
-            byte[] imageRaw = null;
-            if (image != null) {
-                InputStream imageInputStream = image.getInputStream();
-                imageRaw = IOUtils.toByteArray(imageInputStream);
-                user.setImage(imageRaw);
-            }
-            user.setEmail(email);
-            if (!password.equals(""))
-                user.changePassword(password);
-            user.setCompleteName(completeName);
-            user.setDescription(description);
-            user.setNotifications(notifications);
-
-            user.setCity(place);
-
-            try {
-                userEJB.update(user.getLogin(), user);
-                context.redirect("userModified.xhtml");
-            } catch (final IllegalArgumentException | EmailDuplicateException e) {
-                error        = true;
-                errorMessage = e.getMessage();
-            }
-
+            return;
         }
+
+        if (!email.equals(user.getEmail()) && !email.equals(repEmail)) {
+            error = true;
+            errorMessage = "Emails do not match.";
+            return;
+        }
+
+        if (isAdmin())            user.setRole(role);
+        if (!password.equals("")) user.changePassword(password);
+
+        byte[] imageRaw = null;
+        if (image != null) {
+            InputStream imageInputStream = image.getInputStream();
+            imageRaw = IOUtils.toByteArray(imageInputStream);
+            user.setImage(imageRaw);
+        }
+
+        user.setEmail(email);
+        user.setCompleteName(completeName);
+        user.setDescription(description);
+        user.setNotifications(notifications);
+        user.setCity(place);
+
+        try {
+            userEJB.update(user);
+        } catch (IllegalArgumentException | SecurityException | EmailDuplicateException e) {
+            error = true;
+            errorMessage = e.getMessage();
+            return;
+        }
+
+        context.redirect("userModified.xhtml");
+    }
+
+    private boolean isAdmin() {
+        return auth.getCurrentUser().getRole().equals(ADMIN);
     }
 
     /**

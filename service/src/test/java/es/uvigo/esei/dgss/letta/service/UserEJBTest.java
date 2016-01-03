@@ -145,7 +145,7 @@ public class UserEJBTest {
 	public void testModifyUser() throws EmailDuplicateException {
 		User user = UsersDataset.modifiedUser();
 		principal.setName(user.getLogin());
-		asUser.throwingRun(() -> facade.update(user.getLogin(), user));
+		asUser.throwingRun(() -> facade.update(user));
 	}
 
 	@Test
@@ -155,7 +155,7 @@ public class UserEJBTest {
 		User user = UsersDataset.existentUser();
 		principal.setName(user.getLogin());
 		user.changePassword(UsersDataset.passwordFor(user.getLogin()));
-		asUser.throwingRun(() -> facade.update(user.getLogin(), user));
+		asUser.throwingRun(() -> facade.update(user));
 	}
 
 	@Test(expected=EmailDuplicateException.class)
@@ -164,7 +164,7 @@ public class UserEJBTest {
 		User user = UsersDataset.existentUser();
 		principal.setName(user.getLogin());
 		user.setEmail("anne@email.com");
-		asUser.throwingRun(() -> facade.update(user.getLogin(), user));
+		asUser.throwingRun(() -> facade.update(user));
 	}
 
 //	@Test

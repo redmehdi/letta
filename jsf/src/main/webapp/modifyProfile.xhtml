@@ -27,7 +27,17 @@
 				            <br/>
 			            </ui:fragment>
 		    			<h:form id="modify-form" enctype="multipart/form-data">
-		    				<h:message for="email"/>
+                            <!-- Login field (ADMIN only) -->
+		    			    <h:inputText id="login" readonly="true" class="form-control" value="#{modifyProfileController.login}" rendered="#{loginController.isAdmin()}" />
+		    			    <br />
+
+                            <!-- Role field (ADMIN only) -->
+                            <h:selectOneMenu id="role-field" value="#{modifyProfileController.role}" class="form-control" rendered="#{loginController.isAdmin()}">
+                                <f:selectItem itemLabel="Select one role" itemValue="" />
+                                <f:selectItems value="#{modifyProfileController.roles}" />
+                            </h:selectOneMenu>
+                            <br />
+
 					    	<h:inputText id="email" required="false" renderedType="email" class="form-control" value="#{modifyProfileController.email}" a:placeholder="Email" validatorMessage="This email is not valid">
 					    		<f:validateRegex pattern="([\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z])?" />
 							</h:inputText><br/>  
