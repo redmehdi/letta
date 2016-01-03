@@ -751,5 +751,28 @@ public class EventEJB {
 		return em.createQuery("SELECT c FROM Capital c",
 				Capital.class).getResultList();
 	}
+	
+    /**
+     * Remove the current {@link Event}. 
+     * Only a user with role ADMIN can call this.
+     *
+     * @param eventId Identifier of the {@link Event} to remove.
+     *
+     * @throws IllegalArgumentException if the {@link Event} does not exist
+     */
+	@RolesAllowed("ADMIN")
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void removeEvent(final int eventId)
+			throws IllegalArgumentException {
+		final Event event = em.find(Event.class, eventId);
+		if (event == null) {
+			ctx.setRollbackOnly();
+			throw new IllegalArgumentException(
+					"The Event with the ID " + eventId + " does not exist");
+		}
+		event.removeAttendees();
+		event.removeOwner();
+		em.remove(event);
+	}
 
 }

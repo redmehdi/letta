@@ -938,6 +938,16 @@ public class EventEJBTest {
        assertThat(o, is(Optional.empty()));
    }   
    
+   @Test
+   @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+   @ShouldMatchDataSet({ "users.xml", "events-removed.xml", "event-attendees-removed-event.xml" })
+   public void removeEvent() {
+	   final User user = userWithLogin("kurt");	   
+       principal.setName(user.getLogin());	
+       
+       asAdmin.throwingRun(() -> events.removeEvent(existentEventId()));
+   }
+   
    
    
 }

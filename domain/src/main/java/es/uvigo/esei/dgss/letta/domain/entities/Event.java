@@ -545,5 +545,21 @@ public class Event {
             attendees.size()
         );
     }
+    
+    /**
+     * Remove the Owner of the Event.
+     * This method is necessary to remove a event.
+     */
+    public void removeOwner()  {
+        this.owner = null;
+    }
+    
+    /**
+     * Remove All the attendees of the Event.
+     * This method is necessary to remove a event.
+     */
+    public void removeAttendees() {
+        this.attendees = new LinkedHashSet<>();
+    }
 
 }
