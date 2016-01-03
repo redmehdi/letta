@@ -62,6 +62,12 @@ public class AdminEventsController {
 		this.events = events;
 	}
 	
+	public void removeEvent(Event event) throws SecurityException, IllegalArgumentException, EventIsCancelledException, IllegalEventOwnerException{
+		String title = event.getTitle();
+		eventEJB.removeEvent(event.getId());
+        addMessage("Event removed", "The event " + title + " has been cancelled.");
+	}
+	
 	public void addMessage(String summary, String detail) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);

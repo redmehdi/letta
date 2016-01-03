@@ -52,8 +52,12 @@
 								<p:confirm header="Confirmation" message="Are you sure?"
 									icon="ui-icon-alert" />
 							</p:commandButton>
-							<p:commandButton icon="ui-icon-trash" title="Delete" />
-
+							<p:commandButton icon="ui-icon-trash" title="Delete"
+								actionListener="#{adminEventsController.removeEvent(event)}"
+								update="message events">
+								<p:confirm header="Confirmation" message="Are you sure?"
+									icon="ui-icon-alert" />
+							</p:commandButton>
 							<p:confirmDialog global="true" showEffect="fade"
 								hideEffect="fade">
 								<p:commandButton value="Yes" type="button"
