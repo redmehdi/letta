@@ -21,9 +21,9 @@
 			<div class="container ">
 				<h1>Administration panel</h1>
 				<hr />
-				<h3>User list</h3>
-				<p:dataTable var="event" lazy="true" value="#{adminEventsController.events}"
-					paginator="true" rows="25"
+				<h3>Event list</h3>
+				<p:dataTable id="events" var="event" lazy="true"
+					value="#{adminEventsController.events}" paginator="true" rows="25"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 					rowsPerPageTemplate="25">
 					<p:column headerText="Title">
@@ -31,18 +31,37 @@
 					</p:column>
 
 					<p:column headerText="Owner">
-						<h:outputText rendered="#{event.owner.completeName!=null}" value="#{event.owner.completeName} (#{event.owner.login})" />
-						<h:outputText rendered="#{event.owner.completeName==null}" value="#{event.owner.login}" />
+						<h:outputText rendered="#{event.owner.completeName!=null}"
+							value="#{event.owner.completeName} (#{event.owner.login})" />
+						<h:outputText rendered="#{event.owner.completeName==null}"
+							value="#{event.owner.login}" />
 					</p:column>
 
 					<p:column headerText="Canceled">
 						<h:outputText value="#{event.cancelled}" />
 					</p:column>
-					
+
 					<p:column headerText="Options">
-						<p:commandButton icon="ui-icon-pencil" title="Edit" />
-						<p:commandButton icon="ui-icon-cancel" title="Cancel" />
-						<p:commandButton icon="ui-icon-trash" title="Delete" />
+						<h:form>
+							<p:growl id="message" showDetail="true" />
+							<p:commandButton icon="ui-icon-pencil" title="Edit" />
+							<p:commandButton icon="ui-icon-cancel" title="Cancel"
+								disabled="#{event.cancelled}"
+								actionListener="#{adminEventsController.cancelEvent(event)}"
+								update="message events">
+								<p:confirm header="Confirmation" message="Are you sure?"
+									icon="ui-icon-alert" />
+							</p:commandButton>
+							<p:commandButton icon="ui-icon-trash" title="Delete" />
+
+							<p:confirmDialog global="true" showEffect="fade"
+								hideEffect="fade">
+								<p:commandButton value="Yes" type="button"
+									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+								<p:commandButton value="No" type="button"
+									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+							</p:confirmDialog>
+						</h:form>
 					</p:column>
 				</p:dataTable>
 				<br />
