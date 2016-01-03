@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -19,6 +20,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
+import es.uvigo.esei.dgss.letta.domain.entities.Role;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.domain.entities.UserNotifications;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
@@ -302,9 +304,17 @@ public class UserEJB {
      * Gets all the {@link User} in the database.
      *
      * @return The {@link List} with all the {@link User} sorted alphabetically.
+     * @throws EJBTransactionRolledbackException if the currently identified 
+     * 		   {@link User} is not admin.
      */
 	@RolesAllowed("ADMIN")
-    public List<User> getUsers() {
+    public List<User> getUsers() throws EJBTransactionRolledbackException {
+    	User currentUser = auth.getCurrentUser();
+    	
+		if (!currentUser.getRole().equals(Role.ADMIN)) {
+			throw new EJBTransactionRolledbackException("User must be admin.");
+		}
+
 		return em.createQuery(
 				"SELECT u FROM User u ORDER BY u.completeName ASC, u.login ASC", User.class)
 				.getResultList();
@@ -314,17 +324,24 @@ public class UserEJB {
      * Remove the {@link User} in the database.
      *
      * @param login the {@link User} login.
-     * @throws IllegalArgumentException if the {@link User} is null.
-     * @throws SecurityException if the currently identified {@link User} is not found
-     *         in the database.
+     * @throws EJBTransactionRolledbackException if the {@link User} is null or
+     *  	   the currently identified {@link User} is not admin.
      */
 	@RolesAllowed("ADMIN")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void removeUser(final String login)
-    	throws IllegalArgumentException, SecurityException {
-
+    public void removeUser(final String login) 
+    	throws EJBTransactionRolledbackException {
+		
 		User user = em.find(User.class, login);
-		isTrue(nonNull(user), "User cannot be null");
+    	User currentUser = auth.getCurrentUser();
+		
+		if (user == null) {
+			throw new EJBTransactionRolledbackException("User cannot be null");
+		}
+		
+		if (!currentUser.getRole().equals(Role.ADMIN)) {
+			throw new EJBTransactionRolledbackException("User must be admin.");
+		}
 
 		em.createNativeQuery("DELETE FROM EventAttendees WHERE user_login = ?")
         .setParameter(1, user.getLogin())

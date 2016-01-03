@@ -18,7 +18,7 @@ import es.uvigo.esei.dgss.letta.service.UserEJB;
 
 @ManagedBean(name = "userNotifications")
 @SessionScoped
-public class userNotifications {
+public class ListUserNotifications {
 	@Inject
 	private UserEJB userEJB;
 	
@@ -45,15 +45,15 @@ public class userNotifications {
 		UserNotifications userNotifications = userEJB.getNotification(notificationId);
 
 		if (userNotifications == null) {
-			FacesContext.getCurrentInstance().getExternalContext().redirect("m.xhtml");
+			FacesContext.getCurrentInstance().getExternalContext().redirect("messages.xhtml");
 		}
 		
 		return userNotifications;
 	}
 	
 	/**
-	 * Count the unread {@link UserNotifications} by the current {@link User}.
-	 * @return a number of unread {@link UserNotifications}
+	 * Count the unread {@link ListUserNotifications} by the current {@link User}.
+	 * @return a number of unread {@link ListUserNotifications}
 	 */
 	public Long countUnreadNotifications() {
 		return userEJB.countUnreadNotifications();

@@ -3,6 +3,7 @@ package es.uvigo.esei.dgss.letta.service;
 import java.util.Optional;
 
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.inject.Inject;
 import javax.mail.MessagingException;
 
@@ -32,6 +33,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
 import static es.uvigo.esei.dgss.letta.domain.entities.RegistrationsDataset.newRegistration;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogin;
 import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
 
 @RunWith(Arquillian.class)
@@ -48,6 +50,9 @@ public class UserEJBTest {
 
 	@EJB(beanName = "user-caller")
     private RoleCaller asUser;
+	
+    @EJB(beanName = "admin-caller")
+    private RoleCaller asAdmin;
 
     @Deployment
     public static Archive<?> deploy() {
@@ -165,6 +170,52 @@ public class UserEJBTest {
 		principal.setName(user.getLogin());
 		user.setEmail("anne@email.com");
 		asUser.throwingRun(() -> facade.update(user));
+	}
+	
+	@Test
+	@UsingDataSet("users.xml")
+	public void testGetUsers() {
+		final User user = userWithLogin("kurt");	   
+	    principal.setName(user.getLogin());	
+	    
+	    asAdmin.throwingRun(() -> assertThat(
+	    	facade.getUsers().size(), is(equalTo(6))));
+	}
+	
+	@Test(expected=EJBTransactionRolledbackException.class)
+	@UsingDataSet("users.xml")
+	public void testGetUsersByUser() {
+		final User user = userWithLogin("anne");	   
+	    principal.setName(user.getLogin());	
+	    
+	    asUser.throwingRun(() -> facade.getUsers());
+	}
+	
+	@Test
+	@UsingDataSet("users.xml")
+	public void testRemoveUser() {
+		final User user = userWithLogin("kurt");	   
+	    principal.setName(user.getLogin());	
+	    
+	    asAdmin.throwingRun(() -> facade.removeUser("anne"));
+	}
+	
+	@Test(expected=EJBTransactionRolledbackException.class)
+	@UsingDataSet("users.xml")
+	public void testRemoveNullUser() {
+		final User user = userWithLogin("kurt");	   
+	    principal.setName(user.getLogin());	
+	    
+	    asAdmin.throwingRun(() -> facade.removeUser(""));
+	}
+	
+	@Test(expected=EJBTransactionRolledbackException.class)
+	@UsingDataSet("users.xml")
+	public void testRemoveUserByUser() {
+		final User user = userWithLogin("john");	   
+	    principal.setName(user.getLogin());	
+	    
+	    asUser.throwingRun(() -> facade.removeUser("mike"));
 	}
 
 //	@Test

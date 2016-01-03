@@ -404,23 +404,6 @@ public class EventEJB {
 		event.addAttendee(user);
 		em.merge(event);
 	}
-	
-    /**
-     * Return a {@link List} of {@link Event Events} that
-     * {@link User} is joined.
-     *
-     * @return A {@link List} of {@link Event Events} that
-     *         {@link User} is joined.
-     */
-    @RolesAllowed("ADMIN")
-    public List<Event> getAttendingEventsBy(final User user) {
-    	return em.createQuery(
-            "SELECT e FROM Event e JOIN FETCH e.attendees " +
-            "WHERE :user MEMBER OF e.attendees",
-            Event.class
-        ).setParameter("user", user)
-        .getResultList();
-    }
 
     /**
      * Return a {@link List} of {@link Event Events} that authenticated
