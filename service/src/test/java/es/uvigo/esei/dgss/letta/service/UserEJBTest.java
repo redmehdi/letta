@@ -46,7 +46,7 @@ public class UserEJBTest {
 	@Inject
     private TestPrincipal principal;
 
-	@EJB(name = "user-caller")
+	@EJB(beanName = "user-caller")
     private RoleCaller asUser;
 
     @Deployment

@@ -1,6 +1,7 @@
 package es.uvigo.esei.dgss.letta.service;
 
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.cancelledEventId;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.events;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEvent;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEventId;
 import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
@@ -69,8 +70,11 @@ public class EventEJBTest {
     @Inject
     private TestPrincipal principal;
 
-    @EJB(name = "user-caller")
+    @EJB(beanName="user-caller")
     private RoleCaller asUser;
+    
+    @EJB(beanName = "admin-caller")
+    private RoleCaller asAdmin;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -124,6 +128,56 @@ public class EventEJBTest {
             containsEventsInAnyOrder(EventsDataset.futureEvents())
         );
     }
+    
+    
+    
+    @Test
+    public void testListByCreatedAtReturnsEmptyListIfNoEventsInDatabase() {
+        principal.setName(UsersDataset.adminUser().getLogin());
+    	assertThat(asAdmin.call(() ->events.listByCreatedAt(0, 1)), is(empty()));
+    	assertThat(asAdmin.call(() ->events.listByCreatedAt(0, 50)), is(empty()));
+    	assertThat(asAdmin.call(() ->events.listByCreatedAt(0, 100)), is(empty()));
+    }
+
+	@Test
+	@UsingDataSet({ "users.xml", "events-less-than-twenty.xml" })
+	@ShouldMatchDataSet({ "users.xml", "events-less-than-twenty.xml" })
+	public void testListByCreatedAtReturnsTheSpecifiedNumberOfEvents() {
+		principal.setName(UsersDataset.adminUser().getLogin());
+		assertThat(asAdmin.call(() -> events.listByCreatedAt(0, 1)), hasSize(1));
+		assertThat(asAdmin.call(() -> events.listByCreatedAt(0, 5)), hasSize(5));
+		assertThat(asAdmin.call(() -> events.listByCreatedAt(0, 10)), hasSize(10));
+	}
+    
+	@Test
+	@UsingDataSet({ "users.xml", "events-less-than-five.xml" })
+	@ShouldMatchDataSet({ "users.xml", "events-less-than-five.xml" })
+	public void testListByCreatedAtReturnsAllEventsIfCountIsGreaterThanDatabaseSize() {
+		principal.setName(UsersDataset.adminUser().getLogin());
+		assertThat(asAdmin.call(() -> events.listByCreatedAt(0, 6)), hasSize(lessThan(5)));
+		assertThat(asAdmin.call(() -> events.listByCreatedAt(0, 10)), hasSize(lessThan(5)));
+		assertThat(asAdmin.call(() -> events.listByCreatedAt(0, 50)), hasSize(lessThan(5)));
+	}
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events-less-than-five.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-less-than-five.xml" })
+    public void testListByCreatedAtReturnsEmptyListIfCountIsZero() {
+		principal.setName(UsersDataset.adminUser().getLogin());
+    	assertThat(asAdmin.call(() ->events.listByCreatedAt(0, 0)), is(empty()));
+    }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    public void testListByCreatedAtReturnsValidEvents() {
+		principal.setName(UsersDataset.adminUser().getLogin());
+    	assertThat(
+    			asAdmin.call(() ->events.listByCreatedAt(0, 100)),
+    			containsEventsInAnyOrder(EventsDataset.events())
+    			);
+    }
+
 
     @Test
     public void testListHighlightedReturnsEmptyListIfNoEventsInDatabase() {
@@ -514,6 +568,14 @@ public class EventEJBTest {
 
         final int count = events.count("example");
         assertThat(count, is(5));
+    }
+    
+    @Test
+    @UsingDataSet({ "users.xml", "events.xml" })
+    public void testCountAllEvents(){
+        principal.setName(UsersDataset.adminUser().getLogin());
+    	final int count = asAdmin.call(() ->events.countAll());
+    	assertThat(count, is(events().length));    	
     }
     
     @Test

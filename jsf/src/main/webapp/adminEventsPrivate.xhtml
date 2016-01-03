@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:letta="http://java.sun.com/jsf/composite/tags">
+<f:metadata>
+	<f:event listener="#{loginController.redirectIfAnonymous()}"
+		type="preRenderView" />
+	<f:event listener="#{loginController.redirectIfNotAdmin()}"
+		type="preRenderView" />
+</f:metadata>
+<h:head>
+	<title>Admin Panel</title>
+</h:head>
+<h:body>
+	<ui:composition template="/template/templateLayout.xhtml">
+		<ui:define name="content">
+			<div class="container ">
+				<h1>Administration panel</h1>
+				<hr />
+				<h3>User list</h3>
+				<p:dataTable var="event" lazy="true" value="#{adminEventsController.events}"
+					paginator="true" rows="25"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="25">
+					<p:column headerText="Title">
+						<h:outputText value="#{event.title}" />
+					</p:column>
+
+					<p:column headerText="Owner">
+						<h:outputText rendered="#{event.owner.completeName!=null}" value="#{event.owner.completeName} (#{event.owner.login})" />
+						<h:outputText rendered="#{event.owner.completeName==null}" value="#{event.owner.login}" />
+					</p:column>
+
+					<p:column headerText="Canceled">
+						<h:outputText value="#{event.cancelled}" />
+					</p:column>
+					
+					<p:column headerText="Options">
+						<p:commandButton icon="ui-icon-pencil" title="Edit" />
+						<p:commandButton icon="ui-icon-cancel" title="Cancel" />
+						<p:commandButton icon="ui-icon-trash" title="Delete" />
+					</p:column>
+				</p:dataTable>
+				<br />
+			</div>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

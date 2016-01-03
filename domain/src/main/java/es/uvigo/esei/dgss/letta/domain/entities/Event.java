@@ -104,6 +104,11 @@ public class Event {
 	
     @Column(length = 20, nullable = true)
     private String place;
+    
+    @Column(nullable=false)
+    @Convert(converter = LocalDateTimeConverter.class)
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
+    private LocalDateTime createdAt;
 
 
     /**
@@ -129,7 +134,8 @@ public class Event {
         final Set<User>     attendees,
         final boolean		cancelled,
         final String        description,
-        final String        place
+        final String        place,
+        final LocalDateTime createdAt
     ) throws NullPointerException {
         this.id          = id;
         this.category    = requireNonNull(category);
@@ -142,6 +148,7 @@ public class Event {
         this.cancelled   = requireNonNull(cancelled);
         this.description = requireNonNull(description);
         this.place       = requireNonNull(place);
+        this.createdAt	 = createdAt;
     }
 
     /**
@@ -170,16 +177,48 @@ public class Event {
         final String		description,
         final String 	    place
     ) throws IllegalArgumentException, NullPointerException {
-        setCategory(category);
-        setTitle(title);
-        setSummary(summary);
-        setDate(date);
-        setLocation(location);
-        setDescription(description);
-        setPlace(place);
-        this.owner     = null;
-        this.attendees = new LinkedHashSet<>();
-        this.cancelled = false;
+        this(category, title, summary, date,location,description,place,null);
+    }
+    
+    /**
+     * Constructs a new instance of {@link Event}.
+     *
+     * @param category The {@link Category} of the event. It cannot be null.
+     * @param title A {@link String} with the title of the event. It must be
+     *        non-null, non-empty and no greater than 20 characters.
+     * @param summary A {@link String} with the summary of the event. It must
+     *        be non-null, non-empty and no greater than 50 characters.
+     * @param date The {@link LocalDateTime} of the event. It cannot be null.
+     * @param location A {@link String} with the location of the event. It must
+     *        be non-null, non-empty and no greater than 20 characters.
+     * @param createdAt The {@link LocalDateTime} when the event was created in the system.
+     * 
+     * @throws IllegalArgumentException If any of the {@link Event Event's}
+     *         field requirements does not hold.
+     * @throws NullPointerException If any of the given arguments is
+     *         {@code null}.
+     */
+    public Event(
+    		final Category      category,
+    		final String        title,
+    		final String        summary,
+    		final LocalDateTime date,
+    		final String        location,
+    		final String		description,
+    		final String 	    place,
+    		final LocalDateTime createdAt
+    		) throws IllegalArgumentException, NullPointerException {
+    	setCategory(category);
+    	setTitle(title);
+    	setSummary(summary);
+    	setDate(date);
+    	setLocation(location);
+    	setDescription(description);
+    	setPlace(place);
+    	this.owner     = null;
+    	this.attendees = new LinkedHashSet<>();
+    	this.cancelled = false;
+    	this.createdAt = createdAt;
     }
 
     /**
@@ -469,8 +508,17 @@ public class Event {
 
         attendees.remove(attendee);
     }
+    
+    /**
+     * Returns the {@link LocalDateTime} when this event was created.
+     *
+     * @return The attendees of the event.
+     */
+    public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
 
-    @Override
+	@Override
     public final int hashCode() {
         return id;
     }

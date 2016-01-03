@@ -105,7 +105,16 @@ public class EventEJB {
     	return query.getResultList().size();
     }
 
-
+    /**
+	 * Counts how many {@link Event Events} currently exist in the database.
+	 * 
+	 * @return An integer value representing the total number of events.
+	 */
+	@RolesAllowed("ADMIN")
+	public int countAll() {
+		TypedQuery<Long> query = em.createQuery("SELECT COUNT(DISTINCT e.id) FROM Event e", Long.class);
+		return query.getSingleResult().intValue();
+	}
 
     /**
      * Search for an event with advanced criteria
@@ -177,6 +186,32 @@ public class EventEJB {
         ).setFirstResult(start).setMaxResults(count).getResultList();
     }
 
+    /**
+	 * Returns a paginated {@link List} of {@link Event Events}, sorted by
+	 * descending creation date (which means that newer events will be first on
+	 * the list).
+	 * 
+	 * @param start
+	 *            The first {@link Event} position to return, numbered from 0.
+	 * @param count
+	 *            The number of {@link Event Events} to return.
+	 * 
+	 * @return sorted {@link List} with the specified number of {@link Event
+	 *          Events}, sorted by descending creation date and counting from
+	 *          the received start point.
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the start or count parameters are negative.
+	 */
+	@RolesAllowed("ADMIN")
+	public List<Event> listByCreatedAt(final int start, final int count) throws IllegalArgumentException {
+		if (count == 0)
+			return emptyList();
+
+		return em.createQuery("SELECT e from Event e ORDER BY e.createdAt DESC", Event.class).setFirstResult(start)
+				.setMaxResults(count).getResultList();
+	}
+    
     /**
      * Returns a paginated {@link List} of {@link Event Events}, sorted by
      * nearest locations and ascending date (which means that older events

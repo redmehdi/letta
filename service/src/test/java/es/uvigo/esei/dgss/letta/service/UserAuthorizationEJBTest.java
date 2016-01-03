@@ -39,7 +39,7 @@ public class UserAuthorizationEJBTest {
     @Inject
     private TestPrincipal principal;
 
-    @EJB(name = "user-caller")
+    @EJB(beanName = "user-caller")
     private RoleCaller asUser;
 
     @Rule
