@@ -360,7 +360,7 @@ public class UserEJB {
 	 * Get all the {@link UserNotifications} by the current {@link User}.
 	 * @return a list with {@link UserNotifications}.
 	 */
-    @RolesAllowed({ "ADMIN", "USER" })
+    @RolesAllowed({"ADMIN", "USER"})
     public List<UserNotifications> getNotifications() {
     	User user = auth.getCurrentUser();
     	
@@ -374,7 +374,7 @@ public class UserEJB {
 	 * Count the unread {@link UserNotifications} by the current {@link User}.
 	 * @return a number of unread {@link UserNotifications}
 	 */
-    @RolesAllowed({ "ADMIN", "USER" })
+    @RolesAllowed({"ADMIN", "USER"})
     public Long countUnreadNotifications() {
     	User user = auth.getCurrentUser();
     	
@@ -390,7 +390,7 @@ public class UserEJB {
      * @param notificationId the id of the {@link UserNotifications}.
      * @return the {@link UserNotifications}.
      */
-    @RolesAllowed({ "ADMIN", "USER" })
+    @RolesAllowed({"ADMIN", "USER"})
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
     public UserNotifications getNotification(int notificationId) {
     	User user = auth.getCurrentUser();

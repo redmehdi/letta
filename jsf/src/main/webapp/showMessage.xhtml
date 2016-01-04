@@ -19,9 +19,9 @@
                 <h1>Messages</h1>
                 <hr />
                 <h3>Message detail</h3>          
-                <p:dataTable>
+                <p:dataTable id="users" var="notification" value="#{userNotifications.currentNotification.notification}">
     				<p:column headerText="#{userNotifications.currentNotification.notification.title}">
- 						<h:outputText value="#{userNotifications.currentNotification.notification.body}" />
+ 						<h:outputText value="#{notification.body}" />
                     </p:column>
                 </p:dataTable>
                	<p:toolbar>
