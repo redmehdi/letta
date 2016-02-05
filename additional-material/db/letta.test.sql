@@ -51,7 +51,7 @@ CREATE TABLE `User` (
 
 CREATE TABLE `Event` (
   `id`          int(11)      NOT NULL AUTO_INCREMENT,
-  `date`        timestamp    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date`        timestamp,
   `category`    varchar(255) NOT NULL,
   `location`    varchar(100) NOT NULL,
   `summary`     varchar(50)  NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE `Event` (
   `cancelled`   tinyint  	 NOT NULL,
   `description` varchar(1000),
   `place`       varchar(20),
-  `createdAt`  timestamp    Not NULL DEFAULT CURRENT_TIMESTAMP,
+  `createdAt`   timestamp,
 
   PRIMARY KEY (`id`),
   KEY `K_Event_Owner` (`owner`),
