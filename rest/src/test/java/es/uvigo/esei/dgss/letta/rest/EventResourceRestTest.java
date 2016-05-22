@@ -659,7 +659,7 @@ public class EventResourceRestTest {
 
     @Test
     @InSequence(160) // test 16, sequence 0
-    @UsingDataSet({ "users.xml", "events.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void beforeTestUpdateEventCorrectlyUpdatesAnEvent() { }
 
     @Test
@@ -679,7 +679,7 @@ public class EventResourceRestTest {
     @Test
     @InSequence(162) // test 16, sequence 2
     @CleanupUsingScript("cleanup.sql")
-    @ShouldMatchDataSet({ "users.xml", "events-modified.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-modified.xml", "event-attendees.xml" })
     public void afterTestUpdateEventCorrectlyUpdatesAnEvent() { }
 
 
@@ -737,7 +737,7 @@ public class EventResourceRestTest {
 
     @Test
     @InSequence(190) // test 19, sequence 0
-    @UsingDataSet({ "users.xml", "events.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void beforeTestUpdateReturnsUnauthorizedWithNonOwner() { }
 
     @Test
@@ -757,7 +757,7 @@ public class EventResourceRestTest {
     @Test
     @InSequence(192) // test 19, sequence 2
     @CleanupUsingScript("cleanup.sql")
-    @ShouldMatchDataSet({ "users.xml", "events.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void afterTestUpdateReturnsUnauthorizedWithNonOwner() { }
 
 

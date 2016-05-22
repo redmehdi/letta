@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+  <Notification id="1" title="Notification Title 1" body="Notification body example" />
+  <Notification id="2" title="Notification Title 2" body="Notification body example" />
+  <Notification id="3" title="Notification Title 3" body="Notification body example" />
+  <Notification id="4" title="Notification Title 4" body="Notification body example" />
+  <Notification id="5" title="Notification Title 5" body="Notification body example" />
+  <Notification id="11" title="Example1 Literature" body="The event Example1 Literature has been cancelled." />
+  <Notification id="12" title="Example1 Literature" body="The event Example1 Literature has been cancelled." />
+</dataset>

@@ -57,6 +57,8 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledExceptio
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
+import es.uvigo.esei.dgss.letta.service.util.mail.DefaultMailer;
+import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 import es.uvigo.esei.dgss.letta.service.util.security.RoleCaller;
 import es.uvigo.esei.dgss.letta.service.util.security.TestPrincipal;
 
@@ -83,7 +85,9 @@ public class EventEJBTest {
     public static Archive<WebArchive> deploy() {
         return deployment().withTestPrincipal().withClasses(
             EventEJB.class,
-            UserAuthorizationEJB.class
+            UserAuthorizationEJB.class,
+            Mailer.class,
+            DefaultMailer.class
         ).build();
     }
 
@@ -621,71 +625,69 @@ public class EventEJBTest {
     }
         
     @Test  
-    @UsingDataSet({ "users.xml", "events.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-modified-title.xml", "event-attendees.xml" })
     public void testModifyEventTittle() 
-    		throws SecurityException, IllegalArgumentException, 
-    		UserNotAuthorizedException{
+    		throws Exception{
     	principal.setName("john");
-    	final Event modified = existentEvent();
-    	modified.setTitle("New tittle");
+    	final Event modified = es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.eventsWithTwoAttendees()[0];
+    	modified.setTitle("New Tittle");
         asUser.throwingRun(() -> events.modifyEvent(modified));
-        assertThat(events.getEvent(existentEvent().getId()), is(modified));
+        assertThat(events.get(existentEventId()).get(), is(modified));
     }
     
     @Test  
-    @UsingDataSet({ "users.xml", "events.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-modified-summary.xml", "event-attendees.xml" })
     public void testModifyEventSummary() 
-    		throws SecurityException, IllegalArgumentException, 
-    		UserNotAuthorizedException{
+    		throws Exception{
     	principal.setName("john");
-    	final Event modified = existentEvent();
+    	final Event modified = es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.eventsWithTwoAttendees()[0];
     	modified.setSummary("New Summary");
         asUser.throwingRun(() -> events.modifyEvent(modified));
-        assertThat(events.getEvent(existentEvent().getId()), is(modified));
+        assertThat(events.get(existentEventId()).get(), is(modified));
     }    
     
     @Test  
-    @UsingDataSet({ "users.xml", "events.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-modified-category.xml", "event-attendees.xml" })
     public void testModifyEventCategory() 
-    		throws SecurityException, IllegalArgumentException, 
-    		UserNotAuthorizedException{
+    		throws Exception{
     	principal.setName("john");
-    	final Event modified = existentEvent();
+    	final Event modified = es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.eventsWithTwoAttendees()[0];
     	modified.setCategory(Category.SPORTS);
         asUser.throwingRun(() -> events.modifyEvent(modified));
-        assertThat(events.getEvent(existentEvent().getId()), is(modified));
+        assertThat(events.get(existentEventId()).get(), is(modified));
     }    
     
     @Test  
-    @UsingDataSet({ "users.xml", "events.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-modified-location.xml", "event-attendees.xml" })
     public void testModifyEventLocation() 
-    		throws SecurityException, IllegalArgumentException, 
-    		UserNotAuthorizedException{
+    		throws Exception{
     	principal.setName("john");
-    	final Event modified = existentEvent();
+    	final Event modified = es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.eventsWithTwoAttendees()[0];
     	modified.setLocation("New location");
         asUser.throwingRun(() -> events.modifyEvent(modified));
-        assertThat(events.getEvent(existentEvent().getId()), is(modified));
+        assertThat(events.get(existentEventId()).get(), is(modified));
     }
     
     @Test  
-    @UsingDataSet({ "users.xml", "events.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+    @ShouldMatchDataSet({ "users.xml", "events-modified-date.xml", "event-attendees.xml" })
     public void testModifyEventDate() 
-    		throws SecurityException, IllegalArgumentException, 
-    		UserNotAuthorizedException{
+    		throws Exception{
     	principal.setName("john");
-    	final Date date = new Date();
-    	final Event modified = existentEvent();
-    	modified.setDate(ofInstant(date.toInstant(), ZoneId.systemDefault()));
+    	final Event modified = es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.eventsWithTwoAttendees()[0];
+    	modified.setDate(modified.getDate().plusYears(4));
         asUser.throwingRun(() -> events.modifyEvent(modified));
-        assertThat(events.getEvent(existentEvent().getId()), is(modified));
+        assertThat(events.get(existentEventId()).get(), is(modified));
     }
     
     @Test(expected=UserNotAuthorizedException.class)  
-    @UsingDataSet({ "users.xml", "events.xml" })
+    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void testModifyEventUnatorized() 
-    		throws SecurityException, IllegalArgumentException, 
-    		UserNotAuthorizedException{
+    		throws Exception{
     	principal.setName("anne");
     	final Event modified = existentEvent();
     	modified.setLocation("New location");
@@ -696,8 +698,7 @@ public class EventEJBTest {
     @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
     @UsingDataSet({ "users.xml", "events.xml" })
     public void testModifyEventNotExists() 
-    		throws SecurityException, IllegalArgumentException, 
-    		UserNotAuthorizedException{
+    		throws Exception{
     	principal.setName("anne");
     	final Event modified = nonExistentEvent();
         asUser.throwingRun(() -> events.modifyEvent(modified));
@@ -705,7 +706,7 @@ public class EventEJBTest {
     
    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
    @UsingDataSet({ "users.xml", "events.xml" })
-   public void cancelEventNotExists() 
+   public void testCancelEventNotExists() 
    		throws Exception{
    	principal.setName("anne");
    	final int cancelled = nonExistentEventId();
@@ -713,8 +714,8 @@ public class EventEJBTest {
    } 
    
    @Test(expected=IllegalEventOwnerException.class)
-   @UsingDataSet({ "users.xml", "events.xml" })
-   public void cancelEventIllegalOwner() 
+   @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+   public void testCancelEventIllegalOwner() 
    		throws Exception{
    	principal.setName("anne");
    	final int cancelled = existentEventId();
@@ -722,7 +723,7 @@ public class EventEJBTest {
    } 
    
    @Test(expected=EventIsCancelledException.class)
-   @UsingDataSet({ "users.xml", "events.xml" })
+   @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
    public void cancelEventIsCancelled() 
    		throws Exception{
    	principal.setName("mike");
@@ -731,13 +732,14 @@ public class EventEJBTest {
    } 
    
    @Test
-   @UsingDataSet({ "users.xml", "events.xml" })
-   public void cancelEvent() 
+   @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml", "notifications.xml", "user-notifications.xml" })
+   @ShouldMatchDataSet({ "users.xml", "events-cancelled.xml", "event-attendees.xml", "notifications-modified.xml", "user-notifications-modified.xml" })
+   public void testCancelEvent() 
    		throws Exception{
    	principal.setName("john");
-   	final int cancelled = es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.existentEventId();
+   	final int cancelled = es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.eventsWithTwoAttendees()[0].getId();
        asUser.throwingRun(() -> events.cancelEvent(cancelled));
-       assertThat(events.getEvent(existentEventId()).isCancelled(), is(true));
+       assertThat(events.get(existentEventId()).get().isCancelled(), is(true));
    } 
        
    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)

@@ -1,5 +1,9 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import static java.util.Collections.emptyList;
+import static java.util.Objects.nonNull;
+import static org.apache.commons.lang3.Validate.isTrue;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +15,8 @@ import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.inject.Inject;
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -20,17 +26,15 @@ import javax.persistence.TypedQuery;
 import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
+import es.uvigo.esei.dgss.letta.domain.entities.Notification;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
+import es.uvigo.esei.dgss.letta.domain.entities.UserNotifications;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventNotJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.UserNotAuthorizedException;
-
-import static java.util.Collections.emptyList;
-import static java.util.Objects.nonNull;
-
-import static org.apache.commons.lang3.Validate.isTrue;
+import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 
 
 /**
@@ -43,6 +47,7 @@ import static org.apache.commons.lang3.Validate.isTrue;
  * @author Adolfo Álvarez López
  * @author Adrián Rodríguez Fariña
  * @author Alberto Gutiérrez Jácome
+ * @author Abel Fernández Nandín
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -50,6 +55,9 @@ public class EventEJB {
 
     @PersistenceContext
     private EntityManager em;
+    
+    @Inject
+    private Mailer mailer;
 
     @EJB
     private UserAuthorizationEJB auth;
@@ -620,6 +628,21 @@ public class EventEJB {
             Integer.class
         ).setParameter("event", event).getSingleResult();
     }
+    
+    /**
+     * Generates a message to notify a modification of an event
+     *
+     * @param event
+     *            indicates the notification
+     * @return the registration message
+     */
+    private String generateModifiedEventMessage(final Notification notification) {
+        return new StringBuilder().append("<html>")
+                .append("<head><title>" + notification.getTitle() + " has been modified</title></head>")
+                .append("<body><br/><br/>")
+                .append("<a href='http://sing.ei.uvigo.es/letta/jsf/faces/showMessage.xhtml?id=" + notification.getId() + "'>Check notification<a>")
+                .append("</body>").append("</html>").toString();
+    }
 
 	/**
 	 * Modifies an existent {@link Event} if the currently identified user is
@@ -632,10 +655,10 @@ public class EventEJB {
 	@RolesAllowed({"USER","ADMIN"})
     @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public void modifyEvent( final Event modified )
-    		throws IllegalArgumentException, UserNotAuthorizedException, SecurityException{
+    		throws IllegalArgumentException, UserNotAuthorizedException, SecurityException {
 
         final User user   = auth.getCurrentUser();
-        final Event event = em.find(Event.class, modified.getId());
+        final Event event = this.getWithAttendees(modified.getId()).get();
 
         if (event == null) {
 			ctx.setRollbackOnly();
@@ -648,11 +671,44 @@ public class EventEJB {
             event.setSummary(modified.getSummary());
             event.setTitle(modified.getTitle());
             event.setPlace(modified.getPlace());
+            
+            for (User attendee : event.getAttendees()) {
+    			Notification notification = new Notification(event.getTitle(),
+    					"The event " + event.getTitle() + " has been cancelled.");
+    			em.persist(notification);
+    			UserNotifications userNotifications = new UserNotifications(attendee.getLogin(), notification.getId(),
+    					false);
+    			em.persist(userNotifications);
+
+    			if (attendee.isNotifications()) {
+    				try {
+    					mailer.sendEmail("no_reply@letta.com", attendee.getEmail(), notification.getTitle(),
+    							generateCancelledEventMessage(notification));
+    				} catch (MessagingException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		}
         } else {
         	ctx.setRollbackOnly();
         	throw new UserNotAuthorizedException(user,event);
         }
         em.merge(event);
+    }
+	
+	/**
+     * Generates a message to notify a cancellation of an event
+     *
+     * @param event
+     *            indicates the notification
+     * @return the registration message
+     */
+    private String generateCancelledEventMessage(final Notification notification) {
+        return new StringBuilder().append("<html>")
+                .append("<head><title>" + notification.getTitle() + " has been cancelled</title></head>")
+                .append("<body><br/><br/>")
+                .append("<a href='http://sing.ei.uvigo.es/letta/jsf/faces/showMessage.xhtml?id=" + notification.getId() + "'>Check notification<a>")
+                .append("</body>").append("</html>").toString();
     }
 
     /**
@@ -671,24 +727,21 @@ public class EventEJB {
      * @throws IllegalArgumentException if the {@link Event} does not exist
      * @throws IllegalEventOwnerException  if the event does not exist
      */
-	@RolesAllowed({"USER","ADMIN"})
+	@RolesAllowed({ "USER", "ADMIN" })
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void cancelEvent(final int eventId)
-			throws SecurityException,
-			EventIsCancelledException, IllegalArgumentException, IllegalEventOwnerException {
+			throws SecurityException, EventIsCancelledException, IllegalArgumentException, IllegalEventOwnerException {
 		final User user = auth.getCurrentUser();
-		final Event event = em.find(Event.class, eventId);
+		final Event event = this.getWithAttendees(eventId).get();
 
 		if (event == null) {
 			ctx.setRollbackOnly();
-			throw new IllegalArgumentException(
-					"The Event with the ID " + eventId + " does not exist");
+			throw new IllegalArgumentException("The Event with the ID " + eventId + " does not exist");
 		}
 
-		if ((event.getOwner()!=user) && (!ctx.isCallerInRole("ADMIN"))) {
+		if ((event.getOwner() != user) && (!ctx.isCallerInRole("ADMIN"))) {
 			ctx.setRollbackOnly();
-			throw new IllegalEventOwnerException(
-					"The User " + user + " is not the owner of the event" + eventId);
+			throw new IllegalEventOwnerException("The User " + user + " is not the owner of the event" + eventId);
 		}
 
 		if (event.isCancelled()) {
@@ -697,6 +750,25 @@ public class EventEJB {
 		}
 
 		event.setCancelled(true);
+
+		for (User attendee : event.getAttendees()) {
+			Notification notification = new Notification(event.getTitle(),
+					"The event " + event.getTitle() + " has been cancelled.");
+			em.persist(notification);
+			UserNotifications userNotifications = new UserNotifications(attendee.getLogin(), notification.getId(),
+					false);
+			em.persist(userNotifications);
+
+			if (attendee.isNotifications()) {
+				try {
+					mailer.sendEmail("no_reply@letta.com", attendee.getEmail(), notification.getTitle(),
+							generateCancelledEventMessage(notification));
+				} catch (MessagingException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 		em.merge(event);
 	}
 

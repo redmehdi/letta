@@ -8,4 +8,6 @@
   <UserNotifications userId="john" notificationId="2" readed="1" />
   <UserNotifications userId="joan" notificationId="4" readed="1" />
   <UserNotifications userId="mary" notificationId="4" readed="1" />
+  <UserNotifications userId="mary" notificationId="11" readed="0" />
+  <UserNotifications userId="anne" notificationId="12" readed="0" />
 </dataset>
