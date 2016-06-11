@@ -31,8 +31,8 @@
 			 src   = "#{indexController.getIconFor(cc.attrs.event)}" />
 		<h3 class="event-title">#{cc.attrs.event.title}</h3>
 		<span class = "event-summary">LETTA #{cc.attrs.event.summary}</span> 
-		<span class = "event-location">At #{cc.attrs.event.location}</span> 
-		<span class = "event-date">From 
+		<span class = "event-location">#{msg['at.jsf']} #{cc.attrs.event.location}</span> 
+		<span class = "event-date">#{msg['from.jsf']} 
 			<h:outputText
 				value    = "#{indexController.getDate(cc.attrs.event)}"
 				style    = "color: red;"
@@ -53,18 +53,18 @@
 			<span class="event-join"> 
 				<h:link
 					class    = "info join-link"
-					value    = "Join now!"
+					value    = "#{msg['njoin.jsf']}"
 					outcome  = "joinEvent.xhtml?id=#{cc.attrs.event.id}" 
 					rendered = "#{!loginController.anonymous 
 							and !privateController.ownEvents.contains(cc.attrs.event) 
 							and !privateController.attendingEvents.contains(cc.attrs.event)
 							and !cancelEventController.isCancelled(cc.attrs.event.id)}" /> 
 				<h:outputText
-					value    = "You are the creator of this event"
+					value    = "#{msg['ucreator.jsf']}"
 					rendered = "#{!loginController.anonymous 
                   		 and  privateController.ownEvents.contains(cc.attrs.event)}" />
 				<h:outputText 
-					value    = "You have already joined this event"
+					value    = "#{msg['alreadyj.jsf']}"
 					rendered = "#{!loginController.anonymous 
                              and  privateController.attendingEvents.contains(cc.attrs.event)}" />
 				<h:panelGroup rendered="#{!loginController.anonymous 
@@ -75,11 +75,11 @@
 						type        = "button" 
 						class       = "info" 
 						data-toggle = "modal" 
-						data-target = "#confirmUnJoinModal#{cc.attrs.event.id}"> Unjoin event </button>
+						data-target = "#confirmUnJoinModal#{cc.attrs.event.id}"> #{msg['ujoin.jsf']} </button>
 				</h:panelGroup>
 				<h:link
 					class    = "info" 
-					value    = "Sign Up"
+					value    = "#{msg['signup.jsf']}"
 					rendered = "#{loginController.anonymous}" outcome="register.xhtml" />		
 				<h:panelGroup rendered="#{!loginController.anonymous 
 		    		      		  and  privateController.ownEvents.contains(cc.attrs.event)
@@ -89,7 +89,7 @@
 						type        = "button" 
 						class       = "info" 
 						data-toggle = "modal" 
-						data-target = "#confirmCancelModal#{cc.attrs.event.id}"> Cancel event </button>
+						data-target = "#confirmCancelModal#{cc.attrs.event.id}"> #{msg['cancevent.jsf']} </button>
                 </h:panelGroup>
                 
                 <h:panelGroup
@@ -98,7 +98,7 @@
                   	<div></div>
 	                <h:link
 						class    = "info" 
-						value    = "Modify"
+						value    = "#{msg['modify.jsf']}"
 	                  	outcome  = "modifyEvent.xhtml?id=#{cc.attrs.event.id}" />					
                 </h:panelGroup>  	      		
 				<div></div>
@@ -106,7 +106,7 @@
 					type        = "button" 
 					class       = "info" 
 					data-toggle = "modal" 
-					data-target = "#descriptionModal#{cc.attrs.event.id}"> View more </button>
+					data-target = "#descriptionModal#{cc.attrs.event.id}"> #{msg['more.jsf']} </button>
 			</span>
 		</div>
 	</div>
@@ -125,8 +125,8 @@
 				 src   = "#{indexController.getIconFor(cc.attrs.event)}" />
 		</div><div>&nbsp;</div>
 		<span class = "event-summary">LETTA #{cc.attrs.event.summary}</span> 
-		<span class = "event-location">At #{cc.attrs.event.location}</span> 
-		<span class = "event-date">From 
+		<span class = "event-location">#{msg['at.jsf']} #{cc.attrs.event.location}</span> 
+		<span class = "event-date">#{msg['from.jsf']} 
 			<h:outputText
 				value    = "#{indexController.getDate(cc.attrs.event)}"
 				style    = "color: red;"
@@ -141,7 +141,7 @@
 			 <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
       </div>
     </div>
   </div>
@@ -156,14 +156,14 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         	<span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="confirmCancelModalLabel">Cancel event.</h4>
+        <h4 class="modal-title" id="confirmCancelModalLabel">#{msg['cancevent.jsf']}</h4>
       </div>
       <div class="modal-body">
 	      Are you sure to cancel the event: 
 	      <br/>&bnsp;<h3>#{cc.attrs.event.title}  ?</h3>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
         <h:link 
         	class   = "btn btn-primary"
 			outcome = "cancelEvent.xhtml?id=#{cc.attrs.event.id}"
@@ -183,18 +183,18 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         	<span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="confirmUnJoinModalLabel">Unjoin event.</h4>
+        <h4 class="modal-title" id="confirmUnJoinModalLabel">#{msg['ujoin.jsf']}</h4>
       </div>
       <div class="modal-body">
-	      Are you sure you want to unjoin this event
+	     #{msg['sureujoin.jsf']}
 	      <br/>&bnsp;<h3>#{cc.attrs.event.title}  ?</h3>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
         <h:link 
         	class   = "btn btn-primary"
 			outcome="unjoinEvent.xhtml?id=#{cc.attrs.event.id}" 
-			value   = "Unjoin event"/>
+			value   = "#{msg['unjoin.jsf']}"/>
       </div>
     </div>
   </div>

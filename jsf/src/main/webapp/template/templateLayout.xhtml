@@ -1,38 +1,47 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:h="http://xmlns.jcp.org/jsf/html"
-        xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<html 
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
 <h:head>
-    <meta name="description" content="The micro-hangouts network" />
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="description" content="The micro-hangouts network" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- <base href="#{request.requestURL.substring(0, request.requestURL.length() - request.requestURI.length())}#{request.contextPath}/" /> -->
+	<!-- <base href="#{request.requestURL.substring(0, request.requestURL.length() - request.requestURI.length())}#{request.contextPath}/" /> -->
 
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"></link>
-    <link href="css/letta.css" rel="stylesheet" type="text/css"></link>
-    <script>
+	<script type="text/javascript"
+		src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script type="text/javascript"
+		src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/javascript.js"></script>
+	<link
+		href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
+		rel="stylesheet" type="text/css"></link>
+	<link href="css/letta.css" rel="stylesheet" type="text/css"></link>
+	<script>
     $.noConflict();
     </script>
 </h:head>
 <h:body>
-    <div class="navbar navbar-default navbar-static-top">
-	    <ui:insert name="header" >
+	<div class="navbar navbar-default navbar-static-top">
+		<ui:insert name="header">
 			<ui:include src="/template/templateHeader.xhtml" />
 		</ui:insert>
 	</div>
-	
-	<ui:insert name="content" >
-   		<ui:include src="/template/templateContent.xhtml" />
-   	</ui:insert>
-    
-    <footer class="section section-primary ">
-    	<ui:insert name="footer" >
-    		<ui:include src="/template/templateFooter.xhtml" />
-    	</ui:insert>
-    </footer>
-  
+
+	<ui:insert name="content">
+		<ui:include src="/template/templateContent.xhtml" />
+	</ui:insert>
+
+	<footer class="section section-primary ">
+		<ui:insert name="footer">
+			<ui:include src="/template/templateFooter.xhtml" />
+		</ui:insert>
+	</footer>
+
 
 </h:body>
 </html>

@@ -27,11 +27,11 @@
 									class="event-location">At #{event.location}</span> <span
 									class="event-date">From
 									#{indexController.getDate(event)}</span><span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span> <span class="event-join"> <h:link
-										class="info join-link" value="Join now!"
+										class="info join-link" value="#{msg['joinow.jsf']}"
 										rendered="#{!loginController.anonymous and !privateController.ownEvents.contains(event)}"
 										outcome="joinEvent.xhtml?id=#{event.id}" /> 
 										<h:outputText
-										value="You are the owner of this event"
+										value="#{msg['owner.jsf']}"
 										rendered="#{!loginController.anonymous and privateController.ownEvents.contains(event)}" />
 								</span>
 							</div>
@@ -75,13 +75,13 @@
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			        	<span aria-hidden="true">&times;</span>
 			        </button>
-			        <h4 class="modal-title" id="successCancelModalLabel">Event cancelled.</h4>
+			        <h4 class="modal-title" id="successCancelModalLabel">#{msg['cancelevent.jsf']}</h4>
 			      </div>
 			      <div class="modal-body">
-				      The event was successfully cancelled.
+				      <h:outputText value="#{msg['cancelevent.jsf']}" />
 			      </div>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-default" data-dismiss="modal"><h:outputText value="#{msg['close.jsf']}" /></button>
 			      </div>
 			    </div>
 			  </div>
@@ -101,13 +101,13 @@
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			        	<span aria-hidden="true">&times;</span>
 			        </button>
-			        <h4 class="modal-title" id="successCancelModalLabel">Event unjoined.</h4>
+			        <h4 class="modal-title" id="successCancelModalLabel"><h:outputText value="#{msg['unjoin.jsf']}" /></h4>
 			      </div>
 			      <div class="modal-body">
-				      You have left this event.
+				      <h:outputText value="#{msg['left.jsf']}" />
 			      </div>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-default" data-dismiss="modal"><h:outputText value="#{msg['close.jsf']}" /></button>
 			      </div>
 			    </div>
 			  </div>

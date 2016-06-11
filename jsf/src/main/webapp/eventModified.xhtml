@@ -12,13 +12,13 @@
 	<ui:composition template="/template/templateLayout.xhtml">
 		<ui:define name="content">
 			<h:panelGroup rendered="#{!loginController.admin}">
-				<h4>Your event has been modified correctly. You can ...</h4>
-				<a href="index.xhtml">Go back to index</a>
+				<h4><h:outputText value="#{msg['mevent.jsf']}" /></h4>
+				<a href="index.xhtml"><h:outputText value="#{msg['back.jsf']}" /></a>
 				<br />
 			</h:panelGroup>
 			<h:panelGroup rendered="#{loginController.admin}">
-				<h4>The event has been modified correctly. You can ...</h4>
-				<a href="adminEventsPrivate.xhtml">Go back to event list</a>
+				<h4><h:outputText value="#{msg['mevent2.jsf']}" /></h4>
+				<a href="adminEventsPrivate.xhtml"><h:outputText value="#{msg['levent.jsf']}" /></a>
 				<br />
 			</h:panelGroup>
 		</ui:define>

@@ -3,17 +3,18 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"   
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      >
+      
+      xmlns:h="http://java.sun.com/jsf/html">
     <body>
 	    <ui:composition>
 	
 		 <div class="container ">
 	        <div class="row ">
 	          <div class="col-sm-6 ">
-	            <h1>What is LETTA?</h1>
-	            <p>FAQ
-	              <br/>About Us
-	              <br/>Terms of Use</p>
+	            <h1><h:outputText value="#{msg['question.jsf']}" /></h1>
+	            <p>
+	              <br/><h:outputText value="#{msg['faq.jsf']}" />
+	              <br/><h:outputText value="#{msg['term.jsf']}" /></p>
 	          </div>
 	          <div class="col-sm-6 ">
 	            <p class="text-info text-right ">

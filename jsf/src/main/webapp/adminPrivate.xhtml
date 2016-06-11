@@ -17,29 +17,29 @@
     <ui:composition template="/template/templateLayout.xhtml">
         <ui:define name="content">
             <div class="container ">
-                <h1>Administration panel</h1>
+                <h1><h:outputText value="#{msg['panel.jsf']}" /></h1>
                 <hr />
-                <h3>User list</h3>
+                <h3><h:outputText value="#{msg['luser.jsf']}" /></h3>
                 <p:dataTable id="users" var="user" value="#{adminController.users}" paginator="true"  rows="25">
-                    <p:column headerText="Login">
+                    <p:column headerText="#{msg['username.jsf']}">
                         <h:outputText value="#{user.login}" />
                     </p:column>
                  
-                    <p:column headerText="Name">
+                    <p:column headerText="#{msg['name.jsf']}">
                         <h:outputText value="#{user.completeName}" />
                     </p:column>
                     
-                    <p:column headerText="Options"> 
+                    <p:column headerText="#{msg['options.jsf']}"> 
                    		<h:form>
                     		<p:growl id="message" showDetail="true" />
-                      		<p:commandButton icon="ui-icon-pencil" title="Edit" action="#{adminController.editUser(user.login)}" />
+                      		<p:commandButton icon="ui-icon-pencil" title="#{msg['edit.jsf']}" action="#{adminController.editUser(user.login)}" />
                     
-					  	 	<p:commandButton icon="ui-icon-trash" title="Delete" actionListener="#{adminController.deleteUser(user)}" update="message users">
-					  			<p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+					  	 	<p:commandButton icon="ui-icon-trash" title="#{msg['delete.jsf']}" actionListener="#{adminController.deleteUser(user)}" update="message users">
+					  			<p:confirm header="#{msg['confirmation.jsf']}" message="#{msg['sure.jsf']}" icon="ui-icon-alert" />
 					  	 	</p:commandButton>
 					  	 	
 					  	 	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-						        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						        <p:commandButton value="#{msg['yes.jsf']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 						        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 						    </p:confirmDialog>
 						</h:form>  

@@ -19,48 +19,48 @@
 	<ui:composition template="/template/templateLayout.xhtml">
 		<ui:define name="content">
 			<div class="container ">
-				<h1>Administration panel</h1>
+				<h1><h:outputText value="#{msg['panel.jsf']}"/>  </h1>
 				<hr />
-				<h3>Event list</h3>
+				<h3><h:outputText value="#{msg['eventl.jsf']}"/></h3>
 				<p:dataTable id="events" var="event" lazy="true"
 					value="#{adminEventsController.events}" paginator="true" rows="25"
 					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
 					rowsPerPageTemplate="25">
-					<p:column headerText="Title">
+					<p:column headerText="#{msg['title.jsf']}">
 						<h:outputText value="#{event.title}" />
 					</p:column>
 
-					<p:column headerText="Owner">
+					<p:column headerText="#{msg['owner.jsf']}">
 						<h:outputText rendered="#{event.owner.completeName!=null}"
 							value="#{event.owner.completeName} (#{event.owner.login})" />
 						<h:outputText rendered="#{event.owner.completeName==null}"
 							value="#{event.owner.login}" />
 					</p:column>
 
-					<p:column headerText="Canceled">
+					<p:column headerText="#{msg['canceled.jsf']}">
 						<h:outputText value="#{event.cancelled}" />
 					</p:column>
 
-					<p:column headerText="Options">
+					<p:column headerText="#{msg['options.jsf']}">
 						<h:form>
 							<p:growl id="message" showDetail="true" />
-							<p:commandButton icon="ui-icon-pencil" title="Edit" action="#{adminEventsController.editEvent(event)}" />
-							<p:commandButton icon="ui-icon-cancel" title="Cancel"
+							<p:commandButton icon="ui-icon-pencil" title="#{msg['edit.jsf']}" action="#{adminEventsController.editEvent(event)}" />
+							<p:commandButton icon="ui-icon-cancel" title="#{msg['cancel.jsf']}"
 								disabled="#{event.cancelled}"
 								actionListener="#{adminEventsController.cancelEvent(event)}"
 								update="message events">
-								<p:confirm header="Confirmation" message="Are you sure?"
+								<p:confirm header="#{msg['confirmation.jsf']}" message="#{msg['sure.jsf']}"
 									icon="ui-icon-alert" />
 							</p:commandButton>
-							<p:commandButton icon="ui-icon-trash" title="Delete"
+							<p:commandButton icon="ui-icon-trash" title="#{msg['delete.jsf']}"
 								actionListener="#{adminEventsController.removeEvent(event)}"
 								update="message events">
-								<p:confirm header="Confirmation" message="Are you sure?"
+								<p:confirm header="#{msg['confirmation.jsf']}" message="#{msg['sure.jsf']}"
 									icon="ui-icon-alert" />
 							</p:commandButton>
 							<p:confirmDialog global="true" showEffect="fade"
 								hideEffect="fade">
-								<p:commandButton value="Yes" type="button"
+								<p:commandButton value="#{msg['yes.jsf']}" type="button"
 									styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 								<p:commandButton value="No" type="button"
 									styleClass="ui-confirmdialog-no" icon="ui-icon-close" />

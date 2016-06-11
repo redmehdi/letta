@@ -22,21 +22,21 @@
 	
 						<div class="col-md-6">
 							<br /> <br />
-							<h1>Create Event</h1>
+							<h1><h:outputText value="#{msg['cevent.jsf']}" /></h1>
 							<br />
 							<h:form id="createEvent-form">
 								<h:message for="title-field" />
 								<h:inputText id="title-field" required="true" maxlength="20"
 									class="form-control" value="#{createEventController.title}"
-									a:placeholder="Title" requiredMessage="Title can't be empty" />
+									a:placeholder="#{msg['title.jsf']}" requiredMessage="#{msg['title.jsf']} #{msg['empty.jsf']}" />
 								<br />
 	
 								<h:message for="shortDescription-field" />
 								<h:inputText id="shortDescription-field" required="true" maxlength="50"
 									class="form-control"
 									value="#{createEventController.shortDescription}"
-									a:placeholder="Summary"
-									requiredMessage="Summary can't be empty">
+									a:placeholder="#{msg['summary.jsf']}"
+									requiredMessage="#{msg['summary.jsf']} #{msg['empty.jsf']}">
 								</h:inputText>
 								<br />
 		
@@ -44,7 +44,7 @@
 								<h:inputTextarea id="longDescription-field"  maxlength="1000"
 									class="form-control"
 									value="#{createEventController.description}"
-									a:placeholder="Long description (optional)"
+									a:placeholder="#{msg['ldescription.jsf']}"
 									rows="5">
 								</h:inputTextarea>
 								<br />
@@ -52,23 +52,23 @@
 								<h:message for="date-field" />
 								<br/>
 								<p:calendar id="date-field" value="#{createEventController.date}"
-									required="true" requiredMessage="Date can't be empty"
-									a:placeholder="Date" pattern="dd/MM/yyyy HH:mm" />
+									required="true" requiredMessage="#{msg['date.jsf']} #{msg['empty.jsf']}"
+									a:placeholder="#{msg['date.jsf']}" pattern="dd/MM/yyyy HH:mm" />
 								<br />
 								<br />
 	
 								<h:message for="location-field" />
 								<h:inputText id="location-field" required="true" maxlength="100"
 									class="form-control" value="#{createEventController.location}"
-									a:placeholder="Location"
-									requiredMessage="Location can't be empty">
+									a:placeholder="#{msg['location.jsf']}"
+									requiredMessage="#{msg['location.jsf']} #{msg['empty.jsf']}">
 								</h:inputText>
 								<br />
 	
 								<h:message for="type-field" />
 								<h:selectOneMenu id="type-field" value="#{createEventController.type}"
 									class="form-control">
-									<f:selectItem itemLabel="Select one type" itemValue="" />
+									<f:selectItem itemLabel="#{msg['stype.jsf']}" itemValue="" />
 									<f:selectItems value="#{createEventController.types}" />
 								</h:selectOneMenu>
 								<br />
@@ -76,13 +76,13 @@
 								<h:message for="place-field" />
 								<h:selectOneMenu id="place-field" value="#{createEventController.place}"
 									class="form-control">
-									<f:selectItem itemLabel="Select one place" itemValue="" />
+									<f:selectItem itemLabel="#{msg['place.jsf']}" itemValue="" />
 									<f:selectItems value="#{createEventController.places}" />
 								</h:selectOneMenu>
 								<br />
 	
 								<h:commandButton id="submit-button" class="
-									btn btn-default" value="Create"
+									btn btn-default" value="#{msg['create.jsf']}"
 									action="#{createEventController.doCreate()}" />
 							</h:form>
 							<br />
