@@ -23,7 +23,7 @@ color: red;
 			<div class="container ">
 				<h:form>
 				<div class="row ">
-						<h1>Attending events</h1>
+						<h1><h:outputText value="#{msg['attend.jsf']}" /></h1>
 						<div>
 						<center>
 						<h:panelGroup 
@@ -82,7 +82,7 @@ color: red;
 						</nav>
 						</h:panelGroup>
 									<h:outputText
-										value="Welcome! Join to some events to start."
+										value="#{msg['attend.jsf']}"
 										rendered="#{listJoinedEventsController.pages eq 0}" />
 						</center>
 						<div>&nbsp;</div>
@@ -174,13 +174,13 @@ color: red;
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			        	<span aria-hidden="true">&times;</span>
 			        </button>
-			        <h4 class="modal-title" id="successCancelModalLabel">Event cancelled.</h4>
+			        <h4 class="modal-title" id="successCancelModalLabel"><h:outputFormat value="#{msg['cancelevent.jsf']}" /></h4>
 			      </div>
 			      <div class="modal-body">
-				      The event was successfully cancelled.
+				      <h:outputText value="#{msg['cancelevent.jsf']}" />
 			      </div>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-default" data-dismiss="modal"><h:outputText value="#{msg['close.jsf']}" /></button>
 			      </div>
 			    </div>
 			  </div>

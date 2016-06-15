@@ -21,10 +21,10 @@
 			          <div class="col-md-3 "></div>			          
 			          <div class="col-md-6">
 			          	<br/><br/>
-			          		<h1>Registration success</h1>
-			          	  <p>The user was registered successfully. A confirmation email was send.</p>
-			          	  <p>Please check your inbox and click on the confirmation link to finish the registration process.</p>
-			        	  <h:link class="btn btn-default" value="Continue" outcome="index.xhtml" />
+			          		<h1><h:outputText value="#{msg['rsuccess.jsf']}" /></h1>
+			          	  <p><h:outputText value="#{msg['cemail.jsf']}" /></p>
+			          	  <p><h:outputText value="#{msg['cinbox.jsf']}" /></p>
+			        	  <h:link class="btn btn-default" value="#{msg['continue.jsf']}" outcome="index.xhtml" />
 			          	<br/><br/><br/>
 			          </div>
 			          <div class="col-md-3 "></div>

@@ -16,11 +16,11 @@
     <ui:composition template="/template/templateLayout.xhtml">
         <ui:define name="content">
             <div class="container ">
-                <h1>Messages</h1>
+                <h1><h:outputText value="#{msg['message.jsf']}" /></h1>
                 <hr />
-                <h3>Inbox</h3>
+                <h3><h:outputText value="#{msg['inbox.jsf']}" /></h3>
                 <p:dataTable id="messages" var="message" value="#{userNotifications.notifications}" paginator="true"  rows="25">
-    				<p:column headerText="Title">
+    				<p:column headerText="#{msg['title.jsf']}">
                         <p:link outcome="showMessage.xhtml" rendered="#{message.readed eq true}" value="#{message.notification.title}" >
                         	<f:param name="notificationId" value="#{message.notificationId}" />
                         </p:link>

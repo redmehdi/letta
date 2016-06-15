@@ -51,7 +51,7 @@
 							</center>
 						</div>
 					</h:form>
-					<h:outputText id="empty_result_list" value="No events match your query" rendered="#{empty searchController.searchResults}" />
+					<h:outputText id="empty_result_list" value="#{msg['noquery.jsf']}" rendered="#{empty searchController.searchResults}" />
 					<ui:repeat id="indexRepeat" var="event"
 						value="#{searchController.searchResults}" varStatus="status">
 						<div class="col-xs-12 col-sm-6 col-md-3">
@@ -87,13 +87,13 @@
 			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 			        	<span aria-hidden="true">&times;</span>
 			        </button>
-			        <h4 class="modal-title" id="successCancelModalLabel">Event cancelled.</h4>
+			        <h4 class="modal-title" id="successCancelModalLabel"><h:outputText value="#{msg['cancelevent.jsf']}" /></h4>
 			      </div>
 			      <div class="modal-body">
-				      The event was successfully cancelled.
+				      <h:outputText value="#{msg['cancelevent.jsf']}" />
 			      </div>
 			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			        <button type="button" class="btn btn-default" data-dismiss="modal"><h:outputText value="#{msg['close.jsf']}" /></button>
 			      </div>
 			    </div>
 			  </div>

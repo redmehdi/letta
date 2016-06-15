@@ -19,7 +19,7 @@
 			        <div class="row ">
 			          <div class="col-md-offset-3 col-md-6">
 			          	<br/><br/>
-			          	<h1>Modify Profile</h1><br/>
+			          	<h1><h:outputText value="#{msg['modifyp.jsf']}" /></h1><br/>
 						<ui:fragment  rendered="#{modifyProfileController.error}">
 							<h:panelGroup id="store-error" class="col-md-12 alert alert-danger" role="alert">
 								Error: #{modifyProfileController.errorMessage}
@@ -33,36 +33,36 @@
 
                             <!-- Role field (ADMIN only) -->
                             <h:selectOneMenu id="role-field" value="#{modifyProfileController.role}" class="form-control" rendered="#{loginController.isAdmin()}">
-                                <f:selectItem itemLabel="Select one role" itemValue="" />
+                                <f:selectItem itemLabel="#{msg['srole.jsf']}" itemValue="" />
                                 <f:selectItems value="#{modifyProfileController.roles}" />
                             </h:selectOneMenu>
                             <br />
 
-					    	<h:inputText id="email" required="false" renderedType="email" class="form-control" value="#{modifyProfileController.email}" a:placeholder="Email" validatorMessage="This email is not valid">
+					    	<h:inputText id="email" required="false" renderedType="email" class="form-control" value="#{modifyProfileController.email}" a:placeholder="Email" validatorMessage="#{msg['erroremail.jsf']}">
 					    		<f:validateRegex pattern="([\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z])?" />
 							</h:inputText><br/>  
-					    	<h:inputText id="repEmail" name="repEmail" renderedType="email" class="form-control" value="#{modifyProfileController.repEmail}" a:placeholder="Repeat email">
+					    	<h:inputText id="repEmail" name="repEmail" renderedType="email" class="form-control" value="#{modifyProfileController.repEmail}" a:placeholder="#{msg['remail.jsf']}">
 							</h:inputText><br/>  
 					    	<h:message for="password"/>
-					    	<h:inputSecret id="password" required="false" class="form-control" value="#{modifyProfileController.password}" a:placeholder="Password" validatorMessage="The password must have 6 character at least ">
+					    	<h:inputSecret id="password" required="false" class="form-control" value="#{modifyProfileController.password}" a:placeholder="#{msg['password.jsf']}" validatorMessage="#{msg['errorpassword.jsf']} ">
 					    	<f:validateRegex pattern="([a-zA-Z0-9_]{6,})?" />
 					    	</h:inputSecret><br/>
-					        <h:inputSecret id="repassword" name="repassword" class="form-control" value="#{modifyProfileController.repassword}" a:placeholder="Repeat password"/><br/>
-					    	<p style="color:#555;">Select profile image</p>
+					        <h:inputSecret id="repassword" name="repassword" class="form-control" value="#{modifyProfileController.repassword}" a:placeholder="#{msg['rpassword.jsf']}"/><br/>
+					    	<p style="color:#555;"><h:outputText value="#{msg['simage.jsf']}" /></p>
 					    	<h:inputFile id="image" value="#{modifyProfileController.image}"></h:inputFile><br/>
-					    	<h:inputText id="completeName" required="false" maxlength="30" class="form-control" value="#{modifyProfileController.completeName}" a:placeholder="Complete name"/><br/>
-					    	<h:inputText id="fbUrl" required="false" maxlength="50" class="form-control" value="#{modifyProfileController.fbUrl}" a:placeholder="Facebook profile"/><br/>
-					    	<h:inputText id="twUrl" required="false" maxlength="50" class="form-control" value="#{modifyProfileController.twUrl}" a:placeholder="Twitter profile"/><br/>
-					    	<h:inputText id="personalUrl" required="false" maxlength="50" class="form-control" value="#{modifyProfileController.personalUrl}" a:placeholder="Your personal website"/><br/>
-					    	<h:inputTextarea rows="4" id="description" required="false" maxlength="1000" class="form-control" value="#{modifyProfileController.description}" a:placeholder="Your description"/><br/>
+					    	<h:inputText id="completeName" required="false" maxlength="30" class="form-control" value="#{modifyProfileController.completeName}" a:placeholder="#{msg['fname.jsf']}"/><br/>
+					    	<h:inputText id="fbUrl" required="false" maxlength="50" class="form-control" value="#{modifyProfileController.fbUrl}" a:placeholder="#{msg['fprofile.jsf']}"/><br/>
+					    	<h:inputText id="twUrl" required="false" maxlength="50" class="form-control" value="#{modifyProfileController.twUrl}" a:placeholder="#{msg['tprofile.jsf']}"/><br/>
+					    	<h:inputText id="personalUrl" required="false" maxlength="50" class="form-control" value="#{modifyProfileController.personalUrl}" a:placeholder="#{msg['uwebsite.jsf']}"/><br/>
+					    	<h:inputTextarea rows="4" id="description" required="false" maxlength="1000" class="form-control" value="#{modifyProfileController.description}" a:placeholder="#{msg['description.jsf']}"/><br/>
 							<h:selectOneMenu id="place-field" value="#{modifyProfileController.place}"
 									class="form-control">
-									<f:selectItem itemLabel="Select one place" itemValue="" />
+									<f:selectItem itemLabel="#{msg['place.jsf']}" itemValue="" />
 									<f:selectItems value="#{createEventController.places}" />
 							</h:selectOneMenu>
-					    	<h:outputText value="Do you want notifications?  " />
+					    	<h:outputText value="#{msg['notification.jsf']}" />
         					<p:selectBooleanButton id="notifications" value="#{modifyProfileController.notifications}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px"/><br/>
-					    	<h:commandButton id="submit-button" class="btn btn-default" value="Modify" action="#{modifyProfileController.doModify()}"/>
+					    	<h:commandButton id="submit-button" class="btn btn-default" value="#{msg['modify.jsf'}" action="#{modifyProfileController.doModify()}"/>
 					    </h:form>
 					    <br/>
 			          </div>

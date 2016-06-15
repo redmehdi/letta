@@ -16,9 +16,9 @@
     <ui:composition template="/template/templateLayout.xhtml">
         <ui:define name="content">
             <div class="container ">
-                <h1>Messages</h1>
+                <h1><h:outputText value="#msg{'message.jsf'}" /></h1>
                 <hr />
-                <h3>Message detail</h3>          
+                <h3><h:outputText value="#msg{'messaged.jsf'}" /></h3>          
                 <p:dataTable id="users" var="notification" value="#{userNotifications.currentNotification.notification}">
     				<p:column headerText="#{userNotifications.currentNotification.notification.title}">
  						<h:outputText value="#{notification.body}" />
@@ -26,7 +26,7 @@
                 </p:dataTable>
                	<p:toolbar>
 					<f:facet name="left">		        	
-	        			<p:commandButton value="Go back" onclick="location.href = 'messages.xhtml';" style="margin-right:20px;"/>
+	        			<p:commandButton value="#{msg['goback.jsf']}" onclick="location.href = 'messages.xhtml';" style="margin-right:20px;"/>
 		   			</f:facet>
 	   			</p:toolbar>
 	   			<br />

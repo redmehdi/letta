@@ -18,7 +18,7 @@
 				<h:form>
 					<div class="row ">
 						<div class="col-md-12 ">
-							<h1>Your events</h1>
+							<h1><h:outputText value="#{msg['uevent.jsf']}"/></h1>
 							<div>
 								<center>
 									<h:panelGroup rendered="#{0 lt privateController.pages}">
@@ -58,7 +58,7 @@
 										</ul>
 										</nav>
 									</h:panelGroup>
-									<h:outputText value="Welcome! Join to some events to start."
+									<h:outputText value="#{msg['wevent.jsf']}"
 										rendered="#{privateController.pages eq 0}" />
 								</center>
 								<div>&nbsp;</div>
@@ -74,7 +74,7 @@
 							</c:if>
 							<c:if test="#{empty privateController.ownEvents}">
 								<h1>
-									<h:link value="Create your first post"
+									<h:link value="#{msg['cpost.jsf']}"
 										outcome="faces/createEvent.xhtml" />
 								</h1>
 							</c:if>
@@ -151,14 +151,12 @@
 									aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<h4 class="modal-title" id="successCancelModalLabel">Event
-									cancelled.</h4>
+								<h4 class="modal-title" id="successCancelModalLabel"><h:outputText value="#{msg['cancevent.jsf']}" /></h4>
 							</div>
-							<div class="modal-body">The event was successfully
-								cancelled.</div>
+							<div class="modal-body"><h:outputText value="#{msg['cancelevent.jsf']}" /></div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default"
-									data-dismiss="modal">Close</button>
+									data-dismiss="modal"><h:outputText value="#{msg['close.jsf']}" /></button>
 							</div>
 						</div>
 					</div>

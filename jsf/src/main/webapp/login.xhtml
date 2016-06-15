@@ -21,11 +21,11 @@
 			          
 			          <div class="col-md-6">
 			          	<br/><br/>
-			          	<h1>Login</h1>
+			          	<h1><h:outputText value="#{msg['login.jsf']}" /></h1>
 		    			<h:form id="login-form">
-		    				<h:inputText id="login-field" required="true" maxlength="100" class="form-control" value="#{loginController.login}" a:placeholder="Login" requiredMessage="Login can't be empty"/><br/>
-					    	<h:inputSecret id="password-field" required="true" class="form-control" value="#{loginController.password}" a:placeholder="Password" requiredMessage="Password can't be empty"/><br/>  
-					    	<h:commandButton id="submit-button" class="btn btn-default" value="Login" action="#{loginController.doLogin()}"/>
+		    				<h:inputText id="login-field" required="true" maxlength="100" class="form-control" value="#{loginController.login}" a:placeholder="#{msg['login.jsf']}" requiredMessage="Login can't be empty"/><br/>
+					    	<h:inputSecret id="password-field" required="true" class="form-control" value="#{loginController.password}" a:placeholder="#{msg['password.jsf']}" requiredMessage="Password can't be empty"/><br/>  
+					    	<h:commandButton id="submit-button" class="btn btn-default" value="#{msg['login.jsf']}" action="#{loginController.doLogin()}"/>
 					    </h:form>
 					    <br/>
 					    <div class="row">

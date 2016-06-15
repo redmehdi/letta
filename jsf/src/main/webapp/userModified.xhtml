@@ -8,12 +8,12 @@
     <ui:composition template="/template/templateLayout.xhtml">
         <ui:define name="content">
             <h:panelGroup rendered="#{loginController.isAdmin()}">
-                <h4>The user has been updated correctly. You can...</h4>
-                <a href="adminPrivate.xhtml">Go back to the Admin Panel</a><br/>
+                <h4><h:outputText value="updateuser.jsf" /></h4>
+                <a href="adminPrivate.xhtml"><h:outputText value="gobackadmin.jsf" /></a><br/>
             </h:panelGroup>
             <h:panelGroup rendered="#{!loginController.isAdmin()}">
-                <h4>Your profile has been modified correctly. You can ...</h4>
-                <a href="index.xhtml">Go back to index</a><br/>
+                <h4><h:outputText value="#{msg['mprofile.jsf]}"/></h4>
+                <a href="index.xhtml"><h:outputText value="#{msg['back.jsf']}"/></a><br/>
             </h:panelGroup>
         </ui:define>
     </ui:composition>

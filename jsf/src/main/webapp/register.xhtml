@@ -20,8 +20,8 @@
 			        <div class="row ">
 			          <div class="col-md-offset-3 col-md-6">
 			          	<br/><br/>
-			          	<h1>Sign up</h1>
-			          	<h3>It's free and always will be.</h3><br/>
+			          	<h1><h:outputText value="#{msg['signup.jsf']}" /></h1>
+			          	<h3><h:outputText value="#{msg['free.jsf']}" /></h3><br/>
 					    <ui:fragment rendered="#{registerController.error}">
 							<h:panelGroup id="store-error" class="col-md-12 alert alert-danger" role="alert">
 								Error: #{registerController.errorMessage}
@@ -30,29 +30,29 @@
 						</ui:fragment>
 		    			<h:form id="register-form" enctype="multipart/form-data">
 		    				<h:message for="login"/>
-					    	<h:inputText id="login" required="true" maxlength="100" class="form-control" value="#{registerController.login}" a:placeholder="Login*" requiredMessage="Login can't be empty"/><br/>
+					    	<h:inputText id="login" required="true" maxlength="100" class="form-control" value="#{registerController.login}" a:placeholder="#{msg['login.jsf']}*" requiredMessage="#{msg['loginempty.jsf']}"/><br/>
 					    	<h:message for="email"/>
-					    	<h:inputText id="email" required="true" renderedType="email" class="form-control" value="#{registerController.email}" a:placeholder="Email*" requiredMessage="Email can't be empty" validatorMessage="This email is not valid">
+					    	<h:inputText id="email" required="true" renderedType="email" class="form-control" value="#{registerController.email}" a:placeholder="Email*" requiredMessage="Email #{msg['empty.jsf']}" validatorMessage="This email #{msg['nvalid.jsf']}">
 					    		<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 							</h:inputText><br/>  
 					    	<h:message for="password"/>
-					    	<h:inputSecret id="password" required="true" class="form-control" value="#{registerController.password}" a:placeholder="Password*" requiredMessage="Password can't be empty"/><br/>
-					        <h:inputSecret id="repassword" required="true" class="form-control" value="#{registerController.repassword}" a:placeholder="Repeat password*" requiredMessage="Password can't be empty"/><br/>
-					    	<p style="color:#555;">Select profile image</p>
+					    	<h:inputSecret id="password" required="true" class="form-control" value="#{registerController.password}" a:placeholder="#{msg['password.jsf']}*" requiredMessage="#{msg['password.jsf']} #{msg['empty.jsf']}"/><br/>
+					        <h:inputSecret id="repassword" required="true" class="form-control" value="#{registerController.repassword}" a:placeholder="#{msg['rpassword.jsf']}*" requiredMessage="#{msg['password.jsf']} #{msg['empty.jsf']}"/><br/>
+					    	<p style="color:#555;"><h:outputText value="#{msg['simage.jsf']}"/></p>
 					    	<h:inputFile id="image" value="#{registerController.image}"></h:inputFile><br/>
-					    	<h:inputText id="completeName" required="false" maxlength="30" class="form-control" value="#{registerController.completeName}" a:placeholder="Complete name"/><br/>
-					    	<h:inputText id="fbUrl" required="false" maxlength="50" class="form-control" value="#{registerController.fbUrl}" a:placeholder="Facebook profile"/><br/>
-					    	<h:inputText id="twUrl" required="false" maxlength="50" class="form-control" value="#{registerController.twUrl}" a:placeholder="Twitter profile"/><br/>
-					    	<h:inputText id="personalUrl" required="false" maxlength="50" class="form-control" value="#{registerController.personalUrl}" a:placeholder="Your personal website"/><br/>
-					    	<h:inputTextarea rows="4" id="description" required="false" maxlength="1000" class="form-control" value="#{registerController.description}" a:placeholder="Your description"/><br/>
+					    	<h:inputText id="completeName" required="false" maxlength="30" class="form-control" value="#{registerController.completeName}" a:placeholder="#{msg['fname.jsf']}"/><br/>
+					    	<h:inputText id="fbUrl" required="false" maxlength="50" class="form-control" value="#{registerController.fbUrl}" a:placeholder="#{msg['fprofile.jsf']}"/><br/>
+					    	<h:inputText id="twUrl" required="false" maxlength="50" class="form-control" value="#{registerController.twUrl}" a:placeholder="#{msg['tprofile.jsf']}"/><br/>
+					    	<h:inputText id="personalUrl" required="false" maxlength="50" class="form-control" value="#{registerController.personalUrl}" a:placeholder="#{msg['uwebsite.jsf']}"/><br/>
+					    	<h:inputTextarea rows="4" id="description" required="false" maxlength="1000" class="form-control" value="#{registerController.description}" a:placeholder="#{msg['description.jsf']}"/><br/>
 							<h:selectOneMenu id="place-field" value="#{registerController.place}"
 									class="form-control">
-									<f:selectItem itemLabel="Select one place" itemValue="" />
+									<f:selectItem itemLabel="#{msg['place.jsf']}" itemValue="" />
 									<f:selectItems value="#{registerController.places}" />
 							</h:selectOneMenu>
-					    	<h:commandButton id="submit-button" class="btn btn-default" value="Register" action="#{registerController.doRegister()}"/>
+					    	<h:commandButton id="submit-button" class="btn btn-default" value="#{msg['signup.jsf']}" action="#{registerController.doRegister()}"/>
 					    </h:form>
-				    	<small>* Obligatory fields</small>
+				    	<small><h:outputText value="* #{msg['fields.jsf']}" /></small>
 					    <br/>
 			          </div>
 			          <div class="col-md-3 "></div>
