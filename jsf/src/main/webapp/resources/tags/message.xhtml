@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+	xmlns           = "http://www.w3.org/1999/xhtml"
+	xmlns:h         = "http://xmlns.jcp.org/jsf/html"
+	xmlns:f         = "http://xmlns.jcp.org/jsf/core"
+	xmlns:p         = "http://primefaces.org/ui"
+	xmlns:ui        = "http://xmlns.jcp.org/jsf/facelets"
+	xmlns:composite = "http://java.sun.com/jsf/composite"
+>
+<h:body>
+
+<composite:interface>
+	<composite:attribute name="message" />
+</composite:interface>
+<composite:implementation>
+	<div class="event-info center-block hovereffect">
+		<h3 class="event-title">#{cc.attrs.message.notification.title}</h3>
+		<div class="overlay">
+			<span class="event-join"> 
+				<button 
+					type        = "button" 
+					class       = "info" 
+					data-toggle = "modal" 
+					data-target = "#descriptionModal#{cc.attrs.message.notification.id}"> #{msg['more.jsf']} </button>
+			</span>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="descriptionModal#{cc.attrs.message.notification.id}" tabindex="-1" role="dialog" aria-labelledby="descriptionModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h3 class="modal-title" id="descriptionModalLabel">#{cc.attrs.message.notification.title}</h3>
+	      </div>
+	      <div class="modal-body">
+			<span class = "event-summary">#{cc.attrs.message.notification.body}</span>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+</composite:implementation>
+
+</h:body>
+</html>
