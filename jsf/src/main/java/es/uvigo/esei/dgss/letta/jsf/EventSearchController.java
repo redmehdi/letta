@@ -11,6 +11,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
@@ -22,6 +23,7 @@ import es.uvigo.esei.dgss.letta.service.UserEJB;
  *
  * @author Adrián Rodríguez Fariña
  * @author Alberto Gutiérrez Jácome
+ * @author Abel Fernández Nandín
  */
 
 @ViewScoped
@@ -38,6 +40,8 @@ public class EventSearchController implements Serializable {
 
 	private List<String> pagesLinks = new ArrayList<>();
 	private String terms = null;
+	private String location;
+	private List<String> locations = new ArrayList<>();
 	private List<Event> searchResults;
 	@Inject
 	private Principal currentUserPrincipal;
@@ -48,6 +52,10 @@ public class EventSearchController implements Serializable {
 	
 	@PostConstruct
 	public void init() {
+		for(Capital capital : searchEJB.getCapitals()) {
+			locations.add(capital.getCapital());
+		}
+		
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		if (facesContext.getExternalContext().getRequestParameterMap()
 				.get("term") != null) {
@@ -56,9 +64,13 @@ public class EventSearchController implements Serializable {
 
 			int page = Integer.parseInt(facesContext.getExternalContext()
 					.getRequestParameterMap().get("page"));
+			
 			int elements_per_page = Integer
 					.parseInt(facesContext.getExternalContext()
 							.getRequestParameterMap().get("count"));
+			
+			this.location = facesContext.getExternalContext()
+					.getRequestParameterMap().get("location");
 
 			if (srch_terms != "") {
 				this.terms = srch_terms;
@@ -77,15 +89,21 @@ public class EventSearchController implements Serializable {
 					for (int i = 0; i < pages; i++)
 						pagesLinks.add(String.valueOf(i + 1));
 				}
-				if( "anonymous".equals(this.currentUserPrincipal.getName())){
-					searchResults = searchEJB.search(this.terms, this.pageIndex * 4,
-							4);	
-				}else{
-					final String location = userEJB.get(currentUserPrincipal.getName()).get().getCity();
+				
+				String location = this.location;
+				
+				if("anonymous".equals(this.currentUserPrincipal.getName())) {
+					if(location.isEmpty()) {
+						searchResults = searchEJB.search(this.terms, this.pageIndex * 4, 4);
+					} else {
+						searchResults = searchEJB.searchWithLocation(this.terms, location, this.pageIndex * 4, 4);
+					}
+				} else {
+					if(location.isEmpty()) {						
+						location = userEJB.get(currentUserPrincipal.getName()).get().getCity();
+					}
 
-					searchResults = searchEJB.searchWhileLoggedIn(this.terms, location,this.pageIndex * 4,
-							4);	
-			
+					searchResults = searchEJB.searchWhileLoggedIn(this.terms, location, this.pageIndex * 4, 4);
 				}
 			}
 		}
@@ -150,6 +168,34 @@ public class EventSearchController implements Serializable {
 	 */
 	public void setTerms(final String terms) {
 		this.terms = terms;
+	}
+	
+	/**
+	 * Returns the current location of the user
+	 *
+	 * @return the current location of the user
+	 */
+	public String getLocation() {
+		return location;
+	}
+
+	/**
+	 * Set the current location of the user to the actual value
+	 *
+	 * @param location
+	 *            the current location of the user
+	 */
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	
+	/**
+	 * Returns the result list of locations
+	 *
+	 * @return the result {link List} of locations
+	 */
+	public List<String> getLocations() {
+		return locations;
 	}
 
 	/**

@@ -34,11 +34,12 @@
 										value="#{msg['search.jsf']}"
 										onclick="
 		var a=document.getElementById('searchForm:srch-term').value;
+		var b=document.getElementById('searchForm:srch-location').value;
 		var current_location= window.location.pathname;
 		if(current_location=='/letta/jsf/'){		
-		window.location='faces/searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4';
+		window.location='faces/searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4'+'&amp;location='+b;
 		}else{
-		window.location='searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4';
+		window.location='searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4'+'&amp;location='+b;
 		}
 		return false;
 									">
@@ -46,6 +47,11 @@
 								</div>
 								<h:inputText class="form-control" id="srch-term"
 									value="#{searchController.terms}" />
+									
+								<h:selectOneMenu id="srch-location" class="form-control" value="#{searchController.location}">
+									<f:selectItem itemValue="#{null}" itemLabel="--" />
+									<f:selectItems value="#{searchController.locations}" />
+								</h:selectOneMenu>
 							</div>
 
 						</h:form></li>

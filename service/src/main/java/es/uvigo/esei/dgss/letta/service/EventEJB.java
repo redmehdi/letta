@@ -321,7 +321,6 @@ public class EventEJB {
 
         if (count == 0) return emptyList();
 
-        // TODO: Pending sort by number of attendees.
         final TypedQuery<Event> query = em.createQuery(
             "SELECT e FROM Event e " +
             " WHERE ( LOWER(e.title) LIKE :search " +
@@ -329,9 +328,41 @@ public class EventEJB {
             "OR LOWER(e.description) LIKE :search ) " +
             "AND e.date > now()"+
             "AND e.cancelled =  FALSE " +
-            "ORDER BY e.date ASC",
+            "ORDER BY e.date ASC, e.attendees.size DESC",
             Event.class
         ).setParameter("search", "%" + search.toLowerCase() + "%");
+
+        return query.setFirstResult(start).setMaxResults(count).getResultList();
+    }
+    
+    /**
+     * Modification of the search method that orders by distance from the specified location
+     * @param search The search term
+     * @param search The specified location
+     * @param start The start page
+     * @param count The number of elements per page
+     * @return a list with the results
+     * @throws IllegalArgumentException
+     */
+    @PermitAll
+    public List<Event> searchWithLocation(
+        final String search, final String location, final int start, final int count
+    ) throws IllegalArgumentException {
+        isTrue(nonNull(search), "Search query cannot be null");
+
+        if (count == 0) return emptyList();
+        
+        final TypedQuery<Event> query = em.createQuery(
+            "SELECT e FROM Event e JOIN FETCH e.attendees,CapitalDistances cd " +
+            " WHERE ( LOWER(e.title) LIKE :search " +
+            "    OR LOWER(e.summary) LIKE :search " +
+            " OR LOWER(e.description) LIKE :search ) " +
+            " AND e.date > now()"+
+            " AND e.cancelled =  FALSE " +
+            " and cd.capital_A=:location AND cd.capital_B=e.place " +
+            " ORDER BY cd.distance ASC, date DESC, e.attendees.size DESC",
+            Event.class
+        ).setParameter("search", "%" + search.toLowerCase() + "%").setParameter("location", location);
 
         return query.setFirstResult(start).setMaxResults(count).getResultList();
     }
@@ -352,7 +383,7 @@ public class EventEJB {
 		final User user = auth.getCurrentUser();
 
         if (count == 0) return emptyList();
-        //FIXME: Sort by number of attendees
+        
         final TypedQuery<Event> query = em.createQuery(
             "SELECT e FROM Event e JOIN FETCH e.attendees,CapitalDistances cd " +
             " WHERE ( LOWER(e.title) LIKE :search " +
@@ -361,7 +392,7 @@ public class EventEJB {
             " AND e.date > now()"+
             " AND e.cancelled =  FALSE " +
             " AND :user MEMBER OF e.attendees and cd.capital_A=:location AND cd.capital_B=e.place " +
-            " ORDER BY cd.distance ASC, date DESC",
+            " ORDER BY cd.distance ASC, date DESC, e.attendees.size DESC",
             Event.class
         ).setParameter("search", "%" + search.toLowerCase() + "%").setParameter("location", location).setParameter("user", auth.getCurrentUser());
 

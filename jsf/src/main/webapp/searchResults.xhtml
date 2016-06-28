@@ -35,7 +35,8 @@
 								<h:commandButton value="prev &lt;"
 									onclick="
 									var a=document.getElementById('searchForm:srch-term').value;
-									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{searchController.pageIndex-1}'+'&amp;count=4';
+									var b=document.getElementById('searchForm:srch-location').value;
+									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{searchController.pageIndex-1}'+'&amp;count=4'+'&amp;location='+b;
 									return false;"
 								 	rendered="#{(not empty searchController.searchResults) and (searchController.pageIndex!=0)}"/>
 								<h:outputText id="number_of_pages"
@@ -43,7 +44,8 @@
 								<h:commandButton value="next &gt;"
 									onclick="
 									var a=document.getElementById('searchForm:srch-term').value;
-									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{searchController.pageIndex+1}'+'&amp;count=4';
+									var b=document.getElementById('searchForm:srch-location').value;
+									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{searchController.pageIndex+1}'+'&amp;count=4'+'&amp;location='+b;
 									return false;" 
 									rendered="#{(not empty searchController.searchResults) and ((searchController.pageIndex+1)!=searchController.pages)}" />
 								<h:inputHidden value="#{searchController.pageIndex}" />
@@ -64,7 +66,8 @@
 							<h:commandLink value="#{page}"
 								onclick="
 									var a=document.getElementById('searchForm:srch-term').value;
-									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{page-1}'+'&amp;count=4';
+									var b=document.getElementById('searchForm:srch-location').value;
+									window.location='searchResults.xhtml?term='+a+'&amp;page='+'#{page-1}'+'&amp;count=4'+'&amp;location='+b;
 									return false;"
 								rendered="#{page-1 != searchController.pageIndex}" />
 							<h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
