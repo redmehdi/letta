@@ -6,6 +6,8 @@ import static org.apache.commons.lang3.Validate.isTrue;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
@@ -27,6 +29,7 @@ import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.domain.entities.Notification;
+import es.uvigo.esei.dgss.letta.domain.entities.State;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.domain.entities.UserNotifications;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
@@ -128,41 +131,47 @@ public class EventEJB {
      * Search for an event with advanced criteria
      * @param search Search term of the query(short description or title)
      * @param state State of the event(cancelled or open)
-     * @param category Category of the event
+     * @param category_string String of the Category of the event
      * @param start Start page of the query
      * @param count Number of elements per page
      * @return result list of events
      */
     @PermitAll
-    public List<Event> advancedSearch(final String search, final Enum state, final String category, final int start, final int count){
-    	System.out.println("ENTREI DENTRO");
+    public List<Event> advancedSearch(final String search, final Enum state, final String category_string, final int start, final int count){
     	isTrue(nonNull(search), "Search query cannot be null");
-        if (count == 0) return emptyList();
-        Category cat= Category.valueOf(category);
+        if(count == 0) return emptyList();
 
-        String query_string=
-                "SELECT e FROM Event e " +
-                " WHERE (LOWER(e.title) LIKE :search " +
+        String query_string =
+        		"SELECT e FROM Event e " +
+        		"WHERE (LOWER(e.title)   LIKE :search " +
                 "    OR LOWER(e.summary) LIKE :search " +
-                "OR LOWER(e.description) LIKE :search ) " +
-                "AND e.category = :category_aux "+
-                "AND e.cancelled =  :auxState " ;
-
-        boolean aux=false;
-        if(state.name().equals("EXPIRED")){
-        	aux=true;
-        	query_string+= "AND CURRENT_TIMESTAMP<e.date";
+                "OR LOWER(e.description) LIKE :search)" +
+                " AND e.cancelled = :cancelled";
+        
+        Category category = null;
+        
+        if(category_string != null && category_string != ""){
+        	category = Category.valueOf(category_string);
+        	query_string += " AND e.category  = :category";
         }
-        query_string+= " ORDER BY e.date ASC";
-        final TypedQuery<Event> query = em.createQuery(query_string,
-                Event.class
-            ).setParameter("search", "%" + search.toLowerCase() + "%");
-        query.setParameter("category_aux",cat);
 
-        if(state.name().equals("CANCELLED"))
-            query.setParameter("auxState",true);
+        if(state.equals(State.EXPIRED)){
+        	query_string += " AND CURRENT_TIMESTAMP < e.date";
+        }
+        
+        query_string += " ORDER BY e.date DESC, e.attendees.size DESC";
+        
+        final TypedQuery<Event> query = em.createQuery(query_string, Event.class);
+        query.setParameter("search", "%" + search.toLowerCase() + "%");
+        
+        if(category_string != null && category_string != ""){
+        	query.setParameter("category", category);
+        }
+
+        if(state.equals(State.CANCELLED))
+            query.setParameter("cancelled", true);
         else
-            query.setParameter("auxState",false);
+            query.setParameter("cancelled", false);
 
         return query.setFirstResult(start).setMaxResults(count).getResultList();
     }
@@ -338,7 +347,7 @@ public class EventEJB {
     /**
      * Modification of the search method that orders by distance from the specified location
      * @param search The search term
-     * @param search The specified location
+     * @param location The specified location
      * @param start The start page
      * @param count The number of elements per page
      * @return a list with the results
@@ -346,8 +355,7 @@ public class EventEJB {
      */
     @PermitAll
     public List<Event> searchWithLocation(
-        final String search, final String location, final int start, final int count
-    ) throws IllegalArgumentException {
+        final String search, final String location, final int start, final int count) {
         isTrue(nonNull(search), "Search query cannot be null");
 
         if (count == 0) return emptyList();
@@ -394,7 +402,7 @@ public class EventEJB {
             " AND :user MEMBER OF e.attendees and cd.capital_A=:location AND cd.capital_B=e.place " +
             " ORDER BY cd.distance ASC, date DESC, e.attendees.size DESC",
             Event.class
-        ).setParameter("search", "%" + search.toLowerCase() + "%").setParameter("location", location).setParameter("user", auth.getCurrentUser());
+        ).setParameter("search", "%" + search.toLowerCase() + "%").setParameter("location", location).setParameter("user", user);
 
         return query.setFirstResult(start).setMaxResults(count).getResultList();
     }
@@ -658,6 +666,30 @@ public class EventEJB {
             "SELECT size(e.attendees) from Event e WHERE e=:event",
             Integer.class
         ).setParameter("event", event).getSingleResult();
+    }
+    
+    /**
+     * Returns a {@code List} result with the different categories an event can have.
+     *
+     * @return A {@code List} with the categories.
+     */
+    @PermitAll
+    public List<String> getEventCategories() {
+    	return em.createQuery(
+            "SELECT DISTINCT e.category FROM Event e"
+        ).getResultList();
+    }
+    
+    /**
+     * Returns a {@code List} result with the different states an event can have.
+     *
+     * @return A {@code List} with the states.
+     */
+    @PermitAll
+    public List<String> getEventStates() {
+    	return Stream.of(State.values())
+    				 .map(State::name)
+    				 .collect(Collectors.toList());
     }
     
     /**

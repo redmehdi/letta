@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
+import es.uvigo.esei.dgss.letta.domain.entities.State;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
 import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
@@ -39,10 +40,14 @@ public class EventSearchController implements Serializable {
 	private int currentPage = 1;
 
 	private List<String> pagesLinks = new ArrayList<>();
-	private String terms = null;
+	private String terms;
 	private String location;
 	private List<String> locations = new ArrayList<>();
 	private List<Event> searchResults;
+	private List<String> categories = new ArrayList<>();
+	private String category;
+	private List<String> states = new ArrayList<>();
+	private String state;
 	@Inject
 	private Principal currentUserPrincipal;
 	@Inject 
@@ -55,6 +60,9 @@ public class EventSearchController implements Serializable {
 		for(Capital capital : searchEJB.getCapitals()) {
 			locations.add(capital.getCapital());
 		}
+		
+		this.categories = searchEJB.getEventCategories();
+		this.states = searchEJB.getEventStates();
 		
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		if (facesContext.getExternalContext().getRequestParameterMap()
@@ -71,11 +79,24 @@ public class EventSearchController implements Serializable {
 			
 			this.location = facesContext.getExternalContext()
 					.getRequestParameterMap().get("location");
-
-			if (srch_terms != "") {
+			
+			this.category = facesContext.getExternalContext()
+					.getRequestParameterMap().get("category");
+			
+			this.state = facesContext.getExternalContext()
+					.getRequestParameterMap().get("state");
+			
+			State state = null;
+			
+			if (this.state != null && this.state != "") {
+				state = State.valueOf(this.state);
+			}
+			
+			if (srch_terms != null && srch_terms != "") {
 				this.terms = srch_terms;
 			}
 
+			//FIXME: count does not work for advanced search 
 			int count = searchEJB.count(srch_terms);
 			this.pageIndex = page;
 
@@ -90,21 +111,26 @@ public class EventSearchController implements Serializable {
 						pagesLinks.add(String.valueOf(i + 1));
 				}
 				
-				String location = this.location;
-				
-				if("anonymous".equals(this.currentUserPrincipal.getName())) {
-					if(location.isEmpty()) {
-						searchResults = searchEJB.search(this.terms, this.pageIndex * 4, 4);
-					} else {
-						searchResults = searchEJB.searchWithLocation(this.terms, location, this.pageIndex * 4, 4);
-					}
+				if(this.category != null && this.category != "") {
+					searchResults = searchEJB.advancedSearch(this.terms, state, this.category, this.pageIndex * 4, 4);
 				} else {
-					if(location.isEmpty()) {						
-						location = userEJB.get(currentUserPrincipal.getName()).get().getCity();
+					String location = this.location;
+					
+					if("anonymous".equals(this.currentUserPrincipal.getName())) {
+						if(location.isEmpty()) {
+							searchResults = searchEJB.search(this.terms, this.pageIndex * 4, 4);
+						} else {
+							searchResults = searchEJB.searchWithLocation(this.terms, location, this.pageIndex * 4, 4);
+						}
+					} else {
+						if(location.isEmpty()) {						
+							location = userEJB.get(currentUserPrincipal.getName()).get().getCity();
+						}
+						
+						searchResults = searchEJB.searchWhileLoggedIn(this.terms, location, this.pageIndex * 4, 4);
 					}
-
-					searchResults = searchEJB.searchWhileLoggedIn(this.terms, location, this.pageIndex * 4, 4);
 				}
+				
 			}
 		}
 	}
@@ -205,6 +231,62 @@ public class EventSearchController implements Serializable {
 	 */
 	public List<Event> getSearchResults() {
 		return searchResults;
+	}
+	
+	/**
+	 * Returns the result list of event categories
+	 *
+	 * @return the result {link List} of categories
+	 */
+	public List<String> getCategories() {
+		return categories;
+	}
+	
+	/**
+	 * Returns the result list of event states
+	 *
+	 * @return the result {link List} of states
+	 */
+	public List<String> getStates() {
+		return states;
+	}
+
+	/**
+	 * Returns the current category
+	 *
+	 * @return the current category
+	 */
+	public String getCategory() {
+		return category;
+	}
+
+	/**
+	 * Set the current category of the event
+	 *
+	 * @param category
+	 *            the category of the event
+	 */
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
+	/**
+	 * Returns the current state
+	 *
+	 * @return the current state
+	 */
+	public String getState() {
+		return state;
+	}
+
+	/**
+	 * Set the current state of the event
+	 *
+	 * @param state
+	 *            the state of the event
+	 */
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	/**

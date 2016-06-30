@@ -30,6 +30,18 @@
 					<li><h:form id="searchForm" class="navbar-form">
 							<div class="input-group">
 								<div class="input-group-btn">
+									<h:commandButton id="exploreButton" class="btn btn-default"
+										value="#{msg['explore.jsf']}"
+										onclick="
+		var current_location= window.location.pathname;
+		if(current_location=='/letta/jsf/'){		
+		window.location='faces/exploreEvents.xhtml';
+		}else{
+		window.location='exploreEvents.xhtml';
+		}
+		return false;
+									">
+									</h:commandButton>
 									<h:commandButton id="searchButton" class="btn btn-default"
 										value="#{msg['search.jsf']}"
 										onclick="
@@ -45,6 +57,7 @@
 									">
 									</h:commandButton>
 								</div>
+								<div class="input-group-btn">
 								<h:inputText class="form-control" id="srch-term"
 									value="#{searchController.terms}" />
 									
@@ -52,6 +65,7 @@
 									<f:selectItem itemValue="#{null}" itemLabel="--" />
 									<f:selectItems value="#{searchController.locations}" />
 								</h:selectOneMenu>
+								</div>
 							</div>
 
 						</h:form></li>
