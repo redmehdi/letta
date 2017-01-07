@@ -3,7 +3,6 @@ package es.uvigo.esei.dgss.letta.service;
 import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.ACCEPTED;
 import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.PENDING;
 import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.REJECTED;
-import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.CANCELLED;
 import static es.uvigo.esei.dgss.letta.domain.entities.Role.USER;
 import static java.util.Objects.nonNull;
 import static java.util.Optional.ofNullable;
@@ -29,6 +28,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Friendship;
+import es.uvigo.esei.dgss.letta.domain.entities.FriendshipState;
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.Role;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
@@ -304,13 +304,13 @@ public class UserEJB {
         return em.merge(user);
     }
 
-    /**
-     * Gets all the {@link User} in the database.
-     *
-     * @return The {@link List} with all the {@link User} sorted alphabetically.
-     * @throws EJBTransactionRolledbackException if the currently identified 
-     * 		   {@link User} is not admin.
-     */
+//    /**
+//     * Gets all the {@link User} in the database.
+//     *
+//     * @return The {@link List} with all the {@link User} sorted alphabetically.
+//     * @throws EJBTransactionRolledbackException if the currently identified 
+//     * 		   {@link User} is not admin.
+//     */
 	@RolesAllowed("ADMIN")
     public List<User> getUsers() throws EJBTransactionRolledbackException {
     	User currentUser = auth.getCurrentUser();
@@ -419,9 +419,9 @@ public class UserEJB {
     }
     
     /**
-     * Establish new a {@link Friendship} in the database.
+     * Make {@link Friendship} in the database.
      * 
-     * @param friend the received User of the {@link Friendship}
+     * @param friendLogin the received User of the {@link Friendship}
      * @return the {@link Friendship}.
      */
     @RolesAllowed({"ADMIN", "USER"})
@@ -538,7 +538,7 @@ public class UserEJB {
 						.setParameter("userId", user.getLogin())
 						.getSingleResult();
 		if(friendship != null){
-			friendship.setFriendshipState(CANCELLED);
+			friendship.setFriendshipState(FriendshipState.CANCELLED);
 			em.merge(friendship);
 			return true;
 		} else {
@@ -564,6 +564,8 @@ public class UserEJB {
 	        			.getResultList();
 	        	}
 	}
+    
+   
 
 	
 }
