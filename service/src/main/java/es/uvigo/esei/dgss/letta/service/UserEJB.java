@@ -444,7 +444,6 @@ public class UserEJB {
     
     
     @RolesAllowed({"ADMIN", "USER"})
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Friendship> friendRequestList() {
 		final User user = auth.getCurrentUser();
 		if (user == null)
@@ -481,7 +480,7 @@ public class UserEJB {
 
 	}
     
-    @PermitAll
+    @RolesAllowed({"ADMIN", "USER"})
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Friendship> friendRequestBeSentByUserList() {
     	final User user = auth.getCurrentUser();
@@ -549,7 +548,6 @@ public class UserEJB {
 	}
     
     @RolesAllowed({"ADMIN", "USER"})
-	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public List<User> searchUser(final String keyword) {
 		isTrue(nonNull(keyword), "Search query cannot be null");
 		final User user = auth.getCurrentUser();
