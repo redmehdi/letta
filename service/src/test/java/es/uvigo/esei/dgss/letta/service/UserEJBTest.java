@@ -192,14 +192,14 @@ public class UserEJBTest {
 	    asUser.throwingRun(() -> facade.getUsers());
 	}
 	
-//	@Test
-//	@UsingDataSet("users.xml")
-//	public void testRemoveUser() {
-//		final User user = userWithLogin("kurt");	   
-//	    principal.setName(user.getLogin());	
-//	    
-//	    asAdmin.throwingRun(() -> facade.removeUser("anne"));
-//	}
+	@Test
+	@UsingDataSet("users.xml")
+	public void testRemoveUser() {
+		final User user = userWithLogin("kurt");	   
+	    principal.setName(user.getLogin());	
+	    
+	    asAdmin.throwingRun(() -> facade.removeUser("anne"));
+	}
 	
 	@Test(expected=EJBTransactionRolledbackException.class)
 	@UsingDataSet("users.xml")
@@ -219,16 +219,16 @@ public class UserEJBTest {
 	    asUser.throwingRun(() -> facade.removeUser("mike"));
 	}
 
-//	@Test
-//	@UsingDataSet("registrations-create.xml")
-//	@ShouldMatchDataSet("registrations-register-user.xml")
-//	public void testConfirmateUser() {
-//		Registration registration = newRegistration();
-//
-//		facade.userConfirmation(registration.getUuid());
-//
-//		assertThat(registration.getUser(),is(equalTo(registration.getEmail())));
-//	}
+	@Test
+	@UsingDataSet("registrations-create.xml")
+	@ShouldMatchDataSet("registrations-register-user.xml")
+	public void testConfirmateUser() {
+		Registration registration = newRegistration();
+
+		facade.userConfirmation(registration.getUuid());
+
+		assertThat(registration.getUser(),is(equalTo(registration.getEmail())));
+	}
 	
 	@Test
 	@UsingDataSet("users.xml")
