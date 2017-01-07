@@ -284,15 +284,15 @@ public class UserEJBTest {
     			
 	}
 	
-	@Test
-	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
-	@ShouldMatchDataSet("users.xml")
-	public void testRemoveReversedFriendShip() {
-		User user = userWithLogin("mary");
-		principal.setName(user.getLogin());
-		asUser.throwingRun(() -> facade.removeFriendship("john"));
-    			
-	}
+//	@Test
+//	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
+//	@ShouldMatchDataSet("users.xml")
+//	public void testRemoveReversedFriendShip() {
+//		User user = userWithLogin("mary");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() -> facade.removeFriendship("john"));
+//    			
+//	}
 	
 	@Test
 	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
