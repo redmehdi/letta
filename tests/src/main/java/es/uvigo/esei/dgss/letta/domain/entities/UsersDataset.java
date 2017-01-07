@@ -159,6 +159,10 @@ public final class UsersDataset {
 		return existentUser().getLogin();
 	}
 	
+	public static String existentLoginOther() {
+		return existentUserOther().getLogin();
+	}
+	
 	/**
 	 * Returns an user that should exist in the database.
 	 * 
@@ -166,6 +170,10 @@ public final class UsersDataset {
 	 */
 	public static User existentUser() {
 		return users()[0];
+	}
+	
+	public static User existentUserOther() {
+		return users()[2];
 	}
 	
 	/**
