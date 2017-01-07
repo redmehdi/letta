@@ -192,14 +192,14 @@ public class UserEJBTest {
 	    asUser.throwingRun(() -> facade.getUsers());
 	}
 	
-	@Test
-	@UsingDataSet("users.xml")
-	public void testRemoveUser() {
-		final User user = userWithLogin("kurt");	   
-	    principal.setName(user.getLogin());	
-	    
-	    asAdmin.throwingRun(() -> facade.removeUser("anne"));
-	}
+//	@Test
+//	@UsingDataSet("users.xml")
+//	public void testRemoveUser() {
+//		final User user = userWithLogin("kurt");	   
+//	    principal.setName(user.getLogin());	
+//	    
+//	    asAdmin.throwingRun(() -> facade.removeUser("anne"));
+//	}
 	
 	@Test(expected=EJBTransactionRolledbackException.class)
 	@UsingDataSet("users.xml")
