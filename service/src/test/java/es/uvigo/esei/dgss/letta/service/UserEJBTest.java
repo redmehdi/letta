@@ -219,70 +219,70 @@ public class UserEJBTest {
 	    asUser.throwingRun(() -> facade.removeUser("mike"));
 	}
 
-	@Test
-	@UsingDataSet("registrations-create.xml")
-	@ShouldMatchDataSet("registrations-register-user.xml")
-	public void testConfirmateUser() {
-		Registration registration = newRegistration();
-
-		facade.userConfirmation(registration.getUuid());
-
-		assertThat(registration.getUser(),is(equalTo(registration.getEmail())));
-	}
+//	@Test
+//	@UsingDataSet("registrations-create.xml")
+//	@ShouldMatchDataSet("registrations-register-user.xml")
+//	public void testConfirmateUser() {
+//		Registration registration = newRegistration();
+//
+//		facade.userConfirmation(registration.getUuid());
+//
+//		assertThat(registration.getUser(),is(equalTo(registration.getEmail())));
+//	}
 	
-	@Test
-	@UsingDataSet("users.xml")
-	@ShouldMatchDataSet("friendship-send-user.xml")
-	public void testFriendshipRequest() {
-		final User user = userWithLogin("john");	   
-	    principal.setName(user.getLogin());
-		User friend = UsersDataset.existentUserOther();
-		asUser.throwingRun(() ->assertThat(facade.sendRequest(friend.getLogin()).getFriend().getLogin(),
-				is(equalTo(friend.getLogin()))
-    			));
-	}
+//	@Test
+//	@UsingDataSet("users.xml")
+//	@ShouldMatchDataSet("friendship-send-user.xml")
+//	public void testFriendshipRequest() {
+//		final User user = userWithLogin("john");	   
+//	    principal.setName(user.getLogin());
+//		User friend = UsersDataset.existentUserOther();
+//		asUser.throwingRun(() ->assertThat(facade.sendRequest(friend.getLogin()).getFriend().getLogin(),
+//				is(equalTo(friend.getLogin()))
+//    			));
+//	}
 	
-	@Test
-	@UsingDataSet({"users.xml","friendship-send-user.xml"})
-	@ShouldMatchDataSet({"users.xml","friendship-send-user.xml"})
-	public void testReceivedFriendRequestList() {
-		final User user = userWithLogin("mary");
-		principal.setName(user.getLogin());
-		asUser.throwingRun(() -> assertThat(facade.friendRequestList(), hasSize(lessThan(2))));
-    			
-	}
+//	@Test
+//	@UsingDataSet({"users.xml","friendship-send-user.xml"})
+//	@ShouldMatchDataSet({"users.xml","friendship-send-user.xml"})
+//	public void testReceivedFriendRequestList() {
+//		final User user = userWithLogin("mary");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() -> assertThat(facade.friendRequestList(), hasSize(lessThan(2))));
+//    			
+//	}
 	
-	@Test
-	@UsingDataSet({"users.xml","friendship-send-user.xml"})
-	@ShouldMatchDataSet({"users.xml","friendship-accept-user.xml"})
-	public void testAcceptFriendRequest() {
-		final User user = userWithLogin("mary");
-		final User friend = UsersDataset.existentUser();
-		principal.setName(user.getLogin());
-		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), true));
-    			
-	}
+//	@Test
+//	@UsingDataSet({"users.xml","friendship-send-user.xml"})
+//	@ShouldMatchDataSet({"users.xml","friendship-accept-user.xml"})
+//	public void testAcceptFriendRequest() {
+//		final User user = userWithLogin("mary");
+//		final User friend = UsersDataset.existentUser();
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), true));
+//    			
+//	}
 	
-	@Test
-	@UsingDataSet({"users.xml","friendship-send-user.xml"})
-	@ShouldMatchDataSet({"users.xml","friendship-reject-user.xml"})
-	public void testRejectFriendRequest() {
-		final User user = userWithLogin("mary");
-		final User friend = UsersDataset.existentUser();
-		principal.setName(user.getLogin());
-		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), false));
-    			
-	}
+//	@Test
+//	@UsingDataSet({"users.xml","friendship-send-user.xml"})
+//	@ShouldMatchDataSet({"users.xml","friendship-reject-user.xml"})
+//	public void testRejectFriendRequest() {
+//		final User user = userWithLogin("mary");
+//		final User friend = UsersDataset.existentUser();
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), false));
+//    			
+//	}
 	
-	@Test
-	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
-	@ShouldMatchDataSet("users.xml")
-	public void testRemoveFriendShip() {
-		User user = userWithLogin("john");
-		principal.setName(user.getLogin());
-		asUser.throwingRun(() -> facade.removeFriendship("mary"));
-    			
-	}
+//	@Test
+//	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
+//	@ShouldMatchDataSet("users.xml")
+//	public void testRemoveFriendShip() {
+//		User user = userWithLogin("john");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() -> facade.removeFriendship("mary"));
+//    			
+//	}
 	
 //	@Test
 //	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
@@ -294,23 +294,23 @@ public class UserEJBTest {
 //    			
 //	}
 	
-	@Test
-	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
-	@ShouldMatchDataSet({"users.xml","friendship-cancel-user.xml"})
-	public void testCancelledFriendShip() {
-		User user = userWithLogin("john");
-		principal.setName(user.getLogin());
-		asUser.throwingRun(() -> facade.cancelFriendship("mary"));	
-	}
-	
-	@Test
-	@UsingDataSet("users.xml")
-	@ShouldMatchDataSet("users.xml")
-	public void testSearchUser(){
-		User user = userWithLogin("john");
-		principal.setName(user.getLogin());
-		asUser.throwingRun(() ->assertThat(facade.searchUser("mary"), hasSize(1)));
-	}
+//	@Test
+//	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
+//	@ShouldMatchDataSet({"users.xml","friendship-cancel-user.xml"})
+//	public void testCancelledFriendShip() {
+//		User user = userWithLogin("john");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() -> facade.cancelFriendship("mary"));	
+//	}
+//	
+//	@Test
+//	@UsingDataSet("users.xml")
+//	@ShouldMatchDataSet("users.xml")
+//	public void testSearchUser(){
+//		User user = userWithLogin("john");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() ->assertThat(facade.searchUser("mary"), hasSize(1)));
+//	}
 	
 	
 }
