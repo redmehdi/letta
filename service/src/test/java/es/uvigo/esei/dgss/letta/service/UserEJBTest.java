@@ -241,7 +241,7 @@ public class UserEJBTest {
 //				is(equalTo(friend.getLogin()))
 //    			));
 //	}
-	
+//	
 //	@Test
 //	@UsingDataSet({"users.xml","friendship-send-user.xml"})
 //	@ShouldMatchDataSet({"users.xml","friendship-send-user.xml"})
@@ -251,7 +251,7 @@ public class UserEJBTest {
 //		asUser.throwingRun(() -> assertThat(facade.friendRequestList(), hasSize(lessThan(2))));
 //    			
 //	}
-	
+//	
 //	@Test
 //	@UsingDataSet({"users.xml","friendship-send-user.xml"})
 //	@ShouldMatchDataSet({"users.xml","friendship-accept-user.xml"})
@@ -262,7 +262,7 @@ public class UserEJBTest {
 //		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), true));
 //    			
 //	}
-	
+//	
 //	@Test
 //	@UsingDataSet({"users.xml","friendship-send-user.xml"})
 //	@ShouldMatchDataSet({"users.xml","friendship-reject-user.xml"})
@@ -273,7 +273,7 @@ public class UserEJBTest {
 //		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), false));
 //    			
 //	}
-	
+//	
 //	@Test
 //	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
 //	@ShouldMatchDataSet("users.xml")
@@ -283,7 +283,7 @@ public class UserEJBTest {
 //		asUser.throwingRun(() -> facade.removeFriendship("mary"));
 //    			
 //	}
-	
+//	
 //	@Test
 //	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
 //	@ShouldMatchDataSet("users.xml")
@@ -293,7 +293,7 @@ public class UserEJBTest {
 //		asUser.throwingRun(() -> facade.removeFriendship("john"));
 //    			
 //	}
-	
+//	
 //	@Test
 //	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
 //	@ShouldMatchDataSet({"users.xml","friendship-cancel-user.xml"})
@@ -311,6 +311,7 @@ public class UserEJBTest {
 //		principal.setName(user.getLogin());
 //		asUser.throwingRun(() ->assertThat(facade.searchUser("mary"), hasSize(1)));
 //	}
+	
 	
 	
 }
