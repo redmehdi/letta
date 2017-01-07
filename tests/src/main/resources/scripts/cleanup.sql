@@ -3,6 +3,7 @@ DELETE FROM Event;
 DELETE FROM UserNotifications;
 DELETE FROM Notification;
 DELETE FROM Registration;
+DELETE FROM Friendship;
 DELETE FROM User;
 DELETE FROM Capital;
 DELETE FROM CapitalDistances;
