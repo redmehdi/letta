@@ -1,5 +1,14 @@
 package es.uvigo.esei.dgss.letta.service;
 
+import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.ACCEPTED;
+import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.PENDING;
+import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.REJECTED;
+import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.CANCELLED;
+import static es.uvigo.esei.dgss.letta.domain.entities.Role.USER;
+import static java.util.Objects.nonNull;
+import static java.util.Optional.ofNullable;
+import static org.apache.commons.lang3.Validate.isTrue;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +28,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import es.uvigo.esei.dgss.letta.domain.entities.Friendship;
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.Role;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
@@ -27,19 +37,13 @@ import es.uvigo.esei.dgss.letta.service.util.exceptions.EmailDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.LoginDuplicateException;
 import es.uvigo.esei.dgss.letta.service.util.mail.Mailer;
 
-import static java.util.Objects.nonNull;
-import static java.util.Optional.ofNullable;
-
-import static org.apache.commons.lang3.Validate.isTrue;
-
-import static es.uvigo.esei.dgss.letta.domain.entities.Role.USER;
-
 /**
  * {@linkplain UserEJB} is a service bean providing all the required
  * {@linkplain User user-related} methods.
  *
  * @author Jesús Álvarez Casanova
  * @author Adrián Rodríguez Fariña
+ * @author world1mehdi
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -413,4 +417,155 @@ public class UserEJB {
 		
 		return userNotifications;
     }
+    
+    /**
+     * Establish new a {@link Friendship} in the database.
+     * 
+     * @param friend the received User of the {@link Friendship}
+     * @return the {@link Friendship}.
+     */
+    @RolesAllowed({"ADMIN", "USER"})
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public Friendship sendRequest(final String friendLogin) {
+    	isTrue(nonNull(friendLogin), "Friend cannot be null");
+    	final User user = auth.getCurrentUser();
+    	final User friend = em.find(User.class, friendLogin);
+        if (user == null && friend ==null )
+            return null;
+        else {
+        	Friendship friendship = new Friendship();
+        	friendship.setUser(user);
+        	friendship.setFriend(friend);
+        	friendship.setFriendshipState(PENDING);
+            em.persist(friendship);
+            return friendship;
+        }
+    }
+    
+    
+    @RolesAllowed({"ADMIN", "USER"})
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<Friendship> friendRequestList() {
+		final User user = auth.getCurrentUser();
+		if (user == null)
+			return null;
+		else {
+			return em
+					.createQuery("SELECT f FROM Friendship f WHERE f.friend.login = :userId "
+							+ "AND f.friendshipState = 'PENDING' ", Friendship.class)
+					.setParameter("userId", user.getLogin()).getResultList();
+		}
+    }
+    
+    @RolesAllowed({"ADMIN", "USER"})
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void acceptOrRejectFriendRequest(final String friendLogin, final boolean acceptFriendShip) {
+    	isTrue(nonNull(friendLogin), "FriendName cannot be null");
+    	isTrue(nonNull(acceptFriendShip), "The acceptance category cannot be null");
+    	final User user = auth.getCurrentUser();
+		Friendship friendship = em
+				.createQuery(
+						"SELECT f FROM Friendship f WHERE f.user.login = "
+						+ ":userId AND f.friendshipState = 'PENDING' " 
+							+ "AND f.friend.login = :friendId ",
+										Friendship.class)
+								.setParameter("friendId", user.getLogin())
+								.setParameter("userId", friendLogin)
+										.getSingleResult();
+		if (acceptFriendShip) {
+			friendship.setFriendshipState(ACCEPTED);
+		} else {
+			friendship.setFriendshipState(REJECTED);
+		}
+		em.merge(friendship);
+
+	}
+    
+    @PermitAll
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public List<Friendship> friendRequestBeSentByUserList() {
+    	final User user = auth.getCurrentUser();
+        if (user == null)
+            return null;
+        else {
+        	
+            return em.createQuery(
+    				"SELECT f FROM Friendship f WHERE f.user.login = :userId "
+    						+ "AND f.friendshipState = 'PENDING' ", Friendship.class)
+    						.setParameter("userId", user.getLogin()).getResultList();
+        }
+    }
+    
+    @RolesAllowed({"ADMIN", "USER"})
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
+    public boolean removeFriendship(final String friendLogin) {
+		final User user = auth.getCurrentUser();
+		Friendship friendship = em
+				.createQuery(
+						"SELECT f FROM Friendship f WHERE " 
+						+ "((f.user.login = :userId "
+						+ " AND f.friend.login = :friendId)" 
+						+ " OR (f.user.login = :friendId "
+						+ " AND f.friend.login = :userId))" 
+						+ " AND f.friendshipState = 'ACCEPTED'",
+									Friendship.class)
+						.setParameter("friendId", friendLogin)
+						.setParameter("userId", user.getLogin())
+									.getSingleResult();
+
+		if (friendship != null) {
+			em.remove(friendship);
+			return true;
+
+		} else {
+			return false;
+		}
+
+	}
+    
+    
+    @RolesAllowed({"ADMIN", "USER"})
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public boolean cancelFriendship(final String friendLogin) {
+    	isTrue(nonNull(friendLogin), "friend cannot be null");
+    	final User user = auth.getCurrentUser();
+		Friendship friendship = em
+				.createQuery(
+						"SELECT f FROM Friendship f WHERE f.user.login = :userId "
+								+ "AND f.friendshipState = 'ACCEPTED' " 
+								+ "AND f.friend.login = :friendId",
+						Friendship.class)
+						.setParameter("friendId", friendLogin)
+						.setParameter("userId", user.getLogin())
+						.getSingleResult();
+		if(friendship != null){
+			friendship.setFriendshipState(CANCELLED);
+			em.merge(friendship);
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+    
+    @RolesAllowed({"ADMIN", "USER"})
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public List<User> searchUser(final String keyword) {
+		isTrue(nonNull(keyword), "Search query cannot be null");
+		final User user = auth.getCurrentUser();
+		 if (user == null)
+	            return null;
+	        else {
+	        	return em
+	        			.createQuery("SELECT u FROM User u WHERE "
+	        					+ "( LOWER(u.completeName) LIKE :keyword"
+	        					+ " OR LOWER(u.login) LIKE :keyword ) "
+	        					+ "AND u.login !=:login", User.class)
+	        			.setParameter("login", user.getLogin())
+	        			.setParameter("keyword", "%" + keyword.toLowerCase() + "%")
+	        			.getResultList();
+	        	}
+	}
+
+	
 }
