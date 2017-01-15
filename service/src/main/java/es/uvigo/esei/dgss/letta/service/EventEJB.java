@@ -28,7 +28,6 @@ import javax.persistence.TypedQuery;
 import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
-import es.uvigo.esei.dgss.letta.domain.entities.Friendship;
 import es.uvigo.esei.dgss.letta.domain.entities.Notification;
 import es.uvigo.esei.dgss.letta.domain.entities.State;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
@@ -909,7 +908,8 @@ public class EventEJB {
 	public List<User> getWithAttendeesFriendsByUser(final int id, final User user) {
 		isTrue(nonNull(id), "friendLogin cannot be null");
 		TypedQuery<User> query = em.createQuery(
-				"SELECT a FROM Event e JOIN e.attendees a WHERE e.id = :id AND a in (SELECT f.friend FROM Friendship f WHERE f.user =:user AND f.friendshipState = 'ACCEPTED')",
+				"SELECT a FROM Event e JOIN e.attendees a WHERE e.id = :id AND a in "
+				+ "(SELECT f.friend FROM Friendship f WHERE f.user =:user AND f.friendshipState = 'ACCEPTED')",
 				User.class).setParameter("user", user).setParameter("id", id);
 		return query.getResultList();
 
@@ -926,7 +926,8 @@ public class EventEJB {
 		isTrue(nonNull(id), "friendLogin cannot be null");
 		final User user = auth.getCurrentUser();
 		TypedQuery<User> query = em.createQuery(
-				"SELECT a FROM Event e JOIN e.attendees a WHERE e.id = :id AND a in (SELECT f.friend FROM Friendship f WHERE f.user =:user AND f.friendshipState = 'ACCEPTED')",
+				"SELECT a FROM Event e JOIN e.attendees a WHERE e.id = :id AND a in "
+				+ "(SELECT f.friend FROM Friendship f WHERE f.user =:user AND f.friendshipState = 'ACCEPTED')",
 				User.class).setParameter("user", user).setParameter("id", id);
 		return query.getResultList();
 
@@ -944,7 +945,8 @@ public class EventEJB {
 		isTrue(nonNull(id), "id cannot be null");
 		isTrue(nonNull(user), "user cannot be null");
 		TypedQuery<User> query = em.createQuery(
-				"SELECT a FROM Event e JOIN e.owner a WHERE e.id = :id AND a in (SELECT f.friend FROM Friendship f WHERE f.user =:user AND f.friendshipState = 'ACCEPTED')",
+				"SELECT a FROM Event e JOIN e.owner a WHERE e.id = :id AND a in "
+				+ "(SELECT f.friend FROM Friendship f WHERE f.user =:user AND f.friendshipState = 'ACCEPTED')",
 				User.class).setParameter("user", user).setParameter("id", id);
 		return query.getResultList();
 
@@ -961,7 +963,8 @@ public class EventEJB {
 		isTrue(nonNull(id), "friendLogin cannot be null");
 		 final User user = auth.getCurrentUser();
 		TypedQuery<User> query = em.createQuery(
-				"SELECT a FROM Event e JOIN e.owner a WHERE e.id = :id AND a in (SELECT f.friend FROM Friendship f WHERE f.user =:user AND f.friendshipState = 'ACCEPTED')",
+				"SELECT a FROM Event e JOIN e.owner a WHERE e.id = :id AND a in "
+				+ "(SELECT f.friend FROM Friendship f WHERE f.user =:user AND f.friendshipState = 'ACCEPTED')",
 				User.class).setParameter("user", user).setParameter("id", id);
 		return query.getResultList();
 
