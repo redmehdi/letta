@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <Friendship id="1" friendshipState="ACCEPTED" user_login="john" friend_login="mary" />
+    <Friendship id="2" friendshipState="ACCEPTED" user_login="john" friend_login="anne" />
+    <Friendship id="3" friendshipState="ACCEPTED" user_login="john" friend_login="joan" />
+    <Friendship id="4" friendshipState="ACCEPTED" user_login="john" friend_login="joan" />
+    <Friendship id="5" friendshipState="ACCEPTED" user_login="john" friend_login="mike" />
+    <Friendship id="6" friendshipState="ACCEPTED" user_login="anne" friend_login="john" />
+    
+</dataset>
