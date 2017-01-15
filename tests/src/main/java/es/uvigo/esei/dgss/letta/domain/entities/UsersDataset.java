@@ -215,4 +215,8 @@ public final class UsersDataset {
 		return new User("john", "annepass", "johnModified@email.com", "john name Modified", "john description Modified",
 				"https://www.facebook.com/johnModified", null, "https://johnpersonal.com/", false, null,"Cuenca");
 	}
+	
+	 public static User[] filterUsers(final Predicate<User> f) {
+	        return stream(users()).filter(f).toArray(User[]::new);
+	    }
 }
