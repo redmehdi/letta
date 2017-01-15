@@ -48,8 +48,8 @@ public class UserAuthorizationEJBTest {
     @Deployment
     public static Archive<?> deploy() {
         return deployment().withTestPrincipal().withClasses(
-            UserAuthorizationEJB.class
-        ).build();
+        		UserAuthorizationEJB.class
+            ).build();
     }
 
     @Test
