@@ -304,13 +304,13 @@ public class UserEJB {
         return em.merge(user);
     }
 
-//    /**
-//     * Gets all the {@link User} in the database.
-//     *
-//     * @return The {@link List} with all the {@link User} sorted alphabetically.
-//     * @throws EJBTransactionRolledbackException if the currently identified 
-//     * 		   {@link User} is not admin.
-//     */
+    /**
+     * Gets all the {@link User} in the database.
+     *
+     * @return The {@link List} with all the {@link User} sorted alphabetically.
+     * @throws EJBTransactionRolledbackException if the currently identified 
+     * 		   {@link User} is not admin.
+     */
 	@RolesAllowed("ADMIN")
     public List<User> getUsers() throws EJBTransactionRolledbackException {
     	User currentUser = auth.getCurrentUser();
@@ -422,27 +422,30 @@ public class UserEJB {
      * Make {@link Friendship} in the database.
      * 
      * @param friendLogin the received User of the {@link Friendship}
-     * @return the {@link Friendship}.
+     * 
      */
     @RolesAllowed({"ADMIN", "USER"})
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public Friendship sendRequest(final String friendLogin) {
+    public void sendRequest(final String friendLogin) {
     	isTrue(nonNull(friendLogin), "Friend cannot be null");
     	final User user = auth.getCurrentUser();
     	final User friend = em.find(User.class, friendLogin);
-        if (user == null && friend ==null )
-            return null;
-        else {
+        if (user == null && friend ==null ){
+        	throw new EJBTransactionRolledbackException("User cannot be null");
+        }else {
         	Friendship friendship = new Friendship();
         	friendship.setUser(user);
         	friendship.setFriend(friend);
         	friendship.setFriendshipState(PENDING);
             em.persist(friendship);
-            return friendship;
+           
         }
     }
     
-    
+    /**
+     * Find the fiends request {@link Friendship} 
+     * @return the {@link List} in all {@link Friendship}
+     */
     @RolesAllowed({"ADMIN", "USER"})
     public List<Friendship> friendRequestList() {
 		final User user = auth.getCurrentUser();
@@ -456,6 +459,12 @@ public class UserEJB {
 		}
     }
     
+    /**
+     * Accept or reject friend's request {@link Friendship}
+     * @param friendLogin The login' friend {@link User}}
+     * @param acceptFriendShip true in case accept and vice versa
+     * 
+     */
     @RolesAllowed({"ADMIN", "USER"})
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void acceptOrRejectFriendRequest(final String friendLogin, final boolean acceptFriendShip) {
@@ -480,9 +489,12 @@ public class UserEJB {
 
 	}
     
+    /**
+     * Get all friend' requests be sent {@link Friendship}
+     * @return The {@link List} in all {@link Friendship}
+     */
     @RolesAllowed({"ADMIN", "USER"})
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<Friendship> friendRequestBeSentByUserList() {
+    public List<Friendship> getFriendRequestBeSentByUserList() {
     	final User user = auth.getCurrentUser();
         if (user == null)
             return null;
@@ -495,9 +507,14 @@ public class UserEJB {
         }
     }
     
+    /**
+     * Remove {@link Friendship} from database
+     * @param friendLogin The login's {@link User}
+     * 
+     */
     @RolesAllowed({"ADMIN", "USER"})
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public boolean removeFriendship(final String friendLogin) {
+    public void removeFriendship(final String friendLogin) {
 		final User user = auth.getCurrentUser();
 		Friendship friendship = em
 				.createQuery(
@@ -514,18 +531,18 @@ public class UserEJB {
 
 		if (friendship != null) {
 			em.remove(friendship);
-			return true;
-
 		} else {
-			return false;
+			throw new EJBTransactionRolledbackException("Friendship cannot be null");
 		}
-
 	}
     
-    
+    /**
+     * Cancel {@link Friendship} by user 
+     * @param friendLogin {@link User}
+     */
     @RolesAllowed({"ADMIN", "USER"})
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-	public boolean cancelFriendship(final String friendLogin) {
+	public void cancelFriendship(final String friendLogin) {
     	isTrue(nonNull(friendLogin), "friend cannot be null");
     	final User user = auth.getCurrentUser();
 		Friendship friendship = em
@@ -540,13 +557,18 @@ public class UserEJB {
 		if(friendship != null){
 			friendship.setFriendshipState(FriendshipState.CANCELLED);
 			em.merge(friendship);
-			return true;
+			
 		} else {
-			return false;
+			throw new EJBTransactionRolledbackException("Friendship cannot be null");
 		}
 
 	}
     
+    /**
+     * Search the user {@link User} by full name
+     * @param keyword
+     * @return The {@link List} with all the {@link User}
+     */
     @RolesAllowed({"ADMIN", "USER"})
 	public List<User> searchUser(final String keyword) {
 		isTrue(nonNull(keyword), "Search query cannot be null");
@@ -562,6 +584,47 @@ public class UserEJB {
 	        			.setParameter("login", user.getLogin())
 	        			.setParameter("keyword", "%" + keyword.toLowerCase() + "%")
 	        			.getResultList();
+	        	}
+	}
+    
+    /**
+     * Get the friend {@link User} by the current {@link User}.
+     * 
+     * @param loginFriend The friend of user
+     * @return the {@link User}.
+     */
+    @RolesAllowed({"ADMIN", "USER"})
+	public Friendship getFriend(final String loginFriend) {
+		isTrue(nonNull(loginFriend), "Search query cannot be null");
+		final User user = auth.getCurrentUser();
+		 if (user == null)
+	            return null;
+	        else {
+	        	return em
+	        			.createQuery("SELECT f FROM Friendship f where  f.friend.login =:loginFriend AND f.user.login =:login", Friendship.class)
+	        			.setParameter("login", user.getLogin()).setParameter("loginFriend", loginFriend)
+	        			.getSingleResult();
+	        	}
+	}
+    
+    /**
+     * Get the friend {@link User} by the current {@link User}.
+     * 
+     * @param loginFriend The friend of user {@link User}
+     * @return the {@link Friendship}.
+     */
+    @RolesAllowed({"ADMIN", "USER"})
+	public Friendship getFriendship(final String loginFriend) {
+		isTrue(nonNull(loginFriend), "Search query cannot be null");
+		final User user = auth.getCurrentUser();
+		 if (user == null)
+	            return null;
+	        else {
+	        	return em
+	        			.createQuery("SELECT f FROM Friendship f where"
+	        					+ " f.friend.login =:loginFriend AND f.user.login =:login", Friendship.class)
+	        			.setParameter("login", user.getLogin()).setParameter("loginFriend", loginFriend)
+	        			.getSingleResult();
 	        	}
 	}
     
