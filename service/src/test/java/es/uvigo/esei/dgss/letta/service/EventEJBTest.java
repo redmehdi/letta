@@ -968,24 +968,24 @@ public class EventEJBTest {
 		asUser.throwingRun(() -> assertThat(friends, hasSize(2)));
 	}
 	
-	@Test
-	@UsingDataSet({ "users.xml", "events.xml", "friendships-uses.xml" })
-	@ShouldMatchDataSet("users.xml")
-	public void testcheckOwnerEventFriendByUser() {
-		final User user = userWithLogin("anne");
-		List<User> friend = events.checkOwnerEventFriendByUser(existentEventId(), user);
-		assertThat(friend, hasSize(1));
-	}
-	
-	@Test
-	@UsingDataSet({ "users.xml", "events.xml", "friendships-uses.xml" })
-	@ShouldMatchDataSet("users.xml")
-	public void testcheckOwnerEventFriendByLoggedUser() {
-		final User user = userWithLogin("anne");
-		principal.setName(user.getLogin());
-		List<User> friend = asUser.call(() ->events.checkOwnerEventFriendByLoggedUser(existentEventId()));
-		asUser.throwingRun(() -> assertThat(friend, hasSize(1)));
-	}
+//	@Test
+//	@UsingDataSet({ "users.xml", "events.xml", "friendships-uses.xml" })
+//	@ShouldMatchDataSet("users.xml")
+//	public void testcheckOwnerEventFriendByUser() {
+//		final User user = userWithLogin("anne");
+//		List<User> friend = events.checkOwnerEventFriendByUser(existentEventId(), user);
+//		assertThat(friend, hasSize(1));
+//	}
+//	
+//	@Test
+//	@UsingDataSet({ "users.xml", "events.xml", "friendships-uses.xml" })
+//	@ShouldMatchDataSet("users.xml")
+//	public void testcheckOwnerEventFriendByLoggedUser() {
+//		final User user = userWithLogin("anne");
+//		principal.setName(user.getLogin());
+//		List<User> friend = asUser.call(() ->events.checkOwnerEventFriendByLoggedUser(existentEventId()));
+//		asUser.throwingRun(() -> assertThat(friend, hasSize(1)));
+//	}
    
    
    
