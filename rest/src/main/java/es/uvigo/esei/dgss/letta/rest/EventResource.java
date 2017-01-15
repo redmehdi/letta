@@ -10,9 +10,9 @@ import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 import static org.apache.commons.lang3.Validate.isTrue;
 
 import java.net.URI;
+import java.util.List;
 
 import javax.ejb.EJB;
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -25,13 +25,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.State;
+import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
-import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventAlredyJoinedException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.EventIsCancelledException;
 import es.uvigo.esei.dgss.letta.service.util.exceptions.IllegalEventOwnerException;
@@ -265,6 +264,18 @@ public class EventResource {
 			}
 
 
+    }
+    
+    @GET
+    @Path("{id: \\d+}/friendAttending")
+    public Response friendAtending(@PathParam("id") int eventId)
+    		throws IllegalArgumentException {
+		final List<User> users = events.getWithAttendeesFriendsByLoggedUser(eventId);
+
+		if (users == null)
+			throw new IllegalArgumentException("Event not found: " + eventId);
+		else
+			return Response.ok(users).build();
     }
 
 }
