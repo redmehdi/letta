@@ -995,5 +995,28 @@ public class EventResourceRestTest {
     @CleanupUsingScript("cleanup.sql")
     @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
     public void afterTestCancelEventEventIsCancelledException() { }
+    
+//    @Test
+//    @InSequence(293) // test 30, sequence 0
+//    @UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+//    public void beforeTestfriendAtending() { }
+//
+//    @Test
+//    @RunAsClient
+//    @InSequence(294) // test 31, sequence 1
+//    public void testfriendAttending() {
+//    	final String login = "mike";
+//        final String token = getAuthHeaderContent(login, passwordFor(login));
+//        final Builder  req = eventTarget(existentEventId()).path("friendAttending").request().header(AUTHORIZATION, token);
+//        final Response res = req.post(null);
+//
+//        assertThat(res, hasHttpStatus(NOT_MODIFIED));
+//    }
+//
+//    @Test
+//    @InSequence(295) // test 32, sequence 2
+//    @CleanupUsingScript("cleanup.sql")
+//    @ShouldMatchDataSet({ "users.xml", "events.xml", "event-attendees.xml" })
+//    public void afterfriendAtending() { }
 
 }
