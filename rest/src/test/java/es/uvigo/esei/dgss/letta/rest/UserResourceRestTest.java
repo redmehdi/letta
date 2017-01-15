@@ -1,5 +1,28 @@
 package es.uvigo.esei.dgss.letta.rest;
 
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
+import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
+import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipDataset.newFriendShip;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentLogin;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentLoginOther;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
+import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.passwordFor;
+import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.containsEventsInAnyOrder;
+import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
+import static es.uvigo.esei.dgss.letta.rest.util.RestIntegrationTestBuilder.deployment;
+import static es.uvigo.esei.dgss.letta.rest.util.RestIntegrationTestUtils.asEventList;
+import static es.uvigo.esei.dgss.letta.rest.util.RestIntegrationTestUtils.asUserList;
+import static es.uvigo.esei.dgss.letta.rest.util.RestIntegrationTestUtils.buildResourceTarget;
+import static es.uvigo.esei.dgss.letta.rest.util.RestIntegrationTestUtils.getAuthHeaderContent;
+import static javax.ws.rs.client.Entity.json;
+import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.OK;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static org.hamcrest.Matchers.hasSize;
+import static org.junit.Assert.assertThat;
+
 import java.net.URL;
 
 import javax.ws.rs.client.Invocation.Builder;
@@ -22,26 +45,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
-
-import static javax.ws.rs.core.HttpHeaders.AUTHORIZATION;
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.Status.OK;
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
-
-import static org.junit.Assert.assertThat;
-
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEvents;
-import static es.uvigo.esei.dgss.letta.domain.entities.EventsDataset.filterEventsWithTwoJoinedUsers;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentLogin;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.existentUser;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.nonExistentUser;
-import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.passwordFor;
-import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.containsEventsInAnyOrder;
-import static es.uvigo.esei.dgss.letta.http.util.HasHttpStatus.hasHttpStatus;
-import static es.uvigo.esei.dgss.letta.rest.util.RestIntegrationTestBuilder.deployment;
-import static es.uvigo.esei.dgss.letta.rest.util.RestIntegrationTestUtils.asEventList;
-import static es.uvigo.esei.dgss.letta.rest.util.RestIntegrationTestUtils.buildResourceTarget;
-import static es.uvigo.esei.dgss.letta.rest.util.RestIntegrationTestUtils.getAuthHeaderContent;
 
 @RunWith(Arquillian.class)
 @Cleanup(phase = TestExecutionPhase.NONE)
@@ -291,7 +294,63 @@ public class UserResourceRestTest {
 
     @Test
     @InSequence(123)
+    @CleanupUsingScript("cleanup.sql")
     @UsingDataSet({ "users.xml", "events.xml" })
     public void afterTestNonExistentAuthorizationJoined() { }
+    
+    @Test
+    @InSequence(124) 
+    @UsingDataSet("users.xml")
+    public void beforeTestCreateCorrectlyFriendShip() { }
+    
+    @Test
+    @RunAsClient
+    @InSequence(125) 
+    public void testCreateCorrectlyFriendShip() {
+        final String login = existentLogin();
+        final String token = getAuthHeaderContent(login, passwordFor(login));
+        final String friendLogin = existentLoginOther();
+        final Builder  req = userTarget(login).path("sendRequest").path(friendLogin)
+        		.request().header(AUTHORIZATION, token);
+        
+        final Response res = req.post(json(newFriendShip()));
+        
+        assertThat(res, hasHttpStatus(OK));
+        
+    }
+    
+    @Test
+    @InSequence(126) 
+    @CleanupUsingScript("cleanup.sql")
+    @UsingDataSet({"users.xml","friendship-send-user.xml"})
+    public void afterTestCreateCorrectlyFriendShip() { }
+    
+    @Test
+    @InSequence(127)
+    @UsingDataSet("users.xml")
+    public void beforeTestSearchUser() { }
+
+    @Test
+    @RunAsClient
+    @InSequence(128)
+    public void testGetSearchUser() {
+        final String login = existentLogin();
+        final String token = getAuthHeaderContent(login, passwordFor(login));
+
+        final Builder  req = userTarget(login).path("searchUser").path("ann").request();
+        final Response res = req.header(AUTHORIZATION, token).get();
+
+        assertThat(res, hasHttpStatus(OK));
+        assertThat(
+            res.readEntity(asUserList),
+            hasSize(1)
+        );
+    }
+
+    @Test
+    @InSequence(129)
+    @CleanupUsingScript("cleanup.sql")
+    @ShouldMatchDataSet("users.xml")
+    public void afterTestSearchUser() { }
 
 }
