@@ -63,46 +63,58 @@ public class Friendship implements Serializable {
 		return friend;
 	}
 	
-	
-
-//	public Friendship(
-//			final FriendshipState friendshipState, 
-//			final User user, 
-//			final User friend) {
-//		this(friendshipState,user,friend);
-//	}
-
-
-
+	/**
+	 * 
+	 * @param friendshipState the {@link FriendshipState} friendship's state 
+	 * @param user The sender {@link User} friend's request
+	 * @param friend The receiver {@link User} friend's request
+	 * 
+	 */
 	public Friendship(FriendshipState friendshipState, User user, User friend) {
 		setFriendshipState(friendshipState);
 		setUser(user);
 		setFriend(friend);
 	}
-
-
-
 	
+	/**
+	 * 
+	 * @return the state {@link FriendshipState}
+	 */
 	public FriendshipState getFriendshipState() {
 		return friendshipState;
 	}
 
-	
+	/**
+	 * 
+	 * @param state {@link FriendshipState}
+	 * @throws NullPointerException should not be null
+	 */
 	public void setFriendshipState(FriendshipState state) throws NullPointerException{
 		this.friendshipState = requireNonNull(state, "friendshipState cannot be null.");
 	}
 
-	
+	/**
+	 * 
+	 * @param friend
+	 * @throws NullPointerException
+	 */
 	public void setFriend(User friend) throws NullPointerException{
 		this.friend = requireNonNull(friend, "friend' user cannot be null.");
 	}
 
-	
+	/**
+	 * 
+	 * @return the {@link User}
+	 */
 	public User getUser() {
 		return user;
 	}
-
 	
+	/**
+	 * 
+	 * @param user the {@link User}
+	 * @throws NullPointerException
+	 */
 	public void setUser(User user) throws NullPointerException{
 		this.user = requireNonNull(user, "user cannot be null.");
 	}
