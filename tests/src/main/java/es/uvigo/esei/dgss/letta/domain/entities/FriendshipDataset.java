@@ -27,5 +27,29 @@ public class FriendshipDataset {
     			users()[2]
     					);
     }
+	
+	public static Friendship cancelFriendShip() {
+    	return new Friendship(
+    			FriendshipState.CANCELLED, 
+    			users()[0], 
+    			users()[2]
+    					);
+    }
+	
+	public static Friendship rejectFriendShip() {
+    	return new Friendship(
+    			FriendshipState.REJECTED, 
+    			users()[0], 
+    			users()[2]
+    					);
+    }
+	
+	public static Friendship acceptFriendShip() {
+    	return new Friendship(
+    			FriendshipState.ACCEPTED, 
+    			users()[0], 
+    			users()[2]
+    					);
+    }
 
 }
