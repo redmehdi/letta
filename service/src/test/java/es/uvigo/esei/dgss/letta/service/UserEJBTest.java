@@ -269,8 +269,8 @@ public class UserEJBTest {
 	@ShouldMatchDataSet({"users.xml","friendship-accept-user.xml"})
 	public void testAcceptFriendRequest() {
 		final User user = userWithLogin("mary");
-		final User friend = UsersDataset.existentUser();
 		principal.setName(user.getLogin());
+		final User friend = UsersDataset.existentUser();
 		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), true));
 		principal.setName("john");
 		asUser.throwingRun(() ->assertThat(facade.getFriend("mary").getFriendshipState(),is(equalTo(ACCEPTED)) ));
