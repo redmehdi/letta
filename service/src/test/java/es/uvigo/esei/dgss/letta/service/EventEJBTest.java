@@ -16,7 +16,6 @@ import static es.uvigo.esei.dgss.letta.domain.entities.UsersDataset.userWithLogi
 import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.containsEventsInAnyOrder;
 import static es.uvigo.esei.dgss.letta.domain.matchers.IsEqualToEvent.equalToEventWithOwner;
 import static es.uvigo.esei.dgss.letta.service.util.ServiceIntegrationTestBuilder.deployment;
-import static java.time.LocalDateTime.ofInstant;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
@@ -24,8 +23,6 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,11 +81,11 @@ public class EventEJBTest {
     @Deployment
     public static Archive<WebArchive> deploy() {
         return deployment().withTestPrincipal().withClasses(
-            EventEJB.class,
-            UserAuthorizationEJB.class,
-            Mailer.class,
-            DefaultMailer.class
-        ).build();
+        		EventEJB.class,
+        		UserAuthorizationEJB.class,
+        		Mailer.class,
+        		DefaultMailer.class
+        		).build();
     }
 
     @Test
@@ -949,6 +946,48 @@ public class EventEJBTest {
        
        asAdmin.throwingRun(() -> events.removeEvent(existentEventId()));
    }
+   
+   
+   
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml", "friendships-uses.xml" })
+	@ShouldMatchDataSet("users.xml")
+	public void testGetAttendeesFriendByUser() {
+		final User user = userWithLogin("john");
+		List<User> friends = events.getWithAttendeesFriendsByUser(existentEventId(), user);
+		assertThat(friends, hasSize(2));
+	}
+
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml", "event-attendees.xml", "friendships-uses.xml" })
+	@ShouldMatchDataSet("users.xml")
+	public void testGetAttendeesFriendByLoggedUser() {
+		final User user = userWithLogin("john");
+		principal.setName(user.getLogin());
+		List<User> friends = asUser.call(() -> events.getWithAttendeesFriendsByLoggedUser(existentEventId()));
+		asUser.throwingRun(() -> assertThat(friends, hasSize(2)));
+	}
+	
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml", "friendships-uses.xml" })
+	@ShouldMatchDataSet("users.xml")
+	public void testcheckOwnerEventFriendByUser() {
+		final User user = userWithLogin("anne");
+		List<User> friend = events.checkOwnerEventFriendByUser(existentEventId(), user);
+		assertThat(friend, hasSize(1));
+	}
+	
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml", "friendships-uses.xml" })
+	@ShouldMatchDataSet("users.xml")
+	public void testcheckOwnerEventFriendByLoggedUser() {
+		final User user = userWithLogin("anne");
+		principal.setName(user.getLogin());
+		List<User> friend = asUser.call(() ->events.checkOwnerEventFriendByLoggedUser(existentEventId()));
+		asUser.throwingRun(() -> assertThat(friend, hasSize(1)));
+	}
+   
+   
    
    
    
