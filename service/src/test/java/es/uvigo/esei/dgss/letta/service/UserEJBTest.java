@@ -26,6 +26,11 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+
+import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.ACCEPTED;
+import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.REJECTED;
+import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.PENDING;
+import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.CANCELLED;
 import es.uvigo.esei.dgss.letta.domain.entities.Registration;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.domain.entities.UsersDataset;
@@ -58,7 +63,7 @@ public class UserEJBTest {
     @Deployment
     public static Archive<?> deploy() {
         return deployment().withTestMailer().withTestPrincipal().withClasses(
-            UserEJB.class, MailBox.class, Email.class, UserAuthorizationEJB.class
+        		UserEJB.class, MailBox.class, Email.class, UserAuthorizationEJB.class
         ).build();
     }
 
@@ -230,6 +235,11 @@ public class UserEJBTest {
 //		assertThat(registration.getUser(),is(equalTo(registration.getEmail())));
 //	}
 	
+//	facade.registerUser(registration);
+//
+//	assertThat(mailer.getEmail(), is(equalTo(registration.getEmail())));
+//	assertThat(mailer.getMessage(), containsString(registration.getUuid()));
+	
 	@Test
 	@UsingDataSet("users.xml")
 	@ShouldMatchDataSet("friendship-send-user.xml")
@@ -237,9 +247,11 @@ public class UserEJBTest {
 		final User user = userWithLogin("john");	   
 	    principal.setName(user.getLogin());
 		User friend = UsersDataset.existentUserOther();
-		asUser.throwingRun(() ->assertThat(facade.sendRequest(friend.getLogin()).getFriend().getLogin(),
-				is(equalTo(friend.getLogin()))
-    			));
+		
+		asUser.throwingRun(() ->facade.sendRequest(friend.getLogin()));
+		asUser.throwingRun(() ->assertThat(facade.getFriend(friend.getLogin()).getFriend().getLogin(),is(equalTo(friend.getLogin())) ));
+		asUser.throwingRun(() ->assertThat(facade.getFriend(friend.getLogin()).getFriendshipState(),is(equalTo(PENDING))));
+		
 	}
 	
 	@Test
@@ -260,6 +272,8 @@ public class UserEJBTest {
 		final User friend = UsersDataset.existentUser();
 		principal.setName(user.getLogin());
 		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), true));
+		principal.setName("john");
+		asUser.throwingRun(() ->assertThat(facade.getFriend("mary").getFriendshipState(),is(equalTo(ACCEPTED)) ));
     			
 	}
 	
@@ -271,7 +285,20 @@ public class UserEJBTest {
 		final User friend = UsersDataset.existentUser();
 		principal.setName(user.getLogin());
 		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), false));
+		principal.setName("john");
+		asUser.throwingRun(() ->assertThat(facade.getFriend("mary").getFriendshipState(),is(equalTo(REJECTED)) ));
     			
+	}
+	
+	@Test
+	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
+	@ShouldMatchDataSet({"users.xml","friendship-cancel-user.xml"})
+	public void testCancelledFriendShip() {
+		User user = userWithLogin("john");
+		principal.setName(user.getLogin());
+		asUser.throwingRun(() -> facade.cancelFriendship("mary"));	
+//		principal.setName("john");
+//		asUser.throwingRun(() ->assertThat(facade.getFriend("mary").getFriendshipState(),is(equalTo(CANCELLED)) ));	
 	}
 	
 	@Test
@@ -281,6 +308,7 @@ public class UserEJBTest {
 		User user = userWithLogin("john");
 		principal.setName(user.getLogin());
 		asUser.throwingRun(() -> facade.removeFriendship("mary"));
+		principal.setName("john");
     			
 	}
 	
@@ -295,15 +323,6 @@ public class UserEJBTest {
 	}
 	
 	@Test
-	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
-	@ShouldMatchDataSet({"users.xml","friendship-cancel-user.xml"})
-	public void testCancelledFriendShip() {
-		User user = userWithLogin("john");
-		principal.setName(user.getLogin());
-		asUser.throwingRun(() -> facade.cancelFriendship("mary"));	
-	}
-	
-	@Test
 	@UsingDataSet("users.xml")
 	@ShouldMatchDataSet("users.xml")
 	public void testSearchUser(){
@@ -311,6 +330,8 @@ public class UserEJBTest {
 		principal.setName(user.getLogin());
 		asUser.throwingRun(() ->assertThat(facade.searchUser("mary"), hasSize(1)));
 	}
+	
+	
 	
 	
 	
