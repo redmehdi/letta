@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 
+ *
  * @author Jesús Álvarez Casanova
  *
  */
@@ -39,7 +39,7 @@ public class Notification {
 
 	/**
 	 * Constructor of {@link Notification}
-	 * 
+	 *
 	 * @param title
 	 *            of the {@link Notification}
 	 * @param body
@@ -52,7 +52,7 @@ public class Notification {
 
 	/**
 	 * Returns the title of the {@link Notification}
-	 * 
+	 *
 	 * @return the title of the {@link Notification}
 	 */
 	public String getTitle() {
@@ -61,7 +61,7 @@ public class Notification {
 
 	/**
 	 * Sets the title of the {@link Notification}
-	 * 
+	 *
 	 * @param title
 	 *            of the {@link Notification}
 	 */
@@ -74,7 +74,7 @@ public class Notification {
 
 	/**
 	 * Returns the body of the {@link Notification}
-	 * 
+	 *
 	 * @return the body of the {@link Notification}
 	 */
 	public String getBody() {
@@ -83,7 +83,7 @@ public class Notification {
 
 	/**
 	 * Sets the body of the {@link Notification}
-	 * 
+	 *
 	 * @param body
 	 *            of the {@link Notification}
 	 */
@@ -96,7 +96,7 @@ public class Notification {
 
 	/**
 	 * Returns the id of the {@link Notification}
-	 * 
+	 *
 	 * @return the id of the {@link Notification}
 	 */
 	public int getId() {
@@ -106,9 +106,10 @@ public class Notification {
 	/**
 	 * Adds an {@link UserNotifications} with an {@link User} and an
 	 * {@link Notification}
-	 * 
+	 *
 	 * @param user
 	 *            indicates the {@link User}
+	 * @return a new notification.
 	 */
 	public UserNotifications addUserNotifications(User user) {
 		UserNotifications userNotifications = new UserNotifications();

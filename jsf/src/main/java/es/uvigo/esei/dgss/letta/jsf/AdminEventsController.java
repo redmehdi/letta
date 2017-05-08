@@ -32,9 +32,9 @@ public class AdminEventsController {
 
 	@Inject
 	private EventEJB eventEJB;
-	
+
 	private LazyDataModel<Event> events;
-	
+
 	@PostConstruct
 	public void init(){
 		this.events = new LazyDataModel<Event>() {
@@ -52,7 +52,7 @@ public class AdminEventsController {
 
 	/**
 	 * Cancels the selected {@link Event}.
-	 * 
+	 *
 	 * @param event
 	 *            The {@link Event} to cancel.
 	 * @throws SecurityException
@@ -71,10 +71,10 @@ public class AdminEventsController {
 		eventEJB.cancelEvent(event.getId());
 		addMessage("Event Cancelled", "The event " + title + " has been cancelled.");
 	}
-	
+
 	/**
 	 * Removes the selected {@link Event}.
-	 * 
+	 *
 	 * @param event The {@link Event} to remove.
 	 */
 	public void removeEvent(Event event){
@@ -82,28 +82,28 @@ public class AdminEventsController {
 		eventEJB.removeEvent(event.getId());
         addMessage("Event removed", "The event " + title + " has been cancelled.");
 	}
-	
-	
+
+
 	/**
 	 * Redirects to the form for edit the selected {@link Event}
-	 * 
+	 *
 	 * @param event The {@link Event} selected for edit.
-	 * @throws IOException
+	 * @throws IOException if an error happens during the redirection.
 	 */
 	public void editEvent(final Event event) throws IOException{
         FacesContext.getCurrentInstance().getExternalContext().redirect(
             "modifyEvent.xhtml?id=" + event.getId()
         );
     }
-	
+
 	public LazyDataModel<Event> getEvents() {
 		return this.events;
 	}
-	
+
 	public void setEvents(LazyDataModel<Event> events) {
 		this.events = events;
 	}
-	
+
 	public void addMessage(String summary, String detail) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
         FacesContext.getCurrentInstance().addMessage(null, message);

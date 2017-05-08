@@ -174,6 +174,8 @@ public class User implements Serializable {
 	 *            if the {@link User} wants {@link Notification}
 	 * @param image
 	 *            the image of the user's profile.
+	 * @param city
+	 *            the city of the user.
 	 */
 	public User(final String login, final String password, final String email, final String completeName,
 			final String description, final String fbUrl, final String twUrl, final String personalUrl,

@@ -115,7 +115,7 @@ public class EventEJB {
 
 	/**
 	 * Counts how many {@link Event Events} currently exist in the database.
-	 * 
+	 *
 	 * @return An integer value representing the total number of events.
 	 */
 	@RolesAllowed("ADMIN")
@@ -126,7 +126,7 @@ public class EventEJB {
 
 	/**
 	 * Search for an event with advanced criteria
-	 * 
+	 *
 	 * @param search
 	 *            Search term of the query(short description or title)
 	 * @param state
@@ -208,16 +208,16 @@ public class EventEJB {
 	 * Returns a paginated {@link List} of {@link Event Events}, sorted by
 	 * descending creation date (which means that newer events will be first on
 	 * the list).
-	 * 
+	 *
 	 * @param start
 	 *            The first {@link Event} position to return, numbered from 0.
 	 * @param count
 	 *            The number of {@link Event Events} to return.
-	 * 
+	 *
 	 * @return sorted {@link List} with the specified number of {@link Event
 	 *         Events}, sorted by descending creation date and counting from the
 	 *         received start point.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if the start or count parameters are negative.
 	 */
@@ -348,7 +348,7 @@ public class EventEJB {
 	/**
 	 * Modification of the search method that orders by distance from the
 	 * specified location
-	 * 
+	 *
 	 * @param search
 	 *            The search term
 	 * @param location
@@ -358,7 +358,6 @@ public class EventEJB {
 	 * @param count
 	 *            The number of elements per page
 	 * @return a list with the results
-	 * @throws IllegalArgumentException
 	 */
 	@PermitAll
 	public List<Event> searchWithLocation(final String search, final String location, final int start,
@@ -382,15 +381,16 @@ public class EventEJB {
 	/**
 	 * Modification of the search method that orders by distance from the
 	 * residence place
-	 * 
+	 *
 	 * @param search
 	 *            The search term
 	 * @param start
 	 *            The start page
 	 * @param count
 	 *            The number of elements per page
+	 * @param location
+	 *            Location of the event
 	 * @return a list with the results
-	 * @throws IllegalArgumentException
 	 */
 	@PermitAll
 	public List<Event> searchWhileLoggedIn(final String search, final String location, final int start, final int count)
@@ -466,6 +466,10 @@ public class EventEJB {
 	 * Return a {@link List} of {@link Event Events} that authenticated
 	 * {@link User} is joined.
 	 *
+	 * @param start
+	 *            The start page
+	 * @param count
+	 *            The number of elements per page
 	 * @return A {@link List} of {@link Event Events} that authenticated
 	 *         {@link User} is joined.
 	 */
@@ -487,6 +491,12 @@ public class EventEJB {
 	 * Return a {@link List} of {@link Event Events} that authenticated
 	 * {@link User} is joined ordered by location.
 	 *
+	 * @param location
+	 *            Location of the event
+	 * @param start
+	 *            The start page
+	 * @param count
+	 *            The number of elements per page
 	 * @return A {@link List} of {@link Event Events} that authenticated
 	 *         {@link User} is joined ordered by location.
 	 */
@@ -715,6 +725,11 @@ public class EventEJB {
 	 * @throws SecurityException
 	 *             if the currently identified user is not found in the database
 	 *             or if he is not the owner of the event.
+	 * @throws IllegalArgumentException
+	 *             if the provided {@link Event} data is not valid.
+	 * @throws UserNotAuthorizedException
+	 *             if the user does not have permission to perform the
+	 *             modification.
 	 */
 	@RolesAllowed({ "USER", "ADMIN" })
 	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
@@ -898,11 +913,11 @@ public class EventEJB {
 	}
 
 	/**
-	 * get all attended {@link User} by common friends' {@link User} 
-	 * 
+	 * get all attended {@link User} by common friends' {@link User}
+	 *
 	 * @param id the identifier of {@link Event}
 	 * @param user The {@link User}
-	 * @return the {@link List} in all {@link User} 
+	 * @return the {@link List} in all {@link User}
 	 */
 	@PermitAll
 	public List<User> getWithAttendeesFriendsByUser(final int id, final User user) {
@@ -914,12 +929,12 @@ public class EventEJB {
 		return query.getResultList();
 
 	}
-	
+
 	/**
-	 * get all attended {@link User} by common friends' logged {@link User} 
-	 * 
+	 * get all attended {@link User} by common friends' logged {@link User}
+	 *
 	 * @param id the identifier of {@link Event}
-	 * @return the {@link List} in all {@link User} 
+	 * @return the {@link List} in all {@link User}
 	 */
 	@RolesAllowed({ "ADMIN", "USER" })
 	public List<User> getWithAttendeesFriendsByLoggedUser(final int id) {
@@ -932,10 +947,10 @@ public class EventEJB {
 		return query.getResultList();
 
 	}
-	
+
 	/**
 	 * Check if owner's {@link Event} is common friend's {@link User}
-	 * 
+	 *
 	 * @param id the identifier of {@link Event}
 	 * @param user The {@link User}
 	 * @return the {@link List} in all {@link User}
@@ -951,10 +966,10 @@ public class EventEJB {
 		return query.getResultList();
 
 	}
-	
+
 	/**
 	 * Check if owner's {@link Event} is common friend's logged {@link User}
-	 * 
+	 *
 	 * @param id the identifier of {@link Event}
 	 * @return the {@link List} in all {@link User}
 	 */

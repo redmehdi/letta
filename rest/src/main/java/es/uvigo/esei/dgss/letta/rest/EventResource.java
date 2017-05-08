@@ -186,16 +186,17 @@ public class EventResource {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
-    
+
     /**
      * REST aplication of the EJB advanced_search method
-     * @param query
-     * @param state
-     * @param category
-     * @param page
-     * @param size
-     * @return
-     * @throws IllegalArgumentException
+     * @param query the value to search.
+     * @param state the state of the events returned.
+     * @param category the category of the events returned.
+     * @param page position of the first value to return.
+     * @param size maximum number of values to return.
+     * @return a list of events that match the provided query parameters.
+     * @throws IllegalArgumentException if the page size is lower than 1 or if
+     * the page size is negative.
      */
     @GET
     @Path("advanced_search")
@@ -217,17 +218,17 @@ public class EventResource {
         	sta=State.EXPIRED;
        else
         	sta=State.AVAILABLE;
-        	
 
-        
-        
+
+
+
         return status(OK).entity(events.advancedSearch(query, sta,category,start, size)).build();
     }
-	
+
     /**
-	 * 
+	 *
 	 * Returns the {@link Event} information
-	 * 
+	 *
 	 * @param eventId
 	 *            indicates the Event id
 	 * @return the {@link Event} information
@@ -245,7 +246,7 @@ public class EventResource {
 		else
 			return Response.ok(event).build();
 	}
-	
+
 
     @POST
     @Path("{id: \\d+}/cancel")
@@ -253,19 +254,19 @@ public class EventResource {
 			try{
 				events.cancelEvent(eventId);
 	            return Response.status(OK).build();
-			} 
+			}
 			catch ( SecurityException |  IllegalEventOwnerException e)
-			{ 
-				return Response.status(UNAUTHORIZED).build(); 
+			{
+				return Response.status(UNAUTHORIZED).build();
 			}
 			catch ( EventIsCancelledException | IllegalArgumentException  e)
 			{
-				return Response.status(NOT_MODIFIED).build(); 
+				return Response.status(NOT_MODIFIED).build();
 			}
 
 
     }
-    
+
     @GET
     @Path("{id: \\d+}/friendAttending")
     public Response friendAtending(@PathParam("id") int eventId)

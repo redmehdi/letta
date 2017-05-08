@@ -308,13 +308,13 @@ public class UserEJB {
      * Gets all the {@link User} in the database.
      *
      * @return The {@link List} with all the {@link User} sorted alphabetically.
-     * @throws EJBTransactionRolledbackException if the currently identified 
+     * @throws EJBTransactionRolledbackException if the currently identified
      * 		   {@link User} is not admin.
      */
 	@RolesAllowed("ADMIN")
     public List<User> getUsers() throws EJBTransactionRolledbackException {
     	User currentUser = auth.getCurrentUser();
-    	
+
 		if (!currentUser.getRole().equals(Role.ADMIN)) {
 			throw new EJBTransactionRolledbackException("User must be admin.");
 		}
@@ -333,16 +333,16 @@ public class UserEJB {
      */
 	@RolesAllowed("ADMIN")
 	@TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public void removeUser(final String login) 
+    public void removeUser(final String login)
     	throws EJBTransactionRolledbackException {
-		
+
 		User user = em.find(User.class, login);
     	User currentUser = auth.getCurrentUser();
-		
+
 		if (user == null) {
 			throw new EJBTransactionRolledbackException("User cannot be null");
 		}
-		
+
 		if (!currentUser.getRole().equals(Role.ADMIN)) {
 			throw new EJBTransactionRolledbackException("User must be admin.");
 		}
@@ -359,7 +359,7 @@ public class UserEJB {
         .setParameter("login", login)
         .executeUpdate();
     }
-	
+
 	/**
 	 * Get all the {@link UserNotifications} by the current {@link User}.
 	 * @return a list with {@link UserNotifications}.
@@ -367,13 +367,13 @@ public class UserEJB {
     @RolesAllowed({"ADMIN", "USER"})
     public List<UserNotifications> getNotifications() {
     	User user = auth.getCurrentUser();
-    	
+
 		return em.createQuery(
 			"SELECT un FROM UserNotifications un WHERE  un.userId = :login", UserNotifications.class)
 			.setParameter("login", user.getLogin())
 			.getResultList();
     }
-    
+
 	/**
 	 * Count the unread {@link UserNotifications} by the current {@link User}.
 	 * @return a number of unread {@link UserNotifications}
@@ -381,14 +381,14 @@ public class UserEJB {
     @RolesAllowed({"ADMIN", "USER"})
     public Long countUnreadNotifications() {
     	User user = auth.getCurrentUser();
-    	
+
 		return em.createQuery(
 			"SELECT COUNT (un) FROM UserNotifications un WHERE un.userId = :login "
 			+ "AND un.readed = false", Long.class)
 			.setParameter("login", user.getLogin())
 			.getSingleResult();
     }
-    
+
     /**
      * Find a {@link UserNotifications} in the database.
      * @param notificationId the id of the {@link UserNotifications}.
@@ -411,18 +411,18 @@ public class UserEJB {
 		} catch (NoResultException nre) {
 			return null;
 		}
-		
+
 		userNotifications.setReaded(true);
 		em.persist(userNotifications);
-		
+
 		return userNotifications;
     }
-    
+
     /**
      * Make {@link Friendship} in the database.
-     * 
+     *
      * @param friendLogin the received User of the {@link Friendship}
-     * 
+     *
      */
     @RolesAllowed({"ADMIN", "USER"})
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -438,12 +438,12 @@ public class UserEJB {
         	friendship.setFriend(friend);
         	friendship.setFriendshipState(PENDING);
             em.persist(friendship);
-           
+
         }
     }
-    
+
     /**
-     * Find the fiends request {@link Friendship} 
+     * Find the fiends request {@link Friendship}
      * @return the {@link List} in all {@link Friendship}
      */
     @RolesAllowed({"ADMIN", "USER"})
@@ -458,12 +458,12 @@ public class UserEJB {
 					.setParameter("userId", user.getLogin()).getResultList();
 		}
     }
-    
+
     /**
      * Accept or reject friend's request {@link Friendship}
      * @param friendLogin The login' friend {@link User}}
      * @param acceptFriendShip true in case accept and vice versa
-     * 
+     *
      */
     @RolesAllowed({"ADMIN", "USER"})
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -474,7 +474,7 @@ public class UserEJB {
 		Friendship friendship = em
 				.createQuery(
 						"SELECT f FROM Friendship f WHERE f.user.login = "
-						+ ":userId AND f.friendshipState = 'PENDING' " 
+						+ ":userId AND f.friendshipState = 'PENDING' "
 							+ "AND f.friend.login = :friendId ",
 										Friendship.class)
 								.setParameter("friendId", user.getLogin())
@@ -488,7 +488,7 @@ public class UserEJB {
 		em.merge(friendship);
 
 	}
-    
+
     /**
      * Get all friend' requests be sent {@link Friendship}
      * @return The {@link List} in all {@link Friendship}
@@ -499,18 +499,18 @@ public class UserEJB {
         if (user == null)
             return null;
         else {
-        	
+
             return em.createQuery(
     				"SELECT f FROM Friendship f WHERE f.user.login = :userId "
     						+ "AND f.friendshipState = 'PENDING' ", Friendship.class)
     						.setParameter("userId", user.getLogin()).getResultList();
         }
     }
-    
+
     /**
      * Remove {@link Friendship} from database
      * @param friendLogin The login's {@link User}
-     * 
+     *
      */
     @RolesAllowed({"ADMIN", "USER"})
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -518,11 +518,11 @@ public class UserEJB {
 		final User user = auth.getCurrentUser();
 		Friendship friendship = em
 				.createQuery(
-						"SELECT f FROM Friendship f WHERE " 
+						"SELECT f FROM Friendship f WHERE "
 						+ "((f.user.login = :userId "
-						+ " AND f.friend.login = :friendId)" 
+						+ " AND f.friend.login = :friendId)"
 						+ " OR (f.user.login = :friendId "
-						+ " AND f.friend.login = :userId))" 
+						+ " AND f.friend.login = :userId))"
 						+ " AND f.friendshipState = 'ACCEPTED'",
 									Friendship.class)
 						.setParameter("friendId", friendLogin)
@@ -535,9 +535,9 @@ public class UserEJB {
 			throw new EJBTransactionRolledbackException("Friendship cannot be null");
 		}
 	}
-    
+
     /**
-     * Cancel {@link Friendship} by user 
+     * Cancel {@link Friendship} by user
      * @param friendLogin {@link User}
      */
     @RolesAllowed({"ADMIN", "USER"})
@@ -548,7 +548,7 @@ public class UserEJB {
 		Friendship friendship = em
 				.createQuery(
 						"SELECT f FROM Friendship f WHERE f.user.login = :userId "
-								+ "AND f.friendshipState = 'ACCEPTED' " 
+								+ "AND f.friendshipState = 'ACCEPTED' "
 								+ "AND f.friend.login = :friendId",
 						Friendship.class)
 						.setParameter("friendId", friendLogin)
@@ -557,16 +557,17 @@ public class UserEJB {
 		if(friendship != null){
 			friendship.setFriendshipState(FriendshipState.CANCELLED);
 			em.merge(friendship);
-			
+
 		} else {
 			throw new EJBTransactionRolledbackException("Friendship cannot be null");
 		}
 
 	}
-    
+
     /**
      * Search the user {@link User} by full name
      * @param keyword
+     *             Value to be found in the complete name or user's login.
      * @return The {@link List} with all the {@link User}
      */
     @RolesAllowed({"ADMIN", "USER"})
@@ -586,10 +587,10 @@ public class UserEJB {
 	        			.getResultList();
 	        	}
 	}
-    
+
     /**
      * Get the friend {@link User} by the current {@link User}.
-     * 
+     *
      * @param loginFriend The friend of user
      * @return the {@link User}.
      */
@@ -606,10 +607,10 @@ public class UserEJB {
 	        			.getSingleResult();
 	        	}
 	}
-    
+
     /**
      * Get the friend {@link User} by the current {@link User}.
-     * 
+     *
      * @param loginFriend The friend of user {@link User}
      * @return the {@link Friendship}.
      */
@@ -627,8 +628,8 @@ public class UserEJB {
 	        			.getSingleResult();
 	        	}
 	}
-    
-   
 
-	
+
+
+
 }

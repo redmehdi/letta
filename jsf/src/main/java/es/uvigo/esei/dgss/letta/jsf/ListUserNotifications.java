@@ -68,7 +68,7 @@ public class ListUserNotifications {
 	public List<UserNotifications> getNotifications() {
 		List<UserNotifications> userNotifications = userEJB.getNotifications();
 		Collections.sort(userNotifications, (c1, c2) -> c2.getNotificationId() - c1.getNotificationId());
-		
+
 		return  userNotifications;
 	}
 
@@ -116,11 +116,11 @@ public class ListUserNotifications {
 	public boolean isAfter(final LocalDateTime d) {
 	    return d.isAfter(LocalDateTime.now());
 	}
-	
+
 	/**
 	 * Get the current {@link UserNotifications}
 	 * @return a {@link UserNotifications}.
-	 * @throws IOException
+	 * @throws IOException if an error happens while redirecting.
 	 */
 	public UserNotifications getCurrentNotification() throws IOException {
 		Map<String,String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -131,10 +131,10 @@ public class ListUserNotifications {
 		if (userNotifications == null) {
 			FacesContext.getCurrentInstance().getExternalContext().redirect("messages.xhtml");
 		}
-		
+
 		return userNotifications;
 	}
-	
+
 	/**
 	 * Count the unread {@link ListUserNotifications} by the current {@link User}.
 	 * @return a number of unread {@link ListUserNotifications}

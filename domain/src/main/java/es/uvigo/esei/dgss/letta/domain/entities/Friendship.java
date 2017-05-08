@@ -20,7 +20,7 @@ import es.uvigo.esei.dgss.letta.domain.util.annotations.VisibleForJPA;
 
 /**
  * {@linkplain} is a JPA entity that represents the friendship of the application.
- * 
+ *
  * @author world1mehdi
  *
  */
@@ -29,7 +29,7 @@ import es.uvigo.esei.dgss.letta.domain.util.annotations.VisibleForJPA;
 public class Friendship implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
      * Constructs a new instance of {@link Friendship}. This empty constructor is
      * required by the JPA framework and <strong>should never be used
@@ -43,7 +43,7 @@ public class Friendship implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private FriendshipState friendshipState;
-	
+
 	@XmlTransient
 	@ManyToOne
 	@PrimaryKeyJoinColumn(name = "USERLOGIN", referencedColumnName = "ID")
@@ -62,22 +62,22 @@ public class Friendship implements Serializable {
 	public User getFriend() {
 		return friend;
 	}
-	
+
 	/**
-	 * 
-	 * @param friendshipState the {@link FriendshipState} friendship's state 
+	 *
+	 * @param friendshipState the {@link FriendshipState} friendship's state
 	 * @param user The sender {@link User} friend's request
 	 * @param friend The receiver {@link User} friend's request
-	 * 
+	 *
 	 */
 	public Friendship(FriendshipState friendshipState, User user, User friend) {
 		setFriendshipState(friendshipState);
 		setUser(user);
 		setFriend(friend);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return the state {@link FriendshipState}
 	 */
 	public FriendshipState getFriendshipState() {
@@ -85,7 +85,7 @@ public class Friendship implements Serializable {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param state {@link FriendshipState}
 	 * @throws NullPointerException should not be null
 	 */
@@ -94,26 +94,26 @@ public class Friendship implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @param friend
-	 * @throws NullPointerException
+	 *
+	 * @param friend the friend of the user.
+	 * @throws NullPointerException should now be null
 	 */
 	public void setFriend(User friend) throws NullPointerException{
 		this.friend = requireNonNull(friend, "friend' user cannot be null.");
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the {@link User}
 	 */
 	public User getUser() {
 		return user;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param user the {@link User}
-	 * @throws NullPointerException
+	 * @throws NullPointerException should not be null
 	 */
 	public void setUser(User user) throws NullPointerException{
 		this.user = requireNonNull(user, "user cannot be null.");

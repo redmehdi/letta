@@ -95,16 +95,16 @@ public class Event {
         joinColumns = { @JoinColumn(name = "event_id", referencedColumnName = "id") },
         inverseJoinColumns = { @JoinColumn(name = "user_login", referencedColumnName = "login") })
     private Set<User> attendees;
-    
+
 	@Column(nullable = false)
 	private boolean cancelled;
 
 	@Column(length = 1000, nullable = true)
 	private String description;
-	
+
     @Column(length = 20, nullable = true)
     private String place;
-    
+
     @Column(nullable=false)
     @Convert(converter = LocalDateTimeConverter.class)
     @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
@@ -162,6 +162,8 @@ public class Event {
      * @param date The {@link LocalDateTime} of the event. It cannot be null.
      * @param location A {@link String} with the location of the event. It must
      *        be non-null, non-empty and no greater than 20 characters.
+     * @param description A {@link String} with the description of the event.
+     * @param place A {@link String} with the location of the event.
      *
      * @throws IllegalArgumentException If any of the {@link Event Event's}
      *         field requirements does not hold.
@@ -179,7 +181,7 @@ public class Event {
     ) throws IllegalArgumentException, NullPointerException {
         this(category, title, summary, date,location,description,place,null);
     }
-    
+
     /**
      * Constructs a new instance of {@link Event}.
      *
@@ -191,8 +193,11 @@ public class Event {
      * @param date The {@link LocalDateTime} of the event. It cannot be null.
      * @param location A {@link String} with the location of the event. It must
      *        be non-null, non-empty and no greater than 20 characters.
-     * @param createdAt The {@link LocalDateTime} when the event was created in the system.
-     * 
+     * @param createdAt The {@link LocalDateTime} when the event was created in
+     *        the system.
+     * @param description The description of the event.
+     * @param place The location of the event.
+     *
      * @throws IllegalArgumentException If any of the {@link Event Event's}
      *         field requirements does not hold.
      * @throws NullPointerException If any of the given arguments is
@@ -382,7 +387,7 @@ public class Event {
 
 	/**
 	 * Returns if the event is cancelled
-	 * 
+	 *
 	 * @return {@code true} if the event is cancelled, {@code false} otherwise
 	 */
 	public boolean isCancelled() {
@@ -391,45 +396,45 @@ public class Event {
 
 	/**
 	 * Changes if the event is cancelled
-	 * 
+	 *
 	 * @param cancelled
 	 *            global variable
 	 */
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
 	}
-	
+
 	/**
 	 * Retrieves the long description of a event
-	 * 
+	 *
 	 * @return the long description of a event
 	 */
 	public String getDescription() {
 		return description;
 	}
-	
+
 	/**
 	 * Changes if the event long description is modified
-	 * 
+	 *
 	 * @param description
 	 *            global variable
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	/**
 	 * Retrieves the place of a event
-	 * 
+	 *
 	 * @return the place of a event
 	 */
 	public String getPlace() {
 		return place;
 	}
-	
+
 	/**
 	 * Changes if the event place is modified
-	 * 
+	 *
 	 * @param place
 	 *            global variable
 	 * @throws NullPointerException
@@ -508,7 +513,7 @@ public class Event {
 
         attendees.remove(attendee);
     }
-    
+
     /**
      * Returns the {@link LocalDateTime} when this event was created.
      *
@@ -545,7 +550,7 @@ public class Event {
             attendees.size()
         );
     }
-    
+
     /**
      * Remove the Owner of the Event.
      * This method is necessary to remove a event.
@@ -553,7 +558,7 @@ public class Event {
     public void removeOwner()  {
         this.owner = null;
     }
-    
+
     /**
      * Remove All the attendees of the Event.
      * This method is necessary to remove a event.

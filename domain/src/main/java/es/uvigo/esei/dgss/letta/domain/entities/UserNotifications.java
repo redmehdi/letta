@@ -32,11 +32,13 @@ public class UserNotifications {
 
 	/**
 	 * Constructor of {@link UserNotifications}
-	 * 
+	 *
 	 * @param userId
 	 *            global variable
 	 * @param notificationId
 	 *            global variable
+	 * @param readed
+	 *            whether the notification has been read or not
 	 */
 	public UserNotifications(String userId, int notificationId,
 			boolean readed) {
@@ -47,7 +49,7 @@ public class UserNotifications {
 
 	/**
 	 * Getter method of readed global variable
-	 * 
+	 *
 	 * @return readed global variable
 	 */
 	public boolean isReaded() {
@@ -56,7 +58,7 @@ public class UserNotifications {
 
 	/**
 	 * Setter method of readed global variable
-	 * 
+	 *
 	 * @param readed
 	 *            global variable
 	 */
@@ -66,7 +68,7 @@ public class UserNotifications {
 
 	/**
 	 * Getter method of user global variable
-	 * 
+	 *
 	 * @return user global variable
 	 */
 	public User getUser() {
@@ -75,7 +77,7 @@ public class UserNotifications {
 
 	/**
 	 * Setter method of user global variable and userId global variable
-	 * 
+	 *
 	 * @param user
 	 *            global variable
 	 */
@@ -86,7 +88,7 @@ public class UserNotifications {
 
 	/**
 	 * Getter method of notification global variable
-	 * 
+	 *
 	 * @return notification global variable
 	 */
 	public Notification getNotification() {
@@ -95,7 +97,7 @@ public class UserNotifications {
 
 	/**
 	 * Setter method of notification global variable
-	 * 
+	 *
 	 * @param notification
 	 *            global variable
 	 */
@@ -106,7 +108,7 @@ public class UserNotifications {
 
 	/**
 	 * Getter method of userId global variable
-	 * 
+	 *
 	 * @return userId global variable
 	 */
 	public String getUserId() {
@@ -115,7 +117,7 @@ public class UserNotifications {
 
 	/**
 	 * Setter method of notificationId global variable
-	 * 
+	 *
 	 * @param userId
 	 *            global variable
 	 */
@@ -126,7 +128,7 @@ public class UserNotifications {
 
 	/**
 	 * Getter method of notificationId global variable
-	 * 
+	 *
 	 * @return notificationId global variable
 	 */
 	public int getNotificationId() {
@@ -135,7 +137,7 @@ public class UserNotifications {
 
 	/**
 	 * Setter method of notificationId global variable
-	 * 
+	 *
 	 * @param notificationId
 	 *            global variable
 	 */

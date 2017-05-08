@@ -48,7 +48,7 @@ public class UserResource {
 
 	@Inject
 	private EventEJB eventEJB;
-	
+
 	@Inject
 	private UserEJB userEJB;
 
@@ -71,7 +71,7 @@ public class UserResource {
 	 *         response with no content if the login doesn't match with the
 	 *         logged user
 	 */
-	
+
 	@GET
 	@Path("{login}/joined")
 	public Response getEventsJoinedByUser(
@@ -106,17 +106,17 @@ public class UserResource {
         else
             return Response.status(UNAUTHORIZED).build();
 	}
-	
+
 	/**
 	 * Sends friend requests
-	 * 
+	 *
 	 * @param userLogin
 	 * 				the login if {@link User}
 	 * @param friendLogin
 	 * 				the login of friend's {@link User}
 	 * @return An {@code OK} HTTP response
-	 * @throws IllegalArgumentException
-	 * @throws SecurityException
+	 * @throws IllegalArgumentException if the provided parameters are not valid.
+	 * @throws SecurityException if the user does not have permission.
 	 */
 	@POST
 	@Path("{login}/sendRequest/{friendLogin}")
@@ -130,17 +130,17 @@ public class UserResource {
 		} else
             return Response.status(UNAUTHORIZED).build();
     }
-	
+
 	/**
 	 * Cancels friend requests
-	 * 
+	 *
 	 * @param userLogin
 	 * 				the login if {@link User}
 	 * @param friendLogin
 	 * 				the login of friend's {@link User}
 	 * @return An {@code OK} HTTP response
-	 * @throws IllegalArgumentException
-	 * @throws SecurityException
+	 * @throws IllegalArgumentException if the provided parameters are not valid.
+	 * @throws SecurityException if the user does not have permission.
 	 */
 	@POST
 	@Path("{login}/cancelRequest/{friendLogin}")
@@ -154,19 +154,19 @@ public class UserResource {
 		} else
             return Response.status(UNAUTHORIZED).build();
     }
-	
+
 	/**
 	 * Accepts friend requests
-	 * 
+	 *
 	 * @param userLogin
 	 * 				the login if {@link User}
 	 * @param friendLogin
 	 * 				the login of friend's {@link User}
 	 * @return An {@code OK} HTTP response
-	 * @throws IllegalArgumentException
-	 * @throws SecurityException
+	 * @throws IllegalArgumentException if the provided parameters are not valid.
+	 * @throws SecurityException if the user does not have permission.
 	 */
-	
+
 	@PUT
 	@Path("{login}/acceptRequest/{friendLogin}")
     public Response acceptFriendRequest(
@@ -179,17 +179,17 @@ public class UserResource {
 		} else
             return Response.status(UNAUTHORIZED).build();
     }
-	
+
 	/**
 	 * Rejects friend requests
-	 * 
+	 *
 	 * @param userLogin
 	 * 				the login if {@link User}
 	 * @param friendLogin
 	 * 				the login of friend's {@link User}
 	 * @return An {@code OK} HTTP response
-	 * @throws IllegalArgumentException
-	 * @throws SecurityException
+	 * @throws IllegalArgumentException if the provided parameters are not valid.
+	 * @throws SecurityException if the user does not have permission.
 	 */
 	@PUT
 	@Path("{login}/rejectRequest/{friendLogin}")
@@ -203,17 +203,17 @@ public class UserResource {
 		} else
             return Response.status(UNAUTHORIZED).build();
     }
-	
+
 	/**
 	 * Remove friendship
-	 * 
+	 *
 	 * @param userLogin
 	 * 				the login if {@link User}
 	 * @param friendLogin
 	 * 				the login of friend's {@link User}
 	 * @return An {@code OK} HTTP response
-	 * @throws IllegalArgumentException
-	 * @throws SecurityException
+	 * @throws IllegalArgumentException if the provided parameters are not valid.
+	 * @throws SecurityException if the user does not have permission.
 	 */
 	@DELETE
 	@Path("{login}/removeFriendship/{friendLogin}")
@@ -227,8 +227,8 @@ public class UserResource {
 		} else
             return Response.status(UNAUTHORIZED).build();
     }
-	
-	
+
+
 	@GET
 	@Path("{login}/searchUser/{keyword}")
 	public Response searchForAnUser(
