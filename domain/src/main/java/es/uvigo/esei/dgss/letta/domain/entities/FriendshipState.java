@@ -10,6 +10,18 @@ public enum FriendshipState {
 	/**
 	 * The FriendshipState can be a regular pending, accepted, rejected or cancelled.
 	 */
-	PENDING,ACCEPTED,REJECTED,CANCELLED;
+	PENDING("PENDING"),ACCEPTED("ACCEPTED"),REJECTED("REJECTED"),CANCELLED("CANCELLED");
+	
+	private String state;
+
+	private FriendshipState(String state) {
+		this.state = state;
+	}
+	
+	public String toString() {
+		return this.state;
+	}
+	
+	
 	
 }
