@@ -6,5 +6,6 @@
     <Friendship id="4" friendshipState="ACCEPTED" user_login="john" friend_login="joan" />
     <Friendship id="5" friendshipState="ACCEPTED" user_login="john" friend_login="mike" />
     <Friendship id="6" friendshipState="ACCEPTED" user_login="anne" friend_login="john" />
-    
+    <Friendship id="7" friendshipState="ACCEPTED" user_login="anne" friend_login="mary" />
+    <Friendship id="8" friendshipState="ACCEPTED" user_login="mary" friend_login="anne" />
 </dataset>
