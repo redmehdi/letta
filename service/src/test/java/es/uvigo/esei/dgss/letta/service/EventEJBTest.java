@@ -22,6 +22,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +48,7 @@ import org.junit.runner.RunWith;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
 import es.uvigo.esei.dgss.letta.domain.entities.EventsDataset;
+import es.uvigo.esei.dgss.letta.domain.entities.FriendshipState;
 import es.uvigo.esei.dgss.letta.domain.entities.State;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.domain.entities.UsersDataset;
@@ -975,6 +978,48 @@ public class EventEJBTest {
 		final User user = userWithLogin("anne");
 		List<User> friend = events.checkOwnerEventFriendByUser(existentEventId(), user);
 		assertThat(friend, hasSize(1));
+	}
+	
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml", "friendships-uses.xml" })
+	@ShouldMatchDataSet("users.xml")
+	public void testcheckFriendStateWithOwnerByEvent() {
+		final User user = userWithLogin("anne");
+		principal.setName(user.getLogin());
+		boolean checkExist = asUser.call(
+		           () -> events.checkFriendStateWithOwnerByEvent(existentEventId(), existentUser().getLogin()));
+		System.out.println("test +++ " +checkExist);
+		assertTrue(checkExist);
+	}
+	
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml", "friendships-uses.xml","event-attendees.xml" })
+	@ShouldMatchDataSet("users.xml")
+	public void testcheckFriendStateWithAttendeesByEvent() {
+		final User user = userWithLogin("anne");
+		principal.setName(user.getLogin());
+		FriendshipState checkExist = asUser.call(
+		           () -> events.checkFriendStateWithAttendeesByEvent(existentEvent(), "mary"));
+		assertEquals(FriendshipState.ACCEPTED, checkExist);
+	}
+	
+	@Test
+	@UsingDataSet({ "users.xml", "events.xml", "friendships-uses.xml","event-attendees.xml" })
+	@ShouldMatchDataSet("users.xml")
+	public void testGetAttendeesPeopleByEvent() {
+		List<User> checkExist =  events.getAttendeesLogin(existentEvent());
+		assertThat(checkExist, hasSize(2));
+	}
+	
+	@Test
+	@UsingDataSet({ "users.xml", "friendships-uses.xml" })
+	@ShouldMatchDataSet("users.xml")
+	public void testCheckFriendStateWithAttendees() {
+		final User user = userWithLogin("mary");
+		principal.setName(user.getLogin());
+		String test = asUser.call(
+		           () ->events.checkFriendStateWithAttendees("anne").getFriendshipState().toString());
+		assertEquals("ACCEPTED", test);
 	}
 
 //	@Test
