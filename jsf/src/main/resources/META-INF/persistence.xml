@@ -16,6 +16,7 @@
 	    <class>es.uvigo.esei.dgss.letta.domain.entities.CapitalDistances</class>
 	    <class>es.uvigo.esei.dgss.letta.domain.entities.Notification</class>
 	    <class>es.uvigo.esei.dgss.letta.domain.entities.UserNotifications</class>
+	    <class>es.uvigo.esei.dgss.letta.domain.entities.Friendship</class>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		
         <properties>
