@@ -615,19 +615,28 @@ public class UserEJB {
      * @return the {@link Friendship}.
      */
     @RolesAllowed({"ADMIN", "USER"})
-	public Friendship getFriendship(final String loginFriend) {
+	public FriendshipState getFriendshipState(final String loginFriend) {
 		isTrue(nonNull(loginFriend), "Search query cannot be null");
 		final User user = auth.getCurrentUser();
 		 if (user == null)
 	            return null;
 	        else {
-	        	return em
-	        			.createQuery("SELECT f FROM Friendship f where"
-	        					+ " f.friend.login =:loginFriend AND f.user.login =:login", Friendship.class)
-	        			.setParameter("login", user.getLogin()).setParameter("loginFriend", loginFriend)
-	        			.getSingleResult();
-	        	}
-	}
+	        	try {
+					return em
+							.createQuery(
+									"SELECT f.friendshipState FROM Friendship f where"
+											+ " f.friend.login =:loginFriend AND f.user.login =:login",
+									FriendshipState.class)
+							.setParameter("login", user.getLogin()).setParameter("loginFriend", loginFriend)
+							.getSingleResult();
+				 } catch (final NoResultException e) {
+			            return null;
+			            
+				 }
+	        	
+	        }
+		 
+    }
 
 
 
