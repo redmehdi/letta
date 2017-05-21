@@ -7,6 +7,7 @@
 	xmlns:p         = "http://primefaces.org/ui"
 	xmlns:ui        = "http://xmlns.jcp.org/jsf/facelets"
 	xmlns:composite = "http://java.sun.com/jsf/composite"
+	xmlns:c			= "http://java.sun.com/jsp/jstl/core"
 >
 <h:body>
 
@@ -107,6 +108,12 @@
 					class       = "info" 
 					data-toggle = "modal" 
 					data-target = "#descriptionModal#{cc.attrs.event.id}"> #{msg['more.jsf']} </button>
+				<div></div>				
+				<button 
+					type        = "button" 
+					class       = "info" 
+					data-toggle = "modal" 
+					data-target = "#attendeesModal#{cc.attrs.event.id}"> see people </button>
 			</span>
 		</div>
 	</div>
@@ -146,6 +153,75 @@
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="descriptionModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="descriptionModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="descriptionModalLabel">#{cc.attrs.event.title}</h3>
+      </div>
+      <div class="modal-body">
+      	<div style='width: 20%;'>
+			<img class = "event-icon img-responsive"
+				 src   = "#{indexController.getIconFor(cc.attrs.event)}" />
+		</div><div>&nbsp;</div>
+		<span class = "event-summary">LETTA #{cc.attrs.event.summary}</span> 
+		<span class = "event-location">#{msg['at.jsf']} #{cc.attrs.event.location}</span> 
+		<span class = "event-date">#{msg['from.jsf']} 
+			<h:outputText
+				value    = "#{indexController.getDate(cc.attrs.event)}"
+				style    = "color: red;"
+				rendered = "#{indexController.isAfter(cc.attrs.event.date)}">
+				</h:outputText>
+				 <h:outputText 
+				 	value    = "#{indexController.getDate(cc.attrs.event)}"
+					rendered = "#{indexController.isAfter(cc.attrs.event.date) eq false}">
+				</h:outputText ><br />
+			</span>
+				#{cc.attrs.event.description}<br />
+			 <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="attendeesModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="attendeesModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 id="attendeesModalLabel">people in events</h3>
+      </div>
+      <div>
+      </div>
+      <div class="modal-body">
+		<span class = "friendlist">
+				<h:dataTable value="#{friendshipController.attendeesLogin(cc.attrs.event)}" var="friend">
+						<h:column>
+							<h:panelGroup rendered="#{!loginController.anonymous}" >	
+							<h:outputText value="#{friend}" />
+							<h:link 
+					        	class   = "#{friendshipController.state(friend) eq 'ACCEPTED' ? 'btn btn-primary disabled' : 'btn btn-primary active'} "
+								outcome="sendRequest.xhtml?login=#{friend}" 
+								value   = "#{friendshipController.state(friend) eq 'ACCEPTED'? 'Friends' : 'Add friend'}"/>
+							
+							</h:panelGroup>
+						</h:column>
+					</h:dataTable>
+		</span>
+	</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <h:panelGroup rendered="#{!loginController.anonymous 
               		      		  and  privateController.ownEvents.contains(cc.attrs.event)}" >
