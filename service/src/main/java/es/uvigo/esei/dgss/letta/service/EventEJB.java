@@ -28,6 +28,8 @@ import javax.persistence.TypedQuery;
 import es.uvigo.esei.dgss.letta.domain.entities.Capital;
 import es.uvigo.esei.dgss.letta.domain.entities.Event;
 import es.uvigo.esei.dgss.letta.domain.entities.Event.Category;
+import es.uvigo.esei.dgss.letta.domain.entities.Friendship;
+import es.uvigo.esei.dgss.letta.domain.entities.FriendshipState;
 import es.uvigo.esei.dgss.letta.domain.entities.Notification;
 import es.uvigo.esei.dgss.letta.domain.entities.State;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
@@ -983,6 +985,79 @@ public class EventEJB {
 				User.class).setParameter("user", user).setParameter("id", id);
 		return query.getResultList();
 
+	}
+	
+	/**
+	 * Check friendshipState of two given {@link User}
+	 * 
+	 * @param idEvent unique id of {@link Event}
+	 * @param loginOwner unique id of {@link User}}
+	 * @return true {@link boolean} 
+	 */
+	@RolesAllowed({ "ADMIN", "USER" })
+	public boolean checkFriendStateWithOwnerByEvent(final int idEvent, final String loginOwner) {
+		isTrue(nonNull(idEvent), "friendLogin cannot be null");
+		final User user = auth.getCurrentUser();
+		List<User> query = em.createQuery(
+				"SELECT a FROM Event e JOIN e.owner a WHERE e.id = :idEvent AND a in "
+						+ "(SELECT f.friend FROM Friendship f WHERE f.user =:user AND f.friend.login =:loginOwner AND f.friendshipState = 'ACCEPTED')",
+				User.class).setParameter("user", user).setParameter("idEvent", idEvent).setParameter("loginOwner", loginOwner).getResultList();
+
+		return query.size() == 1;
+
+	}
+	
+	/**
+	 * check state of friendship {@link FriendshipState} between {@link User} and users in {@link Event}
+	 * @param event 
+	 * @param loginUser login of {@link User}
+	 * @return {@link FriendshipState}
+	 */
+	@RolesAllowed({"ADMIN","USER"})
+	public FriendshipState checkFriendStateWithAttendeesByEvent(final Event event, final String loginUser) {
+		isTrue(nonNull(event), "friendLogin cannot be null");
+		final User user = auth.getCurrentUser();
+		FriendshipState query = em.createQuery(
+				"SELECT f.friendshipState FROM Friendship f WHERE f.user =:user AND f.friend.login =:loginUser AND f.friendshipState = 'ACCEPTED' AND f.friend in "
+						+ "(SELECT a FROM Event e JOIN e.attendees a WHERE e = :idEvent)",
+						FriendshipState.class).setParameter("user", user).setParameter("idEvent", event).setParameter("loginUser", loginUser).getSingleResult();
+		return query;
+	}
+	
+	/**
+	 * get friendship table {@link Friendship}
+	 * 
+	 * @param loginUser {@link User}
+	 * @return {@link Friendship}
+	 */
+	@RolesAllowed({"ADMIN","USER"})
+	public Friendship checkFriendStateWithAttendees(final String loginUser) {
+		isTrue(nonNull(loginUser), "friendLogin cannot be null");
+		final User user = auth.getCurrentUser();
+		Friendship query = em.createQuery(
+				"SELECT f FROM Friendship f WHERE f.user =:user AND f.friend.login =:loginUser ",
+				Friendship.class).setParameter("user", user).setParameter("loginUser", loginUser).getSingleResult();
+		return query;
+	}
+	
+	@PermitAll
+	public List<User> getAttendeesLogin(final Event event) {
+		TypedQuery<User> query = em.createQuery("SELECT a FROM Event e JOIN e.attendees a WHERE e=:event", User.class)
+				.setParameter("event", event);
+		
+		return query.getResultList();
+	}
+	
+	
+	@RolesAllowed({"ADMIN","USER"})
+	public Friendship checkFriendStateWithAttendeesByEvent(final Event event) {
+		isTrue(nonNull(event), "friendLogin cannot be null");
+		final User user = auth.getCurrentUser();
+		Friendship query = em.createQuery(
+				"SELECT f FROM Friendship f WHERE f.user =:user AND f.friend in "
+						+ "(SELECT a FROM Event e JOIN e.attendees a WHERE e = :idEvent)",
+						Friendship.class).setParameter("user", user).setParameter("idEvent", event).getSingleResult();
+		return query;
 	}
 
 }
