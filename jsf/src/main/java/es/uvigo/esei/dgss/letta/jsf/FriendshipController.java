@@ -18,7 +18,6 @@ import es.uvigo.esei.dgss.letta.domain.entities.Friendship;
 import es.uvigo.esei.dgss.letta.domain.entities.FriendshipState;
 import es.uvigo.esei.dgss.letta.domain.entities.User;
 import es.uvigo.esei.dgss.letta.service.EventEJB;
-import es.uvigo.esei.dgss.letta.service.UserAuthorizationEJB;
 import es.uvigo.esei.dgss.letta.service.UserEJB;
 
 /**
@@ -59,14 +58,6 @@ public class FriendshipController implements Serializable {
 		
 	}
 	
-	public FriendshipState isFriend(Event event, String loginUser){
-		final ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-
-		final String id = context.getRequestParameterMap().getOrDefault("id", null);
-		
-		return eventEJB.checkFriendStateWithAttendeesByEvent(event, loginUser);
-	}
-	
 	public List<String> attendeesLogin(Event event) {
 		ArrayList<String> arrayList = new ArrayList<>();
 		if(event == null){
@@ -95,5 +86,28 @@ public class FriendshipController implements Serializable {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+	}
+	
+	public String count(Event event) {
+		final int count = eventEJB.countFriendsByEvent(event);
+		final String countString = "number's friends who will attend the event is"+count+"";
+		return countString;
+	}
+	
+	public String getOwnerEventFriend(Event event) {
+		final Friendship friendship = eventEJB.getEventOwnerFriend(event);
+		if(friendship == null) {
+			return null;
+		}
+		final String countString = friendship.getFriend().getLogin();
+		return "<b>"+countString+"</b> you are friends";
+	}
+	
+	public List<String> getLoginFriend(){
+		List<String> name = new ArrayList<String>();
+		for(User list : userEJB.getFriend()){
+			name.add(list.getLogin());
+		}
+		return name;
 	}
 }
