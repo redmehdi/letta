@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:letta="http://java.sun.com/jsf/composite/tags">
+<f:metadata>
+	<f:event listener="#{loginController.redirectIfAnonymous()}"
+		type="preRenderView" />
+</f:metadata>
+<h:head>
+	<title>Messages</title>
+</h:head>
+<h:body>
+	<ui:composition template="/template/templateLayout.xhtml">
+		<ui:define name="content">
+			<div class="container ">
+				<h:form>
+					<div class="row ">
+						<h1>
+							<h:outputText value="My Friends" />
+						</h1>
+						<hr />
+						<h3>
+							<h:outputText value="#{msg['inbox.jsf']}" />
+						</h3>
+						<div>
+
+							<div>&nbsp;</div>
+							<div>
+							<li><h:form id="searchForm" class="navbar-form">
+							<div class="input-group">
+								<div class="input-group-btn">
+									<h:commandButton id="exploreButton" class="btn btn-default"
+										value="#{msg['explore.jsf']}"
+										onclick="
+		var current_location= window.location.pathname;
+		if(current_location=='/letta/jsf/'){		
+		window.location='faces/exploreEvents.xhtml';
+		}else{
+		window.location='exploreEvents.xhtml';
+		}
+		return false;
+									">
+									</h:commandButton>
+									<h:commandButton id="searchButton" class="btn btn-default"
+										value="#{msg['search.jsf']}"
+										onclick="
+		var a=document.getElementById('searchForm:srch-term').value;
+		var b=document.getElementById('searchForm:srch-location').value;
+		var current_location= window.location.pathname;
+		if(current_location=='/letta/jsf/'){		
+		window.location='faces/searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4'+'&amp;location='+b;
+		}else{
+		window.location='searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4'+'&amp;location='+b;
+		}
+		return false;
+									">
+									</h:commandButton>
+								</div>
+								<div class="input-group-btn">
+								<h:inputText class="form-control" id="srch-term"
+									value="#{searchController.terms}" />
+									
+								<h:selectOneMenu id="srch-location" class="form-control" value="#{searchController.location}">
+									<f:selectItem itemValue="#{null}" itemLabel="--" />
+									<f:selectItems value="#{searchController.locations}" />
+								</h:selectOneMenu>
+								</div>
+							</div>
+
+						</h:form></li>
+							
+							</div>
+						</div>
+					</div>
+					<h:panelGroup rendered="#{userNotifications.pages ne 0}">
+						<div>&nbsp;</div>
+						<div>&nbsp;</div>
+						<div class="row">
+							<center>
+								<h:panelGroup rendered="#{0 lt userNotifications.pages}">
+									<nav>
+									<ul class="pagination">
+										<h:panelGroup rendered="#{!loginController.anonymous}">
+
+											<h:dataTable
+												value="#{friendshipController.getLoginFriend()}"
+												var="friend">
+												<h:column>
+													<h:outputText value="#{friend}" />
+													<h:link
+														class="#{friendshipController.state(friend) eq 'ACCEPTED' ? 'btn btn-primary disabled' : 'btn btn-primary active'} "
+														outcome="sendRequest.xhtml?login=#{friend}"
+														value="#{friendshipController.state(friend) eq 'ACCEPTED'? 'Friends' : 'Add friend'}" />
+
+												</h:column>
+											</h:dataTable>
+										</h:panelGroup>
+
+									</ul>
+									</nav>
+								</h:panelGroup>
+							</center>
+							<br />
+							<br />
+							<br />
+						</div>
+					</h:panelGroup>
+				</h:form>
+			</div>
+			<h:panelGroup
+				rendered="#{!loginController.anonymous 
+		              		    and param['cancelled']}">
+				<script type="text/javascript">
+					jQuery(function($) {
+						$('#successCancelModal').modal('show');
+					});
+				</script>
+				<div class="modal fade" id="successCancelModal" tabindex="-1"
+					role="dialog" aria-labelledby="successCancelModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="successCancelModalLabel">
+									<h:outputFormat value="#{msg['cancelevent.jsf']}" />
+								</h4>
+							</div>
+							<div class="modal-body">
+								<h:outputText value="#{msg['cancelevent.jsf']}" />
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">
+									<h:outputText value="#{msg['close.jsf']}" />
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:panelGroup>
+		</ui:define>
+	</ui:composition>
+</h:body>
+</html>

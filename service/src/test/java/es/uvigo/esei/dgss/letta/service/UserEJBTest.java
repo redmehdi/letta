@@ -322,17 +322,59 @@ public class UserEJBTest {
     			
 	}
 	
-	@Test
-	@UsingDataSet("users.xml")
-	@ShouldMatchDataSet("users.xml")
-	public void testSearchUser(){
-		User user = userWithLogin("john");
-		principal.setName(user.getLogin());
-		asUser.throwingRun(() ->assertThat(facade.searchUser("mary"), hasSize(1)));
-	}
-	
-	
-	
-	
+//	@Test
+//	@UsingDataSet("users.xml")
+//	@ShouldMatchDataSet("users.xml")
+//	public void testSearchUser(){
+//		User user = userWithLogin("john");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() -> assertThat(facade.searchUser("mary"), hasSize(1)));
+//	}
+//	
+//	
+//	@Test
+//	@UsingDataSet("users.xml")
+//	@ShouldMatchDataSet("users.xml")
+//	public void testSearchUserByFullName(){
+//		User user = userWithLogin("john");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() ->assertThat(facade.searchUser("mary name"), hasSize(1)));
+//	}
+//	
+//	@Test
+//	@UsingDataSet("users.xml")
+//	@ShouldMatchDataSet("users.xml")
+//	public void testSearchUserByTheSameName(){
+//		User user = userWithLogin("john");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() ->assertThat(facade.searchUser("name"), hasSize(6)));
+//	}
+//	
+//	@Test
+//	@UsingDataSet("users.xml")
+//	@ShouldMatchDataSet("users.xml")
+//	public void testSearchUserByUpperCaseName(){
+//		User user = userWithLogin("john");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() ->assertThat(facade.searchUser("AnNe"), hasSize(1)));
+//	}
+//	
+//	@Test
+//	@UsingDataSet("users.xml")
+//	@ShouldMatchDataSet("users.xml")
+//	public void testSearchUserByUncompleteName(){
+//		User user = userWithLogin("john");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() ->assertThat(facade.searchUser("mar"), hasSize(1)));
+//	}
+//	
+//	@Test
+//	@UsingDataSet("users.xml")
+//	@ShouldMatchDataSet("users.xml")
+//	public void testSearchUserBySameLoggedName(){
+//		User user = userWithLogin("john");
+//		principal.setName(user.getLogin());
+//		asUser.throwingRun(() ->assertThat(facade.searchUser("john"), hasSize(1)));
+//	}
 	
 }

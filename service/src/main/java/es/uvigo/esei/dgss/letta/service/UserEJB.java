@@ -566,26 +566,25 @@ public class UserEJB {
 
     /**
      * Search the user {@link User} by full name
-     * @param keyword
+     * @param name
      *             Value to be found in the complete name or user's login.
      * @return The {@link List} with all the {@link User}
      */
     @RolesAllowed({"ADMIN", "USER"})
-	public List<User> searchUser(final String keyword) {
-		isTrue(nonNull(keyword), "Search query cannot be null");
+	public List<User> searchUser(final String name) {
+		isTrue(nonNull(name), "Search query cannot be null");
 		final User user = auth.getCurrentUser();
-		 if (user == null)
-	            return null;
-	        else {
-	        	return em
-	        			.createQuery("SELECT u FROM User u WHERE "
-	        					+ "( LOWER(u.completeName) LIKE :keyword"
-	        					+ " OR LOWER(u.login) LIKE :keyword ) "
-	        					+ "AND u.login !=:login", User.class)
-	        			.setParameter("login", user.getLogin())
-	        			.setParameter("keyword", "%" + keyword.toLowerCase() + "%")
-	        			.getResultList();
-	        	}
+		if (user == null) {
+			return null;
+		}
+
+		TypedQuery<User> users = em
+				.createQuery("SELECT u FROM User u WHERE " + "( LOWER(u.completeName) LIKE :name"
+						+ " OR LOWER(u.login) LIKE :name) " + "", User.class)
+				.setParameter("name", "%" + name.toLowerCase() + "%");
+
+		return users.getResultList();
+
 	}
 
     /**
@@ -596,7 +595,7 @@ public class UserEJB {
      */
     @RolesAllowed({"ADMIN", "USER"})
 	public Friendship getFriend(final String loginFriend) {
-		isTrue(nonNull(loginFriend), "Search query cannot be null");
+		isTrue(nonNull(loginFriend), "login name query cannot be null");
 		final User user = auth.getCurrentUser();
 		 if (user == null)
 	            return null;
@@ -605,6 +604,23 @@ public class UserEJB {
 	        			.createQuery("SELECT f FROM Friendship f where  f.friend.login =:loginFriend AND f.user.login =:login", Friendship.class)
 	        			.setParameter("login", user.getLogin()).setParameter("loginFriend", loginFriend)
 	        			.getSingleResult();
+	        	}
+	}
+    
+    /**
+     * Get the friend {@link User} by the current {@link User}.
+     *
+     * @return the {@link User}.
+     */
+    @RolesAllowed({"ADMIN", "USER"})
+	public List<User> getFriend() {
+		final User user = auth.getCurrentUser();
+		 if (user == null)
+	            return null;
+	        else {
+	        	return em
+	        			.createQuery("SELECT f.user FROM Friendship f where f.user.login =:login OR f.friend.login =:login ", User.class)
+	        			.setParameter("login", user.getLogin()).getResultList();
 	        	}
 	}
 
@@ -625,7 +641,8 @@ public class UserEJB {
 					return em
 							.createQuery(
 									"SELECT f.friendshipState FROM Friendship f where"
-											+ " f.friend.login =:loginFriend AND f.user.login =:login",
+											+ " f.friend.login =:loginFriend AND f.user.login =:login "
+											+ " OR f.friend.login =:login AND f.user.login =:loginFriend",
 									FriendshipState.class)
 							.setParameter("login", user.getLogin()).setParameter("loginFriend", loginFriend)
 							.getSingleResult();

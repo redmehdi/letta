@@ -49,7 +49,12 @@
 					value  = "#{indexController.getAttendees(event)}" 
 					escape = "false"/>
 		</span>
-		<div class="overlay">
+			<h:panelGroup rendered="#{!loginController.anonymous}">
+				<span class="event-attendees"><h:outputText
+						value="#{friendshipController.getOwnerEventFriend(event)}"
+						escape="false" /></span>
+			</h:panelGroup>
+			<div class="overlay">
 			<h3 class="hover-title">#{cc.attrs.event.title}</h3>
 			<span class="event-join"> 
 				<h:link
@@ -146,6 +151,24 @@
 			</span>
 				#{cc.attrs.event.description}<br />
 			 <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
+			 <h:panelGroup rendered="#{!loginController.anonymous}">
+				<span class="event-attendees"><h:outputText
+						value="#{friendshipController.getOwnerEventFriend(event)}"
+						escape="false" /></span>
+						
+				<h:dataTable value="#{friendshipController.attendeesLogin(cc.attrs.event)}" var="friend">
+						<h:column>
+							<h:outputText value="#{friend}" />
+							<h:link 
+					        	class   = "#{friendshipController.state(friend) eq 'ACCEPTED' ? 'btn btn-primary disabled' : 'btn btn-primary active'} "
+								outcome="sendRequest.xhtml?login=#{friend}" 
+								value   = "#{friendshipController.state(friend) eq 'ACCEPTED'? 'Friends' : 'Add friend'}"/>
+							
+						</h:column>
+					</h:dataTable>
+					<h:outputText value="number of your friends is #{friendshipController.count(cc.attrs.event)} will be at the event" ></h:outputText>
+			</h:panelGroup>
+			 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
@@ -182,6 +205,7 @@
 			</span>
 				#{cc.attrs.event.description}<br />
 			 <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
+			 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
@@ -201,18 +225,20 @@
       </div>
       <div class="modal-body">
 		<span class = "friendlist">
+			<h:panelGroup rendered="#{!loginController.anonymous}" >	
+				<h:outputText value="#{friendshipController.count(cc.attrs.event)}" ></h:outputText>
+				<h:outputText value="#{friendshipController.getOwnerEventFriend(cc.attrs.event)}" ></h:outputText>
 				<h:dataTable value="#{friendshipController.attendeesLogin(cc.attrs.event)}" var="friend">
 						<h:column>
-							<h:panelGroup rendered="#{!loginController.anonymous}" >	
 							<h:outputText value="#{friend}" />
 							<h:link 
 					        	class   = "#{friendshipController.state(friend) eq 'ACCEPTED' ? 'btn btn-primary disabled' : 'btn btn-primary active'} "
 								outcome="sendRequest.xhtml?login=#{friend}" 
 								value   = "#{friendshipController.state(friend) eq 'ACCEPTED'? 'Friends' : 'Add friend'}"/>
 							
-							</h:panelGroup>
 						</h:column>
 					</h:dataTable>
+				</h:panelGroup>
 		</span>
 	</div>
       <div class="modal-footer">

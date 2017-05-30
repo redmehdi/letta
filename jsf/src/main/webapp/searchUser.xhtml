@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+	xmlns:letta="http://java.sun.com/jsf/composite/tags">
+<h:head>
+	<title>Search results</title>
+	<style>
+
+.ui-datagrid-content {
+	border: none;
+}
+
+.searchButton {
+	float: right;
+}
+
+</style>
+</h:head>
+<h:body>
+
+	<ui:composition template="/template/templateLayout.xhtml">
+
+
+		<ui:define name="content">
+			<div class="container ">
+				<div class="row ">
+					<h:form id="results_form">
+						<div>
+							<center>
+								<h:commandButton value="prev &lt;"
+									onclick="
+									var a=document.getElementById('searchForm:keyword').value;
+									window.location='searchResults.xhtml?keyword='+a;
+									return false;"
+								 	rendered="#{not empty searchUserController.users}"/>
+								<h:commandButton value="next &gt;"
+									onclick="
+									var a=document.getElementById('searchForm:keyword').value;
+									window.location='searchResults.xhtml?keyword='+a;
+									return false;" 
+									rendered="##{not empty searchUserController.users}" />
+								<h:inputHidden value="#{searchController.keyword}" />
+							</center>
+						</div>
+					</h:form>
+					<h:outputText id="empty_result_list" value="#{msg['noquery.jsf']}" rendered="#{empty searchController.searchResults}" />
+					<ui:repeat id="indexRepeat" var="user"
+						value="#{searchUserController.users}" varStatus="status">
+						<div class="col-xs-12 col-sm-6 col-md-3">
+							<letta:event event="#{user}" rendered="#{not empty searchUserController.users}" />
+						</div>
+					</ui:repeat>
+
+					<h:form id="navigationBottom">
+						<ui:repeat value="#{searchController.pagesLinks}" var="page">
+							<h:commandLink value="#{page}"
+								onclick="
+									var a=document.getElementById('searchForm:keyword').value;
+									window.location='searchResults.xhtml?keyword='+a;
+									return false;"
+								rendered="#{page-1 != searchController.pageIndex}" />
+							<h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
+								rendered="#{page-1 == searchController.pageIndex}" />
+						</ui:repeat>
+					</h:form>
+				</div>
+			</div>
+		<h:panelGroup rendered="#{!loginController.anonymous 
+		              		    and param['cancelled']}" >
+			 <script type="text/javascript">
+			 jQuery(function ($) { 
+	             $('#successCancelModal').modal('show');
+	         });
+			</script>
+			<div class="modal fade" id="successCancelModal" tabindex="-1" role="dialog" aria-labelledby="successCancelModalLabel">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+				  <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			        	<span aria-hidden="true">&times;</span>
+			        </button>
+			        <h4 class="modal-title" id="successCancelModalLabel"><h:outputText value="#{msg['cancelevent.jsf']}" /></h4>
+			      </div>
+			      <div class="modal-body">
+				      <h:outputText value="#{msg['cancelevent.jsf']}" />
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal"><h:outputText value="#{msg['close.jsf']}" /></button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</h:panelGroup>
+		</ui:define>
+
+	</ui:composition>
+
+</h:body>
+
+</html>

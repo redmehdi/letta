@@ -1021,7 +1021,21 @@ public class EventEJBTest {
 		           () ->events.checkFriendStateWithAttendees("anne").getFriendshipState().toString());
 		assertEquals("ACCEPTED", test);
 	}
+	
+	@Test
+	@UsingDataSet({"users.xml","events.xml","friendships-uses.xml","event-attendees.xml"})
+	@ShouldMatchDataSet("users.xml")
+	public void testCountFriendsByEvent(){
+		final User user = userWithLogin("john");
+		final Event event = events()[1];
+		principal.setName(user.getLogin());
+		int count = asUser.call( () ->  events.countFriendsByEvent(event));
+		int actual = 2;
+		assertEquals(count,actual);
+		
 
+	}
+	
 //	@Test
 //	@UsingDataSet({ "users.xml", "events.xml", "friendships-uses.xml" })
 //	@ShouldMatchDataSet("users.xml")

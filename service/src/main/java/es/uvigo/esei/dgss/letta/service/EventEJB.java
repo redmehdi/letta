@@ -1059,5 +1059,37 @@ public class EventEJB {
 						Friendship.class).setParameter("user", user).setParameter("idEvent", event).getSingleResult();
 		return query;
 	}
+	
+	/**
+	 * count friends {@link Friendship}  {@link User} in {@link Event}
+	 * @param event 
+	 * @return {@link Long}
+	 */
+	@RolesAllowed({"ADMIN","USER"})
+	public int countFriendsByEvent(final Event event) {
+		isTrue(nonNull(event), "friendLogin cannot be null");
+		final User user = auth.getCurrentUser();
+		List<Friendship> query = em.createQuery(
+				"SELECT f FROM Friendship f WHERE f.user =:user AND f.friendshipState = 'ACCEPTED' AND f.friend in "
+						+ "(SELECT a FROM Event e JOIN e.attendees a WHERE e.id = :idEvent)",
+						Friendship.class).setParameter("user", user).setParameter("idEvent", event.getId()).getResultList();
+		return query.size();
+	}
+	
+	/**
+	 * count friends {@link Friendship}  {@link User} in {@link Event}
+	 * @param event 
+	 * @return {@link Long}
+	 */
+	@RolesAllowed({"ADMIN","USER"})
+	public Friendship getEventOwnerFriend(final Event event) {
+		isTrue(nonNull(event), "friendLogin cannot be null");
+		final User user = auth.getCurrentUser();
+		Friendship query = em.createQuery(
+				"SELECT f FROM Friendship f WHERE f.user =:user AND f.friendshipState = 'ACCEPTED' AND f.friend in "
+						+ "(SELECT a FROM Event e JOIN e.owner a WHERE e.id = :idEvent)",
+						Friendship.class).setParameter("user", user).setParameter("idEvent", event.getId()).getSingleResult();
+		return query;
+	}
 
 }
