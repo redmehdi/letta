@@ -563,6 +563,34 @@ public class UserEJB {
 		}
 
 	}
+    
+    /**
+     * Cancel {@link Friendship} by user
+     * @param friendLogin {@link User}
+     */
+    @RolesAllowed({"ADMIN", "USER"})
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void cancelPendingRequest(final String friendLogin) {
+    	isTrue(nonNull(friendLogin), "friend cannot be null");
+    	final User user = auth.getCurrentUser();
+		Friendship friendship = em
+				.createQuery(
+						"SELECT f FROM Friendship f WHERE f.user.login = :userId "
+								+ "AND f.friendshipState = 'PENDING' "
+								+ "AND f.friend.login = :friendId",
+						Friendship.class)
+						.setParameter("friendId", friendLogin)
+						.setParameter("userId", user.getLogin())
+						.getSingleResult();
+		if(friendship != null){
+			friendship.setFriendshipState(FriendshipState.CANCELLED);
+			em.merge(friendship);
+
+		} else {
+			throw new EJBTransactionRolledbackException("Friendship cannot be null");
+		}
+
+	}
 
     /**
      * Search the user {@link User} by full name
@@ -572,18 +600,31 @@ public class UserEJB {
      */
     @RolesAllowed({"ADMIN", "USER"})
 	public List<User> searchUser(final String name) {
-		isTrue(nonNull(name), "Search query cannot be null");
 		final User user = auth.getCurrentUser();
 		if (user == null) {
 			return null;
 		}
+		if (name != null && !name.equals("")) {
+			try {
+				TypedQuery<User> users = em
+						.createQuery("SELECT u FROM User u WHERE " + "( LOWER(u.completeName) LIKE :name"
+								+ " OR LOWER(u.login) LIKE :name) " + "", User.class)
+						.setParameter("name", "%" + name.toLowerCase() + "%");
+				return users.getResultList();
+			} catch (final NoResultException e) {
+				// TODO Auto-generated catch block
+				return null;
+			}
+		} else {
+			try {
+				TypedQuery<User> users = em.createQuery("SELECT u FROM User u", User.class);
+				return users.getResultList();
+			} catch (final NoResultException e) {
+				return null;
 
-		TypedQuery<User> users = em
-				.createQuery("SELECT u FROM User u WHERE " + "( LOWER(u.completeName) LIKE :name"
-						+ " OR LOWER(u.login) LIKE :name) " + "", User.class)
-				.setParameter("name", "%" + name.toLowerCase() + "%");
+			}
 
-		return users.getResultList();
+		}
 
 	}
 

@@ -26,7 +26,6 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.ACCEPTED;
 import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.REJECTED;
 import static es.uvigo.esei.dgss.letta.domain.entities.FriendshipState.PENDING;
@@ -52,58 +51,56 @@ public class UserEJBTest {
 	private TestingMailer mailer;
 
 	@Inject
-    private TestPrincipal principal;
+	private TestPrincipal principal;
 
 	@EJB(beanName = "user-caller")
-    private RoleCaller asUser;
-	
-    @EJB(beanName = "admin-caller")
-    private RoleCaller asAdmin;
+	private RoleCaller asUser;
 
-    @Deployment
-    public static Archive<?> deploy() {
-        return deployment().withTestMailer().withTestPrincipal().withClasses(
-        		UserEJB.class, MailBox.class, Email.class, UserAuthorizationEJB.class
-        ).build();
-    }
+	@EJB(beanName = "admin-caller")
+	private RoleCaller asAdmin;
 
-    @Test
-    public void getRegistrationWithLoginNull(){
-    	assertThat(facade.registrationWithLogin("jake"),is(equalTo(null)));
-    }
-    
-    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
-    public void getNullEmail(){
-    	facade.getByEmail(null);
-    }
+	@Deployment
+	public static Archive<?> deploy() {
+		return deployment().withTestMailer().withTestPrincipal()
+				.withClasses(UserEJB.class, MailBox.class, Email.class, UserAuthorizationEJB.class).build();
+	}
 
-    @Test
-    public void getEmptyEmail(){
-    	Optional<User> test =facade.getByEmail("jasdsa@adasd.com");
-        assertThat(test, is(Optional.empty()));
+	@Test
+	public void getRegistrationWithLoginNull() {
+		assertThat(facade.registrationWithLogin("jake"), is(equalTo(null)));
+	}
 
-    }
+	@Test(expected = javax.ejb.EJBTransactionRolledbackException.class)
+	public void getNullEmail() {
+		facade.getByEmail(null);
+	}
 
-    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
-    public void get(){
-    	facade.get(null);
-    }
+	@Test
+	public void getEmptyEmail() {
+		Optional<User> test = facade.getByEmail("jasdsa@adasd.com");
+		assertThat(test, is(Optional.empty()));
 
-    @Test(expected=javax.ejb.EJBTransactionRolledbackException.class)
-    public void getNull(){
-    	facade.get(null);
-    }
-    
-    @Test
+	}
+
+	@Test(expected = javax.ejb.EJBTransactionRolledbackException.class)
+	public void get() {
+		facade.get(null);
+	}
+
+	@Test(expected = javax.ejb.EJBTransactionRolledbackException.class)
+	public void getNull() {
+		facade.get(null);
+	}
+
+	@Test
 	@UsingDataSet("users.xml")
-    public void getReal(){
-    	final User u = UsersDataset.existentUser();
-    	Optional<User> test =facade.get(u.getLogin());
-    	assertThat(u.getLogin(),is(equalTo(test.get().getLogin()))
-    			);
-    }
+	public void getReal() {
+		final User u = UsersDataset.existentUser();
+		Optional<User> test = facade.get(u.getLogin());
+		assertThat(u.getLogin(), is(equalTo(test.get().getLogin())));
+	}
 
-    @Test
+	@Test
 	@UsingDataSet("registrations.xml")
 	@ShouldMatchDataSet("registrations-create.xml")
 	public void testRegisterUser() throws Exception {
@@ -130,11 +127,11 @@ public class UserEJBTest {
 	@ShouldMatchDataSet("registrations-create.xml")
 	public void testRegisterUserEmailDuplicated() throws Exception {
 		Registration registration = new Registration(new User("login", "password", "email@email.com", "complete name",
-				"description", "fb url", "tw url", "personal url", false, null,"Cuenca"));
+				"description", "fb url", "tw url", "personal url", false, null, "Cuenca"));
 		facade.registerUser(registration);
 
 		Registration registration2 = new Registration(new User("login2", "password", "email@email.com", "complete name",
-				"description", "fb url", "tw url", "personal url", false, null,"Cuenca"));
+				"description", "fb url", "tw url", "personal url", false, null, "Cuenca"));
 		facade.registerUser(registration2);
 	}
 
@@ -169,212 +166,223 @@ public class UserEJBTest {
 		asUser.throwingRun(() -> facade.update(user));
 	}
 
-	@Test(expected=EmailDuplicateException.class)
-	@UsingDataSet({"users.xml", "registrations.xml"})
+	@Test(expected = EmailDuplicateException.class)
+	@UsingDataSet({ "users.xml", "registrations.xml" })
 	public void testModifyUserDuplicatedEmail() throws EmailDuplicateException {
 		User user = UsersDataset.existentUser();
 		principal.setName(user.getLogin());
 		user.setEmail("anne@email.com");
 		asUser.throwingRun(() -> facade.update(user));
 	}
-	
+
 	@Test
 	@UsingDataSet("users.xml")
 	public void testGetUsers() {
-		final User user = userWithLogin("kurt");	   
-	    principal.setName(user.getLogin());	
-	    
-	    asAdmin.throwingRun(() -> assertThat(
-	    	facade.getUsers().size(), is(equalTo(6))));
+		final User user = userWithLogin("kurt");
+		principal.setName(user.getLogin());
+
+		asAdmin.throwingRun(() -> assertThat(facade.getUsers().size(), is(equalTo(6))));
 	}
-	
-	@Test(expected=EJBTransactionRolledbackException.class)
+
+	@Test(expected = EJBTransactionRolledbackException.class)
 	@UsingDataSet("users.xml")
 	public void testGetUsersByUser() {
-		final User user = userWithLogin("anne");	   
-	    principal.setName(user.getLogin());	
-	    
-	    asUser.throwingRun(() -> facade.getUsers());
+		final User user = userWithLogin("anne");
+		principal.setName(user.getLogin());
+
+		asUser.throwingRun(() -> facade.getUsers());
 	}
-	
+
 	@Test
 	@UsingDataSet("users.xml")
 	public void testRemoveUser() {
-		final User user = userWithLogin("kurt");	   
-	    principal.setName(user.getLogin());	
-	    
-	    asAdmin.throwingRun(() -> facade.removeUser("anne"));
-	}
-	
-	@Test(expected=EJBTransactionRolledbackException.class)
-	@UsingDataSet("users.xml")
-	public void testRemoveNullUser() {
-		final User user = userWithLogin("kurt");	   
-	    principal.setName(user.getLogin());	
-	    
-	    asAdmin.throwingRun(() -> facade.removeUser(""));
-	}
-	
-	@Test(expected=EJBTransactionRolledbackException.class)
-	@UsingDataSet("users.xml")
-	public void testRemoveUserByUser() {
-		final User user = userWithLogin("john");	   
-	    principal.setName(user.getLogin());	
-	    
-	    asUser.throwingRun(() -> facade.removeUser("mike"));
+		final User user = userWithLogin("kurt");
+		principal.setName(user.getLogin());
+
+		asAdmin.throwingRun(() -> facade.removeUser("anne"));
 	}
 
-//	@Test
-//	@UsingDataSet("registrations-create.xml")
-//	@ShouldMatchDataSet("registrations-register-user.xml")
-//	public void testConfirmateUser() {
-//		Registration registration = newRegistration();
-//
-//		facade.userConfirmation(registration.getUuid());
-//
-//		assertThat(registration.getUser(),is(equalTo(registration.getEmail())));
-//	}
-	
-//	facade.registerUser(registration);
-//
-//	assertThat(mailer.getEmail(), is(equalTo(registration.getEmail())));
-//	assertThat(mailer.getMessage(), containsString(registration.getUuid()));
-	
+	@Test(expected = EJBTransactionRolledbackException.class)
+	@UsingDataSet("users.xml")
+	public void testRemoveNullUser() {
+		final User user = userWithLogin("kurt");
+		principal.setName(user.getLogin());
+
+		asAdmin.throwingRun(() -> facade.removeUser(""));
+	}
+
+	@Test(expected = EJBTransactionRolledbackException.class)
+	@UsingDataSet("users.xml")
+	public void testRemoveUserByUser() {
+		final User user = userWithLogin("john");
+		principal.setName(user.getLogin());
+
+		asUser.throwingRun(() -> facade.removeUser("mike"));
+	}
+
+	// @Test
+	// @UsingDataSet("registrations-create.xml")
+	// @ShouldMatchDataSet("registrations-register-user.xml")
+	// public void testConfirmateUser() {
+	// Registration registration = newRegistration();
+	//
+	// facade.userConfirmation(registration.getUuid());
+	//
+	// assertThat(registration.getUser(),is(equalTo(registration.getEmail())));
+	// }
+
+	// facade.registerUser(registration);
+	//
+	// assertThat(mailer.getEmail(), is(equalTo(registration.getEmail())));
+	// assertThat(mailer.getMessage(), containsString(registration.getUuid()));
+
 	@Test
 	@UsingDataSet("users.xml")
 	@ShouldMatchDataSet("friendship-send-user.xml")
 	public void testFriendshipRequest() {
-		final User user = userWithLogin("john");	   
-	    principal.setName(user.getLogin());
+		final User user = userWithLogin("john");
+		principal.setName(user.getLogin());
 		User friend = UsersDataset.existentUserOther();
-		
-		asUser.throwingRun(() ->facade.sendRequest(friend.getLogin()));
-		asUser.throwingRun(() ->assertThat(facade.getFriend(friend.getLogin()).getFriend().getLogin(),is(equalTo(friend.getLogin())) ));
-		asUser.throwingRun(() ->assertThat(facade.getFriend(friend.getLogin()).getFriendshipState(),is(equalTo(PENDING))));
-		
+
+		asUser.throwingRun(() -> facade.sendRequest(friend.getLogin()));
+		asUser.throwingRun(() -> assertThat(facade.getFriend(friend.getLogin()).getFriend().getLogin(),
+				is(equalTo(friend.getLogin()))));
+		asUser.throwingRun(
+				() -> assertThat(facade.getFriend(friend.getLogin()).getFriendshipState(), is(equalTo(PENDING))));
+
 	}
-	
+
 	@Test
-	@UsingDataSet({"users.xml","friendship-send-user.xml"})
-	@ShouldMatchDataSet({"users.xml","friendship-send-user.xml"})
+	@UsingDataSet({ "users.xml", "friendship-send-user.xml" })
+	@ShouldMatchDataSet({ "users.xml", "friendship-send-user.xml" })
 	public void testReceivedFriendRequestList() {
 		final User user = userWithLogin("mary");
 		principal.setName(user.getLogin());
 		asUser.throwingRun(() -> assertThat(facade.friendRequestList(), hasSize(lessThan(2))));
-    			
+
 	}
-	
+
 	@Test
-	@UsingDataSet({"users.xml","friendship-send-user.xml"})
-	@ShouldMatchDataSet({"users.xml","friendship-accept-user.xml"})
+	@UsingDataSet({ "users.xml", "friendship-send-user.xml" })
+	@ShouldMatchDataSet({ "users.xml", "friendship-accept-user.xml" })
 	public void testAcceptFriendRequest() {
 		final User user = userWithLogin("mary");
 		principal.setName(user.getLogin());
 		final User friend = UsersDataset.existentUser();
 		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), true));
 		principal.setName("john");
-		asUser.throwingRun(() ->assertThat(facade.getFriend("mary").getFriendshipState(),is(equalTo(ACCEPTED)) ));
-    			
+		asUser.throwingRun(() -> assertThat(facade.getFriend("mary").getFriendshipState(), is(equalTo(ACCEPTED))));
+
 	}
-	
+
 	@Test
-	@UsingDataSet({"users.xml","friendship-send-user.xml"})
-	@ShouldMatchDataSet({"users.xml","friendship-reject-user.xml"})
+	@UsingDataSet({ "users.xml", "friendship-send-user.xml" })
+	@ShouldMatchDataSet({ "users.xml", "friendship-reject-user.xml" })
 	public void testRejectFriendRequest() {
 		final User user = userWithLogin("mary");
 		final User friend = UsersDataset.existentUser();
 		principal.setName(user.getLogin());
 		asUser.throwingRun(() -> facade.acceptOrRejectFriendRequest(friend.getLogin(), false));
 		principal.setName("john");
-		asUser.throwingRun(() ->assertThat(facade.getFriend("mary").getFriendshipState(),is(equalTo(REJECTED)) ));
-    			
+		asUser.throwingRun(() -> assertThat(facade.getFriend("mary").getFriendshipState(), is(equalTo(REJECTED))));
+
 	}
-	
+
 	@Test
-	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
-	@ShouldMatchDataSet({"users.xml","friendship-cancel-user.xml"})
+	@UsingDataSet({ "users.xml", "friendship-accept-user.xml" })
+	@ShouldMatchDataSet({ "users.xml", "friendship-cancel-user.xml" })
 	public void testCancelledFriendShip() {
 		User user = userWithLogin("john");
 		principal.setName(user.getLogin());
-		asUser.throwingRun(() -> facade.cancelFriendship("mary"));	
-//		principal.setName("john");
-//		asUser.throwingRun(() ->assertThat(facade.getFriend("mary").getFriendshipState(),is(equalTo(CANCELLED)) ));	
+		asUser.throwingRun(() -> facade.cancelFriendship("mary"));
+		// principal.setName("john");
+		// asUser.throwingRun(()
+		// ->assertThat(facade.getFriend("mary").getFriendshipState(),is(equalTo(CANCELLED))
+		// ));
 	}
-	
+
 	@Test
-	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
+	@UsingDataSet({ "users.xml", "friendship-accept-user.xml" })
 	@ShouldMatchDataSet("users.xml")
 	public void testRemoveFriendShip() {
 		User user = userWithLogin("john");
 		principal.setName(user.getLogin());
 		asUser.throwingRun(() -> facade.removeFriendship("mary"));
 		principal.setName("john");
-    			
+
 	}
-	
+
 	@Test
-	@UsingDataSet({"users.xml","friendship-accept-user.xml"})
+	@UsingDataSet({ "users.xml", "friendship-accept-user.xml" })
 	@ShouldMatchDataSet("users.xml")
 	public void testRemoveReversedFriendShip() {
 		User user = userWithLogin("mary");
 		principal.setName(user.getLogin());
 		asUser.throwingRun(() -> facade.removeFriendship("john"));
-    			
+
 	}
-	
-//	@Test
-//	@UsingDataSet("users.xml")
-//	@ShouldMatchDataSet("users.xml")
-//	public void testSearchUser(){
-//		User user = userWithLogin("john");
-//		principal.setName(user.getLogin());
-//		asUser.throwingRun(() -> assertThat(facade.searchUser("mary"), hasSize(1)));
-//	}
-//	
-//	
-//	@Test
-//	@UsingDataSet("users.xml")
-//	@ShouldMatchDataSet("users.xml")
-//	public void testSearchUserByFullName(){
-//		User user = userWithLogin("john");
-//		principal.setName(user.getLogin());
-//		asUser.throwingRun(() ->assertThat(facade.searchUser("mary name"), hasSize(1)));
-//	}
-//	
-//	@Test
-//	@UsingDataSet("users.xml")
-//	@ShouldMatchDataSet("users.xml")
-//	public void testSearchUserByTheSameName(){
-//		User user = userWithLogin("john");
-//		principal.setName(user.getLogin());
-//		asUser.throwingRun(() ->assertThat(facade.searchUser("name"), hasSize(6)));
-//	}
-//	
-//	@Test
-//	@UsingDataSet("users.xml")
-//	@ShouldMatchDataSet("users.xml")
-//	public void testSearchUserByUpperCaseName(){
-//		User user = userWithLogin("john");
-//		principal.setName(user.getLogin());
-//		asUser.throwingRun(() ->assertThat(facade.searchUser("AnNe"), hasSize(1)));
-//	}
-//	
-//	@Test
-//	@UsingDataSet("users.xml")
-//	@ShouldMatchDataSet("users.xml")
-//	public void testSearchUserByUncompleteName(){
-//		User user = userWithLogin("john");
-//		principal.setName(user.getLogin());
-//		asUser.throwingRun(() ->assertThat(facade.searchUser("mar"), hasSize(1)));
-//	}
-//	
-//	@Test
-//	@UsingDataSet("users.xml")
-//	@ShouldMatchDataSet("users.xml")
-//	public void testSearchUserBySameLoggedName(){
-//		User user = userWithLogin("john");
-//		principal.setName(user.getLogin());
-//		asUser.throwingRun(() ->assertThat(facade.searchUser("john"), hasSize(1)));
-//	}
-	
+
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet("users.xml")
+	public void testSearchUser() {
+		User user = userWithLogin("john");
+		principal.setName(user.getLogin());
+		asUser.throwingRun(() -> assertThat(facade.searchUser("mary"), hasSize(1)));
+	}
+
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet("users.xml")
+	public void testSearchUserByFullName() {
+		User user = userWithLogin("john");
+		principal.setName(user.getLogin());
+		asUser.throwingRun(() -> assertThat(facade.searchUser("mary name"), hasSize(1)));
+	}
+
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet("users.xml")
+	public void testSearchUserByTheSameName() {
+		User user = userWithLogin("john");
+		principal.setName(user.getLogin());
+		asUser.throwingRun(() -> assertThat(facade.searchUser("name"), hasSize(6)));
+	}
+
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet("users.xml")
+	public void testSearchUserByUpperCaseName() {
+		User user = userWithLogin("john");
+		principal.setName(user.getLogin());
+		asUser.throwingRun(() -> assertThat(facade.searchUser("AnNe"), hasSize(1)));
+	}
+
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet("users.xml")
+	public void testSearchUserByUncompleteName() {
+		User user = userWithLogin("john");
+		principal.setName(user.getLogin());
+		asUser.throwingRun(() -> assertThat(facade.searchUser("mar"), hasSize(1)));
+	}
+
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet("users.xml")
+	public void testSearchUserBySameLoggedName() {
+		User user = userWithLogin("john");
+		principal.setName(user.getLogin());
+		asUser.throwingRun(() -> assertThat(facade.searchUser("john"), hasSize(1)));
+	}
+
+	@Test
+	@UsingDataSet("users.xml")
+	@ShouldMatchDataSet("users.xml")
+	public void testSearchUserByNull() {
+		User user = userWithLogin("anne");
+		principal.setName(user.getLogin());
+		asUser.throwingRun(() -> assertThat(facade.searchUser(null), hasSize(6)));
+	}
+
 }
