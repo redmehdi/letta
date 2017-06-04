@@ -6959,3 +6959,19 @@ body {
   z-index  : 1;
 }
 
+#user .well {
+	margin-left: 15px;
+}
+
+span.name {
+    margin-right: 60px;
+}
+
+.attendees td, th {
+    padding: 1px;
+}
+
+.attendees td {
+    text-align: center;
+}
+
