@@ -30,67 +30,69 @@
 
 							<div>&nbsp;</div>
 							<div>
-							<li><h:form id="searchForm" class="navbar-form">
-							<div class="input-group">
-								<div class="input-group-btn">
-									<h:commandButton id="exploreButton" class="btn btn-default"
-										value="#{msg['explore.jsf']}"
-										onclick="
-		var current_location= window.location.pathname;
-		if(current_location=='/letta/jsf/'){		
-		window.location='faces/exploreEvents.xhtml';
-		}else{
-		window.location='exploreEvents.xhtml';
-		}
-		return false;
-									">
-									</h:commandButton>
-									<h:commandButton id="searchButton" class="btn btn-default"
-										value="#{msg['search.jsf']}"
-										onclick="
-		var a=document.getElementById('searchForm:srch-term').value;
-		var b=document.getElementById('searchForm:srch-location').value;
-		var current_location= window.location.pathname;
-		if(current_location=='/letta/jsf/'){		
-		window.location='faces/searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4'+'&amp;location='+b;
-		}else{
-		window.location='searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4'+'&amp;location='+b;
-		}
-		return false;
-									">
-									</h:commandButton>
-								</div>
-								<div class="input-group-btn">
-								<h:inputText class="form-control" id="srch-term"
-									value="#{searchController.terms}" />
+<!-- 							<li><h:form id="searchForm" class="navbar-form"> -->
+<!-- 							<div class="input-group"> -->
+<!-- 								<div class="input-group-btn"> -->
+<!-- 									<h:commandButton id="exploreButton" class="btn btn-default" -->
+<!-- 										value="#{msg['explore.jsf']}" -->
+<!-- 										onclick=" -->
+<!-- 		var current_location= window.location.pathname; -->
+<!-- 		if(current_location=='/letta/jsf/'){		 -->
+<!-- 		window.location='faces/exploreEvents.xhtml'; -->
+<!-- 		}else{ -->
+<!-- 		window.location='exploreEvents.xhtml'; -->
+<!-- 		} -->
+<!-- 		return false; -->
+<!-- 									"> -->
+<!-- 									</h:commandButton> -->
+<!-- 									<h:commandButton id="searchButton" class="btn btn-default" -->
+<!-- 										value="#{msg['search.jsf']}" -->
+<!-- 										onclick=" -->
+<!-- 		var a=document.getElementById('searchForm:srch-term').value; -->
+<!-- 		var b=document.getElementById('searchForm:srch-location').value; -->
+<!-- 		var current_location= window.location.pathname; -->
+<!-- 		if(current_location=='/letta/jsf/'){		 -->
+<!-- 		window.location='faces/searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4'+'&amp;location='+b; -->
+<!-- 		}else{ -->
+<!-- 		window.location='searchResults.xhtml?term='+a+'&amp;page=0'+'&amp;count=4'+'&amp;location='+b; -->
+<!-- 		} -->
+<!-- 		return false; -->
+<!-- 									"> -->
+<!-- 									</h:commandButton> -->
+<!-- 								</div> -->
+<!-- 								<div class="input-group-btn"> -->
+<!-- 								<h:inputText class="form-control" id="srch-term" -->
+<!-- 									value="#{searchController.terms}" /> -->
 									
-								<h:selectOneMenu id="srch-location" class="form-control" value="#{searchController.location}">
-									<f:selectItem itemValue="#{null}" itemLabel="--" />
-									<f:selectItems value="#{searchController.locations}" />
-								</h:selectOneMenu>
-								</div>
-							</div>
+<!-- 								<h:selectOneMenu id="srch-location" class="form-control" value="#{searchController.location}"> -->
+<!-- 									<f:selectItem itemValue="#{null}" itemLabel="" /> -->
+<!-- 									<f:selectItems value="#{searchController.locations}" /> -->
+<!-- 								</h:selectOneMenu> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
 
-						</h:form></li>
+<!-- 						</h:form></li> -->
 							
 							</div>
 						</div>
 					</div>
-					<h:panelGroup rendered="#{userNotifications.pages ne 0}">
+<!-- 					<h:panelGroup rendered="#{userNotifications.pages ne 0}"> -->
 						<div>&nbsp;</div>
 						<div>&nbsp;</div>
 						<div class="row">
 							<center>
-								<h:panelGroup rendered="#{0 lt userNotifications.pages}">
+<!-- 								<h:panelGroup rendered="#{0 lt userNotifications.pages}"> -->
 									<nav>
 									<ul class="pagination">
 										<h:panelGroup rendered="#{!loginController.anonymous}">
 
 											<h:dataTable
-												value="#{friendshipController.getLoginFriend()}"
+												value="#{friendshipController.getFriendData()}"
 												var="friend">
 												<h:column>
-													<h:outputText value="#{friend}" />
+													<h:outputText value="#{friend.name}" />
+													<h:outputText value="#{friend.city}" />
+													<p:graphicImage value="#{friend.picture}" />
 													<h:link
 														class="#{friendshipController.state(friend) eq 'ACCEPTED' ? 'btn btn-primary disabled' : 'btn btn-primary active'} "
 														outcome="sendRequest.xhtml?login=#{friend}"
@@ -102,13 +104,13 @@
 
 									</ul>
 									</nav>
-								</h:panelGroup>
+<!-- 								</h:panelGroup> -->
 							</center>
 							<br />
 							<br />
 							<br />
 						</div>
-					</h:panelGroup>
+<!-- 					</h:panelGroup> -->
 				</h:form>
 			</div>
 			<h:panelGroup
