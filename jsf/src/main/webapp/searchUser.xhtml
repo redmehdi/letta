@@ -23,49 +23,80 @@
 </h:head>
 <h:body>
 
-	<ui:composition template="/template/templateLayout.xhtml">
+	<ui:composition template="/template/templateLayoutSearchUser.xhtml">
 
 
 		<ui:define name="content">
-			<div class="container ">
+			<div class="container " id="user">
 				<div class="row ">
-					<h:form id="results_form">
-						<div>
-							<center>
-								<h:commandButton value="prev &lt;"
-									onclick="
-									var a=document.getElementById('searchForm:keyword').value;
-									window.location='searchResults.xhtml?keyword='+a;
-									return false;"
-								 	rendered="#{not empty searchUserController.users}"/>
-								<h:commandButton value="next &gt;"
-									onclick="
-									var a=document.getElementById('searchForm:keyword').value;
-									window.location='searchResults.xhtml?keyword='+a;
-									return false;" 
-									rendered="##{not empty searchUserController.users}" />
-								<h:inputHidden value="#{searchController.keyword}" />
-							</center>
-						</div>
-					</h:form>
-					<h:outputText id="empty_result_list" value="#{msg['noquery.jsf']}" rendered="#{empty searchController.searchResults}" />
-					<ui:repeat id="indexRepeat" var="user"
-						value="#{searchUserController.users}" varStatus="status">
-						<div class="col-xs-12 col-sm-6 col-md-3">
-							<letta:event event="#{user}" rendered="#{not empty searchUserController.users}" />
+<!-- 					<h:form id="results_form"> -->
+<!-- 						<div> -->
+<!-- 							<center> -->
+<!-- 								<h:commandButton value="prev &lt;" -->
+<!-- 									onclick=" -->
+<!-- 									var a=document.getElementById('searchForm:keyword').value; -->
+<!-- 									window.location='searchUser.xhtml?keyword='+a+'&amp;page='+'#{searchUserController.pageIndex-1}'+'&amp;count=4'; -->
+<!-- 									return false;" /> -->
+<!-- 								<h:outputText id="number_of_pages" -->
+<!-- 									value="#{searchUserController.pageIndex+1} / #{searchUserController.pages}" -->
+<!-- 									rendered="#{not empty searchUserController.users}" /> -->
+<!-- 								<h:commandButton value="next &gt;" -->
+<!-- 									onclick=" -->
+<!-- 									var a=document.getElementById('searchForm:keyword').value; -->
+<!-- 									window.location='searchUser.xhtml?keyword='+a+'&amp;page='+'#{searchUserController.pageIndex+1}'+'&amp;count=4'; -->
+<!-- 									return false;" -->
+<!-- 									rendered="#{(not empty searchUserController.users)}" /> -->
+<!-- 								<h:inputHidden value="#{searchUserController.pageIndex}" /> -->
+<!-- 								<h:inputHidden value="#{searchUserController.keyword}" /> -->
+<!-- 							</center> -->
+<!-- 						</div> -->
+<!-- 					</h:form> -->
+					<h:outputText id="empty_result_list" value="#{msg['noquery.jsf']}" rendered="#{empty searchUserController.users}" />
+
+					<ui:repeat id="indexRepeat" var="user" 
+								value="#{searchUserController.users}" varStatus="status">
+						<div class="container-fluid well span6 col-xs-12 col-sm-6 col-md-3">
+							<div class="row-fluid">
+								<div class="span2">
+									<p:graphicImage value="#{user.picture}" />
+								</div>
+
+								<div class="span8">
+									<h3>
+										<h:outputText value="#{user.name}" />
+									</h3>
+									<h6><h:outputText value="#{user.email}" /></h6>
+									<h6>Ubication: #{user.city}</h6>
+								</div>
+
+								<div class="span2">
+									<div class="btn-group">
+										<a class="btn dropdown-toggle btn-info" data-toggle="dropdown"
+											href="#"> Action <span class="icon-cog icon-white"></span><span
+											class="caret"></span>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="#"><span class="icon-wrench"></span>
+													Modify</a></li>
+											<li><a href="#"><span class="icon-trash"></span>
+													Delete</a></li>
+										</ul>
+									</div>
+								</div>
+							</div>
 						</div>
 					</ui:repeat>
 
 					<h:form id="navigationBottom">
-						<ui:repeat value="#{searchController.pagesLinks}" var="page">
+						<ui:repeat value="#{searchUserController.pagesLinks}" var="page">
 							<h:commandLink value="#{page}"
 								onclick="
 									var a=document.getElementById('searchForm:keyword').value;
-									window.location='searchResults.xhtml?keyword='+a;
+									window.location='searchUser.xhtml?keyword='+a;
 									return false;"
-								rendered="#{page-1 != searchController.pageIndex}" />
+								rendered="#{page-1 != searchUserController.pageIndex}" />
 							<h:outputText value="&lt;b&gt;#{page}&lt;/b&gt;" escape="false"
-								rendered="#{page-1 == searchController.pageIndex}" />
+								rendered="#{page-1 == searchUserController.pageIndex}" />
 						</ui:repeat>
 					</h:form>
 				</div>
