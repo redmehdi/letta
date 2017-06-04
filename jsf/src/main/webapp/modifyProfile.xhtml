@@ -62,8 +62,10 @@
 							</h:selectOneMenu>
 					    	<h:outputText value="#{msg['notification.jsf']}" />
         					<p:selectBooleanButton id="notifications" value="#{modifyProfileController.notifications}" onLabel="Yes" offLabel="No" onIcon="ui-icon-check" offIcon="ui-icon-close" style="width:70px"/><br/>
-					    	<h:commandButton id="submit-button" class="btn btn-default" value="#{msg['modify.jsf'}" action="#{modifyProfileController.doModify()}"/>
-					    </h:form>
+							<h:commandButton id="submit-button" class="btn btn-default"
+								value="#{msg['modify.jsf']}"
+								action="#{modifyProfileController.doModify()}" />
+						</h:form>
 					    <br/>
 			          </div>
 			          <div class="col-md-3 "></div>
