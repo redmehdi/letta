@@ -1,309 +1,342 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html 
-	xmlns           = "http://www.w3.org/1999/xhtml"
-	xmlns:h         = "http://xmlns.jcp.org/jsf/html"
-	xmlns:f         = "http://xmlns.jcp.org/jsf/core"
-	xmlns:p         = "http://primefaces.org/ui"
-	xmlns:ui        = "http://xmlns.jcp.org/jsf/facelets"
-	xmlns:composite = "http://java.sun.com/jsf/composite"
-	xmlns:c			= "http://java.sun.com/jsp/jstl/core"
->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 <h:body>
 
-<composite:interface>
-	<composite:attribute name="event" />
-</composite:interface>
-<composite:implementation>
-	<div class="event-info center-block hovereffect">
-		<h:graphicImage class="joined-img" value="img/joined.png"
-			rendered="#{!loginController.anonymous 
+	<composite:interface>
+		<composite:attribute name="event" />
+	</composite:interface>
+	<composite:implementation>
+		<div class="event-info center-block hovereffect">
+			<h:graphicImage class="joined-img" value="img/joined.png"
+				rendered="#{!loginController.anonymous 
 					and privateController.attendingEvents.contains(cc.attrs.event)}" />
-		<h:graphicImage
-			class    = "location-img" 
-			value    = "img/location.png"
-			rendered = "#{!loginController.anonymous 
+			<h:graphicImage class="location-img" value="img/location.png"
+				rendered="#{!loginController.anonymous 
 					    and privateController.isAtUserLocation(cc.attrs.event)}" />
- 		<h:graphicImage 
- 				class    = "cancelled-img" 
- 				value    = "img/cancelled.png" 
-				rendered = "#{cancelEventController.isCancelled(cc.attrs.event.id)}" /> 
-		<img class = "event-icon img-responsive"
-			 src   = "#{indexController.getIconFor(cc.attrs.event)}" />
-		<h3 class="event-title">#{cc.attrs.event.title}</h3>
-		<span class = "event-summary">LETTA #{cc.attrs.event.summary}</span> 
-		<span class = "event-location">#{msg['at.jsf']} #{cc.attrs.event.location}</span> 
-		<span class = "event-date">#{msg['from.jsf']} 
-			<h:outputText
-				value    = "#{indexController.getDate(cc.attrs.event)}"
-				style    = "color: red;"
-				rendered = "#{indexController.isAfter(cc.attrs.event.date)}">
-			</h:outputText> 
-			<h:outputText 
-				value    = "#{indexController.getDate(cc.attrs.event)}"
-				rendered = "#{indexController.isAfter(cc.attrs.event.date) eq false}">
-			</h:outputText><br />
-		</span> 
-		<span class="event-attendees">
-				<h:outputText 
-					value  = "#{indexController.getAttendees(event)}" 
-					escape = "false"/>
-		</span>
+			<h:graphicImage class="cancelled-img" value="img/cancelled.png"
+				rendered="#{cancelEventController.isCancelled(cc.attrs.event.id)}" />
+			<img class="event-icon img-responsive"
+				src="#{indexController.getIconFor(cc.attrs.event)}" />
+			<h3 class="event-title">#{cc.attrs.event.title}</h3>
+			<span class="event-summary">LETTA #{cc.attrs.event.summary}</span> <span
+				class="event-location">#{msg['at.jsf']}
+				#{cc.attrs.event.location}</span> <span class="event-date">#{msg['from.jsf']}
+				<h:outputText value="#{indexController.getDate(cc.attrs.event)}"
+					style="color: red;"
+					rendered="#{indexController.isAfter(cc.attrs.event.date)}">
+				</h:outputText> <h:outputText value="#{indexController.getDate(cc.attrs.event)}"
+					rendered="#{indexController.isAfter(cc.attrs.event.date) eq false}">
+				</h:outputText><br />
+			</span> <span class="event-attendees"> <h:outputText
+					value="#{indexController.getAttendees(event)}" escape="false" />
+			</span>
 			<h:panelGroup rendered="#{!loginController.anonymous}">
 				<span class="event-attendees"><h:outputText
-						value="#{friendshipController.getOwnerEventFriend(event)}"
+						value="the owner' event:  #{friendshipController.getOwnerEventFriend(event).name}"
 						escape="false" /></span>
 			</h:panelGroup>
 			<div class="overlay">
-			<h3 class="hover-title">#{cc.attrs.event.title}</h3>
-			<span class="event-join"> 
-				<h:link
-					class    = "info join-link"
-					value    = "#{msg['njoin.jsf']}"
-					outcome  = "joinEvent.xhtml?id=#{cc.attrs.event.id}" 
-					rendered = "#{!loginController.anonymous 
+				<h3 class="hover-title">#{cc.attrs.event.title}</h3>
+				<span class="event-join"> <h:link class="info join-link"
+						value="#{msg['njoin.jsf']}"
+						outcome="joinEvent.xhtml?id=#{cc.attrs.event.id}"
+						rendered="#{!loginController.anonymous 
 							and !privateController.ownEvents.contains(cc.attrs.event) 
 							and !privateController.attendingEvents.contains(cc.attrs.event)
-							and !cancelEventController.isCancelled(cc.attrs.event.id)}" /> 
-				<h:outputText
-					value    = "#{msg['ucreator.jsf']}"
-					rendered = "#{!loginController.anonymous 
+							and !cancelEventController.isCancelled(cc.attrs.event.id)}" />
+					<h:outputText value="#{msg['ucreator.jsf']}"
+						rendered="#{!loginController.anonymous 
                   		 and  privateController.ownEvents.contains(cc.attrs.event)}" />
-				<h:outputText 
-					value    = "#{msg['alreadyj.jsf']}"
-					rendered = "#{!loginController.anonymous 
+					<h:outputText value="#{msg['alreadyj.jsf']}"
+						rendered="#{!loginController.anonymous 
                              and  privateController.attendingEvents.contains(cc.attrs.event)}" />
-				<h:panelGroup rendered="#{!loginController.anonymous 
+					<h:panelGroup
+						rendered="#{!loginController.anonymous 
 		    		      		  and  privateController.attendingEvents.contains(cc.attrs.event)
-		    		      		  and !cancelEventController.isCancelled(cc.attrs.event.id)}" >			
-					<div></div>		
-				<button 
-						type        = "button" 
-						class       = "info" 
-						data-toggle = "modal" 
-						data-target = "#confirmUnJoinModal#{cc.attrs.event.id}"> #{msg['ujoin.jsf']} </button>
-				</h:panelGroup>
-				<h:link
-					class    = "info" 
-					value    = "#{msg['signup.jsf']}"
-					rendered = "#{loginController.anonymous}" outcome="register.xhtml" />		
-				<h:panelGroup rendered="#{!loginController.anonymous 
+		    		      		  and !cancelEventController.isCancelled(cc.attrs.event.id)}">
+						<div></div>
+						<button type="button" class="info" data-toggle="modal"
+							data-target="#confirmUnJoinModal#{cc.attrs.event.id}">
+							#{msg['ujoin.jsf']}</button>
+					</h:panelGroup> <h:link class="info" value="#{msg['signup.jsf']}"
+						rendered="#{loginController.anonymous}" outcome="register.xhtml" />
+					<h:panelGroup
+						rendered="#{!loginController.anonymous 
 		    		      		  and  privateController.ownEvents.contains(cc.attrs.event)
-		    		      		  and !cancelEventController.isCancelled(cc.attrs.event.id)}" >			
-					<div></div>
-					<button 
-						type        = "button" 
-						class       = "info" 
-						data-toggle = "modal" 
-						data-target = "#confirmCancelModal#{cc.attrs.event.id}"> #{msg['cancevent.jsf']} </button>
-                </h:panelGroup>
-                
-                <h:panelGroup
-                	rendered = "#{!loginController.anonymous 
+		    		      		  and !cancelEventController.isCancelled(cc.attrs.event.id)}">
+						<div></div>
+						<button type="button" class="info" data-toggle="modal"
+							data-target="#confirmCancelModal#{cc.attrs.event.id}">
+							#{msg['cancevent.jsf']}</button>
+					</h:panelGroup> <h:panelGroup
+						rendered="#{!loginController.anonymous 
                   	      	and  privateController.ownEvents.contains(cc.attrs.event)}">
-                  	<div></div>
-	                <h:link
-						class    = "info" 
-						value    = "#{msg['modify.jsf']}"
-	                  	outcome  = "modifyEvent.xhtml?id=#{cc.attrs.event.id}" />					
-                </h:panelGroup>  	      		
-				<div></div>
-				<button 
-					type        = "button" 
-					class       = "info" 
-					data-toggle = "modal" 
-					data-target = "#descriptionModal#{cc.attrs.event.id}"> #{msg['more.jsf']} </button>
-				<div></div>				
-				<button 
-					type        = "button" 
-					class       = "info" 
-					data-toggle = "modal" 
-					data-target = "#attendeesModal#{cc.attrs.event.id}"> see people </button>
-			</span>
+						<div></div>
+						<h:link class="info" value="#{msg['modify.jsf']}"
+							outcome="modifyEvent.xhtml?id=#{cc.attrs.event.id}" />
+					</h:panelGroup>
+					<div></div>
+					<button type="button" class="info" data-toggle="modal"
+						data-target="#descriptionModal#{cc.attrs.event.id}">
+						#{msg['more.jsf']}</button>
+					<div></div>
+					<button type="button" class="info" data-toggle="modal"
+						data-target="#attendeesModal#{cc.attrs.event.id}">see
+						people</button>
+				</span>
+			</div>
 		</div>
-	</div>
-	
-	
-<div class="modal fade" id="descriptionModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="descriptionModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h3 class="modal-title" id="descriptionModalLabel">#{cc.attrs.event.title}</h3>
-      </div>
-      <div class="modal-body">
-      	<div style='width: 20%;'>
-			<img class = "event-icon img-responsive"
-				 src   = "#{indexController.getIconFor(cc.attrs.event)}" />
-		</div><div>&nbsp;</div>
-		<span class = "event-summary">LETTA #{cc.attrs.event.summary}</span> 
-		<span class = "event-location">#{msg['at.jsf']} #{cc.attrs.event.location}</span> 
-		<span class = "event-date">#{msg['from.jsf']} 
-			<h:outputText
-				value    = "#{indexController.getDate(cc.attrs.event)}"
-				style    = "color: red;"
-				rendered = "#{indexController.isAfter(cc.attrs.event.date)}">
-				</h:outputText>
-				 <h:outputText 
-				 	value    = "#{indexController.getDate(cc.attrs.event)}"
-					rendered = "#{indexController.isAfter(cc.attrs.event.date) eq false}">
-				</h:outputText ><br />
-			</span>
-				#{cc.attrs.event.description}<br />
-			 <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
-			 <h:panelGroup rendered="#{!loginController.anonymous}">
-				<span class="event-attendees"><h:outputText
-						value="#{friendshipController.getOwnerEventFriend(event)}"
-						escape="false" /></span>
-						
-				<h:dataTable value="#{friendshipController.attendeesLogin(cc.attrs.event)}" var="friend">
-						<h:column>
-							<h:outputText value="#{friend}" />
-							<h:link 
-					        	class   = "#{friendshipController.state(friend) eq 'ACCEPTED' ? 'btn btn-primary disabled' : 'btn btn-primary active'} "
-								outcome="sendRequest.xhtml?login=#{friend}" 
-								value   = "#{friendshipController.state(friend) eq 'ACCEPTED'? 'Friends' : 'Add friend'}"/>
-							
-						</h:column>
-					</h:dataTable>
-					<h:outputText value="number of your friends is #{friendshipController.count(cc.attrs.event)} will be at the event" ></h:outputText>
-			</h:panelGroup>
-			 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
-<div class="modal fade" id="descriptionModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="descriptionModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h3 class="modal-title" id="descriptionModalLabel">#{cc.attrs.event.title}</h3>
-      </div>
-      <div class="modal-body">
-      	<div style='width: 20%;'>
-			<img class = "event-icon img-responsive"
-				 src   = "#{indexController.getIconFor(cc.attrs.event)}" />
-		</div><div>&nbsp;</div>
-		<span class = "event-summary">LETTA #{cc.attrs.event.summary}</span> 
-		<span class = "event-location">#{msg['at.jsf']} #{cc.attrs.event.location}</span> 
-		<span class = "event-date">#{msg['from.jsf']} 
-			<h:outputText
-				value    = "#{indexController.getDate(cc.attrs.event)}"
-				style    = "color: red;"
-				rendered = "#{indexController.isAfter(cc.attrs.event.date)}">
-				</h:outputText>
-				 <h:outputText 
-				 	value    = "#{indexController.getDate(cc.attrs.event)}"
-					rendered = "#{indexController.isAfter(cc.attrs.event.date) eq false}">
-				</h:outputText ><br />
-			</span>
-				#{cc.attrs.event.description}<br />
-			 <span class="event-attendees"><h:outputText value="#{indexController.getAttendees(event)}" escape="false"/></span>
-			 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
-      </div>
-    </div>
-  </div>
-</div>
+		<div class="modal fade" id="descriptionModal#{cc.attrs.event.id}"
+			tabindex="-1" role="dialog" aria-labelledby="descriptionModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h3 class="modal-title" id="descriptionModalLabel">#{cc.attrs.event.title}</h3>
+					</div>
+					<div class="modal-body">
+						<div style='width: 20%;'>
+							<img class="event-icon img-responsive"
+								src="#{indexController.getIconFor(cc.attrs.event)}" />
+						</div>
+						<div>&nbsp;</div>
+						<span class="event-summary">LETTA #{cc.attrs.event.summary}</span>
+						<span class="event-location">#{msg['at.jsf']}
+							#{cc.attrs.event.location}</span> <span class="event-date">#{msg['from.jsf']}
+							<h:outputText value="#{indexController.getDate(cc.attrs.event)}"
+								style="color: red;"
+								rendered="#{indexController.isAfter(cc.attrs.event.date)}">
+							</h:outputText> <h:outputText value="#{indexController.getDate(cc.attrs.event)}"
+								rendered="#{indexController.isAfter(cc.attrs.event.date) eq false}">
+							</h:outputText><br />
+						</span> #{cc.attrs.event.description}<br /> <span
+							class="event-attendees"><h:outputText
+								value="#{indexController.getAttendees(event)}" escape="false" /></span>
+						<h:panelGroup rendered="#{!loginController.anonymous}">
+							<div class="event-attendees">
+								<h:outputText
+									value="you're friend with owner' event #{friendshipController.getOwnerEventFriend(event).name}"
+									escape="false" />
 
-<div class="modal fade" id="attendeesModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="attendeesModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h3 id="attendeesModalLabel">people in events</h3>
-      </div>
-      <div>
-      </div>
-      <div class="modal-body">
-		<span class = "friendlist">
-			<h:panelGroup rendered="#{!loginController.anonymous}" >	
-				<h:outputText value="#{friendshipController.count(cc.attrs.event)}" ></h:outputText>
-				<h:outputText value="#{friendshipController.getOwnerEventFriend(cc.attrs.event)}" ></h:outputText>
-				<h:dataTable value="#{friendshipController.attendeesLogin(cc.attrs.event)}" var="friend">
-						<h:column>
-							<h:outputText value="#{friend}" />
-							<h:link 
-					        	class   = "#{friendshipController.state(friend) eq 'ACCEPTED' ? 'btn btn-primary disabled' : 'btn btn-primary active'} "
-								outcome="sendRequest.xhtml?login=#{friend}" 
-								value   = "#{friendshipController.state(friend) eq 'ACCEPTED'? 'Friends' : 'Add friend'}"/>
-							
-						</h:column>
-					</h:dataTable>
-				</h:panelGroup>
-		</span>
-	</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
-      </div>
-    </div>
-  </div>
-</div>
+							</div>
+
+							<div class="attendees"
+								style="border: 1px solid black; width: 200px; height: 80px; overflow: auto">
+								<h:dataTable
+									value="#{friendshipController.attendeesLogin(cc.attrs.event)}"
+									var="friend">
+									<h:column>
+										<span class="name"> <h:outputText
+												value="#{friend.name}" />
+										</span>
+									</h:column>
+									<h:column>
+										<h:link
+											class="#{friendshipController.state(friend.login) eq 'ACCEPTED' ? 'btn btn-primary btn-xs disabled' : 'btn btn-primary btn-xs active'} "
+											outcome="sendRequest.xhtml?login=#{friend.login}"
+											value="#{friendshipController.state(friend.login) eq 'ACCEPTED'? 'Friends' : 'Add friend'}" 
+											 rendered="#{friendshipController.state(friend.login) != 'PENDING'}" />
+										<h:link
+											class="btn btn-primary btn-xs active "
+											outcome="cancelPending.xhtml?login=#{friend.login}"
+											value="cancel request" 
+											 rendered="#{friendshipController.state(friend.login) == 'PENDING'}" />
+
+									</h:column>
+								</h:dataTable>
+							</div>
+							<h:outputText
+								value="#{friendshipController.count(cc.attrs.event)} friend will be at the event"></h:outputText>
+						</h:panelGroup>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 
-<h:panelGroup rendered="#{!loginController.anonymous 
-              		      		  and  privateController.ownEvents.contains(cc.attrs.event)}" >
-<div class="modal fade" id="confirmCancelModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="confirmCancelModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-	  <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        	<span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="confirmCancelModalLabel">#{msg['cancevent.jsf']}</h4>
-      </div>
-      <div class="modal-body">
-	      Are you sure to cancel the event: 
-	      <br/>&bnsp;<h3>#{cc.attrs.event.title}  ?</h3>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
-        <h:link 
-        	class   = "btn btn-primary"
-			outcome = "cancelEvent.xhtml?id=#{cc.attrs.event.id}"
-			value   = "Cancel event"/>
-      </div>
-    </div>
-  </div>
-</div>
-</h:panelGroup>
+		<div class="modal fade" id="descriptionModal#{cc.attrs.event.id}"
+			tabindex="-1" role="dialog" aria-labelledby="descriptionModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h3 class="modal-title" id="descriptionModalLabel">#{cc.attrs.event.title}</h3>
+					</div>
+					<div class="modal-body">
+						<div style='width: 20%;'>
+							<img class="event-icon img-responsive"
+								src="#{indexController.getIconFor(cc.attrs.event)}" />
+						</div>
+						<div>&nbsp;</div>
+						<span class="event-summary">LETTA #{cc.attrs.event.summary}</span>
+						<span class="event-location">#{msg['at.jsf']}
+							#{cc.attrs.event.location}</span> <span class="event-date">#{msg['from.jsf']}
+							<h:outputText value="#{indexController.getDate(cc.attrs.event)}"
+								style="color: red;"
+								rendered="#{indexController.isAfter(cc.attrs.event.date)}">
+							</h:outputText> <h:outputText value="#{indexController.getDate(cc.attrs.event)}"
+								rendered="#{indexController.isAfter(cc.attrs.event.date) eq false}">
+							</h:outputText><br />
+						</span> #{cc.attrs.event.description}<br /> <span
+							class="event-attendees"><h:outputText
+								value="#{indexController.getAttendees(event)}" escape="false" /></span>
 
-<h:panelGroup rendered="#{!loginController.anonymous 
-              		      		  and  privateController.attendingEvents.contains(cc.attrs.event)}" >
-<div class="modal fade" id="confirmUnJoinModal#{cc.attrs.event.id}" tabindex="-1" role="dialog" aria-labelledby="confirmUnJoinModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-	  <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        	<span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title" id="confirmUnJoinModalLabel">#{msg['ujoin.jsf']}</h4>
-      </div>
-      <div class="modal-body">
-	     #{msg['sureujoin.jsf']}
-	      <br/>&bnsp;<h3>#{cc.attrs.event.title}  ?</h3>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
-        <h:link 
-        	class   = "btn btn-primary"
-			outcome="unjoinEvent.xhtml?id=#{cc.attrs.event.id}" 
-			value   = "#{msg['unjoin.jsf']}"/>
-      </div>
-    </div>
-  </div>
-</div>
-</h:panelGroup>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
-</composite:implementation>
+		<div class="modal fade" id="attendeesModal#{cc.attrs.event.id}"
+			tabindex="-1" role="dialog" aria-labelledby="attendeesModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h3 id="attendeesModalLabel">people in events</h3>
+					</div>
+					<div></div>
+					<div class="modal-body">
+						<span class="friendlist"> <h:panelGroup
+								rendered="#{!loginController.anonymous}">
+								<h:outputText
+									value="#{friendshipController.count(cc.attrs.event)}"></h:outputText>
+								<h:outputText
+									value="#{friendshipController.getOwnerEventFriend(cc.attrs.event).name}"></h:outputText>
+								<div class="container">
+									<div class="row">
+										<div class="span4 well">
+											<div class="row">
+												<div class="span1">
+													<a href="#" class="thumbnail"><p:graphicImage
+															value="#{friendshipController.getOwnerEventFriend(cc.attrs.event).picture}" /></a>
+												</div>
+												<div class="span3">
+													<p>admin</p>
+													<p>
+														<strong>#{friendshipController.getOwnerEventFriend(event).name}</strong>
+													</p>
+													<span class=" badge badge-warning">Friend</span> <span
+														class=" badge badge-info">15 followers</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<h:dataTable
+									value="#{friendshipController.attendeesLogin(cc.attrs.event)}"
+									var="friend">
+									<h:column>
+										<h:outputText value="#{friend.login}" />
+									</h:column>
+									<h:column>
+										<h:link
+											class="#{friendshipController.state(friend.login) eq 'ACCEPTED' ? 'btn btn-primary disabled' : 'btn btn-primary active'} "
+											outcome="sendRequest.xhtml?login=#{friend.login}"
+											value="#{friendshipController.state(friend.login) eq 'ACCEPTED'? 'Friends' : 'Add friend'}" />
+
+									</h:column>
+								</h:dataTable>
+							</h:panelGroup>
+						</span>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">#{msg['close.jsf']}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<h:panelGroup
+			rendered="#{!loginController.anonymous 
+              		      		  and  privateController.ownEvents.contains(cc.attrs.event)}">
+			<div class="modal fade" id="confirmCancelModal#{cc.attrs.event.id}"
+				tabindex="-1" role="dialog"
+				aria-labelledby="confirmCancelModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="confirmCancelModalLabel">#{msg['cancevent.jsf']}</h4>
+						</div>
+						<div class="modal-body">
+							Are you sure to cancel the event: <br />
+							&bnsp;
+							<h3>#{cc.attrs.event.title} ?</h3>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">#{msg['close.jsf']}</button>
+							<h:link class="btn btn-primary"
+								outcome="cancelEvent.xhtml?id=#{cc.attrs.event.id}"
+								value="Cancel event" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:panelGroup>
+
+		<h:panelGroup
+			rendered="#{!loginController.anonymous 
+              		      		  and  privateController.attendingEvents.contains(cc.attrs.event)}">
+			<div class="modal fade" id="confirmUnJoinModal#{cc.attrs.event.id}"
+				tabindex="-1" role="dialog"
+				aria-labelledby="confirmUnJoinModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="confirmUnJoinModalLabel">#{msg['ujoin.jsf']}</h4>
+						</div>
+						<div class="modal-body">
+							#{msg['sureujoin.jsf']} <br />
+							&bnsp;
+							<h3>#{cc.attrs.event.title} ?</h3>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">#{msg['close.jsf']}</button>
+							<h:link class="btn btn-primary"
+								outcome="unjoinEvent.xhtml?id=#{cc.attrs.event.id}"
+								value="#{msg['unjoin.jsf']}" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:panelGroup>
+
+	</composite:implementation>
 
 </h:body>
 </html>
